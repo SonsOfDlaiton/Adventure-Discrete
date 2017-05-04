@@ -1,26 +1,54 @@
 FORMAT=.cpp
 CC=g++
-SRC=$(wildcard *$(FORMAT))
-CLASSES=$(wildcard Classes/*$(FORMAT))
-LIBS=$(wildcard Libs/*$(FORMAT))
-SOIL=$(wildcard Libs/soil/*c)
-EXEC=Bin/TCG
+JSC=~/.emscripten_dir/em++
+rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
+WEBFILES=$(call rwildcard, res/, *)
+SRC=$(wildcard scr/*$(FORMAT))
+CLASSES=$(wildcard scr/Classes/*$(FORMAT))
+LIBS=$(wildcard scr/Libs/*$(FORMAT))
+SOIL=$(wildcard scr/Libs/soil/*c)
+OBJS=$(wildcard obj/*.o)
+EXEC=bin/AdventureDiscrete
 CFLAGS=-w -Wall -std=c++11
-LDFLAGS=-lglut -lGLU -lGL -lm -lopenal -lGLEW -lSOIL
-LDFLAGSMAC=-lm -framework OpenGL -framework OpenAL -framework GLUT -framework CoreFoundation #-F/usr/lib/ -framework libGLEW.2.0.0
-clean:
-	rm -rf *.o $(EXEC)
+LDFLAGS=-lglut -lGLU -lGL -lm -lopenal #-lGLEW (glew unused)
+LDFLAGSMAC=-lm -framework OpenGL -framework OpenAL -framework GLUT -framework CoreFoundation #-F/usr/lib/ #-framework libGLEW.2.0.0 (glew unused)
+web:
+	$(JSC) -s LEGACY_GL_EMULATION=1 $(SRC) $(CLASSES) $(LIBS) $(SOIL) -o Web.html $(foreach var,$(WEBFILES),--preload-file $(var);)
+	@mv Web.html bin/Web.html
 
-all: make run
+compileAll:
+	$(CC) -c $(CFLAGS) $(SRC) $(CLASSES) $(LIBS) $(SOIL)
+	if [ ! -d "obj" ]; then mkdir obj; fi
+	@mv *.o obj/
 
-make:
-	$(CC) $(SRC) $(CLASSES) $(LIBS) -o $(EXEC) $(CFLAGS) $(LDFLAGS)
+.SILENT compile:
+	$(CC) -c $(CFLAGS) $(filter-out $@,$(MAKECMDGOALS))
+	if [ ! -d "obj" ]; then mkdir obj; fi
+	@mv *.o obj/
 
-makemac:
-	$(CC) $(SRC) $(CLASSES) $(LIBS) $(SOIL) -o $(EXEC)MacOSX $(CFLAGS) $(LDFLAGSMAC)
+link:
+	$(CC) $(OBJS) -o $(EXEC) $(LDFLAGS)
 
-runmac: makemac
+linkMac:
+	$(CC) $(OBJS) -o $(EXEC)MacOSX $(LDFLAGSMAC)
+
+run:
+	./$(EXEC)
+
+runMac:
 	./$(EXEC)MacOSX
 
-run: make
-	./$(EXEC)
+compileAndLink: compileAll link
+
+compileAndLinkMac: compileAll linkMac
+
+compileLinkAndRun: compileAll link run
+
+compileLinkAndRunMac: compileAll linkMac runMac
+
+linkAndRun: link run
+
+linkAndRunMac: linkMac runMac
+
+clean:
+	rm -rf *.o obj/*.o $(EXEC) Web.js

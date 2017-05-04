@@ -1,2 +1,5 @@
 # Resources
 res/*
+!res/Maps/*
+# Objects
+obj/*
