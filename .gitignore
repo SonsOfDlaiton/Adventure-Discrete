@@ -1,2 +1,7 @@
 # Resources
 res/*
+!res/Maps/*
+# Objects
+obj/*
+# Binaries
+bin/Web.data

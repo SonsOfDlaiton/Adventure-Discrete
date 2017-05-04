@@ -1,26 +1,58 @@
 FORMAT=.cpp
 CC=g++
-SRC=$(wildcard *$(FORMAT))
-CLASSES=$(wildcard Classes/*$(FORMAT))
-LIBS=$(wildcard Libs/*$(FORMAT))
-SOIL=$(wildcard Libs/soil/*c)
-EXEC=Bin/TCG
+JSC=~/.emscripten_compiler/em++
+rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
+WEBFILES=$(call rwildcard, res/, *)
+SRC=$(wildcard scr/*$(FORMAT))
+CLASSES=$(wildcard scr/Classes/*$(FORMAT))
+LIBS=$(wildcard scr/Libs/*$(FORMAT))
+SOIL=$(wildcard scr/Libs/soil/*c)
+OBJS=$(wildcard obj/*.o)
+EXEC=bin/AdventureDiscrete
 CFLAGS=-w -Wall -std=c++11
-LDFLAGS=-lglut -lGLU -lGL -lm -lopenal -lGLEW -lSOIL
-LDFLAGSMAC=-lm -framework OpenGL -framework OpenAL -framework GLUT -framework CoreFoundation #-F/usr/lib/ -framework libGLEW.2.0.0
-clean:
-	rm -rf *.o $(EXEC)
+LDFLAGS=-lglut -lGLU -lGL -lm -lopenal #-lGLEW (glew unused)
+LDFLAGSMAC=-lm -framework OpenGL -framework OpenAL -framework GLUT -framework CoreFoundation #-F/usr/lib/ #-framework libGLEW.2.0.0 (glew unused)
 
-all: make run
+all:
+	echo type web, compileAll, compile, link, linkMac, run, runMac, compileAndLink, compileAndLinkMac, compileLinkAndRun, compileLinkAndRunMac
 
-make:
-	$(CC) $(SRC) $(CLASSES) $(LIBS) -o $(EXEC) $(CFLAGS) $(LDFLAGS)
+web:
+	$(JSC) -s LEGACY_GL_EMULATION=1 -s ALLOW_MEMORY_GROWTH=1 -std=c++11 -O3 $(SRC) $(CLASSES) $(LIBS) $(SOIL) -o Web.html $(foreach var,$(WEBFILES),--preload-file $(var))
+	@mv Web.* bin/
 
-makemac:
-	$(CC) $(SRC) $(CLASSES) $(LIBS) $(SOIL) -o $(EXEC)MacOSX $(CFLAGS) $(LDFLAGSMAC)
+compileAll:
+	$(CC) -c $(CFLAGS) $(SRC) $(CLASSES) $(LIBS) $(SOIL)
+	if [ ! -d "obj" ]; then mkdir obj; fi
+	@mv *.o obj/
 
-runmac: makemac
+.SILENT compile:
+	$(CC) -c $(CFLAGS) $(filter-out $@,$(MAKECMDGOALS))
+	if [ ! -d "obj" ]; then mkdir obj; fi
+	@mv *.o obj/
+
+link:
+	$(CC) $(OBJS) -o $(EXEC) $(LDFLAGS)
+
+linkMac:
+	$(CC) $(OBJS) -o $(EXEC)MacOSX $(LDFLAGSMAC)
+
+run:
+	./$(EXEC)
+
+runMac:
 	./$(EXEC)MacOSX
 
-run: make
-	./$(EXEC)
+compileAndLink: compileAll link
+
+compileAndLinkMac: compileAll linkMac
+
+compileLinkAndRun: compileAll link run
+
+compileLinkAndRunMac: compileAll linkMac runMac
+
+linkAndRun: link run
+
+linkAndRunMac: linkMac runMac
+
+clean:
+	rm -rf *.o obj/*.o $(EXEC) Web.*
