@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="The.COM" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="The.COM" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="$(#glut)/bin" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-std=c++11" />
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add library="../../../../../Program Files (x86)/CodeBlocks/MinGW/lib/glut32.lib" />
+					<Add library="../../../../../Program Files (x86)/CodeBlocks/MinGW/lib/libOpenAL32.dll.a" />
+					<Add library="../../../../../Program Files (x86)/CodeBlocks/MinGW/lib/libopengl32.a" />
+					<Add library="../../../../../Program Files (x86)/CodeBlocks/MinGW/lib/OpenAL32.lib" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="The.COM" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="$(#glut)/bin" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add directory="$(#glut.include)" />
+		</Compiler>
+		<Linker>
+			<Add library="glut32" />
+			<Add library="opengl32" />
+			<Add library="glu32" />
+			<Add library="winmm" />
+			<Add library="gdi32" />
+			<Add directory="$(#glut.lib)" />
+		</Linker>
+		<Unit filename="Classes/AL.cpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Classes/AL.hpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Classes/Blocks.cpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Classes/Blocks.hpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Classes/Bullet.cpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Classes/Bullet.hpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Classes/Enemy.cpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Classes/Enemy.hpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Classes/Entity.cpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Classes/Entity.hpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Classes/GL.cpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Classes/GL.hpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Classes/Map.cpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Classes/Map.hpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Classes/Mechanics.cpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Classes/Mechanics.hpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Classes/Player.cpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Classes/Player.hpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Classes/Scenes.cpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Classes/Scenes.hpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Classes/Tutorials.cpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Classes/Tutorials.hpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Classes/Util.cpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Classes/Util.hpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Classes/mapEdit.cpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Classes/mapEdit.hpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Classes/powerUp.cpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Classes/powerUp.hpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Libs/GL.CallBacks.cpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Libs/GL.Callbacks.h">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Libs/Globals.cpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Libs/Globals.h">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Libs/loadFiles.cpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Libs/loadFiles.h">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Libs/soil/SOIL.c">
+			<Option compilerVar="CC" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Libs/soil/SOIL.h">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Libs/soil/image_DXT.c">
+			<Option compilerVar="CC" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Libs/soil/image_DXT.h">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Libs/soil/image_helper.c">
+			<Option compilerVar="CC" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Libs/soil/image_helper.h">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Libs/soil/stb_image_aug.c">
+			<Option compilerVar="CC" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Libs/soil/stb_image_aug.h">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Libs/soil/stbi_DDS_aug.h">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Libs/soil/stbi_DDS_aug_c.h">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="TCG.main.cpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="importLibs.h">
+			<Option target="Debug" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
