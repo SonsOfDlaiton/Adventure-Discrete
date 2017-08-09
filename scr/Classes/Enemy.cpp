@@ -72,7 +72,7 @@ vector<vector<int> >Enemy::enemyAnimSize;
 **/
 void Enemy::stateControl(){
     FunctionAnalyser::startFunction("Enemy::stateControl");
-    if(!Scenes::isInTheXScreen(nTRectangle::getCollision(this->pos,this->size))){
+    if(!Scenes::camera.isInTheXScreen(nTRectangle::getCollision(this->pos,this->size))){
         FunctionAnalyser::endFunction("Enemy::stateControl");
         return;
     }
@@ -119,15 +119,15 @@ void Enemy::behave(){
                     en->orientation=Util::orientation_right;
                 else
                     en->orientation=Util::orientation_left;
-                if(round(fmodl(GL::getGameMs(),1200)==0)>0&&!en->damageState&&Scenes::isInTheXScreen(nTRectangle::getCollision(en->pos,en->size))){
+                if(round(fmodl(GL::getGameMs(),1200)==0)>0&&!en->damageState&&Scenes::camera.isInTheXScreen(nTRectangle::getCollision(en->pos,en->size))){
                     new Bullet(5,Bullet::baseSpeed*en->orientation/1.5,nTPoint::get(en->pos.x,Player::getPlayerById(0)->pos.y+4+((rand()%300)/10-17),1),nTPoint::get(23,16,1));
                 }
             }
-            if(Scenes::isInTheXScreen(nTRectangle::getCollision(en->pos,en->size))){
+            if(Scenes::camera.isInTheXScreen(nTRectangle::getCollision(en->pos,en->size))){
                 objCollision var=Mechanics::getCollision(nTRectangle::getCollision(en->pos,en->size),nTRectangle::getCollision(Player::getPlayerById(0)->pos,Player::getPlayerById(0)->size));
                 if(var.firstObj!=Mechanics::NOCOLLISION)
                     Player::getPlayerById(0)->applyDamage(1);
-                if(Scenes::isInTheXScreen(nTRectangle::getCollision(en->pos,en->size))){
+                if(Scenes::camera.isInTheXScreen(nTRectangle::getCollision(en->pos,en->size))){
                     GL::setFont("BITMAP_HELVETICA_10");
                     GL::drawCentered_X_Text(nTPoint::get(en->pos.x,en->pos.y-en->size.y/2.0,0.7),en->nickname,GL::getColorByName("black"));
                     en->draw(GL::getColorByName("white"));

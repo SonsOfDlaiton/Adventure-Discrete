@@ -4,6 +4,7 @@
 #include "Scenes.hpp"
 #include "Entity.hpp"
 #include "Bullet.hpp"
+#include "Camera.hpp"
 
 class Enemy:public Entity {
 public:

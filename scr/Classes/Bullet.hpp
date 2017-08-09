@@ -2,6 +2,7 @@
 #define BULLET_HPP
 #include "Util.hpp"
 #include "Scenes.hpp"
+#include "Camera.hpp"
 
 class Bullet {
 public:

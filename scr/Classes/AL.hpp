@@ -39,4 +39,4 @@ private:
     friend ostream& operator<<(ostream &strm, const AL &al);
 };
 
-#endif /* AL_H */
+#endif /* CAMERA__H */

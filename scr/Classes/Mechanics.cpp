@@ -2,6 +2,7 @@
 #include "Player.hpp"
 #include "Enemy.hpp"
 #include "Blocks.hpp"
+#include "Camera.hpp"
 
 Mechanics::Mechanics(){
     singleton=this;
@@ -27,7 +28,7 @@ bool Mechanics::drawCollisionRec=false;
 **/
 void Mechanics::applyGravity(){//38% de consumo de processador
     FunctionAnalyser::startFunction("Mechanics::applyGravity");
-    if(GL::isPaused||Tutorials::isPaused){//||!Scenes::isInTheXScreen(nTRectangle::getCollision(this->pos,this->size)))
+    if(GL::isPaused||Tutorials::isPaused){//||!Scenes::camera.isInTheXScreen(nTRectangle::getCollision(this->pos,this->size)))
         FunctionAnalyser::endFunction("Mechanics::applyGravity");
         return;
     }
@@ -72,7 +73,7 @@ void Mechanics::applyGravity(){//38% de consumo de processador
 void Mechanics::applyForce(){
     FunctionAnalyser::startFunction("Mechanics::applyForce");
     applyGravity();
-    if(GL::isPaused||Tutorials::isPaused){//||!Scenes::isInTheScreen(nTRectangle::getCollision(this->pos,this->size)))
+    if(GL::isPaused||Tutorials::isPaused){//||!Scenes::camera.isInTheScreen(nTRectangle::getCollision(this->pos,this->size)))
         FunctionAnalyser::endFunction("Mechanics::applyForce");
         return;
     }
@@ -115,7 +116,7 @@ void Mechanics::applyForce(){
 **/
 void Mechanics::move(int dir,float steeps){
     FunctionAnalyser::startFunction("Mechanics::move");
-    if(!Scenes::isInTheXScreen(nTRectangle::getCollision(this->pos,this->size))){
+    if(!Scenes::camera.isInTheXScreen(nTRectangle::getCollision(this->pos,this->size))){
         FunctionAnalyser::endFunction("Mechanics::move");
         return;
     }

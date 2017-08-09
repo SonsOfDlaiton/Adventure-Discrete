@@ -3,6 +3,7 @@
 #include "Util.hpp"
 #include "GL.hpp"
 #include "Blocks.hpp"
+#include "Camera.hpp"
 
 class mapEdit {
 public:

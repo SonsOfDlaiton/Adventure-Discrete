@@ -53,7 +53,7 @@ void Bullet::behave(){
     Bullet *bu;
     for(int i=0;i<self.size();i++){
         bu=(Bullet*)self[i];
-        if(!Scenes::isInTheScreen(nTRectangle::getCollision(bu->pos,bu->size))){
+        if(!Scenes::camera.isInTheScreen(nTRectangle::getCollision(bu->pos,bu->size))){
             if(bu->type==1)
                 Player::getPlayerById(0)->haveBulletSword=false;
             if(bu->type==2||bu->type==3)
@@ -247,7 +247,7 @@ void Bullet::checkCollisionWithEntity(nTPoint pos,nTPoint size, bool withPlayer)
  *	Draw this bullet on the screen
 **/
 void Bullet::draw(){
-    if(GL::isPaused||!Scenes::isInTheScreen(nTRectangle::getCollision(pos,size)))
+    if(GL::isPaused||!Scenes::camera.isInTheScreen(nTRectangle::getCollision(pos,size)))
         return;
     pos.z=1;
     if (type==1)
