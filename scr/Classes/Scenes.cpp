@@ -2,6 +2,7 @@
 #include "Bullet.hpp"
 #include "powerUp.hpp"
 #include "AL.hpp"
+#include "Camera.hpp"
 
 Scenes::Scenes() {
 }
@@ -40,7 +41,6 @@ bool Scenes::posGameCalled=false;
 bool Scenes::posGameEndCalled=false;
 bool Scenes::posYouWinCalled=false;
 
-bool Scenes::freeCam=false;
 Camera Scenes::camera;
 
 /**
@@ -53,30 +53,6 @@ vector<int> Scenes::getUnityVector(int value){
     vector<int> out;
     out.push_back(value);
     return out;
-}
-
-/**
- *	Put the camera on the origin position
-**/
-void Scenes::putCameraOnOrigin(){
-    gluLookAt(camera.x.movedCam*-1,camera.y.movedCam*-1,0,camera.x.movedCam*-1,camera.y.movedCam*-1,-1,0,1,0);
-    camera.x.movedCam=0;
-    camera.y.movedCam=0;
-    gluLookAt(0,0,0,0,0,-1,0,1,0);
-}
-
-/**
- *	Put the camera locking at a specific point
- *
- *	@param pos the point to be looked by the camera
-**/
-void Scenes::lookAt(nTPoint pos){
-    pos.x-=GL::defaultSize.x/2+camera.x.movedCam;
-    pos.y-=GL::defaultSize.y/2+camera.y.movedCam;
-    gluLookAt(pos.x,pos.y,0,pos.x,pos.y,-1,0,1,0);
-    camera.x.movedCam+=pos.x;
-    camera.y.movedCam+=pos.y;
-    gluLookAt(0,0,0,0,0,-1,0,1,0);
 }
 
 /**
@@ -99,7 +75,7 @@ void Scenes::setAllCalledFalseExcept(vector<int> except){
     posYouWinCalled=false;
 
     GL::framesInGame=0;
-    putCameraOnOrigin();
+    camera.putCameraOnOrigin();
     for(int i=0;i<except.size();i++)
         switch(except[i]){
             case game: gameCalled=true; break;
@@ -139,7 +115,7 @@ void Scenes::drawGame(){
         GL::isPaused=false;
         vector<int> tmp;
         AL::singleton->stopAllSoundsExcept(tmp);
-        lookAt(Player::getPlayerById(0)->pos);
+        camera.lookAt(Player::getPlayerById(0)->pos);
     }
     if(ABS(Player::getPlayerById(0)->hSpeed)>0)
         Scenes::camera.moveSpeed=ABS(Player::getPlayerById(0)->hSpeed/GL::getFPS());
@@ -162,7 +138,7 @@ void Scenes::drawGame(){
             Scenes::camera.y.movingCam=-1;
         else
             Scenes::camera.y.movingCam=0;
-    }else if(!Scenes::freeCam)
+    }else if(!Camera::freeCam)
             Scenes::camera.y.movingCam=0;
 
 
@@ -299,7 +275,7 @@ void Scenes::drawMapEdit(){
         }
          if(mapEdit::isCreating==0){
             GL::setFont("BITMAP_TIMES_ROMAN_24");
-            GL::drawText(nTPoint::get(100,75,1),"Selecione o modo de edição:",GL::getColorByName("violet"));
+            GL::drawText(nTPoint::get(100,75,1),"Selecione o modo de ediï¿½ï¿½o:",GL::getColorByName("violet"));
             GL::drawText(nTPoint::get(75,400,1),"Editar um mapa existente.",GL::getColorByName("violet"));
             GL::drawText(nTPoint::get(450,400,1),"Criar um novo mapa.",GL::getColorByName("violet"));
             if(GL::buttonBehave(nTRectangle::get(100,350,300,150),GL::getColorByName("mouseSelected"),GL::getTextureByName("editMapIcon"),NULL,NULL,NULL,NULL))
@@ -455,76 +431,6 @@ void Scenes::drawSplash(){
   // }
   // if(x>4000)
     Scenes::current=menu;
-}
-
-/**
- *	Check if a rectangle is in the screen
- *
- *	@param collision the coordinates of the rectangle
- *	@return true if is in the screen, otherwise false
-**/
-bool Scenes::isInTheScreen(nTRectangle collision){
-    bool out=false;
-    nTPoint offSet;
-    offSet.set(GL::defaultSize.x*0.2,GL::defaultSize.y*0.3,0);
-    offSet.set(0,0,0);
-    if(camera.x.movedCam-offSet.x<=collision.p0.x&&collision.p0.x<GL::defaultSize.x+camera.x.movedCam+offSet.x)
-        if(camera.y.movedCam-offSet.y<=collision.p0.y&&collision.p0.y<GL::defaultSize.y+camera.y.movedCam+offSet.y)
-            out=true;
-    if(camera.x.movedCam-offSet.x<=collision.p1.x&&collision.p1.x<GL::defaultSize.x+camera.x.movedCam+offSet.x)
-        if(camera.y.movedCam-offSet.y<=collision.p0.y&&collision.p0.y<GL::defaultSize.y+camera.y.movedCam+offSet.y)
-            out=true;
-    if(camera.x.movedCam-offSet.x<=collision.p1.x&&collision.p1.x<GL::defaultSize.x+camera.x.movedCam+offSet.x)
-        if(camera.y.movedCam-offSet.y<=collision.p1.y&&collision.p1.y<GL::defaultSize.y+camera.y.movedCam+offSet.y)
-            out=true;
-    if(camera.x.movedCam-offSet.x<=collision.p0.x&&collision.p0.x<GL::defaultSize.x+camera.x.movedCam+offSet.x)
-        if(camera.y.movedCam-offSet.y<=collision.p1.y&&collision.p1.y<GL::defaultSize.y+camera.y.movedCam+offSet.y)
-            out=true;
-    return out;
-}
-
-/**
- *	Check if a rectangle is in the screen vertically
- *
- *	@param collision the coordinates of the rectangle
- *	@return true if is in the screen, otherwise false
-**/
-bool Scenes::isInTheYScreen(nTRectangle collision){
-    bool out=false;
-    nTPoint offSet;
-    offSet.set(GL::defaultSize.x*0.2,GL::defaultSize.y*0.3,0);
-    offSet.set(0,0,0);
-    if(camera.y.movedCam-offSet.y<=collision.p0.y&&collision.p0.y<GL::defaultSize.y+camera.y.movedCam+offSet.y)
-            out=true;
-    if(camera.y.movedCam-offSet.y<=collision.p0.y&&collision.p0.y<GL::defaultSize.y+camera.y.movedCam+offSet.y)
-            out=true;
-    if(camera.y.movedCam-offSet.y<=collision.p1.y&&collision.p1.y<GL::defaultSize.y+camera.y.movedCam+offSet.y)
-            out=true;
-    if(camera.y.movedCam-offSet.y<=collision.p1.y&&collision.p1.y<GL::defaultSize.y+camera.y.movedCam+offSet.y)
-            out=true;
-    return out;
-}
-
-/**
- *	Check if a rectangle is in the screen honrizontally
- *
- *	@param collision the coordinates of the rectangle
- *	@return true if is in the screen, otherwise false
-**/
-bool Scenes::isInTheXScreen(nTRectangle collision){
-    bool out=false;
-    nTPoint offSet;
-    offSet.set(GL::defaultSize.x*0.2,GL::defaultSize.y*0.3,0);
-    offSet.set(0,0,0);
-    if(camera.x.movedCam-offSet.x<=collision.p0.x&&collision.p0.x<GL::defaultSize.x+camera.x.movedCam+offSet.x)
-            out=true;
-    if(camera.x.movedCam-offSet.x<=collision.p1.x&&collision.p1.x<GL::defaultSize.x+camera.x.movedCam+offSet.x)
-            out=true;
-    if(camera.x.movedCam-offSet.x<=collision.p1.x&&collision.p1.x<GL::defaultSize.x+camera.x.movedCam+offSet.x)
-            out=true;
-    if(camera.x.movedCam-offSet.x<=collision.p0.x&&collision.p0.x<GL::defaultSize.x+camera.x.movedCam+offSet.x)
-            out=true;
-    return out;
 }
 
 /**

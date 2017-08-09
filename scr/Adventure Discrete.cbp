@@ -69,6 +69,8 @@
 		<Unit filename="Classes/Bullet.hpp" />
 		<Unit filename="Classes/CallbacksHandler.cpp" />
 		<Unit filename="Classes/CallbacksHandler.hpp" />
+		<Unit filename="Classes/Camera.cpp" />
+		<Unit filename="Classes/Camera.hpp" />
 		<Unit filename="Classes/Enemy.cpp" />
 		<Unit filename="Classes/Enemy.hpp" />
 		<Unit filename="Classes/Entity.cpp" />

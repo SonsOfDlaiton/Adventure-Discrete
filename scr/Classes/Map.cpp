@@ -7,6 +7,7 @@
 #include "Bullet.hpp"
 #include "powerUp.hpp"
 #include "AssetsLoader.hpp"
+#include "Camera.hpp"
 
 Map::Map() {
 }
@@ -227,7 +228,7 @@ vector <mapCollision> Map::checkCollision(nTPoint pos,nTPoint size){
     Blocks *bl;
     for(int i=0;i<dynamicBlocks.size();i++){
         bl=(Blocks*)dynamicBlocks[i];
-        if((bl->type>250&&bl->type<=300&&Scenes::isInTheXScreen(nTRectangle::getCollision(bl->pos,bl->size)))||(bl->type>200&&bl->type<=250&&Scenes::isInTheYScreen(nTRectangle::getCollision(bl->pos,bl->size)))){
+        if((bl->type>250&&bl->type<=300&&Scenes::camera.isInTheXScreen(nTRectangle::getCollision(bl->pos,bl->size)))||(bl->type>200&&bl->type<=250&&Scenes::camera.isInTheYScreen(nTRectangle::getCollision(bl->pos,bl->size)))){
             if(bl->id!=blockId){
                 adc.blockId=bl->id;
                 blockRec=nTRectangle::getCollision(bl->pos,bl->size);
@@ -254,12 +255,12 @@ void Map::refresh(){
     Blocks *bl;
     for(int i=0;i<dynamicBlocks.size();i++){
         bl=(Blocks*)dynamicBlocks[i];
-        if(Scenes::isInTheScreen(nTRectangle::getCollision(bl->pos,bl->size))||bl->type==255){
-            if(bl->type>250&&bl->type<=300&&Scenes::isInTheXScreen(nTRectangle::getCollision(bl->pos,bl->size)))
+        if(Scenes::camera.isInTheScreen(nTRectangle::getCollision(bl->pos,bl->size))||bl->type==255){
+            if(bl->type>250&&bl->type<=300&&Scenes::camera.isInTheXScreen(nTRectangle::getCollision(bl->pos,bl->size)))
                 bl->move(Util::direction_up,bl->moveSpeed/GL::getFPS());
-            else if(bl->type>200&&bl->type<=250&&Scenes::isInTheYScreen(nTRectangle::getCollision(bl->pos,bl->size)))
+            else if(bl->type>200&&bl->type<=250&&Scenes::camera.isInTheYScreen(nTRectangle::getCollision(bl->pos,bl->size)))
                 bl->move(Util::direction_left,bl->moveSpeed/GL::getFPS());
-            else if(bl->type>=101&&bl->type<200&&Scenes::isInTheXScreen(nTRectangle::getCollision(bl->pos,bl->size))){
+            else if(bl->type>=101&&bl->type<200&&Scenes::camera.isInTheXScreen(nTRectangle::getCollision(bl->pos,bl->size))){
                 if(round(fmodl(GL::getGameMs(),(int)Bullet::timeToShoot/5))==0&&Player::getPlayerById(0)->life>0){
                     nTPoint tmp=bl->pos;
                     tmp.z=0.9;

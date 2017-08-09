@@ -191,7 +191,7 @@ void Player::stateControl(){
                            else
                                pos.y-=15;
                            pos.z=0.9;
-                           Scenes::lookAt(pos);
+                           Scenes::camera.lookAt(pos);
                          }
                     }
                 }
@@ -280,7 +280,7 @@ void Player::spawn(nTPoint spawn,float life){
     alReadyAtacked=false;
     enemysKilled=0;
     powerUpsActiveted=0;
-    Scenes::lookAt(this->pos);
+    Scenes::camera.lookAt(this->pos);
 }
 /**
  *	Draw the melee sword, refresh Coeficiente, update cheat state and fix jump speed

@@ -343,7 +343,7 @@
 1501077956 c:\users\nanotech corp\data\cefet\iniciação cientifica_3º periodo\the.com-reborn\adventure-discrete\scr\classes\ntfontchar.hpp
 	"Util.hpp"
 
-1501088860 c:\users\nanotech corp\data\cefet\iniciação cientifica_3º periodo\the.com-reborn\adventure-discrete\scr\classes\al.hpp
+1502250822 c:\users\nanotech corp\data\cefet\iniciação cientifica_3º periodo\the.com-reborn\adventure-discrete\scr\classes\al.hpp
 	<AL/al.h>
 	<AL/alc.h>
 	"Util.hpp"
@@ -354,7 +354,7 @@
 	"AL.hpp"
 	"Player.hpp"
 
-1501200553 c:\users\nanotech corp\data\cefet\iniciação cientifica_3º periodo\the.com-reborn\adventure-discrete\scr\classes\player.hpp
+1502250661 c:\users\nanotech corp\data\cefet\iniciação cientifica_3º periodo\the.com-reborn\adventure-discrete\scr\classes\player.hpp
 	"Util.hpp"
 	"Entity.hpp"
 	"GL.hpp"
@@ -363,8 +363,9 @@
 	"Bullet.hpp"
 	"Blocks.hpp"
 	"IOHandler.hpp"
+	"Camera.hpp"
 
-1501245605 c:\users\nanotech corp\data\cefet\iniciação cientifica_3º periodo\the.com-reborn\adventure-discrete\scr\classes\entity.hpp
+1502250723 c:\users\nanotech corp\data\cefet\iniciação cientifica_3º periodo\the.com-reborn\adventure-discrete\scr\classes\entity.hpp
 	"Util.hpp"
 	"GL.hpp"
 	"Mechanics.hpp"
@@ -379,23 +380,26 @@
 	"Util.hpp"
 	"GL.hpp"
 
-1501099927 c:\users\nanotech corp\data\cefet\iniciação cientifica_3º periodo\the.com-reborn\adventure-discrete\scr\classes\enemy.hpp
+1502250745 c:\users\nanotech corp\data\cefet\iniciação cientifica_3º periodo\the.com-reborn\adventure-discrete\scr\classes\enemy.hpp
 	"Util.hpp"
 	"Scenes.hpp"
 	"Entity.hpp"
 	"Bullet.hpp"
+	"Camera.hpp"
 
-1501107981 c:\users\nanotech corp\data\cefet\iniciação cientifica_3º periodo\the.com-reborn\adventure-discrete\scr\classes\scenes.hpp
+1502250628 c:\users\nanotech corp\data\cefet\iniciação cientifica_3º periodo\the.com-reborn\adventure-discrete\scr\classes\scenes.hpp
 	"Util.hpp"
 	"Mechanics.hpp"
 	"Tutorials.hpp"
 	"mapEdit.hpp"
 	"Enemy.hpp"
+	"Camera.hpp"
 
-1501184879 c:\users\nanotech corp\data\cefet\iniciação cientifica_3º periodo\the.com-reborn\adventure-discrete\scr\classes\mapedit.hpp
+1502250555 c:\users\nanotech corp\data\cefet\iniciação cientifica_3º periodo\the.com-reborn\adventure-discrete\scr\classes\mapedit.hpp
 	"Util.hpp"
 	"GL.hpp"
 	"Blocks.hpp"
+	"Camera.hpp"
 
 1501202204 c:\users\nanotech corp\data\cefet\iniciação cientifica_3º periodo\the.com-reborn\adventure-discrete\scr\classes\blocks.hpp
 	"Util.hpp"
@@ -403,9 +407,10 @@
 	"AL.hpp"
 	"Player.hpp"
 
-1501163876 c:\users\nanotech corp\data\cefet\iniciação cientifica_3º periodo\the.com-reborn\adventure-discrete\scr\classes\bullet.hpp
+1502250786 c:\users\nanotech corp\data\cefet\iniciação cientifica_3º periodo\the.com-reborn\adventure-discrete\scr\classes\bullet.hpp
 	"Util.hpp"
 	"Scenes.hpp"
+	"Camera.hpp"
 
 1501197172 c:\users\nanotech corp\data\cefet\iniciação cientifica_3º periodo\the.com-reborn\adventure-discrete\scr\classes\iohandler.hpp
 	"Util.hpp"
@@ -567,4 +572,8 @@
 
 1501935535 source:c:\users\nanotech corp\data\cefet\iniciação cientifica_3º periodo\the.com-reborn\adventure-discrete\scr\classes\functionanalyser.cpp
 	"FunctionAnalyser.hpp"
+
+1502249746 c:\users\nanotech corp\data\cefet\iniciação cientifica_3º periodo\the.com-reborn\adventure-discrete\scr\classes\camera.hpp
+	"Util.hpp"
+	"GL.hpp"
 

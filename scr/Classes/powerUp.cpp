@@ -1,5 +1,6 @@
 #include "powerUp.hpp"
 #include "Scenes.hpp"
+#include "Camera.hpp"
 
 powerUp::powerUp(int type,nTPoint pos,nTPoint size,bool haveGravity) {
     this->size=size;
@@ -55,7 +56,7 @@ void powerUp::behave(){
     powerUp *pu;
     for(int i=0;i<self.size();i++){
         pu=(powerUp*)self[i];
-        if(!Scenes::isInTheScreen(nTRectangle::getCollision(pu->pos,pu->size))){
+        if(!Scenes::camera.isInTheScreen(nTRectangle::getCollision(pu->pos,pu->size))){
             delete pu;
             i--;
             break;

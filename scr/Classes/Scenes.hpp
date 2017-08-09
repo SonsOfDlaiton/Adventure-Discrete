@@ -5,24 +5,7 @@
 #include "Tutorials.hpp"
 #include "mapEdit.hpp"
 #include "Enemy.hpp"
-
-typedef struct ScenesCAM{
-    typedef struct scenesP{
-    short int movingCam;
-    float movedCam;
-    }scenesPoint;
-    scenesPoint x;
-    scenesPoint y;
-    float moveSpeed;
-
-    void setCam(float moveSpeed_){
-        x.movedCam=0;
-        x.movingCam=0;
-        y.movedCam=0;
-        y.movingCam=0;
-        moveSpeed=moveSpeed_;
-    };
-} Camera;
+#include "Camera.hpp"
 
 class Scenes {
 public:
@@ -39,14 +22,9 @@ public:
     static void drawPreGame();
     static void drawPreCampaign();
     static void drawPreFreeMode();
-    static void putCameraOnOrigin();
     static void drawPosGame();
     static void drawEndGame();
     static void drawYouWin();
-    static void lookAt(nTPoint pos);
-    static bool isInTheScreen(nTRectangle collision);
-    static bool isInTheXScreen(nTRectangle collision);
-    static bool isInTheYScreen(nTRectangle collision);
 
     static int current;
     static const int game;
@@ -63,7 +41,6 @@ public:
     static const int posGameEnd;
     static const int posYouWin;
     static Camera camera;
-    static bool freeCam;
     static bool skipScene;
     static bool freeGameMode;
 private:

@@ -482,7 +482,7 @@ void mapEditBackgroundDown(int x,int y){
  *	@param y mouse y position
 **/
 void mapEditCamera(int x,int y){
-    Scenes::putCameraOnOrigin();
+    Scenes::camera.putCameraOnOrigin();
 }
 
 /**

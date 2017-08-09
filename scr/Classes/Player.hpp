@@ -8,6 +8,7 @@
 #include "Bullet.hpp"
 #include "Blocks.hpp"
 #include "IOHandler.hpp"
+#include "Camera.hpp"
 
 
 class Player:public Entity {

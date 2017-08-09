@@ -29,7 +29,7 @@ void IOHandler::specialKeyboard(int key, int x, int y){
         if(Scenes::current==Scenes::game&&!GL::isPaused){
             Tutorials::pressedKey=GLUT_KEY_UP;
             Player::getPlayerById(0)->atackDirection=Util::direction_up;
-            if(Scenes::freeCam)
+            if(Camera::freeCam)
                  Scenes::camera.y.movingCam=-1;
         }else if(Scenes::current==Scenes::mapEdit)
             Scenes::camera.y.movingCam=-1;
@@ -40,7 +40,7 @@ void IOHandler::specialKeyboard(int key, int x, int y){
             Tutorials::pressedKey=GLUT_KEY_UP;
             Player::getPlayerById(0)->atackDirection=Util::direction_down;
             Player::getPlayerById(0)->canTp=true;
-            if(Scenes::freeCam)
+            if(Camera::freeCam)
                  Scenes::camera.y.movingCam=1;
         }  else if(Scenes::current==Scenes::mapEdit)
             Scenes::camera.y.movingCam=1;
@@ -59,7 +59,7 @@ void IOHandler::specialKeyboard(int key, int x, int y){
              }else{
                 if(Player::getPlayerById(0)->canWalk&&!Player::getPlayerById(0)->atacking)Player::getPlayerById(0)->walk(Util::direction_left);
              }
-             if(Scenes::freeCam)
+             if(Camera::freeCam)
                     Scenes::camera.x.movingCam=-1;
         }else if(Scenes::current==Scenes::mapEdit)
             Scenes::camera.x.movingCam=-1;
@@ -77,7 +77,7 @@ void IOHandler::specialKeyboard(int key, int x, int y){
             }else{
                 if(Player::getPlayerById(0)->canWalk&&!Player::getPlayerById(0)->atacking)Player::getPlayerById(0)->walk(Util::direction_right);
             }
-            if(Scenes::freeCam)
+            if(Camera::freeCam)
                  Scenes::camera.x.movingCam=1;
         }else if(Scenes::current==Scenes::mapEdit)
             Scenes::camera.x.movingCam=1;
