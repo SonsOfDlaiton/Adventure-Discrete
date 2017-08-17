@@ -16,7 +16,7 @@ private:
 
     void setTextureCoords(int x, int y, int width_, int height_, int imgSizeX, int imgSizeY);
 
-    float textureCoords[4];
+    double textureCoords[4];
     int offsetX,offsetY;
     int advance;
     int width, height;

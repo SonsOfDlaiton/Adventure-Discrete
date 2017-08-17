@@ -16,16 +16,16 @@ public:
 private:
     void draw();
     void checkCollisionWithPlayer(nTPoint pos,nTPoint size);
-    void move(int dir,float steeps);
+    void move(int dir,double steeps);
 
-    float vSpeed;
-    float hSpeed;
+    double vSpeed;
+    double hSpeed;
     nTPoint size;
     nTPoint pos;
     int type;
     GLuint tex;
     bool haveGravity;
-    static const float moveSpeed;
+    static const double moveSpeed;
 };
 
 #endif /* POWERUP_HPP */

@@ -6,22 +6,22 @@
 
 class Bullet {
 public:
-    Bullet(int type,float moveSpeed,nTPoint pos,nTPoint size);
+    Bullet(int type,double moveSpeed,nTPoint pos,nTPoint size);
     Bullet(const Bullet& orig);
     virtual ~Bullet();
 
     static void behave();
 
     static vector<void*> self;
-    static const float timeToShoot;
-    static const float baseDamage;
-    static const float baseSpeed;
+    static const double timeToShoot;
+    static const double baseDamage;
+    static const double baseSpeed;
 private:
     void draw();
     void checkCollisionWithEntity(nTPoint pos,nTPoint size,bool withPlayer);
-    void move(int dir,float steeps);
+    void move(int dir,double steeps);
 
-    float hSpeed;
+    double hSpeed;
     nTPoint size;
     nTPoint pos;
     int type;

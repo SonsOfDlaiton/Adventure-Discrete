@@ -13,13 +13,13 @@
 
 class Player:public Entity {
 public:
-    Player(float life,nTPoint spawn,nTPoint size,vector<vector<GLuint> > animations,bool isHuman);
+    Player(double life,nTPoint spawn,nTPoint size,vector<vector<GLuint> > animations,bool isHuman);
     Player(const Player& orig);
     virtual ~Player();
 
-    void makeInvencible(float time);
+    void makeInvencible(double time);
     void atack(int type);
-    void spawn(nTPoint spawn,float life);
+    void spawn(nTPoint spawn,double life);
     nTPoint getGroundPos();
     static Player* getPlayerById(int id);
 
@@ -36,9 +36,9 @@ public:
     static int enemysKilled;
     static int powerUpsActiveted;
     static int loadedLife;
-    static float coeficiente;
+    static double coeficiente;
     static const int defaultLife;
-    static float globalCoeficiente;
+    static double globalCoeficiente;
     static const int ranged;
     static const int melee;
     static const int meleeProjectile;
@@ -60,8 +60,8 @@ private:
     nTPoint swordSize;
     nTPoint swordPos;
     nTRectangle swordCollision;
-    static const float swordBaseDamage;
-    static const float imunityTime;
+    static const double swordBaseDamage;
+    static const double imunityTime;
     friend ostream& operator<<(ostream &strm, const Player &player);
 };
 

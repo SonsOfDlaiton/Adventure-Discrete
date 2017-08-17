@@ -1,6 +1,6 @@
 #include "Player.hpp"
 
-Player::Player(float life,nTPoint spawn,nTPoint size,vector<vector<GLuint> > animations,bool isHuman) {
+Player::Player(double life,nTPoint spawn,nTPoint size,vector<vector<GLuint> > animations,bool isHuman) {
     spawn.z=0.9;
     this->pos=spawn;
     this->size=size;
@@ -54,14 +54,14 @@ int Player::lives=3;
 const int Player::ranged=64651;
 const int Player::meleeProjectile=16165;
 const int Player::melee=165165;
-const float Player::imunityTime=900;
-const float Player::swordBaseDamage=2;
+const double Player::imunityTime=900;
+const double Player::swordBaseDamage=2;
 int Player::checkpoint=0;
 int Player::stage=0;
 const int Player::defaultLife=3;
 int Player::loadedLife=defaultLife;
-float Player::coeficiente=0;
-float Player::globalCoeficiente=0;
+double Player::coeficiente=0;
+double Player::globalCoeficiente=0;
 int Player::enemysKilled=0;
 int Player::powerUpsActiveted=0;
 const nTPoint Player::defaultPSize=nTPoint::get(28,60);
@@ -232,7 +232,7 @@ void Player::stateControl(){
  *
  *	@param time time who the player will be immune
 **/
-void Player::makeInvencible(float time){
+void Player::makeInvencible(double time){
     sword=life-1;
     if(sword>2)
         sword=2;
@@ -249,7 +249,7 @@ void Player::makeInvencible(float time){
  *	@param spawn coordinates to spawn
  *	@param life the spawn start life
 **/
-void Player::spawn(nTPoint spawn,float life){
+void Player::spawn(nTPoint spawn,double life){
     if(life>defaultLife)
         life=defaultLife;
     if(life<1)
@@ -325,7 +325,7 @@ void Player::atack(int type){
     if(type==Player::ranged){
         canJump=true;
             atacking=false;
-        float cof;
+        double cof;
         if(Player::globalCoeficiente==0)
             cof=Player::coeficiente;
         else
@@ -429,7 +429,7 @@ void Player::refreshCoeficiente(){
     if(Map::totalPowerUps)
         coeficiente+=100*Player::powerUpsActiveted/Map::totalPowerUps*2;
     if(GL::getGameMs()){
-        float temp=100000*Map::expetedTime/GL::getGameMs()            *1;
+        double temp=100000*Map::expetedTime/GL::getGameMs()            *1;
         if(temp>100)
           temp=100;
         coeficiente+=temp;

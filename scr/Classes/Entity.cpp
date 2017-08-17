@@ -12,14 +12,14 @@ Entity::Entity(const Entity& orig) {
 Entity::~Entity() {
 }
 
-const float Entity::SpritesPerSecond=4;
-const float Entity::jumpSpeed=303;
-const float Entity::horizontalRecoil=270;
-const float Entity::verticalRecoil=300;
-const float Entity::walkSpeed=150;
-const float Entity::runAceleration=66;
-const float Entity::maxRunSpeed=250;
-const float Entity::imunityTime=200;
+const double Entity::SpritesPerSecond=4;
+const double Entity::jumpSpeed=303;
+const double Entity::horizontalRecoil=270;
+const double Entity::verticalRecoil=300;
+const double Entity::walkSpeed=150;
+const double Entity::runAceleration=66;
+const double Entity::maxRunSpeed=250;
+const double Entity::imunityTime=200;
 const int Entity::state_Idle=0;
 const int Entity::state_Walking=1;
 const int Entity::state_Running=2;
@@ -86,7 +86,7 @@ void Entity::stateControl(){
  *
  *	@return ammount of sprites per second
 **/
-float Entity::getSpriteMs(){
+double Entity::getSpriteMs(){
     return SpritesPerSecond;
 }
 
@@ -187,7 +187,7 @@ vector<vector<GLuint> >  Entity::getAnimationVector(vector<string> animations, v
  *
  *	@param damage quantity of damage to be applied
 **/
-void Entity::applyDamage(float damage){
+void Entity::applyDamage(double damage){
     if(damageState||imuneToDamage)
         return;
     life-=damage;
@@ -256,7 +256,7 @@ void Entity::especificDraw(){
  *
  *	@param time time who the enity will be immune
 **/
-void Entity::makeInvencible(float time){
+void Entity::makeInvencible(double time){
     imuneToDamage=true;
     timeToVunerability=GL::getGameMs()+time;
 }

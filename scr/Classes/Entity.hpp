@@ -12,14 +12,14 @@ public:
 
     virtual void draw(nTColor color);
     virtual void draw();
-    virtual void applyDamage(float damage);
+    virtual void applyDamage(double damage);
     virtual void jump();
     virtual void walk(int dir);
     virtual void run(int dir);
     static void behave();
     static vector<vector<GLuint> >  getAnimationVector(vector<string> animations, vector<int>size);
     static void setSprites();
-	static float getSpriteMs();
+	static double getSpriteMs();
 
     int id;
     bool imuneToDamage;
@@ -28,15 +28,15 @@ public:
     static vector<bool>selfIsPlayer;
     int atacking;
     bool canJump;
-    float life;
+    double life;
     bool reducing;
     int orientation;
-    static const float walkSpeed;
-    static const float imunityTime;
+    static const double walkSpeed;
+    static const double imunityTime;
 	static vector<void*> enemys;
     static const int state_Idle,state_Walking,state_Running,state_Jumping,state_Atacking,state_SpecialAtacking,state_TakingDamage,state_Dying,state_Spawning,state_Lowering,state_Holding,state_MeleeAirAtackingDown,state_MeleeAirAtackingUp,state_MeleeAirAtackingHorizontal,state_MeleeGroundAtackingUp,state_MeleeGroundAtackingHorizontal,state_RangedAirAtackingDown,state_RangedAirAtackingUp,state_RangedAirAtackingHorizontal,state_RangedGroundAtackingUp,state_RangedGroundAtackingHorizontal;
 private:
-    static const float SpritesPerSecond;
+    static const double SpritesPerSecond;
 protected:
     friend class Mechanics;
     friend void playerChangeDamageState(int id);
@@ -46,7 +46,7 @@ protected:
     virtual void reduceSpeed(int dir);
     void setAnimations(vector<vector<GLuint> > animations);
     virtual void especificDraw();
-    virtual void makeInvencible(float time);
+    virtual void makeInvencible(double time);
 
     GLuint currentTex;
     int currentIndex;
@@ -57,11 +57,11 @@ protected:
     bool isVisible;
     unsigned long timeToVunerability;
     vector<vector<GLuint> > animations;
-    static const float jumpSpeed;
-    static const float verticalRecoil;
-    static const float horizontalRecoil;
-    static const float runAceleration;
-    static const float maxRunSpeed;
+    static const double jumpSpeed;
+    static const double verticalRecoil;
+    static const double horizontalRecoil;
+    static const double runAceleration;
+    static const double maxRunSpeed;
     static vector<void*> players;
 };
 

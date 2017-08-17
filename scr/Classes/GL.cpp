@@ -3,7 +3,7 @@
 #include "IOHandler.hpp"
 #include "CallbacksHandler.hpp"
 
-GL::GL(string name,float FPS,GLbitfield displayMode,int windowXsize,int windowYsize,nTColor clearcolor,bool blend,vector<GLenum>&enables,int argc, char** argv) {
+GL::GL(string name,double FPS,GLbitfield displayMode,int windowXsize,int windowYsize,nTColor clearcolor,bool blend,vector<GLenum>&enables,int argc, char** argv) {
     this->FPS=FPS;
     srand((unsigned int)time(NULL));
     glutInit(&argc, argv);
@@ -42,7 +42,7 @@ GL::GL(const GL& orig) {
 GL::~GL() {
 }
 
-float GL::FPS;
+double GL::FPS;
 nTColor GL::currentColor=nTColor::White();
 nTColor GL::clearColor;
 int GL::currentFont=0;
@@ -67,7 +67,7 @@ nTPoint GL::rawMousePos;
  *
  *	@param FPS value of game FPS
 **/
-void GL::setFPS(float FPS){
+void GL::setFPS(double FPS){
     GL::FPS=FPS;
 }
 
@@ -76,7 +76,7 @@ void GL::setFPS(float FPS){
  *
  *	@return value of game FPS
 **/
-float GL::getFPS(){
+double GL::getFPS(){
     return FPS;
 }
 
@@ -85,7 +85,7 @@ float GL::getFPS(){
  *
  *	@return delta time in milisecconds
 **/
-float GL::getMs(){
+double GL::getMs(){
     return 1000/FPS;
 }
 
@@ -343,7 +343,7 @@ void GL::drawCenteredTexture(nTPoint pos,nTPoint size,GLuint tex){
 **/
 nTColor GL::getColorByName(string name){
 	for(int i=0;name[i];i++)name[i]=tolower(name[i]);
-	float R=1,G=1,B=1;
+	double R=1,G=1,B=1;
 	if(name=="black"){
 		R=0;G=0;B=0;
 	}else if(name=="red"){
@@ -507,7 +507,7 @@ void GL::drawCentered_MultilineX_Y_Text(nTPoint point, string text, nTColor colo
  *	@param radius the radius of the polygon
  *	@param edges the ammount of edges of the polygon
 **/
-void GL::drawPolygon(nTPoint point,float radius,int edges){
+void GL::drawPolygon(nTPoint point,double radius,int edges){
     glBegin(GL_TRIANGLE_FAN);
     glVertex3f(point.x,point.y,point.z);
     for(int i=0;i<=edges;i++){
@@ -680,12 +680,12 @@ void GL::drawPause(){
  *	Gets the 4X4 matrix for rotations
  *
  *	@param angle rotation angle in degrees
- *	@return vector of a vector of floats containing the matrix
+ *	@return vector of a vector of doubles containing the matrix
 **/
-vector<vector<float> > GL::getRotateMatrix(float angle){
-    float rad=Util::angleToRad(angle);
-    vector<vector<float> >out;
-    out.resize(4,vector<float>(4,0));
+vector<vector<double> > GL::getRotateMatrix(double angle){
+    double rad=Util::angleToRad(angle);
+    vector<vector<double> >out;
+    out.resize(4,vector<double>(4,0));
     out[0][0]=cos(rad);
     out[0][1]=-sin(rad);
     out[1][1]=cos(rad);
@@ -699,11 +699,11 @@ vector<vector<float> > GL::getRotateMatrix(float angle){
  *	Gets the 4X4 matrix for translations
  *
  *	@param point the point to translate
- *	@return vector of a vector of floats containing the matrix
+ *	@return vector of a vector of doubles containing the matrix
 **/
-vector<vector<float> > GL::getTranslateMatrix(nTPoint point){
-    vector<vector<float> >out;
-    out.resize(4,vector<float>(4,0));
+vector<vector<double> > GL::getTranslateMatrix(nTPoint point){
+    vector<vector<double> >out;
+    out.resize(4,vector<double>(4,0));
     out[0][0]=1;
     out[1][1]=1;
     out[2][2]=1;
@@ -721,11 +721,11 @@ vector<vector<float> > GL::getTranslateMatrix(nTPoint point){
  *	@param point the point to translate
  *	@param center the point of center of the rotation
  *	@param angle rotation angle in degrees
- *	@return vector of a vector of floats containing the matrix
+ *	@return vector of a vector of doubles containing the matrix
 **/
-nTPoint GL::rotatePoint(nTPoint point,nTPoint center, float angle){
-    vector<vector<float> >Mpoint;
-    Mpoint.resize(4,vector<float>(1,0));
+nTPoint GL::rotatePoint(nTPoint point,nTPoint center, double angle){
+    vector<vector<double> >Mpoint;
+    Mpoint.resize(4,vector<double>(1,0));
     Mpoint[0][0]=point.x;
     Mpoint[1][0]=point.y;
     Mpoint[2][0]=point.z;
@@ -749,11 +749,11 @@ nTPoint GL::rotatePoint(nTPoint point,nTPoint center, float angle){
 **/
 nTPoint GL::getModelViewPoint(nTPoint point){
     GLfloat matrixf[16];
-    vector<vector<float> >Mpoint;
-    vector<vector<float> >out;
+    vector<vector<double> >Mpoint;
+    vector<vector<double> >out;
 
-    Mpoint.resize(4,vector<float>(1,0));
-    out.resize(4,vector<float>(4,0));
+    Mpoint.resize(4,vector<double>(1,0));
+    out.resize(4,vector<double>(4,0));
 
     glGetFloatv(GL_MODELVIEW_MATRIX, matrixf);
 
@@ -762,22 +762,22 @@ nTPoint GL::getModelViewPoint(nTPoint point){
     Mpoint[2][0]=point.z;
     Mpoint[3][0]=1;
 
-    out[0][0]=(float)matrixf[0];
-    out[0][1]=(float)matrixf[1];
-    out[0][2]=(float)matrixf[2];
-    out[0][3]=(float)matrixf[3];
-    out[1][0]=(float)matrixf[4];
-    out[1][1]=(float)matrixf[5];
-    out[1][2]=(float)matrixf[6];
-    out[1][3]=(float)matrixf[7];
-    out[2][0]=(float)matrixf[8];
-    out[2][1]=(float)matrixf[9];
-    out[2][2]=(float)matrixf[10];
-    out[2][3]=(float)matrixf[11];
-    out[3][0]=(float)matrixf[12];
-    out[3][1]=(float)matrixf[13];
-    out[3][2]=(float)matrixf[14];
-    out[3][3]=(float)matrixf[15];
+    out[0][0]=(double)matrixf[0];
+    out[0][1]=(double)matrixf[1];
+    out[0][2]=(double)matrixf[2];
+    out[0][3]=(double)matrixf[3];
+    out[1][0]=(double)matrixf[4];
+    out[1][1]=(double)matrixf[5];
+    out[1][2]=(double)matrixf[6];
+    out[1][3]=(double)matrixf[7];
+    out[2][0]=(double)matrixf[8];
+    out[2][1]=(double)matrixf[9];
+    out[2][2]=(double)matrixf[10];
+    out[2][3]=(double)matrixf[11];
+    out[3][0]=(double)matrixf[12];
+    out[3][1]=(double)matrixf[13];
+    out[3][2]=(double)matrixf[14];
+    out[3][3]=(double)matrixf[15];
     Mpoint=Util::multiplyMatrix(out,Mpoint);
 
     point.set(Mpoint[0][0],Mpoint[1][0],Mpoint[2][0]);
@@ -831,6 +831,6 @@ void GL::drawHUD(){
  *
  *	@return the time in millisecconds
 **/
-float GL::getGameMs(){
+double GL::getGameMs(){
     return GL::framesInGame*1000/GL::FPS;
 }

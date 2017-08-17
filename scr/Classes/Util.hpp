@@ -1,11 +1,11 @@
 #ifndef NTCOLOR
 #define NTCOLOR
 typedef struct color{
-        float R,G,B,A;
-        void set(float R_,float G_, float B_, float A_){
+        double R,G,B,A;
+        void set(double R_,double G_, double B_, double A_){
             R=R_;G=G_;B=B_;A=A_;
         };
-        void set(float R_,float G_, float B_){
+        void set(double R_,double G_, double B_){
             R=R_;G=G_;B=B_;A=1;
         };
         static struct color White(){
@@ -18,12 +18,12 @@ typedef struct color{
             colo.set(0,0,0);
             return colo;
         };
-        static struct color get(float R_,float G_, float B_, float A_){
+        static struct color get(double R_,double G_, double B_, double A_){
             struct color clor;
             clor.set(R_,G_,B_,A_);
             return clor;
         };
-        static struct color get(float R_,float G_, float B_){
+        static struct color get(double R_,double G_, double B_){
             struct color clor;
             clor.set(R_,G_,B_,1);
             return clor;
@@ -33,11 +33,11 @@ typedef struct color{
 #ifndef NTPOINT
 #define NTPOINT
 typedef struct point{
-        float x,y,z;
-        void set(float x_,float y_,float z_){
+        double x,y,z;
+        void set(double x_,double y_,double z_){
             x=x_;y=y_;z=z_;
         };
-        void set(float x_,float y_){
+        void set(double x_,double y_){
             x=x_;y=y_;z=0;
         };
         static struct point Origin(){
@@ -45,12 +45,12 @@ typedef struct point{
             ori.set(0,0,0);
             return ori;
         };
-        static struct point get(float x_,float y_,float z_){
+        static struct point get(double x_,double y_,double z_){
             struct point pnt;
             pnt.set(x_,y_,z_);
             return pnt;
         };
-        static struct point get(float x_,float y_){
+        static struct point get(double x_,double y_){
             struct point pnt;
             pnt.set(x_,y_);
             return pnt;
@@ -65,15 +65,15 @@ typedef struct rectangle{
         void set(nTPoint p0_,nTPoint p1_){
             p0=p0_;p1=p1_;
         };
-        void set(float x0_,float y0_,float x1_,float y1_,float z0_,float z1_){
+        void set(double x0_,double y0_,double x1_,double y1_,double z0_,double z1_){
             p0.x=x0_;p0.y=y0_;p1.x=x1_;p1.y=y1_;
             p0.z=z0_;p1.z=z1_;
         };
-        void set(float x0_,float y0_,float x1_,float y1_,float z_){
+        void set(double x0_,double y0_,double x1_,double y1_,double z_){
             p0.x=x0_;p0.y=y0_;p1.x=x1_;p1.y=y1_;
             p0.z=z_;p1.z=z_;
         };
-        void set(float x0_,float y0_,float x1_,float y1_){
+        void set(double x0_,double y0_,double x1_,double y1_){
             p0.x=x0_;p0.y=y0_;p1.x=x1_;p1.y=y1_;
             p0.z=0;p1.z=0;
         };
@@ -82,17 +82,17 @@ typedef struct rectangle{
             rect.set(p0_,p1_);
             return rect;
         };
-        static struct rectangle get(float x0_,float y0_,float x1_,float y1_,float z0_,float z1_){
+        static struct rectangle get(double x0_,double y0_,double x1_,double y1_,double z0_,double z1_){
             struct rectangle rect;
             rect.set(x0_,y0_,x1_,y1_,z0_,z1_);
             return rect;
         };
-        static struct rectangle get(float x0_,float y0_,float x1_,float y1_,float z_){
+        static struct rectangle get(double x0_,double y0_,double x1_,double y1_,double z_){
             struct rectangle rect;
             rect.set(x0_,y0_,x1_,y1_,z_);
             return rect;
         };
-        static struct rectangle get(float x0_,float y0_,float x1_,float y1_){
+        static struct rectangle get(double x0_,double y0_,double x1_,double y1_){
             struct rectangle rect;
             rect.set(x0_,y0_,x1_,y1_);
             return rect;
@@ -120,13 +120,9 @@ typedef struct rectangle{
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <algorithm>
 
 using namespace std;
-
-typedef struct map{
-  int backgroundId;
-  vector<vector<int> > map;
-}nTMap;
 
 typedef struct auxcollision{
   int firstObj;
@@ -141,7 +137,7 @@ typedef struct collision{
 typedef struct settings{
   bool sound=true,music=true;
   int lives=0,checkpoint=0,currentStage=0,sword=0;
-  float CR=0;
+  double CR=0;
 }SETTINGS;
 
 class Util {
@@ -153,10 +149,10 @@ public:
     static string newPath(string path);
     static string getDinamicPath(string p1,int idx, string p3);
     static string getDinamicName(string p1,int idx);
-    static vector<vector<float> >multiplyMatrix(vector<vector<float> >m1,vector<vector<float> >m2);
+    static vector<vector<double> >multiplyMatrix(vector<vector<double> >m1,vector<vector<double> >m2);
     static vector <nTPoint> getRetangleVertexs(nTRectangle rectangle);
-    static float angleToRad(float angle);
-    static float radToAngle(float RAD);
+    static double angleToRad(double angle);
+    static double radToAngle(double RAD);
 
     static bool DEBUG;
     static const int direction_left;

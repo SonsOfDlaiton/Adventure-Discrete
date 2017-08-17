@@ -19,14 +19,14 @@ class AssetsLoader;
 
 class GL {
 public:
-    GL(string name,float FPS,GLbitfield displayMode,int windowXsize,int windowYsize,nTColor clearcolor,bool blend,vector<GLenum>&enables,int argc, char** argv);
+    GL(string name,double FPS,GLbitfield displayMode,int windowXsize,int windowYsize,nTColor clearcolor,bool blend,vector<GLenum>&enables,int argc, char** argv);
     GL(const GL& orig);
     virtual ~GL();
 
     void start();
-    static void setFPS(float FPS);
-    static float getFPS();
-    static float getMs();
+    static void setFPS(double FPS);
+    static double getFPS();
+    static double getMs();
     static void setColor(nTColor color);
     static nTColor getColor();
     static bool loadFont(string path);
@@ -52,17 +52,17 @@ public:
     static void drawCentered_X_Y_Text(nTPoint point, string text, nTColor color);
     static void drawCentered_MultilineX_Text(nTPoint point, string text, nTColor color);
     static void drawCentered_MultilineX_Y_Text(nTPoint point, string text, nTColor color);
-    static void drawPolygon(nTPoint point,float radius,int edges);
+    static void drawPolygon(nTPoint point,double radius,int edges);
     static GLuint getTextureByName(string name);
     static vector<GLuint> getTexturesByName(string name,int nOfTex);
     static void drawPause();
     static void drawHUD();
-    static float getGameMs();
+    static double getGameMs();
     static bool buttonBehave(nTRectangle collision,nTColor pressedColor,GLuint tex,void(*clickFunction)(int,int),void(*releaseFunction)(int,int),void(*RclickFunction)(int,int),void(*RreleaseFunction)(int,int));
-    static vector<vector<float> > getRotateMatrix(float angle);
-    static vector<vector<float> > getTranslateMatrix(nTPoint point);
+    static vector<vector<double> > getRotateMatrix(double angle);
+    static vector<vector<double> > getTranslateMatrix(nTPoint point);
     static nTPoint getModelViewPoint(nTPoint point);
-    static nTPoint rotatePoint(nTPoint point,nTPoint center,float angle);
+    static nTPoint rotatePoint(nTPoint point,nTPoint center,double angle);
 
     static bool isPaused;
     static nTPoint defaultSize;
@@ -77,7 +77,7 @@ public:
     static nTColor clearColor;
     static unsigned long int framesInGame;
 private:
-    static float FPS;
+    static double FPS;
     static nTColor currentColor;
     static int currentFont;
     static vector<string> textureNames;

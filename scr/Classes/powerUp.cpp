@@ -41,7 +41,7 @@ powerUp::~powerUp() {
 }
 
 vector<void*> powerUp::self;
-const float powerUp::moveSpeed=50;
+const double powerUp::moveSpeed=50;
 
 /**
  *	Run logic events of the powerups on the map like move, change textures, check if is in the screen, check collisions
@@ -52,7 +52,7 @@ void powerUp::behave(){
         FunctionAnalyser::endFunction("powerUp::behave");
         return;
     }
-    float Gravity=Mechanics::getGravity()/3;
+    double Gravity=Mechanics::getGravity()/3;
     powerUp *pu;
     for(int i=0;i<self.size();i++){
         pu=(powerUp*)self[i];
@@ -88,10 +88,10 @@ void powerUp::behave(){
  *	@param dir direction to where the powerup will move, could be Util::direction_left, Util::direction_right, Util::direction_up, Util::direction_down
  *	@param steeps amount of steps to move the powerups
 **/
-void powerUp::move(int dir,float steeps){
+void powerUp::move(int dir,double steeps){
     FunctionAnalyser::startFunction("powerUp::move");
     bool needToMoveAgain=false;
-    float steepsAgain=0;
+    double steepsAgain=0;
     if(ABS(steeps)>Entity::walkSpeed/GL::getFPS()){
         int signal=1;
         needToMoveAgain=true;

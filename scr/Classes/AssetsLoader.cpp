@@ -1,8 +1,7 @@
 #include "AssetsLoader.hpp"
 
 AssetsLoader::AssetsLoader() {
-
-};
+}
 
 AssetsLoader::AssetsLoader(const AssetsLoader& orig) {
 }

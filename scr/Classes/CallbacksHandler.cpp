@@ -58,14 +58,14 @@ void CallbacksHandler::drawScene(void){
  *	@param height the new height of the window
 **/
 void CallbacksHandler::reshape(int width, int height){
-//    float windowAspectRatio,worldAspectRatio,xViewport,yViewport;
+//    double windowAspectRatio,worldAspectRatio,xViewport,yViewport;
 //    int WindowWidth,WindowHeight;
     // realHeight=height;
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(Scenes::camera.x.movedCam, GL::defaultSize.x+Scenes::camera.x.movedCam,GL::defaultSize.y+Scenes::camera.y.movedCam, Scenes::camera.y.movedCam, -1, 1);
-    // windowAspectRatio = ((float)width)/height;
-    // worldAspectRatio = ((float) GL::defaultSize.x)/ GL::defaultSize.y;
+    // windowAspectRatio = ((double)width)/height;
+    // worldAspectRatio = ((double) GL::defaultSize.x)/ GL::defaultSize.y;
     // xViewport=0;yViewport=0;
     // if (windowAspectRatio < worldAspectRatio) {
         // cout<<"menor\n";
@@ -75,7 +75,7 @@ void CallbacksHandler::reshape(int width, int height){
         GL::currentSize.x=width;
         GL::currentSize.y=height;
     // }else if (windowAspectRatio > worldAspectRatio) {
-        // yViewport = ((float)height) * worldAspectRatio;
+        // yViewport = ((double)height) * worldAspectRatio;
         // xViewport = (width - yViewport)/2;
         // glViewport(xViewport, 0, yViewport, height);
         // GL::currentSize.x=height-xViewport;
@@ -114,8 +114,8 @@ void CallbacksHandler::framesCheck(int n){
 **/
 void CallbacksHandler::update(int n){
     FunctionAnalyser::startFrame();
-    GL::mousePos.x=GL::rawMousePos.x*(float)GL::defaultSize.x/(float)GL::currentSize.x+Scenes::camera.x.movedCam;
-    GL::mousePos.y=GL::rawMousePos.y*(float)GL::defaultSize.y/(float)GL::currentSize.y+Scenes::camera.y.movedCam;
+    GL::mousePos.x=GL::rawMousePos.x*(double)GL::defaultSize.x/(double)GL::currentSize.x+Scenes::camera.x.movedCam;
+    GL::mousePos.y=GL::rawMousePos.y*(double)GL::defaultSize.y/(double)GL::currentSize.y+Scenes::camera.y.movedCam;
 
     if(IOHandler::ReleaseMouseOffSet){
         GL::leftMouseReleased=false;

@@ -19,7 +19,7 @@ scenesPoint Camera::getScenesPointY(){
 	return y;
 }
 
-float Camera::getMoveSpeed(){
+double Camera::getMoveSpeed(){
 	return moveSpeed;
 }
 
@@ -27,25 +27,25 @@ bool Camera::getFreeCam(){
 	return freeCam;
 }
 
-void Camera::setScenesPointX(short int movingCam, float movedCam){
+void Camera::setScenesPointX(short int movingCam, double movedCam){
 	x.movingCam = movingCam;
 	x.movedCam = movedCam;
 }
 
-void Camera::setScenesPointY(short int movingCam, float movedCam){
+void Camera::setScenesPointY(short int movingCam, double movedCam){
 	y.movingCam = movingCam;
 	y.movedCam = movedCam;
 }
 
-void Camera::setMoveSpeed(float moveSpeed){
+void Camera::setMoveSpeed(double moveSpeed){
 	moveSpeed = moveSpeed;
 }
 
-void Camera::setFreeCam(float freeCam){
+void Camera::setFreeCam(double freeCam){
 	Camera::freeCam = freeCam;
 }
 
-void Camera::setCam(float moveSpeed_){
+void Camera::setCam(double moveSpeed_){
     x.movedCam=0;
     x.movingCam=0;
     y.movedCam=0;

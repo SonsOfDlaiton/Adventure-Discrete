@@ -28,10 +28,10 @@ nTFontChar::~nTFontChar() {
 void nTFontChar::setTextureCoords(int x, int y, int width_, int height_, int imgSizeX, int imgSizeY){
     width=width_;
     height=height_;
-    float xStart=(float)x/(float)imgSizeX;
-    float yStart=(float)(imgSizeY-y)/(float)imgSizeY;
-    float xEnd=((float)(x+width))/(float)imgSizeX;
-    float yEnd=((float)(imgSizeY-(y+height)))/(float)imgSizeY;
+    double xStart=(double)x/(double)imgSizeX;
+    double yStart=(double)(imgSizeY-y)/(double)imgSizeY;
+    double xEnd=((double)(x+width))/(double)imgSizeX;
+    double yEnd=((double)(imgSizeY-(y+height)))/(double)imgSizeY;
     textureCoords[0]=xStart;
     textureCoords[1]=xEnd;
     textureCoords[2]=yStart;

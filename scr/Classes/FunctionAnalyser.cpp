@@ -12,16 +12,14 @@ FunctionAnalyser::~FunctionAnalyser() {
 bool FunctionAnalyser::PRINT=true;
 bool FunctionAnalyser::ANALYSE=true;
 
+vector<FunctionData> FunctionAnalyser::data;
 unsigned long FunctionAnalyser::deltaFrame=0;
 unsigned long FunctionAnalyser::Efunctions=0;
-vector<unsigned long> FunctionAnalyser::deltaFunctions;
 unsigned long FunctionAnalyser::frameStartTime=0;
 unsigned long FunctionAnalyser::frameEndTime=0;
 vector<string> FunctionAnalyser::functionsName;
 vector<unsigned long> FunctionAnalyser::functionsStartTime;
 vector<unsigned long> FunctionAnalyser::functionsEndTime;
-vector<string> FunctionAnalyser::functionsCompactName;
-vector<int> FunctionAnalyser::functionsCalls;
 const int FunctionAnalyser::milliseconds=1000000;
 const int FunctionAnalyser::microseconds=1000;
 const int FunctionAnalyser::nanoseconds=1;
@@ -36,9 +34,7 @@ void FunctionAnalyser::startFrame(){
     functionsName.clear();
     functionsStartTime.clear();
     functionsEndTime.clear();
-    deltaFunctions.clear();
-    functionsCalls.clear();
-    functionsCompactName.clear();
+    data.clear();
     frameEndTime=0;
     Efunctions=0;
     deltaFrame=0;
@@ -90,21 +86,24 @@ void FunctionAnalyser::analyseData(){
     int j;
     for(int i=0;i<functionsName.size();i++){
         bool alreadyHave=false;
-        for(j=0;j<functionsCompactName.size();j++)
-        if(functionsName[i]==functionsCompactName[j]){
+        for(j=0;j<data.size();j++)
+        if(functionsName[i]==data[j].name){
             alreadyHave=true;
             break;
         }
         if(alreadyHave){
-            functionsCalls[j]++;
-            deltaFunctions[j]+=(functionsEndTime[i]-functionsStartTime[i]);
+            data[j].nCalls++;
+            data[j].delta+=(functionsEndTime[i]-functionsStartTime[i]);
         }else{
-            functionsCompactName.push_back(functionsName[i]);
-            functionsCalls.push_back(1);
-            deltaFunctions.push_back(functionsEndTime[i]-functionsStartTime[i]);
+            FunctionData fd;
+            fd.name=functionsName[i];
+            fd.nCalls=1;
+            fd.delta=functionsEndTime[i]-functionsStartTime[i];
+            data.push_back(fd);
         }
         Efunctions+=(functionsEndTime[i]-functionsStartTime[i]);
     }
+    sort(data.begin(), data.end(), FunctionData::sort);
 }
 void FunctionAnalyser::printData(){
     if(!PRINT||!ANALYSE) return;
@@ -112,7 +111,7 @@ void FunctionAnalyser::printData(){
     cout<<"Frame delta time: \t"<<deltaFrame/timescale<<endl;
     cout<<"Functions time: \t"<<Efunctions/timescale<<endl;
     cout<<"----------------------------------------------------------------------------------------------------------------------"<<endl;
-    for(int i=0;i<functionsCompactName.size();i++)
-        cout<<functionsCompactName[i]<<"("<<functionsCalls[i]<<")"<<setw(42-functionsCompactName[i].size())<<"\t- delta: "<<deltaFunctions[i]/timescale<<"\t- "<<"delta per call: "<<deltaFunctions[i]/functionsCalls[i]/timescale<<"\t- "<<setw(3)<<(100*deltaFunctions[i]/Efunctions)<<"%(functions)"<<"\t- "<<setw(3)<<(100*deltaFunctions[i]/deltaFrame)<<"%(frame)"<<endl;
+    for(int i=0;i<data.size();i++)
+        cout<<data[i].name<<"("<<data[i].nCalls<<")"<<setw(42-data[i].name.size())<<"\t- delta: "<<data[i].delta/timescale<<"\t- "<<"delta per call: "<<data[i].delta/data[i].nCalls/timescale<<"\t- "<<setw(3)<<(100*data[i].delta/Efunctions)<<"%(functions)"<<"\t- "<<setw(3)<<(100*data[i].delta/deltaFrame)<<"%(frame)"<<endl;
     cout<<"======================================================================================================================"<<endl;
 }

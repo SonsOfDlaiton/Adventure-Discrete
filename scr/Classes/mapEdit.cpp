@@ -211,11 +211,11 @@ void mapEdit::load(int idx){
     if(idx>=0){
         index=idx;
         map=Map::maps[idx].map;
-        currentBackground=Map::maps[idx].backgroundId;
+        //currentBackground=Map::maps[idx].backgroundId;
     }else{
         index=-1;
         map=Map::usrMap.map;
-        currentBackground=Map::usrMap.backgroundId;
+        //currentBackground=Map::usrMap.backgroundId;
     }
     size.y=map.size();
     size.x=map[0].size();
@@ -240,7 +240,7 @@ void mapEdit::reset(){
 **/
 void mapEdit::save(){
     nTMap tmp;
-    tmp.backgroundId=currentBackground;
+    //tmp.backgroundId=currentBackground;
     tmp.map=map;
     if(!isUser){
         if(index>=Map::maps.size()&&!(index<0))

@@ -30,13 +30,13 @@ private:
     friend class Map;
 
     GLuint getTextureByIndex();
-    void applyDamage(float damage);
-    void move(int dir,float steeps);
+    void applyDamage(double damage);
+    void move(int dir,double steeps);
 
-    float moveSpeed;
+    double moveSpeed;
     unsigned long int timeToVunerability;
     bool damageState;
-    static float imunityTime;
+    static double imunityTime;
     nTPoint size;
     GLuint tex;
     nTColor color;

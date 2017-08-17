@@ -18,10 +18,9 @@ Map::Map(const Map& orig) {
 Map::~Map() {
 }
 
-vector<vector<int> > Map::currentMap;
 vector<void*> Map::staticBlocks;
 vector<void*> Map::dynamicBlocks;
-GLuint Map::background;
+nTMap Map::actualMap;//GLuint Map::background;
 nTPoint Map::size;
 int Map::nOfMaps=3;
 int Map::nOfBackgrounds=3;
@@ -55,14 +54,15 @@ void Map::changeCurrentMap(nTMap map){
     Entity::enemys.clear();
     Bullet::self.clear();
     powerUp::self.clear();
-    currentMap.clear();
+    actualMap.map.clear();
+    actualMap.backgrounds.clear();
 
     size.set((map.map[0].size()-1)*Blocks::defaultBlockSize.x,(map.map.size()-1)*Blocks::defaultBlockSize.y,0);
-    char buffer[5];
+    /*char buffer[5];
     snprintf(buffer,5,"%d",map.backgroundId);
-    string mapID(buffer);
-    currentMap=map.map;
-    background=GL::getTextureByName("background"+mapID);
+    string mapID(buffer);*/
+    sort(map.backgrounds.begin(), map.backgrounds.end()); // coloca em ordem decrescente os backgrounds a serem desenhados
+    actualMap=map;//background=GL::getTextureByName("background"+mapID);
     setBlockPos();
 }
 
@@ -98,41 +98,41 @@ void Map::deleteAllBlocks(){
 void Map::setBlockPos(){
     deleteAllBlocks();
     Blocks *bl;
-    for(int i=0;i<currentMap.size();i++){
-        for(int j=0;j<currentMap[0].size();j++){
-            bl=new Blocks(currentMap[i][j],nTPoint::get(Blocks::defaultBlockSize.x*(j+(1/2))+Blocks::defaultBlockSize.x/2,Blocks::defaultBlockSize.y*(i+(1/2))+Blocks::defaultBlockSize.y/2,Blocks::defaultBlockSize.z),Blocks::defaultBlockSize);
-            if(Blocks::checkIfBlocksIsDynamic(currentMap[i][j])){
-                if(currentMap[i][j]==1000&&(Player::checkpoint==0||Scenes::freeGameMode)){
+    for(int i=0;i<actualMap.map.size();i++){
+        for(int j=0;j<actualMap.map[0].size();j++){
+            bl=new Blocks(actualMap.map[i][j],nTPoint::get(Blocks::defaultBlockSize.x*(j+(1/2))+Blocks::defaultBlockSize.x/2,Blocks::defaultBlockSize.y*(i+(1/2))+Blocks::defaultBlockSize.y/2,Blocks::defaultBlockSize.z),Blocks::defaultBlockSize);
+            if(Blocks::checkIfBlocksIsDynamic(actualMap.map[i][j])){
+                if(actualMap.map[i][j]==1000&&(Player::checkpoint==0||Scenes::freeGameMode)){
                     bl->pos.z=0.9;
                     Player::getPlayerById(0)->spawn(bl->pos,Player::getPlayerById(0)->life);
-                }else if(currentMap[i][j]==1000);
+                }else if(actualMap.map[i][j]==1000);
 
-                else if(currentMap[i][j]>=2000&&currentMap[i][j]<=3000){
+                else if(actualMap.map[i][j]>=2000&&actualMap.map[i][j]<=3000){
                     bl->pos.z=0.89;
                     nOfEnemys++;
-                    new Enemy(currentMap[i][j]-2000,Enemy::defaultLife,bl->pos,Enemy::defaultSize,Entity::getAnimationVector(Enemy::enemyAnim[rand()%Enemy::enemyAnim.size()],Enemy::enemyAnimSize[rand()%Enemy::enemyAnimSize.size()]),0);
-                }else if(currentMap[i][j]>5000){
+                    new Enemy(actualMap.map[i][j]-2000,Enemy::defaultLife,bl->pos,Enemy::defaultSize,Entity::getAnimationVector(Enemy::enemyAnim[rand()%Enemy::enemyAnim.size()],Enemy::enemyAnimSize[rand()%Enemy::enemyAnimSize.size()]),0);
+                }else if(actualMap.map[i][j]>5000){
                     bl->pos.z=0.89;
-                    new Enemy((currentMap[i][j]-5000)+100,Enemy::bossLife,bl->pos,Enemy::bossSize,Entity::getAnimationVector(Enemy::enemyAnim[0],Enemy::enemyAnimSize[0]),0);
+                    new Enemy((actualMap.map[i][j]-5000)+100,Enemy::bossLife,bl->pos,Enemy::bossSize,Entity::getAnimationVector(Enemy::enemyAnim[0],Enemy::enemyAnimSize[0]),0);
                     nOfEnemys+=3;
                 }else{
                     bl->id=dynamicBlocks.size();
                     dynamicBlocks.push_back(bl);
                 }
-                if((currentMap[i][j]>=301&&currentMap[i][j]<=325)||(currentMap[i][j]>=476&&currentMap[i][j]<=500)){
+                if((actualMap.map[i][j]>=301&&actualMap.map[i][j]<=325)||(actualMap.map[i][j]>=476&&actualMap.map[i][j]<=500)){
                     totalPowerUps++;
                 }
-            }else if(currentMap[i][j]!=0){
+            }else if(actualMap.map[i][j]!=0){
                 bl->id=staticBlocks.size();
                 staticBlocks.push_back(bl);
             }
-            if(currentMap[i][j]==4001&&Player::checkpoint==1&&!Scenes::freeGameMode){
+            if(actualMap.map[i][j]==4001&&Player::checkpoint==1&&!Scenes::freeGameMode){
                 nTPoint pos=bl->pos;
                 pos.z=0.9;
                 pos.y-=Blocks::defaultBlockSize.y;
                 Player::getPlayerById(0)->spawn(pos,Player::getPlayerById(0)->life);
             }else
-            if(currentMap[i][j]==4002&&Player::checkpoint==2&&!Scenes::freeGameMode){
+            if(actualMap.map[i][j]==4002&&Player::checkpoint==2&&!Scenes::freeGameMode){
                 nTPoint pos=bl->pos;
                 pos.z=0.9;
                 pos.y-=Blocks::defaultBlockSize.y;
@@ -145,7 +145,7 @@ void Map::setBlockPos(){
         bl->id+=staticBlocks.size();
     }
 
-    expetedTime=(int)currentMap.size();
+    expetedTime=(int)actualMap.map.size();
 }
 
 /**
@@ -154,7 +154,8 @@ void Map::setBlockPos(){
 void Map::draw(){
     FunctionAnalyser::startFunction("Map::draw");
     Blocks* bl;
-    GL::drawTexture(nTRectangle::get(Scenes::camera.x.movedCam,GL::defaultSize.y+Scenes::camera.y.movedCam,GL::defaultSize.x+Scenes::camera.x.movedCam,Scenes::camera.y.movedCam,-0.9),background);
+    drawMapBackground();
+    //GL::drawTexture(nTRectangle::get(Scenes::camera.x.movedCam,GL::defaultSize.y+Scenes::camera.y.movedCam,GL::defaultSize.x+Scenes::camera.x.movedCam,Scenes::camera.y.movedCam,-0.9),background);
     for(int i=0;i<dynamicBlocks.size();i++){
         bl=(Blocks*)dynamicBlocks[i];
         if(!Blocks::checkIfBlocksIsLiquid(bl->type)||Scenes::current!=Scenes::game)
@@ -209,7 +210,7 @@ vector <mapCollision> Map::checkCollision(nTPoint pos,nTPoint size){
     pointPrincipal.set(i_inf*y32+y16,j_inf*x32+x16,0);
     for(i=i_inf-1; i<=i_sup+1; i++){
       for(j=j_inf-1;j<=j_sup+1; j++){
-        if(j>=0 && j<=currentMap.size() && i>=0 && i<=currentMap[0].size()){
+        if(j>=0 && j<=actualMap.map.size() && i>=0 && i<=actualMap.map[0].size()){
             blockCenter.set(i*y32+y16,j*x32-x16,0);
             Blocks* bl=getBlockById(getIdByPosition(blockCenter));
             if(Blocks::checkIfBlocksIsMassive(bl->type)){
@@ -248,7 +249,8 @@ vector <mapCollision> Map::checkCollision(nTPoint pos,nTPoint size){
 void Map::refresh(){
     FunctionAnalyser::startFunction("Map::refresh");
     if(GL::isPaused){
-        GL::drawTexture(nTRectangle::get(Scenes::camera.x.movedCam,GL::defaultSize.y+Scenes::camera.y.movedCam,GL::defaultSize.x+Scenes::camera.x.movedCam,Scenes::camera.y.movedCam,-0.9),background);
+        //GL::drawTexture(nTRectangle::get(Scenes::camera.x.movedCam,GL::defaultSize.y+Scenes::camera.y.movedCam,GL::defaultSize.x+Scenes::camera.x.movedCam,Scenes::camera.y.movedCam,-0.9),background);
+        drawMapBackground();
         FunctionAnalyser::endFunction("Map::refresh");
         return;
     }
@@ -434,7 +436,33 @@ bool Map::loadMap(string path){
         string tmp2;
         vector<int> tmp3;
         getline(mapFILE,tmp2);
-        istringstream (tmp2) >> tmp.backgroundId;
+        int loop;
+        vector<int> b;
+        int c;
+        string a;
+        istringstream (tmp2) >> loop;
+        for(int i=0; i<loop; i++){
+            getline(mapFILE,tmp2);
+            for(int j=0;j<tmp2.size();j++){
+                if(tmp2[j]!='\''){
+                    a+=tmp2[j];
+                }else{
+                    istringstream (a) >> c;
+                    b.push_back(c);
+                    a.clear();
+                }
+            }
+            string name, path;
+            getline(mapFILE, name);
+            getline(mapFILE, path);
+            name.erase(remove(name.begin(),name.end(),13),name.end());
+            path.erase(remove(path.begin(),path.end(),13),path.end());
+            Background back(name, path, b[0]==1, b[1]/100.0, b[2], b[3], b[4], b[5], b[6], b[7]/100.0, b[8]/100);
+            GL::loadTexture(back.getName(),back.getPath());
+            tmp.backgrounds.push_back(back);
+            b.clear();
+        }
+        //istringstream (tmp2) >> tmp.backgroundId;
         while(mapFILE.good()){//!mapFILE.eof()
             while(getline(mapFILE,tmp2)){
                 int tmp4;
@@ -485,7 +513,16 @@ bool Map::saveMap(string path,int idx){
     }
     ofstream mapFILE(path);
     if(mapFILE.is_open()){
-        mapFILE<<save.backgroundId<<endl;
+        mapFILE<<save.backgrounds.size()<<endl;
+        for(int i=0; i<save.backgrounds.size(); i++){
+            if(save.backgrounds[i].getMove())
+                mapFILE<<1<<'\'';
+            else
+                mapFILE<<0<<'\'';    
+            mapFILE<<save.backgrounds[i].getzAxis()<<"\'"<<save.backgrounds[i].getLocal().p0.x<<"\'"<<save.backgrounds[i].getLocal().p0.y<<"\'"<<save.backgrounds[i].getLocal().p1.x<<"\'"<<save.backgrounds[i].getLocal().p1.y<<endl;
+            mapFILE<<save.backgrounds[i].getName()<<endl;
+            mapFILE<<save.backgrounds[i].getPath()<<endl;
+        }
         for(int i=0;i<save.map.size();i++){
             for(int j=0;j<save.map[i].size();j++)
                 mapFILE<<save.map[i][j]<<'\'';
@@ -518,4 +555,16 @@ Blocks* Map::getBlockById(int id){
         return (Blocks*)Map::staticBlocks[id];
     }
     return nullptr;
+}
+
+void Map::drawMapBackground(){
+    char buffer[5];
+    snprintf(buffer,5,"%d",1);
+    string mapID(buffer);
+    for(int i=0; i<actualMap.backgrounds.size(); i++){
+        if(!actualMap.backgrounds[i].getMove())
+            GL::drawTexture(nTRectangle::get(Scenes::camera.x.movedCam,GL::defaultSize.y+Scenes::camera.y.movedCam,GL::defaultSize.x+Scenes::camera.x.movedCam,Scenes::camera.y.movedCam,actualMap.backgrounds[i].getzAxis()),GL::getTextureByName(actualMap.backgrounds[i].getName()));//GL::getTextureByName(actualMap.backgrounds[i].getName()));
+        else
+            actualMap.backgrounds[i].drawParalaxBackground(size);
+    }
 }
