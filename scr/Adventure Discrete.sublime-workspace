@@ -1,0 +1,246 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"cou",
+				"count"
+			],
+			[
+				"pr",
+				"priority"
+			],
+			[
+				"gif",
+				"gifts"
+			],
+			[
+				"end",
+				"endl"
+			],
+			[
+				"gi",
+				"gif"
+			],
+			[
+				"p",
+				"price"
+			],
+			[
+				"g",
+				"gift"
+			],
+			[
+				"st",
+				"strs"
+			],
+			[
+				"ki",
+				"killers"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/home/nanotech/Data/CEFET/Iniciação Cientifica_3º Periodo/The.COM-Reborn/Adventure-Discrete/scr/Classes",
+		"/home/nanotech/Data/CEFET/Iniciação Cientifica_3º Periodo/The.COM-Reborn/Adventure-Discrete/scr/Libs"
+	],
+	"file_history":
+	[
+		"/home/nanotech/Data/CEFET/Iniciação Cientifica_3º Periodo/The.COM-Reborn/Adventure-Discrete/scr/AD.main.cpp",
+		"/home/nanotech/.cache/.fr-FCv4S1/Movie.2017.HD-TS x264 -CPG/Password.txt",
+		"/home/nanotech/Data/CEFET/Iniciação Cientifica_3º Periodo/The.COM-Reborn/Adventure-Discrete/Makefile",
+		"/home/nanotech/.cache/.fr-SHNm5e/Senhas Leia-me.txt",
+		"/home/nanotech/Data/descriptografar RAR/file.rar.xml",
+		"/home/nanotech/.cache/.fr-B7RO7E/Download de senhas gratuito!!.url",
+		"/home/nanotech/Data/descriptografar RAR/rarcrack --type rar-threads 3 file.rar.txt",
+		"/home/nanotech/.cache/.fr-TzQRXw/LAOC2/certo/pratica1/parte1_inst.v",
+		"/home/nanotech/.cache/.fr-YQ8GqJ/LAOC2/certo/pratica1/parte1_bb.v",
+		"/home/nanotech/.cache/.fr-bxaeHe/LAOC2/certo/pratica1/parte1.v",
+		"/home/nanotech/Data/CEFET/4º Periodo/GCC/Codepit/Treinamento 1/H/H.cpp",
+		"/home/nanotech/Data/CEFET/4º Periodo/GCC/Codepit/Treinamento 1/H/in",
+		"/home/nanotech/Data/CEFET/4º Periodo/GCC/Codepit/Treinamento 1/H/makefile",
+		"/home/nanotech/Data/CEFET/4º Periodo/GCC/Codepit/Treinamento 1/J/in",
+		"/home/nanotech/Data/CEFET/4º Periodo/GCC/Codepit/Treinamento 1/J/J.cpp",
+		"/home/nanotech/Data/CEFET/4º Periodo/GCC/Codepit/Treinamento 1/J/makefile",
+		"/home/nanotech/Data/CEFET/4º Periodo/GCC/Codepit/Treinamento 1/I/in",
+		"/home/nanotech/Data/CEFET/4º Periodo/GCC/Codepit/Treinamento 1/I/I.cpp",
+		"/home/nanotech/Data/CEFET/4º Periodo/GCC/Codepit/Treinamento 1/I/makefile",
+		"/home/nanotech/Data/CEFET/4º Periodo/GCC/Codepit/Treinamento 1/E/E.cpp",
+		"/home/nanotech/Data/CEFET/4º Periodo/GCC/URI/1151/1151.cpp",
+		"/home/nanotech/Data/CEFET/4º Periodo/GCC/URI/1113/1113.cpp",
+		"/home/nanotech/Data/CEFET/4º Periodo/GCC/URI/1273/1273.cpp",
+		"/home/nanotech/Data/CEFET/4º Periodo/GCC/URI/1273/in",
+		"/home/nanotech/Data/CEFET/4º Periodo/GCC/URI/1532/1532.cpp",
+		"/home/nanotech/Data/CEFET/4º Periodo/GCC/URI/1548/1548.cpp",
+		"/home/nanotech/Data/CEFET/4º Periodo/GCC/Codepit/Treinamento 1/G/in",
+		"/home/nanotech/Data/CEFET/4º Periodo/GCC/Codepit/Treinamento 1/G/G.cpp",
+		"/home/nanotech/Data/CEFET/4º Periodo/GCC/Codepit/Treinamento 1/B/B.cpp",
+		"/home/nanotech/Data/CEFET/4º Periodo/GCC/Codepit/Treinamento 1/C/C.cpp",
+		"/home/nanotech/Data/CEFET/4º Periodo/GCC/Codepit/Treinamento 1/G/makefile",
+		"/home/nanotech/Data/CEFET/4º Periodo/GCC/Codepit/Treinamento 1/F/F.cpp",
+		"/home/nanotech/Data/CEFET/4º Periodo/GCC/Codepit/Treinamento 1/F/in",
+		"/home/nanotech/Data/CEFET/4º Periodo/GCC/Codepit/Treinamento 1/F/makefile",
+		"/home/nanotech/Data/CEFET/4º Periodo/GCC/Codepit/Treinamento 1/D/D.cpp",
+		"/home/nanotech/Data/CEFET/4º Periodo/GCC/Codepit/Treinamento 1/E/in",
+		"/home/nanotech/Data/CEFET/4º Periodo/GCC/Codepit/Treinamento 1/E/makefile",
+		"/home/nanotech/Data/CEFET/4º Periodo/GCC/Codepit/Treinamento 1/D/D-old-old.cpp",
+		"/home/nanotech/Data/CEFET/4º Periodo/GCC/Codepit/Treinamento 1/D/D-old.cpp"
+	],
+	"find":
+	{
+		"height": 23.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"'"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"\""
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": false,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "Adventure Discrete.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

@@ -4,9 +4,19 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <algorithm>
 #include <iomanip>
 
 using namespace std;
+
+struct FunctionData{
+        string name;
+        int nCalls;
+        unsigned long delta;
+        static bool sort(FunctionData a, FunctionData b){
+            return a.name<b.name;
+        }
+};
 
 class FunctionAnalyser {
 public:
@@ -31,11 +41,9 @@ public:
     static bool PRINT;
     static bool ANALYSE;
 private:
+    static vector<FunctionData> data;
     static unsigned long deltaFrame;
     static unsigned long Efunctions;
-    static vector<string> functionsCompactName;
-    static vector<int> functionsCalls;
-    static vector<unsigned long>deltaFunctions;
     static unsigned long frameStartTime;
     static unsigned long frameEndTime;
     static vector<string> functionsName;

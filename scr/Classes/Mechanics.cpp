@@ -14,7 +14,7 @@ Mechanics::Mechanics(const Mechanics& orig) {
 Mechanics::~Mechanics() {
 }
 
-const float Mechanics::gravity=500.0;
+const double Mechanics::gravity=500.0;
 const int Mechanics::TOP=1;
 const int Mechanics::BOTTOM=2;
 const int Mechanics::RIGHT=3;
@@ -94,7 +94,7 @@ void Mechanics::applyForce(){
     for(int i=0;i<Entity::enemys.size();i++){
         en=(Enemy*)Entity::enemys[i];
         if(en->hSpeed!=0){
-            float tmp=en->hSpeed;
+            double tmp=en->hSpeed;
             en->move(Util::direction_left,en->hSpeed/GL::getFPS());
             if(en->hSpeed==0)
                 en->hSpeed=-tmp;
@@ -114,14 +114,14 @@ void Mechanics::applyForce(){
  *	@param dir direction to where the bullet will move, could be Util::direction_left, Util::direction_right, Util::direction_up, Util::direction_down
  *	@param steeps amount of steps to move the block
 **/
-void Mechanics::move(int dir,float steeps){
+void Mechanics::move(int dir,double steeps){
     FunctionAnalyser::startFunction("Mechanics::move");
     if(!Scenes::camera.isInTheXScreen(nTRectangle::getCollision(this->pos,this->size))){
         FunctionAnalyser::endFunction("Mechanics::move");
         return;
     }
     bool needToMoveAgain=false;
-    float steepsAgain=0;
+    double steepsAgain=0;
     if(ABS(steeps)>Entity::walkSpeed/GL::getFPS()){
         int signal=1;
         needToMoveAgain=true;
@@ -234,7 +234,7 @@ bool Mechanics::ignoreCollisionWithPlayer(nTPoint pos,int blockId){
  *
  *	@return the value of gravity
 **/
-float Mechanics::getGravity(){
+double Mechanics::getGravity(){
     return gravity;
 }
 
@@ -252,13 +252,13 @@ objCollision Mechanics::getCollision(nTRectangle r1, nTRectangle r2){
     nTPoint r2Center=nTPoint::get((r2.p1.x+r2.p0.x)/2, (r2.p1.y+r2.p0.y)/2, r2.p0.z);
     nTPoint r1Size=nTPoint::get(r1.p1.x-r1.p0.x,r1.p0.y-r1.p1.y, r1.p0.z);
     nTPoint r2Size=nTPoint::get(r2.p1.x-r2.p0.x,r2.p0.y-r2.p1.y, r2.p0.z);
-    float w=(r1Size.x+r2Size.x)/2;
-    float h=(r1Size.y+r2Size.y)/2;
-    float dx=r1Center.x-r2Center.x;
-    float dy=r2Center.y-r1Center.y;
+    double w=(r1Size.x+r2Size.x)/2;
+    double h=(r1Size.y+r2Size.y)/2;
+    double dx=r1Center.x-r2Center.x;
+    double dy=r2Center.y-r1Center.y;
     if(ABS(dx)<=w&&ABS(dy)<=h){//colisao
-        float wy=w*dy;
-        float hx=h*dx;
+        double wy=w*dy;
+        double hx=h*dx;
         if(wy>hx){
             if(wy>-hx){
                 adc.firstObj=BOTTOM;

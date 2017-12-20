@@ -4,6 +4,7 @@
 #include "GL.hpp"
 #include "Blocks.hpp"
 #include "Camera.hpp"
+#include "Background.hpp"
 
 class mapEdit {
 public:

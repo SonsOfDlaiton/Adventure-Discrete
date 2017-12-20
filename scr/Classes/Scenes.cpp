@@ -155,7 +155,7 @@ void Scenes::drawGame(){
     Map::transparencyLayerDraw();
 
     if(!Scenes::freeGameMode&&Player::stage==0){
-        float jPos=Player::getPlayerById(0)->pos.x/Blocks::defaultBlockSize.x;
+        double jPos=Player::getPlayerById(0)->pos.x/Blocks::defaultBlockSize.x;
         if(Player::checkpoint==0){
             // if(!Tutorials::initHelpC&&jPos>2){
             //     Tutorials::singleton->refresh(Tutorials::initHelp,GLUT_KEY_UP);
@@ -387,7 +387,7 @@ void Scenes::drawSplash(){
 
 
 
-  // float x=(GL::framesInGame/GL::getFPS())*300;
+  // double x=(GL::framesInGame/GL::getFPS())*300;
   // if(skipScene&&x>1000){
   //   skipScene=false;
   //   current=menu;}
@@ -461,7 +461,7 @@ void Scenes::drawPreCampaign(){
   // if(GL::buttonBehave(Util::nTRectangleSet(340,550,480,500,0,0),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon"),NULL,NULL,NULL,NULL))
     // current=preGame;
   //nao descomentar ^
-  // float x=(GL::framesInGame/GL::getFPS())*300;
+  // double x=(GL::framesInGame/GL::getFPS())*300;
   // GL::setFontByIndex(0);
   // if(x<500)
   //   GL::drawText(Util::nTPointSet(250,200,1),"Realizando prova do CEFET",GL::getColorByName("violet"));

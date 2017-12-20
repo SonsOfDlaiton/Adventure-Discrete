@@ -5,7 +5,7 @@
 
 typedef struct scenesP{
     short int movingCam;
-    float movedCam;
+    double movedCam;
 }scenesPoint;
 
 class Camera {
@@ -15,14 +15,14 @@ public:
     virtual ~Camera();
 
     scenesPoint getScenesPointX();
-    void setScenesPointX(short int movingCam, float movedCam);
+    void setScenesPointX(short int movingCam, double movedCam);
     scenesPoint getScenesPointY();
-    void setScenesPointY(short int movingCam, float movedCam);
-    float getMoveSpeed();
-    void setMoveSpeed(float moveSpeed);
+    void setScenesPointY(short int movingCam, double movedCam);
+    double getMoveSpeed();
+    void setMoveSpeed(double moveSpeed);
     bool getFreeCam();
-    void setFreeCam(float freeCam);
-    void setCam(float moveSpeed_);
+    void setFreeCam(double freeCam);
+    void setCam(double moveSpeed_);
     void putCameraOnOrigin();
     void lookAt(nTPoint pos);
     bool isInTheScreen(nTRectangle collision);
@@ -30,8 +30,8 @@ public:
     bool isInTheYScreen(nTRectangle collision);
     scenesPoint x;
     scenesPoint y;
-    float moveSpeed;
+    double moveSpeed;
     static bool freeCam;
 };
 
-#endif /* AL_H */
+#endif /* CAMERA_H */

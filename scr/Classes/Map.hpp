@@ -2,6 +2,7 @@
 #define MAP_HPP
 #include "Util.hpp"
 #include "GL.hpp"
+#include "Background.hpp"
 
 class Blocks;
 
@@ -38,9 +39,9 @@ private:
     static void deleteAllBlocks();
     static void setBlockPos();
     static int getIdByPosition(nTPoint pos);
+    static void drawMapBackground();
 
-    static vector<vector<int> > currentMap;
-    static GLuint background;
+    static nTMap actualMap;//static GLuint background;
 };
 #endif /* MAP_HPP */
 

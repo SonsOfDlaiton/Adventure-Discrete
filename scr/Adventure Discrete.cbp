@@ -63,6 +63,8 @@
 		<Unit filename="Classes/AL.hpp" />
 		<Unit filename="Classes/AssetsLoader.cpp" />
 		<Unit filename="Classes/AssetsLoader.hpp" />
+		<Unit filename="Classes/Background.cpp" />
+		<Unit filename="Classes/Background.hpp" />
 		<Unit filename="Classes/Blocks.cpp" />
 		<Unit filename="Classes/Blocks.hpp" />
 		<Unit filename="Classes/Bullet.cpp" />

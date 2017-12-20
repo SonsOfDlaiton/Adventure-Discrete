@@ -52,7 +52,7 @@ Blocks::~Blocks() {
 }
 
 nTPoint Blocks::defaultBlockSize=nTPoint::get(32,32);
-float Blocks::imunityTime=150;
+double Blocks::imunityTime=150;
 
 /**
  *	Gets the texture id of this block
@@ -308,10 +308,10 @@ void Blocks::draw(){
  *	@param dir direction to where the block will move, could be Util::direction_left, Util::direction_right, Util::direction_up, Util::direction_down
  *	@param steeps amount of steps to move the block
 **/
-void Blocks::move(int dir,float steeps){
+void Blocks::move(int dir,double steeps){
     FunctionAnalyser::startFunction("Blocks::move");
     bool needToMoveAgain=false;
-    float steepsAgain=0;
+    double steepsAgain=0;
     if(ABS(steeps)>Entity::walkSpeed/GL::getFPS()){
         int signal=1;
         needToMoveAgain=true;
@@ -493,7 +493,7 @@ bool Blocks::checkIfBlocksIsFilled(int type){
  *
  *	@param damage quantity of damage to be applied
 **/
-void Blocks::applyDamage(float damage){
+void Blocks::applyDamage(double damage){
     if(GL::getGameMs()>=timeToVunerability)
         damageState=false;
     if(damageState)

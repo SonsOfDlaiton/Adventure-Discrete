@@ -284,7 +284,7 @@ void IOHandler::keyboardUp(unsigned char key,int x,int y){
 
         case 13://enter
             if(Scenes::current==Scenes::mapEdit&&mapEdit::input!=""){
-                float tmp;
+                double tmp;
                 istringstream (mapEdit::input) >> tmp;
                 mapEdit::input="";
 

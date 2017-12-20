@@ -1,6 +1,6 @@
 #include "Enemy.hpp"
 
-Enemy::Enemy(int enemyType,float life,nTPoint spawn,nTPoint size,vector<vector<GLuint> > animations,bool isHuman) {
+Enemy::Enemy(int enemyType,double life,nTPoint spawn,nTPoint size,vector<vector<GLuint> > animations,bool isHuman) {
     this->life=0;
     this->pos=spawn;
     this->size=size;
@@ -58,7 +58,7 @@ Enemy::~Enemy() {
     Entity::enemys.erase(Entity::enemys.begin()+this->id);
 }
 
-const float Enemy::imunityTime=200;
+const double Enemy::imunityTime=200;
 const nTPoint Enemy::defaultSize=nTPoint::get(40,48);
 const nTPoint Enemy::bossSize=nTPoint::get(48,100);
 const int Enemy::bossLife=33;
@@ -144,7 +144,7 @@ void Enemy::behave(){
  *
  *	@param time time who the enemy will be immune
 **/
-void Enemy::makeInvencible(float time){
+void Enemy::makeInvencible(double time){
     damageState=true;
     if(type>100)
         timeToVunerability=GL::getGameMs()+imunityTime*2;
@@ -225,7 +225,7 @@ void Enemy::registerNicks(){
  *	@return the texture id
 **/
 GLuint Enemy::lifeLetter(){
-  float Life=this->life/Enemy::defaultLife;
+  double Life=this->life/Enemy::defaultLife;
   if(Life<=0.1)
     return GL::getTextureByName("A");
   if(Life<=0.3&&Life>0.1)

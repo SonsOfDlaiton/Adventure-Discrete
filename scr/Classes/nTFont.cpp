@@ -165,7 +165,7 @@ nTFont* nTFont::loadFont(string path){
  *	@param color the font color of the text
 **/
 void nTFont::drawText(string text, nTPoint pos, nTColor color){
-    float xMargin=pos.x;
+    double xMargin=pos.x;
     nTFontChar* cchar;
     nTColor tmp=GL::getColor();
     GL::setColor(color);
@@ -191,10 +191,10 @@ void nTFont::drawText(string text, nTPoint pos, nTColor color){
                 cchar=(nTFontChar*)chars[charValue];
                 if(cchar!=nullptr){
                  if(cchar->width>0&&cchar->height>0&&cchar->width<=6666&&cchar->height<=6666){
-                    float p0x=pos.x+cchar->offsetX;
-                    float p0y=pos.y+cchar->offsetY-lineHeight;
-                    float p1x=p0x+cchar->width;
-                    float p1y=p0y+cchar->height;
+                    double p0x=pos.x+cchar->offsetX;
+                    double p0y=pos.y+cchar->offsetY-lineHeight;
+                    double p1x=p0x+cchar->width;
+                    double p1y=p0y+cchar->height;
                     glTexCoord2f(cchar->textureCoords[1], cchar->textureCoords[2]); glVertex3f(p1x, p0y, pos.z);
                     glTexCoord2f(cchar->textureCoords[0], cchar->textureCoords[2]); glVertex3f(p0x, p0y, pos.z);
                     glTexCoord2f(cchar->textureCoords[0], cchar->textureCoords[3]); glVertex3f(p0x, p1y, pos.z);
@@ -221,7 +221,7 @@ void nTFont::drawText(string text, nTPoint pos, nTColor color){
 **/
 nTPoint nTFont::calcBoundaries(string text){
     nTPoint pos=nTPoint::Origin();
-    float maXX=0;
+    double maXX=0;
     nTFontChar* cchar;
     for(int i=0;i<text.size();i++){
         if(text[i]=='\n'){

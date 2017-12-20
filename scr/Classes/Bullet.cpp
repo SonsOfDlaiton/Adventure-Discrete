@@ -1,6 +1,6 @@
 #include "Bullet.hpp"
 
-Bullet::Bullet(int type,float moveSpeed,nTPoint pos,nTPoint size) {
+Bullet::Bullet(int type,double moveSpeed,nTPoint pos,nTPoint size) {
     this->size=size;
     this->pos=pos;
     this->hSpeed=moveSpeed;
@@ -37,9 +37,9 @@ Bullet::~Bullet() {
 }
 
 vector<void*> Bullet::self;
-const float Bullet::baseDamage=1;
-const float Bullet::baseSpeed=280;
-const float Bullet::timeToShoot=5000;
+const double Bullet::baseDamage=1;
+const double Bullet::baseSpeed=280;
+const double Bullet::timeToShoot=5000;
 
 /**
  *	Run logic events of the Bullets on the map like move, change textures, check if is in the screen, check collisions
@@ -123,10 +123,10 @@ void Bullet::behave(){
  *	@param dir direction to where the bullet will move, could be Util::direction_left, Util::direction_right, Util::direction_up, Util::direction_down
  *	@param steeps amount of steps to move the bullet
 **/
-void Bullet::move(int dir,float steeps){
+void Bullet::move(int dir,double steeps){
     FunctionAnalyser::startFunction("Bullet::move");
     bool needToMoveAgain=false;
-    float steepsAgain=0;
+    double steepsAgain=0;
     if(ABS(steeps)>Entity::walkSpeed/GL::getFPS()){
         int signal=1;
         needToMoveAgain=true;

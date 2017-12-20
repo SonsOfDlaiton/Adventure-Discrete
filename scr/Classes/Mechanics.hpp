@@ -12,15 +12,15 @@ public:
     virtual ~Mechanics();
 
     virtual void applyForce();
-    virtual void move(int dir,float steeps);
-    static float getGravity();
+    virtual void move(int dir,double steeps);
+    static double getGravity();
     static bool checkNormalForce(nTPoint pos_,nTPoint size_);
     static objCollision getCollision(nTRectangle r1, nTRectangle r2);
 
     nTPoint pos;
     nTPoint size;
-    float hSpeed;
-    float vSpeed;
+    double hSpeed;
+    double vSpeed;
     static Mechanics* singleton;
     static bool drawCollisionRec;
     static const int TOP,BOTTOM,LEFT,RIGHT,NOCOLLISION;
@@ -28,7 +28,7 @@ private:
     virtual void applyGravity();
     static bool ignoreCollisionWithPlayer(nTPoint pos,int blockId);
 
-    static const float gravity;
+    static const double gravity;
 protected:
 
 };

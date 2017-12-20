@@ -97,11 +97,11 @@ vector <nTPoint> Util::getRetangleVertexs(nTRectangle rectangle){
  *	@param m2 the second matrix
  *	@return the result matrix
 **/
-vector<vector<float> >Util::multiplyMatrix(vector<vector<float> >m1,vector<vector<float> >m2){
+vector<vector<double> >Util::multiplyMatrix(vector<vector<double> >m1,vector<vector<double> >m2){
     nTPoint outSize;
     outSize.set(m1.size(),m2[0].size(),0);
-    vector<vector<float> >out;
-    out.resize(outSize.x,vector<float>(outSize.y ,0));
+    vector<vector<double> >out;
+    out.resize(outSize.x,vector<double>(outSize.y ,0));
     if(m1[0].size() != m2.size()) return out; //n se aplica
     for(int i=0;i<outSize.x;i++)
         for(int j=0;j<outSize.y;j++)
@@ -116,7 +116,7 @@ vector<vector<float> >Util::multiplyMatrix(vector<vector<float> >m1,vector<vecto
  *	@param RAD the angle in degrees
  *	@return the angle in rad
 **/
-float Util::angleToRad(float RAD){
+double Util::angleToRad(double RAD){
     return RAD*M_PI/180;
 }
 
@@ -126,6 +126,6 @@ float Util::angleToRad(float RAD){
  *	@param angle the angle in rad
  *	@return the angle in degrees
 **/
-float Util::radToAngle(float angle){
+double Util::radToAngle(double angle){
     return angle*180/M_PI;
 }
