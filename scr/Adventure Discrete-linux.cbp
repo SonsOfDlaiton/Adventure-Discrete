@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Adventure Discrete" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../bin/Adventure Discrete" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../" />
+				<Option object_output="../obj/codeblocks" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
+				<Compiler>
+					<Add option="-std=c++11" />
+					<Add option="-g" />
+					<Add option="-Wno-sign-compare" />
+				</Compiler>
+				<Linker>
+					<Add library="glut" />
+					<Add library="GLU" />
+					<Add library="GL" />
+					<Add library="m" />
+					<Add library="openal" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="../bin/Adventure Discrete" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../" />
+				<Option object_output="../obj/codeblocks" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-std=c++11" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="openal" />
+					<Add library="glut" />
+					<Add library="GLU" />
+					<Add library="GL" />
+					<Add library="m" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add directory="$(#glut.include)" />
+		</Compiler>
+		<Unit filename="AD.main.cpp" />
+		<Unit filename="Classes/AL.cpp" />
+		<Unit filename="Classes/AL.hpp" />
+		<Unit filename="Classes/AssetsLoader.cpp" />
+		<Unit filename="Classes/AssetsLoader.hpp" />
+		<Unit filename="Classes/Background.cpp" />
+		<Unit filename="Classes/Background.hpp" />
+		<Unit filename="Classes/Blocks.cpp" />
+		<Unit filename="Classes/Blocks.hpp" />
+		<Unit filename="Classes/Bullet.cpp" />
+		<Unit filename="Classes/Bullet.hpp" />
+		<Unit filename="Classes/CallbacksHandler.cpp" />
+		<Unit filename="Classes/CallbacksHandler.hpp" />
+		<Unit filename="Classes/Camera.cpp" />
+		<Unit filename="Classes/Camera.hpp" />
+		<Unit filename="Classes/Enemy.cpp" />
+		<Unit filename="Classes/Enemy.hpp" />
+		<Unit filename="Classes/Entity.cpp" />
+		<Unit filename="Classes/Entity.hpp" />
+		<Unit filename="Classes/FunctionAnalyser.cpp" />
+		<Unit filename="Classes/FunctionAnalyser.hpp" />
+		<Unit filename="Classes/GL.cpp" />
+		<Unit filename="Classes/GL.hpp" />
+		<Unit filename="Classes/IOHandler.cpp" />
+		<Unit filename="Classes/IOHandler.hpp" />
+		<Unit filename="Classes/Language.cpp" />
+		<Unit filename="Classes/Language.hpp" />
+		<Unit filename="Classes/Map.cpp" />
+		<Unit filename="Classes/Map.hpp" />
+		<Unit filename="Classes/Mechanics.cpp" />
+		<Unit filename="Classes/Mechanics.hpp" />
+		<Unit filename="Classes/Player.cpp" />
+		<Unit filename="Classes/Player.hpp" />
+		<Unit filename="Classes/Scenes.cpp" />
+		<Unit filename="Classes/Scenes.hpp" />
+		<Unit filename="Classes/Tutorials.cpp" />
+		<Unit filename="Classes/Tutorials.hpp" />
+		<Unit filename="Classes/Util.cpp" />
+		<Unit filename="Classes/Util.hpp" />
+		<Unit filename="Classes/mapEdit.cpp" />
+		<Unit filename="Classes/mapEdit.hpp" />
+		<Unit filename="Classes/nTFont.cpp" />
+		<Unit filename="Classes/nTFont.hpp" />
+		<Unit filename="Classes/nTFontChar.cpp" />
+		<Unit filename="Classes/nTFontChar.hpp" />
+		<Unit filename="Classes/powerUp.cpp" />
+		<Unit filename="Classes/powerUp.hpp" />
+		<Unit filename="Libs/importLibs.h" />
+		<Unit filename="Libs/soil/SOIL.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Libs/soil/SOIL.h" />
+		<Unit filename="Libs/soil/image_DXT.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Libs/soil/image_DXT.h" />
+		<Unit filename="Libs/soil/image_helper.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Libs/soil/image_helper.h" />
+		<Unit filename="Libs/soil/stb_image_aug.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Libs/soil/stb_image_aug.h" />
+		<Unit filename="Libs/soil/stbi_DDS_aug.h" />
+		<Unit filename="Libs/soil/stbi_DDS_aug_c.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
