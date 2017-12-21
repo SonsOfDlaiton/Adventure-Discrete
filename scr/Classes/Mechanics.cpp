@@ -166,7 +166,7 @@ void Mechanics::move(int dir,double steeps){
           bl=(Blocks*)Map::dynamicBlocks[var[i].blockId-Map::staticBlocks.size()];
           type=bl->type;
         }
-        bool fixPlayerInVerticalPlatform=!(type>250&&type<=255&&dir==Util::direction_down);
+        bool fixPlayerInVerticalPlatform=!(Blocks::checkIfBlocksIsHalfBlockV(type)&&dir==Util::direction_down);
         if((var[i].collision.firstObj==BOTTOM||var[i].collision.firstObj==TOP)&&fixPlayerInVerticalPlatform&&Blocks::checkIfBlocksIsFilled(type)&&!ignoreCollisionWithPlayer(pos,type)){
             collision=true;
             break;

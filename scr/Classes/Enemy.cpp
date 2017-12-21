@@ -23,7 +23,7 @@ Enemy::Enemy(int enemyType,double life,nTPoint spawn,nTPoint size,vector<vector<
     this->isVisible=true;
     this->damageState=false;
     this->imuneToDamage=false;
-    if(enemyType<100){
+    if(!checkIfEnemyIsBoss(type)){
       if(Scenes::freeGameMode)
         this->nickname="Provas";
       else if(Player::stage>=0&&Player::stage<nicks.size())
@@ -84,7 +84,7 @@ void Enemy::stateControl(){
         if(var[i].blockId>=Map::staticBlocks.size()&&var[i].blockId>0){
             bl=(Blocks*) Map::dynamicBlocks[var[i].blockId-Map::staticBlocks.size()];
             if(var[i].collision.firstObj!=Mechanics::NOCOLLISION){
-				bool isLava=bl->type==377||bl->type==379;
+				bool isLava=bl->type==Blocks::AnimatedLava1||bl->type==Blocks::AnimatedLava2||bl->type==Blocks::StaticLava;
                 if(isLava)
                     life=0;
             }
@@ -109,7 +109,7 @@ void Enemy::behave(){
     for(int i=0;i<Entity::enemys.size();i++){
         en=(Enemy*)Entity::enemys[i];
         if(en->isVisible){
-            if(en->type<100){
+            if(!checkIfEnemyIsBoss(en->type)){
                 if(en->hSpeed>0)
                     en->orientation=Util::orientation_right;
                 else
@@ -120,12 +120,12 @@ void Enemy::behave(){
                 else
                     en->orientation=Util::orientation_left;
                 if(round(fmodl(GL::getGameMs(),1200)==0)>0&&!en->damageState&&Scenes::camera.isInTheXScreen(nTRectangle::getCollision(en->pos,en->size))){
-                    new Bullet(5,Bullet::baseSpeed*en->orientation/1.5,nTPoint::get(en->pos.x,Player::getPlayerById(0)->pos.y+4+((rand()%300)/10-17),1),nTPoint::get(23,16,1));
+                    new Bullet(Bullet::hyperbolicParaboloidBullet,Bullet::baseSpeed*en->orientation/1.5,nTPoint::get(en->pos.x,Player::getPlayerById(0)->pos.y+4+((rand()%300)/10-17),1),nTPoint::get(23,16,1));
                 }
             }
             if(Scenes::camera.isInTheXScreen(nTRectangle::getCollision(en->pos,en->size))){
                 objCollision var=Mechanics::getCollision(nTRectangle::getCollision(en->pos,en->size),nTRectangle::getCollision(Player::getPlayerById(0)->pos,Player::getPlayerById(0)->size));
-                if(var.firstObj!=Mechanics::NOCOLLISION)
+                if(var.firstObj==Mechanics::LEFT||var.firstObj==Mechanics::RIGHT||var.firstObj==Mechanics::BOTTOM||(!Player::getPlayerById(0)->atacking&&Player::getPlayerById(0)->atackDirection!=Util::direction_down&&var.firstObj==Mechanics::TOP))
                     Player::getPlayerById(0)->applyDamage(1);
                 if(Scenes::camera.isInTheXScreen(nTRectangle::getCollision(en->pos,en->size))){
                     GL::setFont("BITMAP_HELVETICA_10");
@@ -146,7 +146,7 @@ void Enemy::behave(){
 **/
 void Enemy::makeInvencible(double time){
     damageState=true;
-    if(type>100)
+    if(checkIfEnemyIsBoss(type))
         timeToVunerability=GL::getGameMs()+imunityTime*2;
     else
         timeToVunerability=GL::getGameMs()+imunityTime;
@@ -239,4 +239,8 @@ GLuint Enemy::lifeLetter(){
   if(Life>0.7)
     return GL::getTextureByName("F");
   return GL::getTextureByName("F");
+}
+
+bool Enemy::checkIfEnemyIsBoss(int type){
+    return type>=1000;
 }

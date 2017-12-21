@@ -74,6 +74,7 @@ void Scenes::setAllCalledFalseExcept(vector<int> except){
     posGameEndCalled=false;
     posYouWinCalled=false;
 
+
     GL::framesInGame=0;
     camera.putCameraOnOrigin();
     for(int i=0;i<except.size();i++)
@@ -114,6 +115,7 @@ void Scenes::drawGame(){
         setAllCalledFalseExcept(getUnityVector(game));//fala que ja chamou essa cena
         GL::isPaused=false;
         vector<int> tmp;
+        tmp.push_back(AL::getSoundByName("mouse"));
         AL::singleton->stopAllSoundsExcept(tmp);
         camera.lookAt(Player::getPlayerById(0)->pos);
     }
@@ -260,6 +262,7 @@ void Scenes::drawMapEdit(){
         mapEdit::reset();
         Scenes::camera.moveSpeed=10;
         vector<int> tmp;
+        tmp.push_back(AL::getSoundByName("mouse"));
         tmp.push_back(AL::getSoundByName("menuSong"));
         AL::singleton->stopAllSoundsExcept(tmp);
     }
@@ -278,19 +281,19 @@ void Scenes::drawMapEdit(){
             GL::drawText(nTPoint::get(100,75,1),"Selecione o modo de edi��o:",GL::getColorByName("violet"));
             GL::drawText(nTPoint::get(75,400,1),"Editar um mapa existente.",GL::getColorByName("violet"));
             GL::drawText(nTPoint::get(450,400,1),"Criar um novo mapa.",GL::getColorByName("violet"));
-            if(GL::buttonBehave(nTRectangle::get(100,350,300,150),GL::getColorByName("mouseSelected"),GL::getTextureByName("editMapIcon"),NULL,NULL,NULL,NULL))
+            if(GL::buttonBehave(nTRectangle::get(100,350,300,150),GL::getColorByName("mouseSelected"),GL::getTextureByName("editMapIcon")))
                 mapEdit::isCreating=-1;
-            if(GL::buttonBehave(nTRectangle::get(450,350,650,150),GL::getColorByName("mouseSelected"),GL::getTextureByName("newMapIcon"),NULL,NULL,NULL,NULL))
+            if(GL::buttonBehave(nTRectangle::get(450,350,650,150),GL::getColorByName("mouseSelected"),GL::getTextureByName("newMapIcon")))
                 mapEdit::isCreating=1;
-            if(GL::buttonBehave(nTRectangle::get(200,550,340,500),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon"),NULL,NULL,NULL,NULL))
+            if(GL::buttonBehave(nTRectangle::get(200,550,340,500),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon")))
             current=menu;
         }else if(mapEdit::isCreating==1){
             mapEdit::askForSize();
-            if(GL::buttonBehave(nTRectangle::get(400,550,540,500),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon"),NULL,NULL,NULL,NULL))
+            if(GL::buttonBehave(nTRectangle::get(400,550,540,500),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon")))
                 mapEdit::isCreating=0;
         }else if(mapEdit::isCreating==-1){
             mapEdit::askForLoad();
-            if(GL::buttonBehave(nTRectangle::get(400,550,540,500),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon"),NULL,NULL,NULL,NULL))
+            if(GL::buttonBehave(nTRectangle::get(400,550,540,500),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon")))
                 mapEdit::isCreating=0;
         }
     }else{
@@ -311,33 +314,34 @@ void Scenes::drawMenu(){
         setAllCalledFalseExcept(getUnityVector(menu));//fala que ja chamou essa cena
         vector<int> tmp;
         tmp.push_back(AL::getSoundByName("menuSong"));
+        tmp.push_back(AL::getSoundByName("mouse"));
         AL::singleton->stopAllSoundsExcept(tmp);
     }
     AL::singleton->playSoundByName("menuSong");
     GL::drawTexture(nTRectangle::get(0,GL::defaultSize.y,GL::defaultSize.x,0,-0.9),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("background0"));
     if(AL::getSoundState()){
-      GL::buttonBehave(nTRectangle::get(700,50,740,10,0.6),nTColor::Black(),GL::getTextureByName("soundOn"),NULL,*modifySound,NULL,NULL);
+      GL::buttonBehave(nTRectangle::get(700,50,740,10,0.6),nTColor::Black(),GL::getTextureByName("soundOn"),false,NULL,*modifySound,NULL,NULL);
     }else{
-      GL::buttonBehave(nTRectangle::get(700,50,740,10,0.6),nTColor::Black(),GL::getTextureByName("soundOff"),NULL,*modifySound,NULL,NULL);
+      GL::buttonBehave(nTRectangle::get(700,50,740,10,0.6),nTColor::Black(),GL::getTextureByName("soundOff"),false,NULL,*modifySound,NULL,NULL);
     }
     if(AL::getMusicState()){
-      GL::buttonBehave(nTRectangle::get(640,50,680,10,0.6),nTColor::Black(),GL::getTextureByName("musicOn"),NULL,*modifyMusic,NULL,NULL);
+      GL::buttonBehave(nTRectangle::get(640,50,680,10,0.6),nTColor::Black(),GL::getTextureByName("musicOn"),false,NULL,*modifyMusic,NULL,NULL);
     }else{
-      GL::buttonBehave(nTRectangle::get(640,50,680,10,0.6),nTColor::Black(),GL::getTextureByName("musicOff"),NULL,*modifyMusic,NULL,NULL);
+      GL::buttonBehave(nTRectangle::get(640,50,680,10,0.6),nTColor::Black(),GL::getTextureByName("musicOff"),false,NULL,*modifyMusic,NULL,NULL);
     }
-    if(GL::buttonBehave(nTRectangle::get(350,362+10,450,330,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("playIcon"),NULL,NULL,NULL,NULL))
+    if(GL::buttonBehave(nTRectangle::get(350,362+10,450,330,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("playIcon")))
       Scenes::current=preGame;
-    if(GL::buttonBehave(nTRectangle::get(250,404+10,550,372,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("mapEditIcon"),NULL,NULL,NULL,NULL))
+    if(GL::buttonBehave(nTRectangle::get(250,404+10,550,372,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("mapEditIcon")))
       Scenes::current=mapEdit;
-//    if(GL::buttonBehave(nTRectangle::get(340,446+10,460,414,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("optionsIcon"),NULL,NULL,NULL,NULL))
+//    if(GL::buttonBehave(nTRectangle::get(340,446+10,460,414,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("optionsIcon")))
 //      Scenes::current=menu;
-    if(GL::buttonBehave(nTRectangle::get(360,446+10,440,414,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("quitIcon"),NULL,NULL,NULL,NULL))
+    if(GL::buttonBehave(nTRectangle::get(360,446+10,440,414,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("quitIcon")))
       exit(0);
-        if(GL::buttonBehave(nTRectangle::get(57,557+23,2*57+23,500,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("cefetLogo"),NULL,NULL,NULL,NULL))
+        if(GL::buttonBehave(nTRectangle::get(57,557+23,2*57+23,500,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("cefetLogo")))
         Scenes::current=credits;
-        if(GL::buttonBehave(nTRectangle::get(3*57+190,557+23,4*57+23+190,500,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("decomLogo"),NULL,NULL,NULL,NULL))
+        if(GL::buttonBehave(nTRectangle::get(3*57+190,557+23,4*57+23+190,500,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("decomLogo")))
           Scenes::current=credits;
-          if(GL::buttonBehave(nTRectangle::get(5*57+400,557+23,6*57+23+400,500,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("theCOM"),NULL,NULL,NULL,NULL))
+          if(GL::buttonBehave(nTRectangle::get(5*57+400,557+23,6*57+23+400,500,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("theCOM")))
             Scenes::current=credits;
     GL::drawTexture(nTRectangle::get(100,300,700,0,0.4),GL::getTextureByName("legendsLogo"));
 }
@@ -356,10 +360,11 @@ void Scenes::drawCredits(){
   if(!creditsCalled){
       setAllCalledFalseExcept(getUnityVector(credits));
       vector<int> tmp;
+      tmp.push_back(AL::singleton->getSoundByName("mouse"));
       AL::singleton->stopAllSoundsExcept(tmp);
   }
   GL::drawTexture((nTRectangle::get(0,600,800,0)),GL::getTextureByName("credits"));
-  if(GL::buttonBehave(nTRectangle::get(57,500,187,450,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("backIcon"),NULL,NULL,NULL,NULL))
+  if(GL::buttonBehave(nTRectangle::get(57,500+50,187,450+50,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("backIcon")))
     Scenes::current=menu;
 
 }
@@ -371,6 +376,7 @@ void Scenes::drawSplash(){
     if(!splashCalled){
         setAllCalledFalseExcept(getUnityVector(splash));
         vector<int> tmp;
+        tmp.push_back(AL::getSoundByName("mouse"));
         AL::singleton->stopAllSoundsExcept(tmp);
     }
 
@@ -441,7 +447,8 @@ void Scenes::drawPreCampaign(){
       setAllCalledFalseExcept(getUnityVector(preCampaign));//fala que ja chamou essa cena
       freeGameMode=false;
       vector<int> tmp;
-        AL::singleton->stopAllSoundsExcept(tmp);
+      tmp.push_back(AL::getSoundByName("mouse"));
+      AL::singleton->stopAllSoundsExcept(tmp);
   }
 
 
@@ -458,7 +465,7 @@ void Scenes::drawPreCampaign(){
 
 
   //nao descomentar v
-  // if(GL::buttonBehave(Util::nTRectangleSet(340,550,480,500,0,0),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon"),NULL,NULL,NULL,NULL))
+  // if(GL::buttonBehave(Util::nTRectangleSet(340,550,480,500,0,0),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon")))
     // current=preGame;
   //nao descomentar ^
   // double x=(GL::framesInGame/GL::getFPS())*300;
@@ -519,12 +526,13 @@ void Scenes::drawPreFreeMode(){
       freeGameMode=true;
       vector<int> tmp;
       tmp.push_back(AL::getSoundByName("menuSong"));
+      tmp.push_back(AL::getSoundByName("mouse"));
       AL::singleton->stopAllSoundsExcept(tmp);
   }
 
-//if(GL::buttonBehave(nTRectangle::get(350,362+10,450,330,0.4),Util::nTColorSet(0.4,0.4,0.4,1),GL::getTextureByName("playIcon"),NULL,NULL,NULL,NULL))
+//if(GL::buttonBehave(nTRectangle::get(350,362+10,450,330,0.4),Util::nTColorSet(0.4,0.4,0.4,1),GL::getTextureByName("playIcon")))
   Scenes::current=game;
-  if(GL::buttonBehave(nTRectangle::get(340,550,480,500),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon"),NULL,NULL,NULL,NULL))
+  if(GL::buttonBehave(nTRectangle::get(340,550,480,500),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon")))
     current=preGame;
   //TODO implementar modo de escolher mapa
 }
@@ -537,6 +545,7 @@ void Scenes::drawPreGame(){
       setAllCalledFalseExcept(getUnityVector(preGame));//fala que ja chamou essa cena
       vector<int> tmp;
       tmp.push_back(AL::getSoundByName("menuSong"));
+      tmp.push_back(AL::getSoundByName("mouse"));
       AL::singleton->stopAllSoundsExcept(tmp);
   }
   AL::singleton->playSoundByName("menuSong");
@@ -550,11 +559,11 @@ void Scenes::drawPreGame(){
   snprintf(buffer,5,"%.2f",Player::globalCoeficiente);
   string strC(buffer);
   GL::drawText(nTPoint::get(95,325,1),"Coeficiente Global: "+strC,GL::getColorByName("blue"));
-  if(GL::buttonBehave(nTRectangle::get(200,550,340,500),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon"),NULL,NULL,NULL,NULL))
+  if(GL::buttonBehave(nTRectangle::get(200,550,340,500),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon")))
     current=menu;
-  if(GL::buttonBehave(nTRectangle::get(50,300,350,100),GL::getColorByName("mouseSelected"),GL::getTextureByName("campaignIcon"),NULL,NULL,NULL,NULL))
+  if(GL::buttonBehave(nTRectangle::get(50,300,350,100),GL::getColorByName("mouseSelected"),GL::getTextureByName("campaignIcon")))
     current=preCampaign;
-  if(GL::buttonBehave(nTRectangle::get(400,300,700,100),GL::getColorByName("mouseSelected"),GL::getTextureByName("freeModeIcon"),NULL,NULL,NULL,NULL))
+  if(GL::buttonBehave(nTRectangle::get(400,300,700,100),GL::getColorByName("mouseSelected"),GL::getTextureByName("freeModeIcon")))
     current=preFreeMode;
 }
 
@@ -565,15 +574,16 @@ void Scenes::drawPosGame(){
   if(!posGameCalled){//acontece na primeira vez
       setAllCalledFalseExcept(getUnityVector(posGame));//fala que ja chamou essa cena
       vector<int> tmp;
+      tmp.push_back(AL::getSoundByName("mouse"));
       AL::singleton->stopAllSoundsExcept(tmp);
       AL::singleton->playSoundByName("diePlayer");
   }
   GL::drawTexture(nTRectangle::get(camera.x.movedCam,GL::defaultSize.y+camera.y.movedCam,GL::defaultSize.x+camera.x.movedCam,camera.y.movedCam,-0.9),GL::getTextureByName("Cefet"));
   GL::drawTexture(nTRectangle::get(100+camera.x.movedCam,GL::defaultSize.y-200+camera.y.movedCam,GL::defaultSize.x-100+camera.x.movedCam,200+camera.x.movedCam,-0.8),nTColor::get(1,0,0),GL::getTextureByName("GameOver"));
 
-  if(GL::buttonBehave(nTRectangle::get(150+camera.x.movedCam,550+camera.y.movedCam,290+camera.x.movedCam,500+camera.y.movedCam),GL::getColorByName("mouseSelected"),GL::getTextureByName("Menu1"),NULL,NULL,NULL,NULL))
+  if(GL::buttonBehave(nTRectangle::get(150+camera.x.movedCam,550+camera.y.movedCam,290+camera.x.movedCam,500+camera.y.movedCam),GL::getColorByName("mouseSelected"),GL::getTextureByName("Menu1")))
     current=menu;
-  if(GL::buttonBehave(nTRectangle::get(450+camera.x.movedCam,550+camera.y.movedCam,690+camera.x.movedCam,500+camera.y.movedCam),GL::getColorByName("mouseSelected"),GL::getTextureByName("Continuar1"),NULL,NULL,NULL,NULL))
+  if(GL::buttonBehave(nTRectangle::get(450+camera.x.movedCam,550+camera.y.movedCam,690+camera.x.movedCam,500+camera.y.movedCam),GL::getColorByName("mouseSelected"),GL::getTextureByName("Continuar1")))
     current=game;
 }
 
@@ -584,13 +594,14 @@ void Scenes::drawEndGame(){
   if(!posGameEndCalled){//acontece na primeira vez
       setAllCalledFalseExcept(getUnityVector(posGameEnd));//fala que ja chamou essa cena
       vector<int> tmp;
+      tmp.push_back(AL::getSoundByName("mouse"));
       AL::singleton->stopAllSoundsExcept(tmp);
   }
   AL::singleton->playSoundByName("loseSong");
   GL::drawTexture(nTRectangle::get(0,GL::defaultSize.y,GL::defaultSize.x,0,-0.9),GL::getTextureByName("Cefet"));
   GL::drawTexture(nTRectangle::get(0,GL::defaultSize.y-100,GL::defaultSize.x,0,-0.8),nTColor::get(1,0,0),GL::getTextureByName("Jubilado"));
 
-  if(GL::buttonBehave(nTRectangle::get(300,500,440,450),GL::getColorByName("mouseSelected"),GL::getTextureByName("Menu1"),NULL,NULL,NULL,NULL))
+  if(GL::buttonBehave(nTRectangle::get(300,500,440,450),GL::getColorByName("mouseSelected"),GL::getTextureByName("Menu1")))
     current=menu;
 }
 
@@ -601,6 +612,7 @@ void Scenes::drawYouWin(){
   if(!posYouWinCalled){//acontece na primeira vez
       setAllCalledFalseExcept(getUnityVector(posYouWin));//fala que ja chamou essa cena
       vector<int> tmp;
+      tmp.push_back(AL::getSoundByName("mouse"));
       AL::singleton->stopAllSoundsExcept(tmp);
   }
   AL::singleton->playSoundByName("GG");
@@ -611,6 +623,6 @@ void Scenes::drawYouWin(){
   snprintf(buffer,5,"%.2f",Player::globalCoeficiente);
   string strC(buffer);
   GL::drawText(nTPoint::get(345,420,1),"Coeficiente Global: "+strC,GL::getColorByName("green"));
-  if(GL::buttonBehave(nTRectangle::get(460,500,600,425),GL::getColorByName("mouseSelected"),GL::getTextureByName("Menu1"),NULL,NULL,NULL,NULL))
+  if(GL::buttonBehave(nTRectangle::get(460,500,600,425),GL::getColorByName("mouseSelected"),GL::getTextureByName("Menu1")))
     current=credits;
 }

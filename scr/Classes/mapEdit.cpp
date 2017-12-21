@@ -130,10 +130,10 @@ void mapEdit::definePages(){
     pageTmp.clear();
 
     pageNames.push_back("Liquidos");
-    rowTmp.push_back(380);
-    rowTmp.push_back(378);
-    rowTmp.push_back(381);
-    rowTmp.push_back(379);
+    rowTmp.push_back(380); // agua animada
+    rowTmp.push_back(378); // agua estatica
+    rowTmp.push_back(381); // lava animada
+    rowTmp.push_back(379); // lava estatica
     pageTmp.push_back(rowTmp);
     rowTmp.clear();
     blockPages.push_back(pageTmp);
@@ -393,7 +393,7 @@ void mapEdit::draw(){
                 tmp.y*=scale.y;
                 tmp1.x*=scale.x;
                 tmp1.y*=scale.y;
-                GL::buttonBehave(nTRectangle::getCollision(tmp,tmp1),nTColor::get(0.38,0.38,0.38,0.8),0,*mapEditButton,NULL,*mapEraseButton,NULL);
+                GL::buttonBehave(nTRectangle::getCollision(tmp,tmp1),nTColor::get(0.38,0.38,0.38,0.8),0,true,*mapEditButton,NULL,*mapEraseButton,NULL);
             if(map[i][j]){
                 tmp.z-=0.1;
                 tmp1.z-=0.1;
@@ -533,20 +533,20 @@ void mapEditLeave(int x,int y){
  *	Draw HUD panel on the screen
 **/
 void mapEdit::drawPanel(){
-    GL::drawRectangle(nTRectangle::get(Scenes::camera.x.movedCam,GL::defaultSize.y+Scenes::camera.y.movedCam,GL::defaultSize.x+Scenes::camera.x.movedCam,HUDarea.y+Scenes::camera.y.movedCam),GL::getColorByName("grey"));
-    GL::drawRectangle(nTRectangle::get(HUDarea.x+Scenes::camera.x.movedCam,GL::defaultSize.y+Scenes::camera.y.movedCam,GL::defaultSize.x+Scenes::camera.x.movedCam,Scenes::camera.y.movedCam),GL::getColorByName("grey"));
+    GL::drawRectangle(nTRectangle::get(Scenes::camera.x.movedCam,GL::defaultSize.y+Scenes::camera.y.movedCam,GL::defaultSize.x+Scenes::camera.x.movedCam,HUDarea.y+Scenes::camera.y.movedCam,0.8),GL::getColorByName("grey"));
+    GL::drawRectangle(nTRectangle::get(HUDarea.x+Scenes::camera.x.movedCam,GL::defaultSize.y+Scenes::camera.y.movedCam,GL::defaultSize.x+Scenes::camera.x.movedCam,Scenes::camera.y.movedCam,0.8),GL::getColorByName("grey"));
 
-    GL::buttonBehave(nTRectangle::get(20+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,50+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("Ar"),*mapEditSetAir,NULL,NULL,NULL);
-    GL::buttonBehave(nTRectangle::get(70+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,100+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("Zoom-"),*mapEditZoomOut,NULL,NULL,NULL);
-    GL::buttonBehave(nTRectangle::get(110+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,140+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("Zoom+"),*mapEditZoomIn,NULL,NULL,NULL);
-    GL::buttonBehave(nTRectangle::get(150+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,180+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("Background-"),NULL,*mapEditBackgroundDown,NULL,NULL);
-    GL::buttonBehave(nTRectangle::get(190+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,220+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("Background+"),NULL,*mapEditBackgroundUp,NULL,NULL);
-    GL::buttonBehave(nTRectangle::get(230+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,280+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("CameraDefault"),*mapEditCamera,NULL,NULL,NULL);
-    GL::buttonBehave(nTRectangle::get(290+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,320+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("Get Block"),*mapEditGetBlock,NULL,NULL,NULL);
-    GL::buttonBehave(nTRectangle::get(330+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,360+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("Save"),*mapEditSave,NULL,NULL,NULL);
-    GL::buttonBehave(nTRectangle::get(485+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,515+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("Back"),*mapEditLeave,NULL,NULL,NULL);
-    GL::buttonBehave(nTRectangle::get(770+Scenes::camera.x.movedCam,60+Scenes::camera.y.movedCam,790+Scenes::camera.x.movedCam,40+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("-"),NULL,*mapEditPageDown,NULL,NULL);
-    GL::buttonBehave(nTRectangle::get(660+Scenes::camera.x.movedCam,60+Scenes::camera.y.movedCam,680+Scenes::camera.x.movedCam,40+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("+"),NULL,*mapEditPageUp,NULL,NULL);
+    GL::buttonBehave(nTRectangle::get(20+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,50+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("Ar"),false,*mapEditSetAir,NULL,NULL,NULL);
+    GL::buttonBehave(nTRectangle::get(70+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,100+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("Zoom-"),false,*mapEditZoomOut,NULL,NULL,NULL);
+    GL::buttonBehave(nTRectangle::get(110+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,140+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("Zoom+"),false,*mapEditZoomIn,NULL,NULL,NULL);
+    GL::buttonBehave(nTRectangle::get(150+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,180+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("Background-"),false,NULL,*mapEditBackgroundDown,NULL,NULL);
+    GL::buttonBehave(nTRectangle::get(190+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,220+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("Background+"),false,NULL,*mapEditBackgroundUp,NULL,NULL);
+    GL::buttonBehave(nTRectangle::get(230+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,280+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("CameraDefault"),false,*mapEditCamera,NULL,NULL,NULL);
+    GL::buttonBehave(nTRectangle::get(290+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,320+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("Get Block"),false,*mapEditGetBlock,NULL,NULL,NULL);
+    GL::buttonBehave(nTRectangle::get(330+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,360+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("Save"),false,*mapEditSave,NULL,NULL,NULL);
+    GL::buttonBehave(nTRectangle::get(485+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,515+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("Back"),false,*mapEditLeave,NULL,NULL,NULL);
+    GL::buttonBehave(nTRectangle::get(770+Scenes::camera.x.movedCam,60+Scenes::camera.y.movedCam,790+Scenes::camera.x.movedCam,40+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("-"),false,NULL,*mapEditPageDown,NULL,NULL);
+    GL::buttonBehave(nTRectangle::get(660+Scenes::camera.x.movedCam,60+Scenes::camera.y.movedCam,680+Scenes::camera.x.movedCam,40+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("+"),false,NULL,*mapEditPageUp,NULL,NULL);
     GL::setFont("BITMAP_HELVETICA_12");
     GL::drawText(nTPoint::get(550+Scenes::camera.x.movedCam,530+Scenes::camera.y.movedCam,1),"Bloco Atual",GL::getColorByName("black"));
     GL::drawText(nTPoint::get(550+Scenes::camera.x.movedCam,582+Scenes::camera.y.movedCam,1),Blocks::getTexNameByIndex(currentBlock)+getMoreInfoAboutBlocks(currentBlock),GL::getColorByName("black"));
@@ -590,7 +590,7 @@ void mapEdit::drawPanel(){
                 tmp=nTRectangle::getCollision(nTPoint::get(663+25*j,100+25*i,1),nTPoint::get(16,16));
             tmp.p0.x+=Scenes::camera.x.movedCam;tmp.p1.x+=Scenes::camera.x.movedCam;
             tmp.p0.y+=Scenes::camera.y.movedCam;tmp.p1.y+=Scenes::camera.y.movedCam;
-            GL::buttonBehave(tmp,GL::getColorByName("mouseSelected"),GL::getTextureByName(Blocks::getTexNameByIndex(blockPages[pageIndex][i][j])),*mapEditSetBlock,(void(*)(int, int))NULL,NULL,NULL);
+            GL::buttonBehave(tmp,GL::getColorByName("mouseSelected"),GL::getTextureByName(Blocks::getTexNameByIndex(blockPages[pageIndex][i][j])),false,*mapEditSetBlock,(void(*)(int, int))NULL,NULL,NULL);
         }
     }
 

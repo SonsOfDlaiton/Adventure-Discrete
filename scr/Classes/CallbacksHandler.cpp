@@ -116,7 +116,6 @@ void CallbacksHandler::update(int n){
     FunctionAnalyser::startFrame();
     GL::mousePos.x=GL::rawMousePos.x*(double)GL::defaultSize.x/(double)GL::currentSize.x+Scenes::camera.x.movedCam;
     GL::mousePos.y=GL::rawMousePos.y*(double)GL::defaultSize.y/(double)GL::currentSize.y+Scenes::camera.y.movedCam;
-
     if(IOHandler::ReleaseMouseOffSet){
         GL::leftMouseReleased=false;
         IOHandler::ReleaseMouseOffSet=false;

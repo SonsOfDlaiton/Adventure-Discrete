@@ -12,6 +12,13 @@ public:
 
     static void behave();
 
+    static const int errorBlockBullet;
+    static const int strongSwordBullet;
+    static const int strongXAtackBullet;
+    static const int weakXAtackBullet;
+    static const int busBullet;
+    static const int hyperbolicParaboloidBullet;
+
     static vector<void*> self;
     static const double timeToShoot;
     static const double baseDamage;

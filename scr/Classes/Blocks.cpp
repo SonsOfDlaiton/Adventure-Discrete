@@ -10,24 +10,24 @@ Blocks::Blocks(int type,nTPoint pos,nTPoint size) {
     this->damageState=false;
     this->isVisible=true;
     this->color=nTColor::White();
-	if(type==526){
+	if(checkIfBlocksIsEnemyCollider(type)){
 		this->size.y/=3;
 	}
-    if(type>250&&type<=300){
-        if(type==255)
+    if(checkIfBlocksIsHalfBlockV(type)){
+        if(type==255) // ???????????
             type=251;
         moveSpeed=150*((type-250)*0.6);
         this->size.y/=2;
         this->pos.y-=size.y/4;
     }
-    if(type>200&&type<=250){
+    if(checkIfBlocksIsHalfBlockH(type)){
         moveSpeed=150*((type-200)*0.6);
         this->size.y/=2;
         this->pos.y-=size.y/4;
     }
     if(checkIfBlocksIsLiquid(type)){
         pos.z=0.9999;
-        if(type==376||type==378)
+        if(type==AnimatedWater1||type==AnimatedWater2||type==StaticWater)
             color.A=0.6f;
         else
             color.A=0.85f;
@@ -54,6 +54,21 @@ Blocks::~Blocks() {
 nTPoint Blocks::defaultBlockSize=nTPoint::get(32,32);
 double Blocks::imunityTime=150;
 
+const int Blocks::AnimatedWater1=376;
+const int Blocks::AnimatedWater2=380;
+const int Blocks::AnimatedLava1=377;
+const int Blocks::AnimatedLava2=381;
+const int Blocks::StaticLava=379;
+const int Blocks::StaticWater=378;
+const int Blocks::HalfBlockVCactus=255;
+const int Blocks::GlassBlock=330;
+const int Blocks::EndLevelBlock=666; 
+const int Blocks::BusShooterBlock=200;
+const int Blocks::InvalidPowerUpBlock=325;
+const int Blocks::InvalidPowerUpChest=500;
+const int Blocks::IceBlock=17;
+const int Blocks::IceHHalfBlock=204;
+const int Blocks::IceVHalfBlock=254;
 /**
  *	Gets the texture id of this block
  *
@@ -261,28 +276,31 @@ string Blocks::getTexNameByIndex(int BlockType){
 void Blocks::draw(){
     if(!this->isVisible) return;
     nTPoint newSize=size;
-    if(type==376||type==380){
+
+    //block animations
+    if(type==AnimatedWater1||type==AnimatedWater2){ //agua
         if(round(fmodl(GL::getGameMs(),(int)100))==0){
-            if(type==376){
-                type=380;
+            if(type==AnimatedWater1){
+                type=AnimatedWater2;
             }else{
-                type=376;
+                type=AnimatedWater1;
             }
         }
         tex=getTextureByIndex();
     }
-    if(type==377||type==381){
+    if(type==AnimatedLava1||type==AnimatedLava2){ //lava
         if(round(fmodl(GL::getGameMs(),(int)100))==0){
-            if(type==377){
-                type=381;
+            if(type==AnimatedLava1){
+                type=AnimatedLava2;
             }else{
-                type=377;
+                type=AnimatedLava1;
             }
         }
         tex=getTextureByIndex();
     }
+
     GL::drawTexture(nTRectangle::getCollision(pos,newSize),color,tex);
-    if(type>325&&type<=350){
+    if(checkIfBlocksIsDestrutive(type)){
         nTPoint tmp=pos;
         tmp.z=1;
         char buffer[5];
@@ -290,7 +308,7 @@ void Blocks::draw(){
         string bID(buffer);
         GL::drawTexture(nTRectangle::getCollision(tmp,newSize),GL::getTextureByName("Quebrado"+bID));
         if(brokeStage>=10){
-            if(type==330)
+            if(type==GlassBlock)
                 AL::singleton->playSoundByName("glassBreak");
             else
                 AL::singleton->playSoundByName("BlockBreak");
@@ -326,7 +344,7 @@ void Blocks::move(int dir,double steeps){
         pos.x+=steeps;
         var=Map::checkCollision(pos,size);
         for(int i=0; i<var.size(); i++){
-            if(var[i].collision.firstObj==Mechanics::RIGHT||var[i].collision.firstObj==Mechanics::LEFT){
+            if((var[i].collision.firstObj==Mechanics::RIGHT||var[i].collision.firstObj==Mechanics::LEFT)&&var[i].blockId!=id){
                 collision=true;
                 break;
             }
@@ -338,7 +356,7 @@ void Blocks::move(int dir,double steeps){
             objCollision playerCol;
             nTRectangle pRec=nTRectangle::getCollision(Player::getPlayerById(0)->getGroundPos(),Player::getPlayerById(0)->size);
             playerCol=Mechanics::getCollision(nTRectangle::getCollision(pos,size),pRec);
-            if(type==255){ //cacto
+            if(type==HalfBlockVCactus){ //cacto
                 if(playerCol.firstObj!=Mechanics::NOCOLLISION)
                     Player::getPlayerById(0)->applyDamage(1);
             }else if(playerCol.firstObj==Mechanics::TOP || playerCol.secondObj==Mechanics::BOTTOM){
@@ -368,19 +386,19 @@ void Blocks::move(int dir,double steeps){
         var=Map::checkCollision(pos,size);
         for(int i=0; i<var.size(); i++){
             bool anotherCactus=false;
-                if(type==255&&var[i].blockId>=Map::staticBlocks.size()){
+                if(type==HalfBlockVCactus&&var[i].blockId>=Map::staticBlocks.size()){
                     Blocks* bl=(Blocks*)(Map::dynamicBlocks[var[i].blockId-Map::staticBlocks.size()]);
-                    if(bl->type==255)
+                    if(bl->type==HalfBlockVCactus)
                         anotherCactus=true;
                 }
-            if((var[i].collision.firstObj==Mechanics::TOP||var[i].collision.firstObj==Mechanics::BOTTOM)&&!anotherCactus){
+            if((var[i].collision.firstObj==Mechanics::TOP||var[i].collision.firstObj==Mechanics::BOTTOM)&&!anotherCactus&&var[i].blockId!=id){
                 pos.y+=steeps;
                 moveSpeed*=-1;
                 break;
             }
         }
         if(playerCol.firstObj!=Mechanics::NOCOLLISION){
-            if(type==255) //cacto
+            if(type==HalfBlockVCactus) //cacto
                 Player::getPlayerById(0)->applyDamage(1);
             else if(playerCol.secondObj==Mechanics::TOP||playerCol.secondObj==Mechanics::BOTTOM){
                 var=Map::checkCollision(Player::getPlayerById(0)->getGroundPos(),Player::getPlayerById(0)->size);
@@ -412,86 +430,9 @@ void Blocks::move(int dir,double steeps){
 }
 
 /**
- *	Check if the block is dynamic or static(regular blocks without events or actions)
+ *  Apply damage to breakeable blocks
  *
- *	@param type type of the block
- *	@return true if the block is dynamic, false if the block is static
-**/
-bool Blocks::checkIfBlocksIsDynamic(int type){
-    if(type>100&&type<=350){
-        return true;
-    }else if(type>=376&&type<=400){
-        return true;
-    }else if(type==1000||type==501||type==526){
-        return true;
-    }else if(type>=2000&&type<=3000){
-        return true;
-    }else if(type>=4000&&type<=4012){
-        return true;
-    }else if(type>5000||type<0||type==666){
-        return true;
-    }else if(type>=476&&type<500){
-        return true;
-    }
-    return false;
-}
-
-/**
- *	Check if the block is massive(has collision) or not
- *
- *	@param type type of the block
- *	@return true if the block is massive, false if the block isnt massive
-**/
-bool Blocks::checkIfBlocksIsMassive(int type){
-    if((type>1000&&type<4000)||type>5000){
-        return false;
-    }else if(type==1000||type==0){
-        return false;
-    }else if(type>=401&&type<=450){
-        return false;
-    }else if(type>=351&&type<=375){
-        return false;
-    }
-    return true;
-}
-
-/**
- *	Check if the block is liquid or not
- *
- *	@param type type of the block
- *	@return true if the block is liquid, false if the block isnt liquid
-**/
-bool Blocks::checkIfBlocksIsLiquid(int type){
-    if(type>=376&&type<=400){
-        return true;
-    }
-    return false;
-}
-
-/**
- *	Check if the block is filled(the player cant crosses it) or not
- *
- *	@param type type of the block
- *	@return true if the block is filled, false if the block isnt filled
-**/
-bool Blocks::checkIfBlocksIsFilled(int type){
-    if((type>4000&&type<4013)||type==666){
-        return false;
-    }
-    if(type<=-200&&type>-400){
-        return false;
-    }
-    if(type>=376&&type<=400){
-        return false;
-    }
-    return true;
-}
-
-
-/**
- *	Apply damage to breakeable blocks
- *
- *	@param damage quantity of damage to be applied
+ *  @param damage quantity of damage to be applied
 **/
 void Blocks::applyDamage(double damage){
     if(GL::getGameMs()>=timeToVunerability)
@@ -509,4 +450,154 @@ void Blocks::applyDamage(double damage){
     }
     damageState=true;
     timeToVunerability=GL::getGameMs()+imunityTime;
+}
+
+/**
+ *	Check if the block is dynamic or static(regular blocks without events or actions)
+ *
+ *	@param type type of the block
+ *	@return true if the block is dynamic, false if the block is static
+**/
+bool Blocks::checkIfBlocksIsDynamic(int type){
+    return checkIfBlocksIsShooter(type)||checkIfBlocksIsHalfBlockH(type)||checkIfBlocksIsHalfBlockV(type)
+        ||checkIfBlocksIsPowerUpBlock(type)||checkIfBlocksIsPowerUpChest(type)||checkIfBlocksIsDestrutive(type)
+        ||checkIfBlocksIsLiquid(type)||checkIfBlocksIsLever(type)||checkIfBlocksIsJumpBoost(type)
+        ||checkIfBlocksIsBossSpawn(type)||checkIfBlocksIsPlayerSpawn(type)||checkIfBlocksIsEnemySpawn(type)
+        ||checkIfBlocksIsCheckpoint(type)||checkIfBlocksIsTeleportDoor(type)||checkIfBlocksIsTeleportPipe(type)
+        ||checkIfBlocksIsEndLevel(type);//||checkIfBlocksIsEnemyCollider(type)?????????;
+}
+
+/**
+ *	Check if the block is massive(has collision) or not
+ *
+ *	@param type type of the block
+ *	@return true if the block is massive, false if the block isnt massive
+**/
+bool Blocks::checkIfBlocksIsMassive(int type){
+    return !(checkIfBlocksIsBossSpawn(type)||checkIfBlocksIsPlayerSpawn(type)||checkIfBlocksIsEnemySpawn(type)
+        ||checkIfBlocksIsAir(type)||checkIfBlocksIsDecorative(type)||checkIfBlocksIsNoCollision(type));
+}
+
+
+/**
+ *	Check if the block is filled(the player cant crosses it) or not
+ *
+ *	@param type type of the block
+ *	@return true if the block is filled, false if the block isnt filled
+**/
+bool Blocks::checkIfBlocksIsFilled(int type){
+    return !(checkIfBlocksIsCheckpoint(type)||checkIfBlocksIsEndLevel(type)||checkIfBlocksIsTeleportDoor(type)
+        ||checkIfBlocksIsLiquid(type));
+}
+
+
+
+bool Blocks::checkIfBlocksIsTeleportDoor(int type){
+    return (type>-400&&type<=-200);
+}
+
+bool Blocks::checkIfBlocksIsTeleportPipe(int type){
+    return (type>-200&&type<0);
+}
+
+bool Blocks::checkIfBlocksIsAir(int type){
+    return type==0;
+}
+
+
+bool Blocks::checkIfBlocksIsSolid(int type){
+    return (type>=1&&type<=100);
+}
+
+bool Blocks::checkIfBlocksIsShooter(int type){
+    return (type>=101&&type<=200);
+}
+
+bool Blocks::checkIfBlocksIsHalfBlockH(int type){
+    return (type>=201&&type<=250);
+}
+
+bool Blocks::checkIfBlocksIsHalfBlockV(int type){
+    return (type>=251&&type<=300);
+}
+
+bool Blocks::checkIfBlocksIsPowerUpBlock(int type){
+    return (type>=301&&type<325);
+}
+
+bool Blocks::checkIfBlocksIsDestrutive(int type){
+    return (type>=326&&type<=350);
+}
+
+bool Blocks::checkIfBlocksIsNoCollision(int type){
+    return (type>=351&&type<=375);
+}
+
+/**
+ *  Check if the block is liquid or not
+ *
+ *  @param type type of the block
+ *  @return true if the block is liquid, false if the block isnt liquid
+**/
+bool Blocks::checkIfBlocksIsLiquid(int type){
+    return (type>=376&&type<=400);
+}
+bool Blocks::checkIfBlocksIsDecorative(int type){
+    return (type>=401&&type<=450);
+}
+
+bool Blocks::checkIfBlocksIsLever(int type){
+    return (type>=451&&type<=475);
+}
+
+bool Blocks::checkIfBlocksIsPowerUpChest(int type){
+    return (type>=476&&type<500);
+}
+
+bool Blocks::checkIfBlocksIsJumpBoost(int type){
+    return (type>=501&&type<=525);
+}
+
+bool Blocks::checkIfBlocksIsEnemyCollider(int type){
+    return type==526;
+}
+
+bool Blocks::checkIfBlocksIsTutorial(int type){
+    return type==527;
+}
+
+bool Blocks::checkIfBlocksIsTutorialPause(int type){
+    return type==528;
+}
+
+bool Blocks::checkIfBlocksIsEndLevel(int type){
+    return type==666;
+}
+
+bool Blocks::checkIfBlocksIsPlayerSpawn(int type){
+    return type==1000;
+}
+
+bool Blocks::checkIfBlocksIsEnemySpawn(int type){
+    return (type>=2001&&type<=3000);
+}
+
+bool Blocks::checkIfBlocksIsCheckpoint(int type){
+    return (type>=4001&&type<=4012);
+}
+
+bool Blocks::checkIfBlocksIsBossSpawn(int type){
+    return (type>=5001&&type<=8000);
+}
+
+int Blocks::getCheckPointId(int checkType){
+    return checkType-4000;
+}
+
+int Blocks::getPowerUpChestId(int puType){
+    return puType-476;
+}
+
+int Blocks::getPowerUpBlockId(int puType){
+    return puType-301;
 }

@@ -12,6 +12,11 @@ public:
 
     static void behave();
 
+    static const int swordUpgrade;
+    static const int extraLife;
+    static const int imortality;
+    static const int minusLife;
+
     static vector<void*> self;
 private:
     void draw();

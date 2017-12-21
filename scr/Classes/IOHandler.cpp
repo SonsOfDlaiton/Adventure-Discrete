@@ -343,12 +343,12 @@ void IOHandler::mousePress(int button,int state,int x,int y){
         }
     }
     if(button==GLUT_MIDDLE_BUTTON){
-        if(state==GLUT_DOWN){
-          }
+      if(state==GLUT_DOWN){
+      }
       if(state==GLUT_UP){
-          if(Scenes::current==Scenes::mapEdit)
-              mapEdit::currentBlock=60000;
-        }
+        if(Scenes::current==Scenes::mapEdit)
+          mapEdit::currentBlock=60000;
+      }
     }
 }
 

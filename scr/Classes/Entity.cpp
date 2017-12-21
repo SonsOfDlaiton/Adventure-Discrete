@@ -129,18 +129,18 @@ void Entity::execAnimation(){
                     }else{
                       Player::enemysKilled++;
                         en=(Enemy*)Entity::enemys[id];
-                        if(en->type>100&&en->isVisible){
+                        if(Enemy::checkIfEnemyIsBoss(en->type)&&en->isVisible){
                             Blocks* bl;
                             bool haveGG=false;
                             for(int i=0;i<Map::dynamicBlocks.size();i++){
                                 bl=(Blocks*)Map::dynamicBlocks[i];
-                                if(bl->type==666)
+                                if(Blocks::checkIfBlocksIsEndLevel(bl->type))
                                     haveGG=true;
                             }
                             if(!haveGG){
                                 nTPoint ggPos=en->pos;
                                 ggPos.x+=en->orientation*Blocks::defaultBlockSize.x;
-                                bl=new Blocks(666,ggPos,Blocks::defaultBlockSize);
+                                bl=new Blocks(Blocks::EndLevelBlock,ggPos,Blocks::defaultBlockSize);
                                 Map::dynamicBlocks.push_back(bl);
                             }
                         }

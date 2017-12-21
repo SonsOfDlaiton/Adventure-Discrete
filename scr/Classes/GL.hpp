@@ -58,7 +58,8 @@ public:
     static void drawPause();
     static void drawHUD();
     static double getGameMs();
-    static bool buttonBehave(nTRectangle collision,nTColor pressedColor,GLuint tex,void(*clickFunction)(int,int),void(*releaseFunction)(int,int),void(*RclickFunction)(int,int),void(*RreleaseFunction)(int,int));
+    static bool buttonBehave(nTRectangle collision,nTColor pressedColor,GLuint tex,bool holdClick,void(*clickFunction)(int,int),void(*releaseFunction)(int,int),void(*RclickFunction)(int,int),void(*RreleaseFunction)(int,int));
+    static bool buttonBehave(nTRectangle collision,nTColor pressedColor,GLuint tex);
     static vector<vector<double> > getRotateMatrix(double angle);
     static vector<vector<double> > getTranslateMatrix(nTPoint point);
     static nTPoint getModelViewPoint(nTPoint point);

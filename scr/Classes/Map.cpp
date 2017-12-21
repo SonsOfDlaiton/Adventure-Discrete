@@ -102,41 +102,43 @@ void Map::setBlockPos(){
         for(int j=0;j<actualMap.map[0].size();j++){
             bl=new Blocks(actualMap.map[i][j],nTPoint::get(Blocks::defaultBlockSize.x*(j+(1/2))+Blocks::defaultBlockSize.x/2,Blocks::defaultBlockSize.y*(i+(1/2))+Blocks::defaultBlockSize.y/2,Blocks::defaultBlockSize.z),Blocks::defaultBlockSize);
             if(Blocks::checkIfBlocksIsDynamic(actualMap.map[i][j])){
-                if(actualMap.map[i][j]==1000&&(Player::checkpoint==0||Scenes::freeGameMode)){
-                    bl->pos.z=0.9;
-                    Player::getPlayerById(0)->spawn(bl->pos,Player::getPlayerById(0)->life);
-                }else if(actualMap.map[i][j]==1000);
+                if(Blocks::checkIfBlocksIsPlayerSpawn(actualMap.map[i][j])&&(Player::checkpoint==0||Scenes::freeGameMode)){
+                    nTPoint pos=bl->pos;
+                    pos.z=0.9;
+                    pos.y-=Blocks::defaultBlockSize.y;
+                    Player::getPlayerById(0)->spawn(pos,Player::getPlayerById(0)->life);
+                }else if(Blocks::checkIfBlocksIsPlayerSpawn(actualMap.map[i][j]));
 
-                else if(actualMap.map[i][j]>=2000&&actualMap.map[i][j]<=3000){
-                    bl->pos.z=0.89;
+                else if(Blocks::checkIfBlocksIsEnemySpawn(actualMap.map[i][j])){
+                    nTPoint pos=bl->pos;
+                    pos.z=0.89;
+                    pos.y-=Blocks::defaultBlockSize.y;
                     nOfEnemys++;
-                    new Enemy(actualMap.map[i][j]-2000,Enemy::defaultLife,bl->pos,Enemy::defaultSize,Entity::getAnimationVector(Enemy::enemyAnim[rand()%Enemy::enemyAnim.size()],Enemy::enemyAnimSize[rand()%Enemy::enemyAnimSize.size()]),0);
-                }else if(actualMap.map[i][j]>5000){
-                    bl->pos.z=0.89;
-                    new Enemy((actualMap.map[i][j]-5000)+100,Enemy::bossLife,bl->pos,Enemy::bossSize,Entity::getAnimationVector(Enemy::enemyAnim[0],Enemy::enemyAnimSize[0]),0);
+                    new Enemy(actualMap.map[i][j]-2000,Enemy::defaultLife,pos,Enemy::defaultSize,Entity::getAnimationVector(Enemy::enemyAnim[rand()%Enemy::enemyAnim.size()],Enemy::enemyAnimSize[rand()%Enemy::enemyAnimSize.size()]),0);
+                }else if(Blocks::checkIfBlocksIsBossSpawn(actualMap.map[i][j])){
+                    nTPoint pos=bl->pos;
+                    pos.z=0.89;
+                    pos.y-=Blocks::defaultBlockSize.y;
+                    new Enemy((actualMap.map[i][j]-5000)+1000,Enemy::bossLife,pos,Enemy::bossSize,Entity::getAnimationVector(Enemy::enemyAnim[0],Enemy::enemyAnimSize[0]),0);
                     nOfEnemys+=3;
                 }else{
                     bl->id=dynamicBlocks.size();
                     dynamicBlocks.push_back(bl);
                 }
-                if((actualMap.map[i][j]>=301&&actualMap.map[i][j]<=325)||(actualMap.map[i][j]>=476&&actualMap.map[i][j]<=500)){
+                if(Blocks::checkIfBlocksIsPowerUpChest(actualMap.map[i][j])||Blocks::checkIfBlocksIsPowerUpBlock(actualMap.map[i][j])){
                     totalPowerUps++;
                 }
-            }else if(actualMap.map[i][j]!=0){
+            }else if(!Blocks::checkIfBlocksIsAir(actualMap.map[i][j])){
                 bl->id=staticBlocks.size();
                 staticBlocks.push_back(bl);
             }
-            if(actualMap.map[i][j]==4001&&Player::checkpoint==1&&!Scenes::freeGameMode){
-                nTPoint pos=bl->pos;
-                pos.z=0.9;
-                pos.y-=Blocks::defaultBlockSize.y;
-                Player::getPlayerById(0)->spawn(pos,Player::getPlayerById(0)->life);
-            }else
-            if(actualMap.map[i][j]==4002&&Player::checkpoint==2&&!Scenes::freeGameMode){
-                nTPoint pos=bl->pos;
-                pos.z=0.9;
-                pos.y-=Blocks::defaultBlockSize.y;
-                Player::getPlayerById(0)->spawn(pos,Player::getPlayerById(0)->life);
+            if(Blocks::checkIfBlocksIsCheckpoint(actualMap.map[i][j])){
+                if(Blocks::getCheckPointId(actualMap.map[i][j])==Player::checkpoint&&!Scenes::freeGameMode){
+                    nTPoint pos=bl->pos;
+                    pos.z=0.9;
+                    pos.y-=Blocks::defaultBlockSize.y;
+                    Player::getPlayerById(0)->spawn(pos,Player::getPlayerById(0)->life);
+                }
             }
         }
     }
@@ -229,7 +231,7 @@ vector <mapCollision> Map::checkCollision(nTPoint pos,nTPoint size){
     Blocks *bl;
     for(int i=0;i<dynamicBlocks.size();i++){
         bl=(Blocks*)dynamicBlocks[i];
-        if((bl->type>250&&bl->type<=300&&Scenes::camera.isInTheXScreen(nTRectangle::getCollision(bl->pos,bl->size)))||(bl->type>200&&bl->type<=250&&Scenes::camera.isInTheYScreen(nTRectangle::getCollision(bl->pos,bl->size)))){
+        if((Blocks::checkIfBlocksIsHalfBlockV(bl->type)&&Scenes::camera.isInTheXScreen(nTRectangle::getCollision(bl->pos,bl->size)))||(Blocks::checkIfBlocksIsHalfBlockH(bl->type)&&Scenes::camera.isInTheYScreen(nTRectangle::getCollision(bl->pos,bl->size)))){
             if(bl->id!=blockId){
                 adc.blockId=bl->id;
                 blockRec=nTRectangle::getCollision(bl->pos,bl->size);
@@ -257,34 +259,34 @@ void Map::refresh(){
     Blocks *bl;
     for(int i=0;i<dynamicBlocks.size();i++){
         bl=(Blocks*)dynamicBlocks[i];
-        if(Scenes::camera.isInTheScreen(nTRectangle::getCollision(bl->pos,bl->size))||bl->type==255){
-            if(bl->type>250&&bl->type<=300&&Scenes::camera.isInTheXScreen(nTRectangle::getCollision(bl->pos,bl->size)))
+        if(Scenes::camera.isInTheScreen(nTRectangle::getCollision(bl->pos,bl->size))||bl->type==Blocks::HalfBlockVCactus){
+            if(Blocks::checkIfBlocksIsHalfBlockV(bl->type)&&Scenes::camera.isInTheXScreen(nTRectangle::getCollision(bl->pos,bl->size)))
                 bl->move(Util::direction_up,bl->moveSpeed/GL::getFPS());
-            else if(bl->type>200&&bl->type<=250&&Scenes::camera.isInTheYScreen(nTRectangle::getCollision(bl->pos,bl->size)))
+            else if(Blocks::checkIfBlocksIsHalfBlockH(bl->type)&&Scenes::camera.isInTheYScreen(nTRectangle::getCollision(bl->pos,bl->size)))
                 bl->move(Util::direction_left,bl->moveSpeed/GL::getFPS());
-            else if(bl->type>=101&&bl->type<200&&Scenes::camera.isInTheXScreen(nTRectangle::getCollision(bl->pos,bl->size))){
+            else if(Blocks::checkIfBlocksIsShooter(bl->type)&&Scenes::camera.isInTheXScreen(nTRectangle::getCollision(bl->pos,bl->size))){
                 if(round(fmodl(GL::getGameMs(),(int)Bullet::timeToShoot/5))==0&&Player::getPlayerById(0)->life>0){
                     nTPoint tmp=bl->pos;
                     tmp.z=0.9;
                     tmp.x+=Blocks::defaultBlockSize.x*1.2;
-                    new Bullet(0,Bullet::baseSpeed,tmp,nTPoint::get(40,20,1));
+                    new Bullet(Bullet::errorBlockBullet,Bullet::baseSpeed,tmp,nTPoint::get(40,20,1));
                     tmp.x-=Blocks::defaultBlockSize.x*1.2*2;
-                    new Bullet(0,-Bullet::baseSpeed,tmp,nTPoint::get(40,20,1));
+                    new Bullet(Bullet::errorBlockBullet,-Bullet::baseSpeed,tmp,nTPoint::get(40,20,1));
                 }
-            }else if(bl->type==200){
+            }else if(bl->type==Blocks::BusShooterBlock){
                 if(round(fmodl(GL::getGameMs(),(int)Bullet::timeToShoot))==0&&Player::getPlayerById(0)->life>0){
                     nTPoint tmp=bl->pos;
                     tmp.z=0.9;
                     tmp.y-=Blocks::defaultBlockSize.y/3;
                     if(Player::getPlayerById(0)->pos.x>=bl->pos.x){
                         tmp.x+=Blocks::defaultBlockSize.x*1.2;
-                        new Bullet(4,Bullet::baseSpeed*1.3,tmp,nTPoint::get(100,60,1));
+                        new Bullet(Bullet::busBullet,Bullet::baseSpeed*1.3,tmp,nTPoint::get(100,60,1));
                     }else{
                         tmp.x-=Blocks::defaultBlockSize.x*2.4;
-                        new Bullet(4,Bullet::baseSpeed*-1.3,tmp,nTPoint::get(-100,60,1));
+                        new Bullet(Bullet::busBullet,Bullet::baseSpeed*-1.3,tmp,nTPoint::get(-100,60,1));
                     }
                 }
-            }else if(bl->type==501){
+            }else if(Blocks::checkIfBlocksIsJumpBoost(bl->type)){
                 objCollision var;
                 nTPoint point=Player::getPlayerById(0)->pos;
                 point.y+=2;
@@ -294,21 +296,14 @@ void Map::refresh(){
                     Player::getPlayerById(0)->canJump=false;
                     AL::singleton->playSoundByName("mola");
                 }
-            }else if(bl->type==4001){
+            }else if(Blocks::checkIfBlocksIsCheckpoint(bl->type)){
                 objCollision var;
                 var=Mechanics::getCollision(nTRectangle::getCollision(bl->pos,bl->size),nTRectangle::getCollision(Player::getPlayerById(0)->pos,Player::getPlayerById(0)->size));
-                if(var.firstObj!=Mechanics::NOCOLLISION&&Player::checkpoint<1&&!Scenes::freeGameMode){
-                    Player::checkpoint=1;
+                if(var.firstObj!=Mechanics::NOCOLLISION&&Player::checkpoint<Blocks::getCheckPointId(bl->type)&&!Scenes::freeGameMode){
+                    Player::checkpoint=Blocks::getCheckPointId(bl->type);
                     AssetsLoader::saveSettings();
                 }
-            }else if(bl->type==4002){
-                objCollision var;
-                var=Mechanics::getCollision(nTRectangle::getCollision(bl->pos,bl->size),nTRectangle::getCollision(Player::getPlayerById(0)->pos,Player::getPlayerById(0)->size));
-                if(var.firstObj!=Mechanics::NOCOLLISION&&Player::checkpoint<2&&!Scenes::freeGameMode){ ;
-                   Player::checkpoint=2;
-                    AssetsLoader::saveSettings();
-                }
-            }else if(bl->type==666){
+            }else if(bl->type==Blocks::EndLevelBlock){
                 objCollision var;
                 var=Mechanics::getCollision(nTRectangle::getCollision(bl->pos,bl->size),nTRectangle::getCollision(Player::getPlayerById(0)->pos,Player::getPlayerById(0)->size));
                 if(var.firstObj!=Mechanics::NOCOLLISION){
@@ -325,29 +320,30 @@ void Map::refresh(){
                     }else
                         Map::next();
                 }
-            }else if(bl->type>=301&&bl->type<325){
+            }else if(Blocks::checkIfBlocksIsPowerUpBlock(bl->type)){
                 objCollision var;
                 var=Mechanics::getCollision(Player::getPlayerById(0)->swordCollision,nTRectangle::getCollision(bl->pos,bl->size));
                 if(var.firstObj==Mechanics::TOP){
                     nTPoint tmp=bl->pos;
                     tmp.y-=Blocks::defaultBlockSize.y*1.5;
-                    new powerUp(bl->type-301,tmp,nTPoint::get(20,20),true);
-                    bl->type=325;
+                    new powerUp(Blocks::getPowerUpBlockId(bl->type),tmp,nTPoint::get(20,20),true);
+                    bl->type=Blocks::InvalidPowerUpBlock;
                     bl->tex=GL::getTextureByName("PowerupOff");
-                    AL::singleton->playSoundByName("chestOpen");
                     Player::getPlayerById(0)->powerUpsActiveted++;
                 }
-            }else if(bl->type>=476&&bl->type<500&&Player::getPlayerById(0)->atacking){
+            }else if(Blocks::checkIfBlocksIsPowerUpChest(bl->type)&&Player::getPlayerById(0)->atacking){
                 objCollision var;
                 var=Mechanics::getCollision(Player::getPlayerById(0)->swordCollision,nTRectangle::getCollision(bl->pos,bl->size));
                 if(var.firstObj!=Mechanics::NOCOLLISION){
                     nTPoint tmp=bl->pos;
                     tmp.y-=Blocks::defaultBlockSize.y*1.5;
-                    new powerUp(bl->type-476,tmp,nTPoint::get(20,20),true);
-                    bl->type=500;
+                    new powerUp(Blocks::getPowerUpChestId(bl->type),tmp,nTPoint::get(20,20),true);
+                    bl->type=Blocks::InvalidPowerUpChest;
+                    AL::singleton->playSoundByName("chestOpen");
                     bl->tex=GL::getTextureByName("BauOff");
+                    Player::getPlayerById(0)->powerUpsActiveted++;
                 }
-            }else if(bl->type>=326&&bl->type<=350&&Player::getPlayerById(0)->atacking){
+            }else if(Blocks::checkIfBlocksIsDestrutive(bl->type)&&Player::getPlayerById(0)->atacking){
                 objCollision var;
                 var=Mechanics::getCollision(Player::getPlayerById(0)->swordCollision,nTRectangle::getCollision(bl->pos,bl->size));
                 if(var.firstObj!=Mechanics::NOCOLLISION){
@@ -518,7 +514,7 @@ bool Map::saveMap(string path,int idx){
             if(save.backgrounds[i].getMove())
                 mapFILE<<1<<'\'';
             else
-                mapFILE<<0<<'\'';    
+                mapFILE<<0<<'\'';
             mapFILE<<save.backgrounds[i].getzAxis()<<"\'"<<save.backgrounds[i].getLocal().p0.x<<"\'"<<save.backgrounds[i].getLocal().p0.y<<"\'"<<save.backgrounds[i].getLocal().p1.x<<"\'"<<save.backgrounds[i].getLocal().p1.y<<endl;
             mapFILE<<save.backgrounds[i].getName()<<endl;
             mapFILE<<save.backgrounds[i].getPath()<<endl;

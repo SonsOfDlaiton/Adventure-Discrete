@@ -8,19 +8,19 @@ Bullet::Bullet(int type,double moveSpeed,nTPoint pos,nTPoint size) {
     this->self.push_back(this);
     this->spriteIndex=0;
     this->isVisible=true;
-    if(type==0){
+    if(type==errorBlockBullet){
         tex=GL::getTextureByName("WinBullet");
         AL::singleton->playSoundByName("blockShoot");
     }
-    if(type==1)
+    if(type==strongSwordBullet)
         tex=GL::getTextureByName("SwordBullet0");
-    if(type==2)
+    if(type==strongXAtackBullet)
         tex=GL::getTextureByName("StrongAtk0");
-    if(type==3)
+    if(type==weakXAtackBullet)
         tex=GL::getTextureByName("WeakAtk0");
-    if(type==4)
+    if(type==busBullet)
         tex=GL::getTextureByName("Intercampi");
-     if(type==5)
+     if(type==hyperbolicParaboloidBullet)
         tex=GL::getTextureByName("paraboloide hiperbolico<3");
 };
 
@@ -41,6 +41,13 @@ const double Bullet::baseDamage=1;
 const double Bullet::baseSpeed=280;
 const double Bullet::timeToShoot=5000;
 
+const int Bullet::errorBlockBullet=0;
+const int Bullet::strongSwordBullet=1;
+const int Bullet::strongXAtackBullet=2;
+const int Bullet::weakXAtackBullet=3;
+const int Bullet::busBullet=4;
+const int Bullet::hyperbolicParaboloidBullet=5;
+
 /**
  *	Run logic events of the Bullets on the map like move, change textures, check if is in the screen, check collisions
 **/
@@ -54,11 +61,11 @@ void Bullet::behave(){
     for(int i=0;i<self.size();i++){
         bu=(Bullet*)self[i];
         if(!Scenes::camera.isInTheScreen(nTRectangle::getCollision(bu->pos,bu->size))){
-            if(bu->type==1)
+            if(bu->type==strongSwordBullet)
                 Player::getPlayerById(0)->haveBulletSword=false;
-            if(bu->type==2||bu->type==3)
+            if(bu->type==strongXAtackBullet||bu->type==weakXAtackBullet)
                 Player::getPlayerById(0)->haveBulletSpec=false;
-            if(bu->type==4)
+            if(bu->type==busBullet)
                 AL::singleton->stopSound(AL::getSoundByName("intercampi"));
             bu->isVisible=false;
             delete bu;
@@ -72,9 +79,9 @@ void Bullet::behave(){
             FunctionAnalyser::endFunction("Bullet::behave");
             return;
         }
-        if(bu->type==0||bu->type==5){//tiro de bloco
+        if(bu->type==errorBlockBullet||bu->type==hyperbolicParaboloidBullet){//tiro de bloco
             bu->checkCollisionWithEntity(Player::getPlayerById(0)->pos,Player::getPlayerById(0)->size,true);
-        }else if(bu->type==1){//espada
+        }else if(bu->type==strongSwordBullet){//espada
             if(round(fmodl(GL::getGameMs(),(int)Entity::getSpriteMs()*3))==0){
                 if(bu->tex==GL::getTextureByName("SwordBullet0"))
                     bu->tex=GL::getTextureByName("SwordBullet1");
@@ -82,7 +89,7 @@ void Bullet::behave(){
                     bu->tex=GL::getTextureByName("SwordBullet0");
             }
             bu->checkCollisionWithEntity(nTPoint::Origin(),nTPoint::Origin(),false);
-        }else if(bu->type==2){//atk forte
+        }else if(bu->type==strongXAtackBullet){//atk forte
             if(round(fmodl(GL::getGameMs(),(int)Entity::getSpriteMs()))==0){
                 bu->spriteIndex++;
                 if(bu->spriteIndex==4)
@@ -93,7 +100,7 @@ void Bullet::behave(){
                 bu->tex=GL::getTextureByName("StrongAtk"+str);
             }
             bu->checkCollisionWithEntity(nTPoint::Origin(),nTPoint::Origin(),false);
-        }else if(bu->type==3){//atk fraco
+        }else if(bu->type==weakXAtackBullet){//atk fraco
             if(round(fmodl(GL::getGameMs(),(int)Entity::getSpriteMs()))==0){
                 bu->spriteIndex++;
                 if(bu->spriteIndex==3)
@@ -104,7 +111,7 @@ void Bullet::behave(){
                 bu->tex=GL::getTextureByName("WeakAtk"+str);
             }
             bu->checkCollisionWithEntity(nTPoint::Origin(),nTPoint::Origin(),false);
-        }else if(bu->type==4){//intercamp
+        }else if(bu->type==busBullet){//intercamp
             bu->checkCollisionWithEntity(Player::getPlayerById(0)->pos,Player::getPlayerById(0)->size,true);
             AL::singleton->playSoundByName("intercampi");
         }
@@ -135,7 +142,7 @@ void Bullet::move(int dir,double steeps){
         steepsAgain=signal*(ABS(steeps)-Entity::walkSpeed/GL::getFPS());
         steeps=signal*Entity::walkSpeed/GL::getFPS();
     }
-    if(type!=4){
+    if(type!=busBullet){
         vector <mapCollision> var;
         bool collision=false;
         if(dir==Util::direction_left||dir==Util::direction_right){
@@ -151,14 +158,14 @@ void Bullet::move(int dir,double steeps){
           if(!collision)
             pos.x+=steeps;
           else{
-            if(type==1)
+            if(type==strongSwordBullet)
                 Player::getPlayerById(0)->haveBulletSword=false;
-            if(type==2||type==3)
+            if(type==strongXAtackBullet||type==weakXAtackBullet)
                 Player::getPlayerById(0)->haveBulletSpec=false;
-            if(type>=0){
+            //if(type>=0){  DELETE ME
                 isVisible=false;
                 delete this;
-            }
+            //}
             if(!isVisible){
                 FunctionAnalyser::endFunction("Bullet::move");
                 return;
@@ -188,14 +195,14 @@ void Bullet::checkCollisionWithEntity(nTPoint pos,nTPoint size, bool withPlayer)
     if(withPlayer){
         var=Mechanics::getCollision(nTRectangle::getCollision(this->pos,this->size),nTRectangle::getCollision(pos,size));
         if(var.firstObj!=Mechanics::NOCOLLISION){
-            if(type==4){
+            if(type==busBullet){
                 Player::getPlayerById(0)->applyDamage(2);
                 AL::singleton->stopSound(AL::getSoundByName("intercampi"));
             }else
                 Player::getPlayerById(0)->applyDamage(1);
             isVisible=false;
             delete this;
-        }else if(type!=4){
+        }else if(type!=busBullet){
             var=Mechanics::getCollision(nTRectangle::getCollision(this->pos,this->size),Player::getPlayerById(0)->swordCollision);
             if(var.firstObj!=Mechanics::NOCOLLISION){
 //              Player::getPlayerById(0)->atacking=false;
@@ -209,9 +216,9 @@ void Bullet::checkCollisionWithEntity(nTPoint pos,nTPoint size, bool withPlayer)
             en=(Enemy*)Entity::enemys[i];
             var=Mechanics::getCollision(nTRectangle::getCollision(this->pos,this->size),nTRectangle::getCollision(en->pos,en->size));
             if(var.firstObj!=Mechanics::NOCOLLISION){
-                if(type==1)
+                if(type==strongSwordBullet)
                     Player::getPlayerById(0)->haveBulletSword=false;
-                if(type==2||type==3)
+                if(type==strongXAtackBullet||type==weakXAtackBullet)
                     Player::getPlayerById(0)->haveBulletSpec=false;
                 en->applyDamage(Player::getPlayerById(0)->sword);
                 if(en->life<=0)
@@ -223,11 +230,11 @@ void Bullet::checkCollisionWithEntity(nTPoint pos,nTPoint size, bool withPlayer)
                 FunctionAnalyser::endFunction("Bullet::ckCollWithEntity");
                 return;
             }
-            if(type==1){
+            if(type==strongSwordBullet){
                 Bullet* bu;
                 for(int i=0;i<Bullet::self.size();i++){
                     bu=(Bullet*)Bullet::self[i];
-                    if(bu->type!=1&&bu->type!=2&&bu->type!=3){
+                    if(bu->type!=strongSwordBullet&&bu->type!=weakXAtackBullet&&bu->type!=strongXAtackBullet){
                         if(Mechanics::getCollision(nTRectangle::getCollision(this->pos,this->size),nTRectangle::getCollision(bu->pos,bu->size)).firstObj!=Mechanics::NOCOLLISION){
                             isVisible=false;
                             pos.x=-100;
@@ -250,7 +257,7 @@ void Bullet::draw(){
     if(GL::isPaused||!Scenes::camera.isInTheScreen(nTRectangle::getCollision(pos,size)))
         return;
     pos.z=1;
-    if (type==1)
+    if (type==strongSwordBullet)
         pos.z=0.9;
     if(isVisible){
         GL::drawTexture(nTRectangle::getCollision(pos,size),tex);

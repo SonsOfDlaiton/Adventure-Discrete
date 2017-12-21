@@ -10,7 +10,7 @@ powerUp::powerUp(int type,nTPoint pos,nTPoint size,bool haveGravity) {
     this->hSpeed=moveSpeed;
     this->type=type;
     this->self.push_back(this);
-    if(type==0){
+    if(type==swordUpgrade){
         if(Player::getPlayerById(0)->sword==0)
             tex=GL::getTextureByName("cogumelo0");
         if(Player::getPlayerById(0)->sword==1)
@@ -19,11 +19,11 @@ powerUp::powerUp(int type,nTPoint pos,nTPoint size,bool haveGravity) {
             tex=GL::getTextureByName("gcc");
             this->type=1;
         }
-    }else if(type==1){
+    }else if(type==extraLife){
         tex=GL::getTextureByName("gcc");
-    }else if(type==2){
+    }else if(type==imortality){
         tex=GL::getTextureByName("cafe");
-    }else if(type==3){
+    }else if(type==minusLife){
         tex=GL::getTextureByName("win95");
     }
 };
@@ -42,6 +42,11 @@ powerUp::~powerUp() {
 
 vector<void*> powerUp::self;
 const double powerUp::moveSpeed=50;
+
+const int powerUp::swordUpgrade=0;
+const int powerUp::extraLife=1;
+const int powerUp::imortality=2;
+const int powerUp::minusLife=3;
 
 /**
  *	Run logic events of the powerups on the map like move, change textures, check if is in the screen, check collisions
@@ -148,19 +153,19 @@ void powerUp::checkCollisionWithPlayer(nTPoint pos,nTPoint size){
     var=Mechanics::getCollision(nTRectangle::getCollision(this->pos,this->size),nTRectangle::getCollision(pos,size));
     if(var.firstObj!=Mechanics::NOCOLLISION){
         AL::singleton->playSoundByName("powerUp");
-        if(type==0){
+        if(type==swordUpgrade){
             Player::getPlayerById(0)->life++;
             Player::getPlayerById(0)->sword++;
             if(Player::getPlayerById(0)->sword>2||Player::getPlayerById(0)->life>Player::defaultLife){
                 Player::getPlayerById(0)->sword=Player::defaultLife-1;
                 Player::getPlayerById(0)->life=Player::defaultLife;
             }
-        }else if(type==1){
+        }else if(type==extraLife){
             if(!Scenes::freeGameMode)Player::getPlayerById(0)->lives++;
-        }else if(type==2){
+        }else if(type==imortality){
             Player::getPlayerById(0)->makeInvencible(7000);
             AL::singleton->playSoundByName("cafeSong");
-        }else if(type==3){
+        }else if(type==minusLife){
             Player::getPlayerById(0)->sword=0;
             Player::getPlayerById(0)->life=1;
         }

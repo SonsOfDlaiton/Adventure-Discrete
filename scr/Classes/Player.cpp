@@ -169,16 +169,16 @@ void Player::stateControl(){
         if(var[i].blockId>=Map::staticBlocks.size()){
             bl=(Blocks*) Map::dynamicBlocks[var[i].blockId-Map::staticBlocks.size()];
             if(var[i].collision.firstObj!=Mechanics::NOCOLLISION){
-                if(bl->type==377||bl->type==379){
+                if(bl->type==Blocks::AnimatedLava1||bl->type==Blocks::AnimatedLava2||bl->type==Blocks::StaticLava){
                     if(!god) life=0;
                     collisionWater=false;
                 }else if(Blocks::checkIfBlocksIsLiquid(bl->type)){
                     collisionWater=true;
-                }else if(bl->type==204||bl->type==254){
+                }else if(bl->type==Blocks::IceHHalfBlock||bl->type==Blocks::IceVHalfBlock){
                     if(var[i].collision.firstObj==Mechanics::BOTTOM)
                         collisionIce=true;
                 }
-                if(bl->type<0&&canTp){
+                if((Blocks::checkIfBlocksIsTeleportPipe(bl->type)||Blocks::checkIfBlocksIsTeleportDoor(bl->type))&&canTp){
                     Blocks* tp;
                     for(int j=0;j<Map::dynamicBlocks.size();j++){
                        tp=(Blocks*)Map::dynamicBlocks[j];
@@ -186,10 +186,10 @@ void Player::stateControl(){
                          canTp=false;
                            pos=tp->pos;
                            AL::singleton->playSoundByName("TP");
-                           if(tp->type>-200)
-                                pos.y-=Blocks::defaultBlockSize.y*1.4;
+                           if(Blocks::checkIfBlocksIsTeleportPipe(tp->type))
+                                pos.y-=Blocks::defaultBlockSize.y*1.5;
                            else
-                               pos.y-=15;
+                               pos.y-=Blocks::defaultBlockSize.y/2;
                            pos.z=0.9;
                            Scenes::camera.lookAt(pos);
                          }
@@ -199,7 +199,7 @@ void Player::stateControl(){
         }else{
             if(var[i].collision.firstObj==Mechanics::BOTTOM){
                 bl=(Blocks*)Map::staticBlocks[var[i].blockId];
-                if(bl->type==17)
+                if(bl->type==Blocks::IceBlock)
                     collisionIce=true;
             }
         }
@@ -335,9 +335,9 @@ void Player::atack(int type){
         if(!haveBulletSpec&&(cof>=75||Scenes::freeGameMode)){
             AL::singleton->playSoundByName("SpecialAtk");
             if(cof>=85||Scenes::freeGameMode){
-                new Bullet(2,orientation*Bullet::baseSpeed,pos,tmp);
+                new Bullet(Bullet::strongXAtackBullet,orientation*Bullet::baseSpeed,pos,tmp);
             }else{
-                new Bullet(3,orientation*Bullet::baseSpeed,pos,tmp);
+                new Bullet(Bullet::weakXAtackBullet,orientation*Bullet::baseSpeed,pos,tmp);
             }
             haveBulletSpec=true;
         }
@@ -345,7 +345,7 @@ void Player::atack(int type){
         if(sword>1&&!haveBulletSword){
             nTPoint tmp=swordSize;
             tmp.x*=orientation;
-            new Bullet(1,orientation*Bullet::baseSpeed,pos,tmp);
+            new Bullet(Bullet::strongSwordBullet,orientation*Bullet::baseSpeed,pos,tmp);
             haveBulletSword=true;
         }
         canWalk=true;

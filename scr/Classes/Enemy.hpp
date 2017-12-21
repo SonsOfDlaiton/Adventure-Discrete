@@ -15,6 +15,7 @@ public:
     static void behave();
     GLuint lifeLetter();
     static void registerNicks();
+    static bool checkIfEnemyIsBoss(int type);
 
     int type;
     static const int defaultLife;
