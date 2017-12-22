@@ -11,7 +11,7 @@ Blocks::Blocks(int type,nTPoint pos,nTPoint size) {
     this->isVisible=true;
     this->color=nTColor::White();
 	if(checkIfBlocksIsEnemyCollider(type)){
-		this->size.y/=3;
+		this->size.y/=4;
 	}
     if(checkIfBlocksIsHalfBlockV(type)){
         if(type==255) // ???????????
@@ -464,7 +464,7 @@ bool Blocks::checkIfBlocksIsDynamic(int type){
         ||checkIfBlocksIsLiquid(type)||checkIfBlocksIsLever(type)||checkIfBlocksIsJumpBoost(type)
         ||checkIfBlocksIsBossSpawn(type)||checkIfBlocksIsPlayerSpawn(type)||checkIfBlocksIsEnemySpawn(type)
         ||checkIfBlocksIsCheckpoint(type)||checkIfBlocksIsTeleportDoor(type)||checkIfBlocksIsTeleportPipe(type)
-        ||checkIfBlocksIsEndLevel(type);//||checkIfBlocksIsEnemyCollider(type)?????????;
+        ||checkIfBlocksIsEndLevel(type)||checkIfBlocksIsEnemyCollider(type);
 }
 
 /**

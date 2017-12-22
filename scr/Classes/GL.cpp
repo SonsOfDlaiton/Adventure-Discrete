@@ -10,7 +10,7 @@ GL::GL(string name,double FPS,GLbitfield displayMode,int windowXsize,int windowY
     glutInitDisplayMode(displayMode);
     glutInitWindowSize(windowXsize, windowYsize);
     defaultSize.set(windowXsize,windowYsize,0);
-    currentSize=defaultSize;
+    currentViewPort=nTRectangle::get(0,0,defaultSize.x,defaultSize.y);
     glutInitWindowPosition(0, 0);
     glutCreateWindow(name.c_str());
     GL::clearColor.set(clearcolor.R, clearcolor.G, clearcolor.B, clearcolor.A);
@@ -50,7 +50,7 @@ vector<void*> GL::fonts;
 vector<GLuint> GL::textures;
 vector<string> GL::textureNames;
 nTPoint GL::defaultSize;
-nTPoint GL::currentSize;
+nTRectangle GL::currentViewPort;
 bool GL::FPSchecker=true;
 bool GL::isPaused=false;
 bool GL::leftMouseClicked=false;
@@ -632,7 +632,7 @@ bool GL::buttonBehave(nTRectangle collision,nTColor pressedColor,GLuint tex){
 ostream& operator<<(ostream &strm, const GL &gl) {
     if(Util::DEBUG)
         return strm <<"GL:["<<"FPS("<<gl.FPS<<"),"<<"CurrentColor("<<"R:"<<gl.currentColor.R<<" G:"<<gl.currentColor.G<<" B:"<<gl.currentColor.B<<" A:"<<gl.currentColor.A<<"),"<<
-                "Loaded Texutres("<<gl.textures.size()<<"),"<<"ScreenSize("<<"x:"<<gl.currentSize.x<<" y:"<<gl.currentSize.y<<"),"<<"Is paused("<<gl.isPaused<<"),"<<"]\n";
+                "Loaded Texutres("<<gl.textures.size()<<"),"<<"ScreenSize("<<"x:"<<gl.currentViewPort.p1.x<<" y:"<<gl.currentViewPort.p1.y<<"),"<<"Is paused("<<gl.isPaused<<"),"<<"]\n";
     return strm;
 }
 
@@ -806,10 +806,13 @@ void GL::drawHUD(){
     GL::setFont("BITMAP_HELVETICA_18");
     nTPoint point;
     char buffer[5];
-    point.set(Scenes::camera.x.movedCam+50,Scenes::camera.y.movedCam+18,1);
+    point.set(Scenes::camera.x.movedCam+42,Scenes::camera.y.movedCam+20,1);
+    GL::drawRectangle(nTRectangle::get(Scenes::camera.x.movedCam,Scenes::camera.y.movedCam+8,Scenes::camera.x.movedCam+GL::defaultSize.x,Scenes::camera.y.movedCam+34,0.9),nTColor::get(0.8,0.7,0.9,0.7));
     for(int i=0;i<Player::getPlayerById(0)->life;i++){
         point.x+=25;
-        GL::drawTexture(nTRectangle::getCollision(point,nTPoint::get(20,20,1)),GL::getTextureByName("S2"));
+        nTRectangle r=nTRectangle::getCollision(point,nTPoint::get(20,20,1));
+        r.p0.z=1;
+        GL::drawTexture(r,GL::getTextureByName("S2"));
     }
     point.set(Scenes::camera.x.movedCam+10,Scenes::camera.y.movedCam+23,1);
     GL::drawCentered_Y_Text(point,"Vida:",GL::getColorByName("black"));
@@ -818,7 +821,7 @@ void GL::drawHUD(){
     string strT(buffer);
     GL::drawCentered_Y_Text(point,"Tempo(s): "+strT,GL::getColorByName("black"));
     if(!Scenes::freeGameMode){
-        point.set(Scenes::camera.x.movedCam+168,Scenes::camera.y.movedCam+23,1);
+        point.set(Scenes::camera.x.movedCam+186,Scenes::camera.y.movedCam+23,1);
         snprintf(buffer,5,"%d",Player::lives);
         string strL(buffer);
         GL::drawCentered_Y_Text(point,"Vidas: "+strL,GL::getColorByName("black"));

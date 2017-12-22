@@ -67,7 +67,7 @@ public:
 
     static bool isPaused;
     static nTPoint defaultSize;
-    static nTPoint currentSize;
+    static nTRectangle currentViewPort;
     static bool leftMouseClicked;
     static bool leftMouseReleased;
     static bool rightMouseClicked;

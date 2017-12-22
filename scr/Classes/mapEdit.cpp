@@ -575,6 +575,7 @@ void mapEdit::drawPanel(){
         poinT.x-=10*strT.size();
         poinT.z=1;
         GL::drawText(poinT,strT,GL::getColorByName("black"));
+        GL::drawRectangle(nTRectangle::get(GL::mousePos.x-5,GL::mousePos.y-2,poinT.x,GL::mousePos.y-19,1),GL::getColorByName("white"));
     }
     GL::setFont("BITMAP_TIMES_ROMAN_24");
     if(!isUser)

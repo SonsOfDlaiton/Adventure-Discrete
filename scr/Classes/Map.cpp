@@ -106,7 +106,10 @@ void Map::setBlockPos(){
                     nTPoint pos=bl->pos;
                     pos.z=0.9;
                     pos.y-=Blocks::defaultBlockSize.y;
-                    Player::getPlayerById(0)->spawn(pos,Player::getPlayerById(0)->life);
+                    if(Scenes::freeGameMode)
+                        Player::getPlayerById(0)->spawn(pos,Player::defaultLife);
+                    else
+                        Player::getPlayerById(0)->spawn(pos,Player::getPlayerById(0)->life);
                 }else if(Blocks::checkIfBlocksIsPlayerSpawn(actualMap.map[i][j]));
 
                 else if(Blocks::checkIfBlocksIsEnemySpawn(actualMap.map[i][j])){
@@ -265,7 +268,7 @@ void Map::refresh(){
             else if(Blocks::checkIfBlocksIsHalfBlockH(bl->type)&&Scenes::camera.isInTheYScreen(nTRectangle::getCollision(bl->pos,bl->size)))
                 bl->move(Util::direction_left,bl->moveSpeed/GL::getFPS());
             else if(Blocks::checkIfBlocksIsShooter(bl->type)&&Scenes::camera.isInTheXScreen(nTRectangle::getCollision(bl->pos,bl->size))){
-                if(round(fmodl(GL::getGameMs(),(int)Bullet::timeToShoot/5))==0&&Player::getPlayerById(0)->life>0){
+                if(round(fmodl(GL::getGameMs(),(int)Bullet::timeToShoot/2.5))==0&&Player::getPlayerById(0)->life>0){
                     nTPoint tmp=bl->pos;
                     tmp.z=0.9;
                     tmp.x+=Blocks::defaultBlockSize.x*1.2;

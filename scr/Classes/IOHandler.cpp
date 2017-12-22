@@ -359,16 +359,6 @@ void IOHandler::mousePress(int button,int state,int x,int y){
  *	@param y the mouse y position
 **/
 void IOHandler::mousePassiveMotion(int x,int y){
-//        GLdouble model[16];
-//        GLdouble proj[16];
-//        GLint view[4];
-//        glGetDoublev(GL_MODELVIEW_MATRIX, model);
-//        glGetDoublev(GL_PROJECTION_MATRIX, proj);
-//        glGetIntegerv(GL_VIEWPORT, view);
-//        double tX=0,tY=0,tZ=0;
-//        int newY=view[3]-view[1]-y-view[1];
-//        gluProject((double)x, (double)newY, 0 , model, (const GLdouble*)proj, view, &tX,&tY,&tZ);
-//        GL::mousePos.set(tX+Scenes::camera.x.movedCam,tY+Scenes::camera.y.movedCam,tZ);
     GL::rawMousePos.set(x,y,0);
 }
 

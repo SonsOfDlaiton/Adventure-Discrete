@@ -58,33 +58,28 @@ void CallbacksHandler::drawScene(void){
  *	@param height the new height of the window
 **/
 void CallbacksHandler::reshape(int width, int height){
-//    double windowAspectRatio,worldAspectRatio,xViewport,yViewport;
-//    int WindowWidth,WindowHeight;
-    // realHeight=height;
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(Scenes::camera.x.movedCam, GL::defaultSize.x+Scenes::camera.x.movedCam,GL::defaultSize.y+Scenes::camera.y.movedCam, Scenes::camera.y.movedCam, -1, 1);
-    // windowAspectRatio = ((double)width)/height;
-    // worldAspectRatio = ((double) GL::defaultSize.x)/ GL::defaultSize.y;
-    // xViewport=0;yViewport=0;
-    // if (windowAspectRatio < worldAspectRatio) {
-        // cout<<"menor\n";
-        // xViewport = width / worldAspectRatio;
-        // yViewport = (height - xViewport)/2;
-        glViewport(0, 0, width, height);
-        GL::currentSize.x=width;
-        GL::currentSize.y=height;
-    // }else if (windowAspectRatio > worldAspectRatio) {
-        // yViewport = ((double)height) * worldAspectRatio;
-        // xViewport = (width - yViewport)/2;
-        // glViewport(xViewport, 0, yViewport, height);
-        // GL::currentSize.x=height-xViewport;
-        // GL::currentSize.y=yViewport;
-    // } else {
-        // glViewport(0, 0, width, height);
-        // GL::currentSize.x=width;
-        // GL::currentSize.y=height;
-    // }
+    
+    float newAspectRatio=(float)width/(float)height;
+    float oldAspectRatio=(float)GL::defaultSize.x/(float)GL::defaultSize.y;
+    float scale=1;
+    nTPoint crop=nTPoint::get(0,0);
+    if(newAspectRatio > oldAspectRatio){
+        scale = (float)height/(float)GL::defaultSize.y;
+        crop.x = (width - GL::defaultSize.x*scale)/2;
+    }else if(newAspectRatio < oldAspectRatio){
+        scale = (float)width/(float)GL::defaultSize.x;
+        crop.y = (height - GL::defaultSize.y*scale)/2;
+    }else{
+        scale = (float)width/(float)GL::defaultSize.x;
+    }
+    float w = (float)GL::defaultSize.x*scale;
+    float h = (float)GL::defaultSize.y*scale;
+    GL::currentViewPort=nTRectangle::get(crop.x, crop.y, w, h);
+    glViewport(crop.x, crop.y, w, h);
+
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
@@ -114,8 +109,8 @@ void CallbacksHandler::framesCheck(int n){
 **/
 void CallbacksHandler::update(int n){
     FunctionAnalyser::startFrame();
-    GL::mousePos.x=GL::rawMousePos.x*(double)GL::defaultSize.x/(double)GL::currentSize.x+Scenes::camera.x.movedCam;
-    GL::mousePos.y=GL::rawMousePos.y*(double)GL::defaultSize.y/(double)GL::currentSize.y+Scenes::camera.y.movedCam;
+    GL::mousePos.x=(GL::rawMousePos.x-GL::currentViewPort.p0.x)*(double)GL::defaultSize.x/(double)GL::currentViewPort.p1.x+Scenes::camera.x.movedCam;
+    GL::mousePos.y=(GL::rawMousePos.y-GL::currentViewPort.p0.y)*(double)GL::defaultSize.y/(double)GL::currentViewPort.p1.y+Scenes::camera.y.movedCam;
     if(IOHandler::ReleaseMouseOffSet){
         GL::leftMouseReleased=false;
         IOHandler::ReleaseMouseOffSet=false;

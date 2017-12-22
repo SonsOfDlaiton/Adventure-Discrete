@@ -152,7 +152,13 @@ void Bullet::move(int dir,double steeps){
           for(int i=0; i<var.size(); i++){
             if(var[i].collision.firstObj==Mechanics::LEFT||var[i].collision.firstObj==Mechanics::RIGHT){
               collision=true;
-              break;
+                if(var[i].blockId>=Map::staticBlocks.size()){
+                    Blocks* bl=(Blocks*) Map::dynamicBlocks[var[i].blockId-Map::staticBlocks.size()];
+                    if(Blocks::checkIfBlocksIsEnemyCollider(bl->type))
+                        collision=false;
+                    else
+                        break;
+                }
             }
           }
           if(!collision)
