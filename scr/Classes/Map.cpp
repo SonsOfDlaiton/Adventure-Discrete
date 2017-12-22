@@ -434,6 +434,7 @@ bool Map::loadMap(string path){
     if(mapFILE.is_open()){
         string tmp2;
         vector<int> tmp3;
+        getline(mapFILE,tmp2);//read version
         getline(mapFILE,tmp2);
         int loop;
         vector<int> b;
@@ -512,6 +513,8 @@ bool Map::saveMap(string path,int idx){
     }
     ofstream mapFILE(path);
     if(mapFILE.is_open()){
+        SETTINGS s;
+        mapFILE<<s.version<<endl;
         mapFILE<<save.backgrounds.size()<<endl;
         for(int i=0; i<save.backgrounds.size(); i++){
             if(save.backgrounds[i].getMove())

@@ -24,6 +24,7 @@ bool saveMap(char* path,int idx){
     }
     ofstream mapFILE(path);
     if(mapFILE.is_open()){
+        mapFILE<<"Generated Used mapFileGen.c"<<endl;
         mapFILE<<maps[idx].backgroundId<<endl;
         for(int i=0;i<maps[idx].map.size();i++){
             for(int j=0;j<maps[idx].map[i].size();j++)
