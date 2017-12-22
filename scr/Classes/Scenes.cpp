@@ -364,7 +364,9 @@ void Scenes::drawCredits(){
       AL::singleton->stopAllSoundsExcept(tmp);
   }
   GL::drawTexture((nTRectangle::get(0,600,800,0)),GL::getTextureByName("credits"));
-  if(GL::buttonBehave(nTRectangle::get(57,500+50,187,450+50,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("backIcon")))
+  // if(GL::buttonBehave(nTRectangle::get(57,500+50,187,450+50,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("backIcon")))
+  //   Scenes::current=menu;
+  if(GL::textButtonBehave(nTRectangle::get(57,500+50,187,450+50,0.4),nTColor::get(0.4,0.4,0.4),"Voltar",nTColor::get(1,0.2,0.4),GL::getTextureByName("Ballon")))
     Scenes::current=menu;
 
 }

@@ -60,6 +60,8 @@ public:
     static double getGameMs();
     static bool buttonBehave(nTRectangle collision,nTColor pressedColor,GLuint tex,bool holdClick,void(*clickFunction)(int,int),void(*releaseFunction)(int,int),void(*RclickFunction)(int,int),void(*RreleaseFunction)(int,int));
     static bool buttonBehave(nTRectangle collision,nTColor pressedColor,GLuint tex);
+    static bool textButtonBehave(nTRectangle collision,nTColor pressedColor,string text,nTColor textColor,GLuint tex,bool holdClick,void(*clickFunction)(int,int),void(*releaseFunction)(int,int),void(*RclickFunction)(int,int),void(*RreleaseFunction)(int,int));
+    static bool textButtonBehave(nTRectangle collision,nTColor pressedColor,string text,nTColor textColor,GLuint tex);
     static vector<vector<double> > getRotateMatrix(double angle);
     static vector<vector<double> > getTranslateMatrix(nTPoint point);
     static nTPoint getModelViewPoint(nTPoint point);

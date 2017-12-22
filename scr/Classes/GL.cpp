@@ -622,6 +622,83 @@ bool GL::buttonBehave(nTRectangle collision,nTColor pressedColor,GLuint tex){
 }
 
 /**
+ *  Draw and manage mouse events of a button
+ *
+ *  @param collision the coordinates of the button
+ *  @param pressedColor the draw color of the button when has the mouse over it
+ *  @param text text of the button
+ *  @param textColor the text color
+ *  @param tex texture id of the button
+ *  @param holdClick if false only compute one click
+ *  @param clickFunction the function to be called when the button is left mouse clicked
+ *  @param releaseFunction the function to be called when the left mouse clicked button is released
+ *  @param RclickFunction the function to be called when the button is right mouse clicked
+ *  @param RreleaseFunction the function to be called when the right mouse clicked button is released
+ *  @return true if the button is being left mouse clicked
+**/
+bool GL::textButtonBehave(nTRectangle collision,nTColor pressedColor,string text,nTColor textColor,GLuint tex,bool holdClick,void(*clickFunction)(int,int),void(*releaseFunction)(int,int),void(*RclickFunction)(int,int),void(*RreleaseFunction)(int,int)){
+    
+    
+    if(GL::mousePos.x>=collision.p0.x&&GL::mousePos.x<=collision.p1.x&&((GL::mousePos.y>=collision.p0.y&&GL::mousePos.y<=collision.p1.y)||(GL::mousePos.y>=collision.p1.y&&GL::mousePos.y<=collision.p0.y))){
+        if(tex){
+            collision.p0.z+=0.00002;
+            GL::drawTexture(collision,pressedColor,tex);
+        }else{
+            collision.p0.z+=0.00002;
+            GL::drawRectangle(collision,pressedColor);
+        }
+        if(GL::leftMouseClicked||GL::rightMouseClicked)
+            AL::singleton->playSoundByName("mouse");
+        if(GL::leftMouseClicked){
+            if(*clickFunction!=NULL){
+                clickFunction((int)GL::mousePos.x,(int)GL::mousePos.y);
+            }
+            if(!holdClick)GL::leftMouseClicked=0;
+            return true;
+        }else if(GL::leftMouseReleased){
+            if(*releaseFunction!=NULL){
+                 releaseFunction((int)GL::mousePos.x,(int)GL::mousePos.y);
+            }
+            GL::leftMouseReleased=0;
+            return false;
+        }
+        if(GL::rightMouseClicked){
+            if(*RclickFunction!=NULL){
+                RclickFunction((int)GL::mousePos.x,(int)GL::mousePos.y);
+            }
+             if(!holdClick)GL::rightMouseClicked=0;
+            return false;
+        }else if(GL::rightMouseReleased){
+            if(*RreleaseFunction!=NULL){
+                 RreleaseFunction((int)GL::mousePos.x,(int)GL::mousePos.y);
+            }
+            GL::rightMouseReleased=0;
+            return false;
+        }
+    }else{
+        collision.p0.z-=0.00001;
+        GL::drawTexture(collision,tex);
+    }
+
+    collision.p0.z+=0.00001;
+    GL::drawCentered_MultilineX_Y_Text(nTPoint::get((collision.p0.x+collision.p1.x)/2,(collision.p0.y+collision.p1.y)/2,collision.p0.z),text,textColor);
+    return false;
+}
+
+/**
+ *  Draw and manage mouse events of a button
+ *
+ *  @param collision the coordinates of the button
+ *  @param pressedColor the draw color of the button when has the mouse over it
+ *  @param text text of the button
+ *  @param tex texture id of the button
+ *  @return true if the button is being left mouse clicked
+**/
+bool GL::textButtonBehave(nTRectangle collision,nTColor pressedColor,string text,nTColor textColor,GLuint tex){
+    return GL::textButtonBehave(collision,pressedColor,text,textColor,tex,false,NULL,NULL,NULL,NULL);
+}
+
+/**
  *	Modify the operator << to print this type of objects
  *	The parameters are passed automatically
  *
