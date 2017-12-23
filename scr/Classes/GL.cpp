@@ -945,6 +945,7 @@ string GL::getEditText(string editName){
     for(int i=0;i<edits.size();i++)
         if(editName==edits[i])
             return editsText[i];
+    return "";
 }
 
 void GL::setEditText(string editName,string text){
@@ -955,7 +956,7 @@ void GL::setEditText(string editName,string text){
         }
 }
 
-string GL::editTextBehave(nTRectangle collision,string font,string editName,bool numeric){
+void GL::editTextBehave(nTRectangle collision,string font,string editName,bool numeric){
     int editId=-1;
     for(int i=0;i<edits.size();i++){
         if(edits[i]==editName){
@@ -993,7 +994,7 @@ string GL::editTextBehave(nTRectangle collision,string font,string editName,bool
     int cursor=editTextPosition;
     if(cursor<0) cursor=textToDraw.size();
     if(editOnFocous==editId){ //draw text plus | (blinking pipe)
-        if(round(fmodf(GL::getGameMs(),500))){
+        if(round(fmodl(GL::getGameMs(),500))){
             textToDraw.insert(cursor,"|");
         }else{
             textToDraw.insert(cursor," ");
@@ -1007,9 +1008,10 @@ string GL::editTextBehave(nTRectangle collision,string font,string editName,bool
             cursor++;
         }
     }
+    float lineHeight=fnt->calcBoundaries("|").y;
     boundaries = fnt->calcBoundaries(textToDraw);
     if(boundaries.y>boxSize.y){
-        float lineHeight=fnt->calcBoundaries("|").y;
+        
         int maxLines=floor(boundaries.y/lineHeight);
         int lines=1;
         int centerLine=0;
@@ -1030,13 +1032,16 @@ string GL::editTextBehave(nTRectangle collision,string font,string editName,bool
             textToDraw+=splited[centerLine+i]+"\n";
         }
     }
-    drawCentered_MultilineX_Y_Text(nTPoint::get(ABS((collision.p0.x+collision.p1.x)/2),ABS((collision.p0.y+collision.p1.y)/2),collision.p0.z),textToDraw,GL::getColorByName("black"));
+    drawCentered_MultilineX_Text(nTPoint::get(ABS((collision.p0.x+collision.p1.x)/2),collision.p0.y-lineHeight,collision.p0.z),textToDraw,GL::getColorByName("black"));
     currentFont=fontBKP;
 }
 
 void GL::typeOnEdit(char c){
+    int cursor=editTextPosition;
+    if(cursor<0) cursor=0;
     if(edits.size()>0&&editOnFocous>=0){
-        editsText[editOnFocous].insert(editTextPosition,c+"");
+        if((editsNumeric[editOnFocous]&&isdigit(c))||!editsNumeric[editOnFocous])
+        editsText[editOnFocous].insert(cursor,c+"");
     }
 }
 

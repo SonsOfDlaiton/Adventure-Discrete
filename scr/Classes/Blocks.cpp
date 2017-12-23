@@ -11,9 +11,6 @@ Blocks::Blocks(int type,nTPoint pos,nTPoint size,string data){
     this->isVisible=true;
     this->color=nTColor::White();
     this->data=data;
-    if(checkIfBlocksIsEnemyCollider(type)){
-        this->size.y/=4;
-    }
     if(checkIfBlocksIsHalfBlockV(type)){
         if(type==255) // ???????????
             type=251;

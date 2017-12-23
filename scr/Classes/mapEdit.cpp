@@ -602,7 +602,6 @@ void mapEdit::drawPanel(){
     GL::setFont("BITMAP_HELVETICA_18");
     GL::drawCentered_MultilineX_Text(nTPoint::get(725+Scenes::camera.x.movedCam,272+Scenes::camera.y.movedCam,1),"Selected block\n data:",GL::getColorByName("green"));
     GL::editTextBehave(nTRectangle::get(660+Scenes::camera.x.movedCam,290+Scenes::camera.y.movedCam,790+Scenes::camera.x.movedCam,499+Scenes::camera.y.movedCam,1),"BITMAP_TIMES_ROMAN_10","mapEdit::blockData",false);
-
 }
 
 /**
