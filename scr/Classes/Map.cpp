@@ -97,6 +97,7 @@ void Map::deleteAllBlocks(){
 **/
 void Map::setBlockPos(){
     deleteAllBlocks();
+    Tutorials::clear();
     Blocks *bl;
     for(int i=0;i<actualMap.map.size();i++){
         for(int j=0;j<actualMap.map[0].size();j++){
@@ -124,6 +125,10 @@ void Map::setBlockPos(){
                     pos.y-=Blocks::defaultBlockSize.y;
                     new Enemy((actualMap.map[i][j]-5000)+1000,Enemy::bossLife,pos,Enemy::bossSize,Entity::getAnimationVector(Enemy::enemyAnim[0],Enemy::enemyAnimSize[0]),0);
                     nOfEnemys+=3;
+                }else if(Blocks::checkIfBlocksIsTutorial(actualMap.map[i][j])){
+                    Tutorials::add(bl->data,false);
+                }else if(Blocks::checkIfBlocksIsTutorialPause(actualMap.map[i][j])){
+                    Tutorials::add(bl->data,true);
                 }else{
                     bl->id=dynamicBlocks.size();
                     dynamicBlocks.push_back(bl);
@@ -141,6 +146,7 @@ void Map::setBlockPos(){
                     pos.z=0.9;
                     pos.y-=Blocks::defaultBlockSize.y;
                     Player::getPlayerById(0)->spawn(pos,Player::getPlayerById(0)->life);
+                    Tutorials::checkpoints.push_back(j);
                 }
             }
         }
@@ -149,7 +155,7 @@ void Map::setBlockPos(){
         bl=(Blocks*)dynamicBlocks[i];
         bl->id+=staticBlocks.size();
     }
-
+    Tutorials::processCheckpoints();
     expetedTime=(int)actualMap.map.size();
 }
 

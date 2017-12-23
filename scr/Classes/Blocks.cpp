@@ -1,6 +1,6 @@
 #include "Blocks.hpp"
 
-Blocks::Blocks(int type,nTPoint pos,nTPoint size) {
+Blocks::Blocks(int type,nTPoint pos,nTPoint size,string data){
     this->type=type;
     this->pos=pos;
     this->size=size;
@@ -10,9 +10,10 @@ Blocks::Blocks(int type,nTPoint pos,nTPoint size) {
     this->damageState=false;
     this->isVisible=true;
     this->color=nTColor::White();
-	if(checkIfBlocksIsEnemyCollider(type)){
-		this->size.y/=4;
-	}
+    this->data=data;
+    if(checkIfBlocksIsEnemyCollider(type)){
+        this->size.y/=4;
+    }
     if(checkIfBlocksIsHalfBlockV(type)){
         if(type==255) // ???????????
             type=251;
@@ -32,6 +33,10 @@ Blocks::Blocks(int type,nTPoint pos,nTPoint size) {
         else
             color.A=0.85f;
     }
+}
+
+Blocks::Blocks(int type,nTPoint pos,nTPoint size):Blocks(type,pos,size,""){
+
 }
 
 Blocks::Blocks(const Blocks& orig) {
@@ -62,13 +67,16 @@ const int Blocks::StaticLava=379;
 const int Blocks::StaticWater=378;
 const int Blocks::HalfBlockVCactus=255;
 const int Blocks::GlassBlock=330;
-const int Blocks::EndLevelBlock=666; 
+const int Blocks::EndLevelBlock=666;
 const int Blocks::BusShooterBlock=200;
 const int Blocks::InvalidPowerUpBlock=325;
 const int Blocks::InvalidPowerUpChest=500;
 const int Blocks::IceBlock=17;
 const int Blocks::IceHHalfBlock=204;
 const int Blocks::IceVHalfBlock=254;
+const int Blocks::TutorialBlock=527;
+const int Blocks::TutorialPauseBlock=528;
+
 /**
  *	Gets the texture id of this block
  *
@@ -262,6 +270,14 @@ string Blocks::getTexNameByIndex(int BlockType){
         else if(BlockType==526){
             if(Scenes::current==Scenes::mapEdit)
                 return string("EnemyCtrl");
+            return string("Invisivel");
+        }else if(BlockType==527){
+            if(Scenes::current==Scenes::mapEdit)
+                return string("TutorialBlock");
+            return string("Invisivel");
+        }else if(BlockType==528){
+            if(Scenes::current==Scenes::mapEdit)
+                return string("TutorialPauseBlock");
             return string("Invisivel");
         }
 
@@ -464,7 +480,8 @@ bool Blocks::checkIfBlocksIsDynamic(int type){
         ||checkIfBlocksIsLiquid(type)||checkIfBlocksIsLever(type)||checkIfBlocksIsJumpBoost(type)
         ||checkIfBlocksIsBossSpawn(type)||checkIfBlocksIsPlayerSpawn(type)||checkIfBlocksIsEnemySpawn(type)
         ||checkIfBlocksIsCheckpoint(type)||checkIfBlocksIsTeleportDoor(type)||checkIfBlocksIsTeleportPipe(type)
-        ||checkIfBlocksIsEndLevel(type)||checkIfBlocksIsEnemyCollider(type);
+        ||checkIfBlocksIsEndLevel(type)||checkIfBlocksIsEnemyCollider(type)||checkIfBlocksIsTutorial(type)
+        ||checkIfBlocksIsTutorialPause(type);
 }
 
 /**

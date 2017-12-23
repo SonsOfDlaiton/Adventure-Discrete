@@ -140,20 +140,24 @@ void mapEdit::definePages(){
     pageTmp.clear();
 
     pageNames.push_back("Especiais");
-    rowTmp.push_back(101);
-    rowTmp.push_back(102);
-    rowTmp.push_back(200);
-    rowTmp.push_back(501);
-    rowTmp.push_back(451);
-    rowTmp.push_back(452);
+    rowTmp.push_back(101); // shooter
+    rowTmp.push_back(102); // shooter
+    rowTmp.push_back(200); // bus shooter
+    rowTmp.push_back(501); // jump boost
+    rowTmp.push_back(451); // lever
+    rowTmp.push_back(452); // lever
     pageTmp.push_back(rowTmp);
     rowTmp.clear();
-    rowTmp.push_back(453);
-    rowTmp.push_back(454);
-    rowTmp.push_back(4001);
-    rowTmp.push_back(4002);
-    rowTmp.push_back(666);
-    rowTmp.push_back(526);
+    rowTmp.push_back(453); // lever
+    rowTmp.push_back(454); // lever
+    rowTmp.push_back(4001); // checkpoint
+    rowTmp.push_back(4002); // checkpoint
+    rowTmp.push_back(666); // end level
+    rowTmp.push_back(526); // enemy control
+    pageTmp.push_back(rowTmp);
+    rowTmp.clear();
+    rowTmp.push_back(527); // tutorial
+    rowTmp.push_back(528); // tutorial pause
     pageTmp.push_back(rowTmp);
     rowTmp.clear();
     blockPages.push_back(pageTmp);
@@ -548,8 +552,8 @@ void mapEdit::drawPanel(){
     GL::buttonBehave(nTRectangle::get(770+Scenes::camera.x.movedCam,60+Scenes::camera.y.movedCam,790+Scenes::camera.x.movedCam,40+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("-"),false,NULL,*mapEditPageDown,NULL,NULL);
     GL::buttonBehave(nTRectangle::get(660+Scenes::camera.x.movedCam,60+Scenes::camera.y.movedCam,680+Scenes::camera.x.movedCam,40+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("+"),false,NULL,*mapEditPageUp,NULL,NULL);
     GL::setFont("BITMAP_HELVETICA_12");
-    GL::drawText(nTPoint::get(550+Scenes::camera.x.movedCam,530+Scenes::camera.y.movedCam,1),"Bloco Atual",GL::getColorByName("black"));
-    GL::drawText(nTPoint::get(550+Scenes::camera.x.movedCam,582+Scenes::camera.y.movedCam,1),Blocks::getTexNameByIndex(currentBlock)+getMoreInfoAboutBlocks(currentBlock),GL::getColorByName("black"));
+    GL::drawText(nTPoint::get(550+Scenes::camera.x.movedCam,536+Scenes::camera.y.movedCam,1),"Bloco Atual",GL::getColorByName("black"));
+    GL::drawText(nTPoint::get(550+Scenes::camera.x.movedCam,588+Scenes::camera.y.movedCam,1),Blocks::getTexNameByIndex(currentBlock)+getMoreInfoAboutBlocks(currentBlock),GL::getColorByName("black"));
     if(currentBlock<60000&&currentBlock!=0)
         GL::drawTexture(nTRectangle::get(550+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,580+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getTextureByName(Blocks::getTexNameByIndex(currentBlock)));
     else if(currentBlock==0)
@@ -595,6 +599,10 @@ void mapEdit::drawPanel(){
         }
     }
 
+    GL::setFont("BITMAP_HELVETICA_18");
+    GL::drawCentered_MultilineX_Text(nTPoint::get(725+Scenes::camera.x.movedCam,272+Scenes::camera.y.movedCam,1),"Selected block\n data:",GL::getColorByName("green"));
+    GL::drawRectangle(nTRectangle::get(660+Scenes::camera.x.movedCam,290+Scenes::camera.y.movedCam,790+Scenes::camera.x.movedCam,499+Scenes::camera.y.movedCam,0.99),GL::getColorByName("white"));
+    GL::drawRectangle(nTRectangle::get(659+Scenes::camera.x.movedCam,289+Scenes::camera.y.movedCam,791+Scenes::camera.x.movedCam,500+Scenes::camera.y.movedCam,0.98),GL::getColorByName("black"));
 }
 
 /**

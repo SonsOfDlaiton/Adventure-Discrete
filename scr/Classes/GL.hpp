@@ -58,6 +58,12 @@ public:
     static void drawPause();
     static void drawHUD();
     static double getGameMs();
+    static void clearEdits();
+    static void typeOnEdit(char c);
+    static void moveEditCursor(int direction);
+    static string editTextBehave(nTRectangle collision,string font,string editName);
+    static string getEditText(string editName);
+    static void setEditText(string editName,string text);
     static bool buttonBehave(nTRectangle collision,nTColor pressedColor,GLuint tex,bool holdClick,void(*clickFunction)(int,int),void(*releaseFunction)(int,int),void(*RclickFunction)(int,int),void(*RreleaseFunction)(int,int));
     static bool buttonBehave(nTRectangle collision,nTColor pressedColor,GLuint tex);
     static bool textButtonBehave(nTRectangle collision,nTColor pressedColor,string text,nTColor textColor,GLuint tex,bool holdClick,void(*clickFunction)(int,int),void(*releaseFunction)(int,int),void(*RclickFunction)(int,int),void(*RreleaseFunction)(int,int));
@@ -86,6 +92,9 @@ private:
     static vector<string> textureNames;
     static vector<GLuint> textures;
     static vector<void*> fonts;
+    static int editOnFocous;
+    static vector<string> edits;
+    static vector<string> editsText;
     friend ostream& operator<<(ostream &strm, const GL &gl);
 };
 void drawScene(void);

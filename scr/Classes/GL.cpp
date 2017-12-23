@@ -60,6 +60,9 @@ bool GL::rightMouseReleased=false;
 unsigned long int GL::framesInGame=0;
 nTPoint GL::mousePos;
 nTPoint GL::rawMousePos;
+int GL::editOnFocous=-1;
+vector<string> GL::edits;
+vector<string> GL::editsText;
 
 
 /**
@@ -637,8 +640,6 @@ bool GL::buttonBehave(nTRectangle collision,nTColor pressedColor,GLuint tex){
  *  @return true if the button is being left mouse clicked
 **/
 bool GL::textButtonBehave(nTRectangle collision,nTColor pressedColor,string text,nTColor textColor,GLuint tex,bool holdClick,void(*clickFunction)(int,int),void(*releaseFunction)(int,int),void(*RclickFunction)(int,int),void(*RreleaseFunction)(int,int)){
-    
-    
     if(GL::mousePos.x>=collision.p0.x&&GL::mousePos.x<=collision.p1.x&&((GL::mousePos.y>=collision.p0.y&&GL::mousePos.y<=collision.p1.y)||(GL::mousePos.y>=collision.p1.y&&GL::mousePos.y<=collision.p0.y))){
         if(tex){
             collision.p0.z+=0.00002;
@@ -928,4 +929,59 @@ void GL::drawHUD(){
 **/
 double GL::getGameMs(){
     return GL::framesInGame*1000/GL::FPS;
+}
+
+
+void GL::clearEdits(){
+    editOnFocous=-1;
+    edits.clear();
+    editsText.clear();
+}
+
+string GL::getEditText(string editName){
+    for(int i=0;i<edits.size();i++)
+        if(editName==edits[i])
+            return editsText[i];
+}
+
+void GL::setEditText(string editName,string text){
+    for(int i=0;i<edits.size();i++)
+        if(edits[i]==editName){
+            editsText[i]=text;
+            return;
+        }
+}
+
+string GL::editTextBehave(nTRectangle collision,string font,string editName){
+    int editId=-1;
+    for(int i=0;i<edits.size();i++){
+        if(edits[i]==editName){
+            if(editId<0)
+                editId=i;
+            else{
+                if(Util::DEBUG) cout<<"ERROR: two edits with the same id("<<editName<<")\n\n\n\nERROR: two edits with the same id\n";
+            }
+        }
+    }
+    if(editId<0){
+        editId=edits.size();
+        edits.push_back(editName);
+        editsText.push_back("");
+    }
+
+    if(GL::mousePos.x>=collision.p0.x&&GL::mousePos.x<=collision.p1.x&&((GL::mousePos.y>=collision.p0.y&&GL::mousePos.y<=collision.p1.y)||(GL::mousePos.y>=collision.p1.y&&GL::mousePos.y<=collision.p0.y))){
+        if(GL::leftMouseReleased){
+            AL::singleton->playSoundByName("mouse");
+            GL::leftMouseReleased=0;
+            editOnFocous=editId;
+        }
+    }
+}
+
+void GL::typeOnEdit(char c){
+
+}
+
+void GL::moveEditCursor(int direction){
+
 }

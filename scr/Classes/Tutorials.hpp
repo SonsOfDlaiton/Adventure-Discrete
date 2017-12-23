@@ -10,45 +10,26 @@ public:
     Tutorials(const Tutorials& orig);
     virtual ~Tutorials();
 
-    void draw();
-    void refresh(string text,int key);
+    static void draw();
+    static void pressKey(char key);
+    static void clear();
+    static void processCheckpoints();
+    static void behave();
+    static void add(string data, bool pause_);
 
-    static int pressedKey;
-    static bool initHelpC;
-    static bool atackHelpC;
-    static bool jumpHelpC;
-    static bool powerupHelpC;
-    static bool rangedAtkHelpC;
-    static bool bossHelpC;
-    static bool breakHelpC;
-    static bool moveHelpC;
-    static bool tpHelpC;
-    static bool intercampiHelpC;
-    static bool jumpSpringHelpC;
-    static bool shooterHelpC;
-    static bool checkHelpC;
-    static string initHelp;
-    static string atackHelp;
-    static string jumpHelp;
-    static string powerupHelp;
-    static string rangedAtkHelp;
-    static string bossHelp;
-    static string breakHelp;
-    static string moveHelp;
-    static string tpHelp;
-    static string intercampiHelp;
-    static string jumpSpringHelp;
-    static string shooterHelp;
-    static string checkHelp;
-    static string hudHelp;
+    static vector<int> checkpoints;
     static bool isPaused;
-    static Tutorials* singleton;
 private:
-    void drawWhispText(string text);
-
-    bool isCalled;
-    string text;
-    int key;
+    static void drawWhispText(string text);
+    static void add(int pos,string text,vector<char> keys_, int duration, bool pause_);
+    static vector<int> tutorials;
+    static vector<string> texts;
+    static vector<vector<char> > keys;
+    static vector<int> time;
+    static vector<bool> pause;
+    static vector<bool> called;
+    static double startTutMs;
+    static int activeTut;
     static bool showTutorials;
 };
 

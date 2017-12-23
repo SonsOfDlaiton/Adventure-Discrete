@@ -218,7 +218,7 @@ void Player::stateControl(){
     if(hSpeed==0||!collisionIce)AL::singleton->stopSound(AL::singleton->getSoundByName("ice"));
     if(IOHandler::ReleaseZOffSet){
         if(!GL::isPaused){
-            Tutorials::pressedKey='z';
+            //Tutorials::pressedKey='z'; ?????????????  TODO REMOVE
             atacking=Player::meleeProjectile;
         }
         IOHandler::ReleaseZOffSet=false;

@@ -27,7 +27,7 @@ void IOHandler::specialKeyboard(int key, int x, int y){
   {
     case GLUT_KEY_UP:
         if(Scenes::current==Scenes::game&&!GL::isPaused){
-            Tutorials::pressedKey=GLUT_KEY_UP;
+            Tutorials::pressKey(GLUT_KEY_UP);
             Player::getPlayerById(0)->atackDirection=Util::direction_up;
             if(Camera::freeCam)
                  Scenes::camera.y.movingCam=-1;
@@ -37,7 +37,7 @@ void IOHandler::specialKeyboard(int key, int x, int y){
 
     case GLUT_KEY_DOWN:
         if(Scenes::current==Scenes::game&&!GL::isPaused){
-            Tutorials::pressedKey=GLUT_KEY_UP;
+            Tutorials::pressKey(GLUT_KEY_DOWN);
             Player::getPlayerById(0)->atackDirection=Util::direction_down;
             Player::getPlayerById(0)->canTp=true;
             if(Camera::freeCam)
@@ -51,7 +51,7 @@ void IOHandler::specialKeyboard(int key, int x, int y){
         if(Scenes::current==Scenes::game&&!GL::isPaused){
             if(SpecReleaseKey==-1)
                 SpecReleaseKey=0;
-            Tutorials::pressedKey=GLUT_KEY_UP;
+            Tutorials::pressKey(GLUT_KEY_LEFT);
              Player::getPlayerById(0)->orientation=Util::orientation_left;
              Player::getPlayerById(0)->atackDirection=Util::direction_left;
              if(glutGetModifiers()==GLUT_ACTIVE_SHIFT){
@@ -69,7 +69,7 @@ void IOHandler::specialKeyboard(int key, int x, int y){
         if(Scenes::current==Scenes::game&&!GL::isPaused){
             if(SpecReleaseKey==1)
                 SpecReleaseKey=0;
-            Tutorials::pressedKey=GLUT_KEY_UP;
+            Tutorials::pressKey(GLUT_KEY_RIGHT);
             Player::getPlayerById(0)->orientation=Util::orientation_right;
             Player::getPlayerById(0)->atackDirection=Util::direction_right;
             if(glutGetModifiers()==GLUT_ACTIVE_SHIFT){
@@ -98,7 +98,6 @@ void IOHandler::keyboard(unsigned char key, int x, int y){
         if(!GL::isPaused&&Scenes::current==Scenes::game){
             if(!Tutorials::isPaused)Player::getPlayerById(0)->jump();
             Player::getPlayerById(0)->spacePressed=true;
-            Tutorials::pressedKey=' ';
         }
         if(Scenes::current==Scenes::splash)
           Scenes::skipScene=true;
@@ -108,7 +107,6 @@ void IOHandler::keyboard(unsigned char key, int x, int y){
       case 'z':
           if(!GL::isPaused){
             ReleaseZOffSet=false;
-            Tutorials::pressedKey='z';
             Player::getPlayerById(0)->atacking=Player::melee;
           }
       break;
@@ -116,23 +114,23 @@ void IOHandler::keyboard(unsigned char key, int x, int y){
       case 'X':
       case 'x':
           if(!GL::isPaused){
-            Tutorials::pressedKey='x';
             Player::getPlayerById(0)->atacking=Player::ranged;
           }
       break;
 
       case 27:
-         if(!GL::isPaused){
-            Tutorials::pressedKey=27;
-         }
         if(Scenes::current==Scenes::game)
             GL::isPaused=!GL::isPaused;
       break;
       default:break;
     }
-    if(key>0)
+    if(key>0){
         if(Scenes::current==Scenes::splash)
           Scenes::skipScene=true;
+        if(!GL::isPaused){
+            Tutorials::pressKey(key);
+        }
+    }
 }
 
 /**

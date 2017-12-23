@@ -9,6 +9,7 @@ class GL;
 
 class Blocks {
 public:
+    Blocks(int type,nTPoint pos,nTPoint size,string data);
     Blocks(int type,nTPoint pos,nTPoint size);
     Blocks(const Blocks& orig);
     virtual ~Blocks();
@@ -50,6 +51,7 @@ public:
     int id;
     bool isVisible;
     int brokeStage;
+    string data;
     static const int AnimatedWater1;
     static const int AnimatedWater2;
     static const int AnimatedLava1;
@@ -65,6 +67,8 @@ public:
     static const int IceBlock;
     static const int IceHHalfBlock;
     static const int IceVHalfBlock;
+    static const int TutorialBlock;
+    static const int TutorialPauseBlock;
     static nTPoint defaultBlockSize;
 private:
     friend class Map;

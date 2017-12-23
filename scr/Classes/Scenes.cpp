@@ -74,7 +74,7 @@ void Scenes::setAllCalledFalseExcept(vector<int> except){
     posGameEndCalled=false;
     posYouWinCalled=false;
 
-
+    GL::clearEdits();
     GL::framesInGame=0;
     camera.putCameraOnOrigin();
     for(int i=0;i<except.size();i++)
@@ -107,10 +107,6 @@ void Scenes::drawGame(){
                 Map::changeCurrentMap(Map::maps[Player::stage]);
             else
                 Map::changeCurrentMap(Map::maps[0]);
-            if(Tutorials::singleton==nullptr)
-                new Tutorials("",0);
-            if(Player::stage==0&&Player::checkpoint==0)
-                Tutorials::singleton->refresh(Tutorials::hudHelp,(int)' ');
         }
         setAllCalledFalseExcept(getUnityVector(game));//fala que ja chamou essa cena
         GL::isPaused=false;
@@ -155,85 +151,8 @@ void Scenes::drawGame(){
     powerUp::behave();
     Bullet::behave();
     Map::transparencyLayerDraw();
-
-    if(!Scenes::freeGameMode&&Player::stage==0){
-        double jPos=Player::getPlayerById(0)->pos.x/Blocks::defaultBlockSize.x;
-        if(Player::checkpoint==0){
-            // if(!Tutorials::initHelpC&&jPos>2){
-            //     Tutorials::singleton->refresh(Tutorials::initHelp,GLUT_KEY_UP);
-            //     Tutorials::initHelpC=true;
-            // }
-
-            // if(!Tutorials::jumpHelpC&&jPos>5){
-            //     Tutorials::singleton->refresh(Tutorials::jumpHelp,(int)' ');
-            //     Tutorials::jumpHelpC=true;
-            // }
-
-            if(!Tutorials::atackHelpC&&jPos>10){
-                Tutorials::singleton->refresh(Tutorials::atackHelp,(int)'z');
-                Tutorials::atackHelpC=true;
-            }
-
-            // if(!Tutorials::rangedAtkHelpC&&jPos>12){
-            //     Tutorials::singleton->refresh(Tutorials::rangedAtkHelp,(int)'x');
-            //     Tutorials::rangedAtkHelpC=true;
-            // }
-
-            // if(!Tutorials::powerupHelpC&&jPos>15){
-            //     Tutorials::singleton->refresh(Tutorials::powerupHelp,(int)' ');
-            //     Player::getPlayerById(0)->canJump=false;
-            //     Tutorials::powerupHelpC=true;
-            // }
-
-            // if(!Tutorials::breakHelpC&&jPos>20){
-            //     Tutorials::singleton->refresh(Tutorials::breakHelp,(int)'z');
-            //     Tutorials::breakHelpC=true;
-            // }
-
-            // if(!Tutorials::tpHelpC&&jPos>23){
-            //     Tutorials::singleton->refresh(Tutorials::tpHelp,(int)' ');
-            //     Player::getPlayerById(0)->canJump=false;
-            //     Tutorials::tpHelpC=true;
-            // }
-
-            // if(!Tutorials::jumpSpringHelpC&&jPos>30){
-            //     Tutorials::singleton->refresh(Tutorials::jumpSpringHelp,(int)' ');
-            //     Player::getPlayerById(0)->canJump=false;
-            //     Tutorials::jumpSpringHelpC=true;
-            // }
-
-
-            // if(!Tutorials::shooterHelpC&&jPos>36){
-            //     Tutorials::singleton->refresh(Tutorials::shooterHelp,(int)' ');
-            //     Player::getPlayerById(0)->canJump=false;
-            //     Tutorials::shooterHelpC=true;
-            // }
-
-            // if(!Tutorials::moveHelpC&&jPos>40){
-            //     Tutorials::singleton->refresh(Tutorials::moveHelp,(int)' ');
-            //     Player::getPlayerById(0)->canJump=false;
-            //     Tutorials::moveHelpC=true;
-            // }
-
-            // if(!Tutorials::intercampiHelpC&&jPos>46){
-            //     Tutorials::singleton->refresh(Tutorials::intercampiHelp,(int)' ');
-            //     Player::getPlayerById(0)->canJump=false;
-            //     Tutorials::intercampiHelpC=true;
-            // }
-
-            // if(!Tutorials::checkHelpC&&jPos>=50){
-            //     Tutorials::singleton->refresh(Tutorials::checkHelp,(int)' ');
-            //     Player::getPlayerById(0)->canJump=false;
-            //     Tutorials::checkHelpC=true;
-            // }
-        }
-        // if(!Tutorials::bossHelpC&&jPos>190){
-        //     Tutorials::singleton->refresh(Tutorials::bossHelp,(int)' ');
-        //     Player::getPlayerById(0)->canJump=false;
-        //     Tutorials::bossHelpC=true;
-        // }
-    }
-    if(!freeGameMode)Tutorials::singleton->draw();
+    if(!Scenes::freeGameMode)
+        Tutorials::behave();
     if(GL::isPaused)
         GL::drawPause();
     else{

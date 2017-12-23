@@ -190,6 +190,8 @@ bool AssetsLoader::loadTextures(){
     if(!GL::loadTexture("Door up","Textures/blocks/81.png"))out=false;
     if(!GL::loadTexture("Web","Textures/blocks/12.png"))out=false;
     if(!GL::loadTexture("Folha","Textures/blocks/225.png"))out=false;
+    if(!GL::loadTexture("TutorialBlock","Textures/blocks/tutorial.png"))out=false;
+    if(!GL::loadTexture("TutorialPauseBlock","Textures/blocks/tutorialPause.png"))out=false;
 
     //blocos nao categorizados
     if(!GL::loadTexture("EnemyCtrl","Textures/blocks/enemyctlr.png"))out=false;
