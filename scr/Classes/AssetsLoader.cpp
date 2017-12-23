@@ -38,9 +38,19 @@ bool AssetsLoader::loadFonts(){
 bool AssetsLoader::loadTextures(){
     bool out = true;
     GL::loadTexture("paraboloide hiperbolico<3","Textures/paraboloideHiperbolico.png");//n precisa de if
+   
+    //tutorial
+    if(!GL::loadTexture("TutTextHolder","Textures/HUD/Tutorials/textHolder.png")) out=false;
+    if(!GL::loadTexture("Whisp","Textures/HUD/Tutorials/zero.png")) out=false;
+    if(!GL::loadTexture("Douglinhas","Textures/HUD/Tutorials/douglas.png")) out=false;
+    if(!GL::loadTexture("technical","Textures/HUD/Tutorials/technical.png")) out=false;
+    if(!GL::loadTexture("graduation","Textures/HUD/Tutorials/graduation.png")) out=false;
+    if(!GL::loadTexture("masters","Textures/HUD/Tutorials/masters.png")) out=false;
+    if(!GL::loadTexture("work","Textures/HUD/Tutorials/work.png")) out=false;
+    if(!GL::loadTexture("teacher","Textures/HUD/Tutorials/teacher.png")) out=false;
+
     //HUD
     if(!GL::loadTexture("Ballon","Textures/HUD/defaultBallon.png")) out=false;
-    if(!GL::loadTexture("Whisp","Textures/HUD/Tutorials/whisp.png")) out=false;
     if(!GL::loadTexture("-","Textures/HUD/Buttons/arrowMinus.png")) out=false;
     if(!GL::loadTexture("+","Textures/HUD/Buttons/arrowPlus.png")) out=false;
     if(!GL::loadTexture("CameraDefault","Textures/HUD/Buttons/camera.png")) out=false;

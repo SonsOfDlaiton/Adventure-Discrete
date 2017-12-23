@@ -151,8 +151,7 @@ void Scenes::drawGame(){
     powerUp::behave();
     Bullet::behave();
     Map::transparencyLayerDraw();
-    if(!Scenes::freeGameMode)
-        Tutorials::behave();
+    Tutorials::behave();
     if(GL::isPaused)
         GL::drawPause();
     else{

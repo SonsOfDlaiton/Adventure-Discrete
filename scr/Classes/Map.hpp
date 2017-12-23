@@ -32,6 +32,13 @@ public:
     static vector<void*> dynamicBlocks;
     static vector<nTMap> maps;
     static nTMap usrMap;
+
+    static const int lvlTechnical;
+    static const int lvlGraduation;
+    static const int lvlMasters;
+    static const int lvlWork;
+    static const int lvlGoodTecher;
+    static const int lvlBadTecher;
 private:
     friend class GL;
 

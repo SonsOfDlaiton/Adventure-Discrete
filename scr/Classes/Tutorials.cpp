@@ -45,13 +45,32 @@ void Tutorials::draw(){
     return;
   if(showTutorials){
     GLuint friendTex=GL::getTextureByName("Whisp"); //default for unkown levels
-
-    //TODO mudar textura dependendo da fase
+    if(!Scenes::freeGameMode){
+      if(Player::stage==Map::lvlTechnical)
+        friendTex=GL::getTextureByName("technical");
+      else if(Player::stage==Map::lvlGraduation)
+        friendTex=GL::getTextureByName("graduation");
+      else if(Player::stage==Map::lvlMasters)
+        friendTex=GL::getTextureByName("masters");
+      else if(Player::stage==Map::lvlWork)
+        friendTex=GL::getTextureByName("work");
+      else if(Player::stage==Map::lvlGoodTecher)
+        friendTex=GL::getTextureByName("teacher");
+      else if(Player::stage==Map::lvlBadTecher)
+        friendTex=GL::getTextureByName("teacher");
+      if(texts[activeTut].find("Douglas")!=string::npos)
+        friendTex=GL::getTextureByName("Douglinhas");
+    }
 
     GL::drawTexture((nTRectangle::get(Scenes::camera.x.movedCam,
         300+Scenes::camera.y.movedCam,
         800+Scenes::camera.x.movedCam,
-        Scenes::camera.y.movedCam,0.9999)),
+        Scenes::camera.y.movedCam,0.999)),
+        GL::getTextureByName("TutTextHolder"));
+    GL::drawTexture((nTRectangle::get(Scenes::camera.x.movedCam,
+        300+Scenes::camera.y.movedCam,
+        300+Scenes::camera.x.movedCam,
+        Scenes::camera.y.movedCam,0.99998)),
         friendTex);
     drawWhispText(texts[activeTut]);
   }
@@ -62,12 +81,12 @@ void Tutorials::behave(){
     double playerPos=Player::getPlayerById(0)->pos.x/Blocks::defaultBlockSize.x;
     for(int i=0;i<tutorials.size();i++){
       if(!called[i]&&tutorials[i]<=playerPos){
+        if(pause[i])
+          isPaused=true;
         called[i]=true;
         AL::playSoundByName("heyListen");
         activeTut=i;
         startTutMs=-GL::getGameMs();
-        if(pause[i])
-          isPaused=true;
         break;
       }
     }

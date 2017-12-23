@@ -22,13 +22,20 @@ vector<void*> Map::staticBlocks;
 vector<void*> Map::dynamicBlocks;
 nTMap Map::actualMap;//GLuint Map::background;
 nTPoint Map::size;
-int Map::nOfMaps=3;
+int Map::nOfMaps=6;
 int Map::nOfBackgrounds=3;
 int Map::nOfEnemys=0;
 int Map::expetedTime=0;
 int Map::totalPowerUps=0;
 vector<nTMap> Map::maps;
 nTMap Map::usrMap;
+
+const int Map::lvlTechnical=0;
+const int Map::lvlGraduation=1;
+const int Map::lvlMasters=2;
+const int Map::lvlWork=3;
+const int Map::lvlGoodTecher=4;
+const int Map::lvlBadTecher=5;
 
 /**
  *	Change the current map
