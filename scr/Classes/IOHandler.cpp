@@ -140,8 +140,7 @@ void IOHandler::keyboard(unsigned char key, int x, int y){
  *	@param y the mouse y position when the key was released
 **/
 void IOHandler::specialKeyboardUp(int key,int x,int y){
-  switch(key)
-  {
+  switch(key){
     case GLUT_KEY_UP:
     if(Scenes::current==Scenes::game){
       if(Player::getPlayerById(0)->orientation>=Util::orientation_right)
@@ -166,7 +165,7 @@ void IOHandler::specialKeyboardUp(int key,int x,int y){
     break;
 
     case GLUT_KEY_LEFT:
-    
+
     if(Scenes::current==Scenes::game){
       if(Player::getPlayerById(0)->orientation>=Util::orientation_right)
             Player::getPlayerById(0)->atackDirection=Util::direction_right;
@@ -214,57 +213,10 @@ void IOHandler::keyboardUp(unsigned char key,int x,int y){
             ReleaseZOffSet=true;
         break;
 
-        // case '0':
-        //       if(Scenes::current==Scenes::mapEdit)
-        //           mapEdit::input+=key;
-        // break;
-        // case '1':
-        //       if(Scenes::current==Scenes::mapEdit)
-        //           mapEdit::input+=key;
-        // break;
-        // case '2':
-        //       if(Scenes::current==Scenes::mapEdit)
-        //           mapEdit::input+=key;
-        // break;
-        // case '3':
-        //       if(Scenes::current==Scenes::mapEdit)
-        //           mapEdit::input+=key;
-        // break;
-        // case '4':
-        //       if(Scenes::current==Scenes::mapEdit)
-        //           mapEdit::input+=key;
-        // break;
-        // case '5':
-        //       if(Scenes::current==Scenes::mapEdit)
-        //           mapEdit::input+=key;
-        // break;
-        // case '6':
-        //       if(Scenes::current==Scenes::mapEdit)
-        //           mapEdit::input+=key;
-        // break;
-        // case '7':
-        //       if(Scenes::current==Scenes::mapEdit)
-        //           mapEdit::input+=key;
-        // break;
-        // case '8':
-        //       if(Scenes::current==Scenes::mapEdit)
-        //           mapEdit::input+=key;
-        // break;
-        // case '9':
-        //       if(Scenes::current==Scenes::mapEdit)
-        //           mapEdit::input+=key;
-        // break;
-
         case 'D':
         case 'd':
-              if(Scenes::current==Scenes::mapEdit)
+              if(Scenes::current==Scenes::mapEdit&&!GL::hasEditOnFocous())
                   mapEdit::isUser=!mapEdit::isUser;
-        break;
-
-        case 'U':
-        case 'u':
-              if(Scenes::current==Scenes::mapEdit&&mapEdit::size.y==0&&mapEdit::isCreating==-1)
-                  mapEdit::load(-1);
         break;
 
         case 'C':
@@ -283,35 +235,6 @@ void IOHandler::keyboardUp(unsigned char key,int x,int y){
             if(Scenes::current==Scenes::game||Scenes::current==Scenes::mapEdit)
                 Mechanics::drawCollisionRec=!Mechanics::drawCollisionRec;
             break;
-
-        case 13://enter
-            if(Scenes::current==Scenes::mapEdit&&mapEdit::input!=""){
-                double tmp;
-                istringstream (mapEdit::input) >> tmp;
-                mapEdit::input="";
-
-                if(mapEdit::isCreating==1){
-                    if(tmp>=19&&tmp<65000&&(mapEdit::size.y==0||mapEdit::size.x==0)){
-                        if(mapEdit::size.y==0){
-                            mapEdit::size.y=tmp;
-                        }else{
-                            mapEdit::size.x=tmp;
-                            mapEdit::setMapSize();
-                        }
-                    }
-                }else if(mapEdit::isCreating==-1){
-                    if(tmp>=0&&tmp<Map::maps.size()&&(mapEdit::size.y==0||mapEdit::size.x==0)){
-                        mapEdit::load(tmp);
-                    }
-                }
-            }
-        break;
-
-        case 8://backSpace
-            if(Scenes::current==Scenes::mapEdit)
-                if(mapEdit::input.size())
-                    mapEdit::input.erase(mapEdit::input.begin()+mapEdit::input.size()-1);
-        break;
     }
     if(key>0){
       GL::typeOnEdit(key);

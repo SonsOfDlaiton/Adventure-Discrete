@@ -684,7 +684,7 @@ bool GL::textButtonBehave(nTRectangle collision,nTColor pressedColor,string text
     }
 
     collision.p0.z+=0.00001;
-    GL::drawCentered_MultilineX_Y_Text(nTPoint::get((collision.p0.x+collision.p1.x)/2,(collision.p0.y+collision.p1.y)/2,collision.p0.z),text,textColor);
+    GL::drawCentered_MultilineX_Y_Text(nTPoint::get((collision.p0.x+collision.p1.x)/2,(collision.p0.y+collision.p1.y)/2+4,collision.p0.z),text,textColor);
     return false;
 }
 
@@ -952,11 +952,24 @@ void GL::setEditText(string editName,string text){
     for(int i=0;i<edits.size();i++)
         if(edits[i]==editName){
             editsText[i]=text;
+            editTextPosition=text.size();
             return;
         }
 }
 
 void GL::editTextBehave(nTRectangle collision,string font,string editName,bool numeric){
+    editTextBehave(collision,font,nTColor::get(0,0,0),"",editName,numeric);
+}
+
+void GL::editTextBehave(nTRectangle collision,string font,string initial,string editName,bool numeric){
+    editTextBehave(collision,font,nTColor::get(0,0,0),initial,editName,numeric);
+}
+
+void GL::editTextBehave(nTRectangle collision,string font,nTColor fontcolor,string editName,bool numeric){
+    editTextBehave(collision,font,fontcolor,"",editName,numeric);
+}
+
+void GL::editTextBehave(nTRectangle collision,string font,nTColor fontcolor,string initial,string editName,bool numeric){
     int editId=-1;
     for(int i=0;i<edits.size();i++){
         if(edits[i]==editName){
@@ -971,7 +984,7 @@ void GL::editTextBehave(nTRectangle collision,string font,string editName,bool n
         editId=edits.size();
         edits.push_back(editName);
         editsNumeric.push_back(numeric);
-        editsText.push_back("");
+        editsText.push_back(initial);
     }
 
     if(GL::leftMouseReleased){
@@ -981,7 +994,6 @@ void GL::editTextBehave(nTRectangle collision,string font,string editName,bool n
             editOnFocous=editId;
             editTextPosition=editsText[editOnFocous].size();
         }else{
-            GL::leftMouseReleased=0;
             editOnFocous=-1;
         }
     }
@@ -998,7 +1010,7 @@ void GL::editTextBehave(nTRectangle collision,string font,string editName,bool n
     int cursor=editTextPosition;
     if(cursor<0) cursor=textToDraw.size();
     if(editOnFocous==editId){ //draw text plus | (blinking pipe)
-        if(round(fmodl(GL::getGameMs(),500))){
+        if(round(fmodl(GL::getGameMs(),500)>250)){
             textToDraw.insert(cursor,"|");
         }else{
             textToDraw.insert(cursor," ");
@@ -1055,7 +1067,7 @@ void GL::editTextBehave(nTRectangle collision,string font,string editName,bool n
             }
         }
     }
-    drawText(nTPoint::get(collision.p0.x+lineWidth/2,collision.p0.y-lineHeight,collision.p0.z),textToDraw,GL::getColorByName("black"));
+    drawText(nTPoint::get(collision.p0.x+lineWidth/2,collision.p0.y-((float)lineHeight*1.1f),collision.p0.z),textToDraw,GL::getColorByName("black"));
     currentFont=fontBKP;
 }
 
@@ -1063,43 +1075,51 @@ void GL::typeOnEdit(char c){
     int cursor=editTextPosition;
     if(cursor<0) cursor=0;
     if(edits.size()>0&&editOnFocous>=0){
-        if((editsNumeric[editOnFocous]&&isdigit(c))||!editsNumeric[editOnFocous]){
-            switch(c){
-                case ' ':
-                    editsText[editOnFocous].insert(cursor," ");
+        switch(c){
+            case ' ':
+                editsText[editOnFocous].insert(cursor," ");
+                editTextPosition++;
+                break;
+
+            case 13: // enter
+                editsText[editOnFocous].insert(cursor,"\n");
+                editTextPosition++;
+                break;
+
+            case 8: // backspace
+                if(cursor!=0){
+                    editsText[editOnFocous].erase(editsText[editOnFocous].begin()+cursor-1);
+                    editTextPosition--;
+                }
+                break;
+
+            case 9: // tab
+                editOnFocous++;
+                if(editOnFocous>=edits.size()||editOnFocous<0)
+                    editOnFocous=0;
+                break;
+
+            case 127: // delete
+                if(cursor!=editsText[editOnFocous].size())
+                    editsText[editOnFocous].erase(editsText[editOnFocous].begin()+cursor);
+                break;
+
+            default:
+                if((editsNumeric[editOnFocous]&&isdigit(c))||(!editsNumeric[editOnFocous]&&isgraph(c))){
+                    stringstream ss;
+                    string s;
+                    ss<<c;
+                    ss>>s;
+                    editsText[editOnFocous].insert(cursor,s);
                     editTextPosition++;
-                    break;
-
-                case 13: // enter
-                    editsText[editOnFocous].insert(cursor,"\n");
-                    editTextPosition++;
-                    break;
-
-                case 8: // backspace
-                    if(cursor!=0){
-                        editsText[editOnFocous].erase(editsText[editOnFocous].begin()+cursor-1);
-                        editTextPosition--;
-                    }
-                    break;
-
-                case 127: // delete
-                    if(cursor!=editsText[editOnFocous].size())
-                        editsText[editOnFocous].erase(editsText[editOnFocous].begin()+cursor);
-                    break;
-
-                default:
-                    if(isgraph(c)){
-                        stringstream ss;
-                        string s;
-                        ss<<c;
-                        ss>>s;
-                        editsText[editOnFocous].insert(cursor,s);
-                        editTextPosition++;
-                    }
-                    break;
-            }
+                }
+                break;
         }
     }
+}
+
+bool GL::hasEditOnFocous(){
+    return edits.size()>0&&editOnFocous>=0;
 }
 
 void GL::moveEditCursor(int direction){

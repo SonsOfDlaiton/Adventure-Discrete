@@ -40,7 +40,7 @@
 	"Util.hpp"
 	"GL.hpp"
 
-1514042069 /home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/GL.hpp
+1514055186 /home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/GL.hpp
 	<GL/glut.h>
 	<GLUT/glut.h>
 	<GL/freeglut.h>
@@ -85,7 +85,7 @@
 	"Map.hpp"
 	"Tutorials.hpp"
 
-1513734849 /home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/mapEdit.hpp
+1514053370 /home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/mapEdit.hpp
 	"Util.hpp"
 	"GL.hpp"
 	"Blocks.hpp"
@@ -223,7 +223,7 @@
 	"Mechanics.hpp"
 	"Entity.hpp"
 
-1514031171 source:/home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/AssetsLoader.cpp
+1514052547 source:/home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/AssetsLoader.cpp
 	"AssetsLoader.hpp"
 
 1513734849 source:/home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/Background.cpp
@@ -261,13 +261,13 @@
 1513734849 source:/home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/FunctionAnalyser.cpp
 	"FunctionAnalyser.hpp"
 
-1514048215 source:/home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/GL.cpp
+1514057399 source:/home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/GL.cpp
 	"GL.hpp"
 	"AssetsLoader.hpp"
 	"IOHandler.hpp"
 	"CallbacksHandler.hpp"
 
-1514042623 source:/home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/IOHandler.cpp
+1514057460 source:/home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/IOHandler.cpp
 	"IOHandler.hpp"
 	"Scenes.hpp"
 
@@ -283,7 +283,7 @@
 	"AssetsLoader.hpp"
 	"Camera.hpp"
 
-1514043240 source:/home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/mapEdit.cpp
+1514057321 source:/home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/mapEdit.cpp
 	"mapEdit.hpp"
 
 1513823796 source:/home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/Mechanics.cpp
@@ -307,7 +307,7 @@
 	"Scenes.hpp"
 	"Camera.hpp"
 
-1514048670 source:/home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/Scenes.cpp
+1514054213 source:/home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/Scenes.cpp
 	"Scenes.hpp"
 	"Bullet.hpp"
 	"powerUp.hpp"

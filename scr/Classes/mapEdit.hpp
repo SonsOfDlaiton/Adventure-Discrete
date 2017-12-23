@@ -22,8 +22,6 @@ public:
     static void definePages();
 
     static bool isUser;
-    static string input;
-    static string blankField;
     static nTPoint scale;
     static nTPoint HUDarea;
     static nTPoint size;

@@ -59,8 +59,12 @@ public:
     static void drawHUD();
     static double getGameMs();
     static void clearEdits();
+    static bool hasEditOnFocous();
     static void typeOnEdit(char c);
     static void moveEditCursor(int direction);
+    static void editTextBehave(nTRectangle collision,string font,nTColor fontcolor,string initial,string editName,bool numeric);
+    static void editTextBehave(nTRectangle collision,string font,nTColor fontcolor,string editName,bool numeric);
+    static void editTextBehave(nTRectangle collision,string font,string initial,string editName,bool numeric);
     static void editTextBehave(nTRectangle collision,string font,string editName,bool numeric);
     static string getEditText(string editName);
     static void setEditText(string editName,string text);

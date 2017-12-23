@@ -61,6 +61,7 @@ bool AssetsLoader::loadTextures(){
     if(!GL::loadTexture("playIcon","Textures/HUD/Buttons/play.png")) out=false;
     if(!GL::loadTexture("mapEditIcon","Textures/HUD/Buttons/mapEdit.png")) out=false;
     if(!GL::loadTexture("optionsIcon","Textures/HUD/Buttons/options.png")) out=false;
+    if(!GL::loadTexture("btnSkin1","Textures/HUD/Buttons/btn_skin1.png")) out=false;
     if(!GL::loadTexture("S2","Textures/HUD/heart.png")) out=false;
     if(!GL::loadTexture("legalNote","Textures/logo/legalNote.png")) out=false;
     if(!GL::loadTexture("credits","Textures/logo/credits.png")) out=false;

@@ -188,13 +188,6 @@ void Scenes::drawMapEdit(){
     AL::singleton->playSoundByName("menuSong");
     if(mapEdit::size.x==0){
         GL::drawTexture(nTRectangle::get(0,GL::defaultSize.y,GL::defaultSize.x,0,-0.9),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("background0"));
-        if(fmodl(GL::framesInGame,(int)GL::getFPS()/3)==0){
-            if(mapEdit::blankField==""){
-                mapEdit::blankField="_";
-            }else{
-                mapEdit::blankField="";
-            }
-        }
          if(mapEdit::isCreating==0){
             GL::setFont("BITMAP_TIMES_ROMAN_24");
             GL::drawText(nTPoint::get(100,75,1),"Selecione o modo de edi��o:",GL::getColorByName("violet"));
@@ -263,9 +256,6 @@ void Scenes::drawMenu(){
           if(GL::buttonBehave(nTRectangle::get(5*57+400,557+23,6*57+23+400,500,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("theCOM")))
             Scenes::current=credits;
     GL::drawTexture(nTRectangle::get(100,300,700,0,0.4),GL::getTextureByName("legendsLogo"));
-
-    //TODO DELETE ME v
-    GL::editTextBehave(nTRectangle::get(660+Scenes::camera.x.movedCam,290+Scenes::camera.y.movedCam,790+Scenes::camera.x.movedCam,499+Scenes::camera.y.movedCam,1),"BITMAP_TIMES_ROMAN_10","mapEdit::blockData",false);
 }
 
 /**
@@ -286,9 +276,7 @@ void Scenes::drawCredits(){
       AL::singleton->stopAllSoundsExcept(tmp);
   }
   GL::drawTexture((nTRectangle::get(0,600,800,0)),GL::getTextureByName("credits"));
-  // if(GL::buttonBehave(nTRectangle::get(57,500+50,187,450+50,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("backIcon")))
-  //   Scenes::current=menu;
-  if(GL::textButtonBehave(nTRectangle::get(57,500+50,187,450+50,0.4),nTColor::get(0.4,0.4,0.4),"Voltar",nTColor::get(1,0.2,0.4),GL::getTextureByName("Ballon")))
+  if(GL::buttonBehave(nTRectangle::get(57,500+50,187,450+50,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("backIcon")))
     Scenes::current=menu;
 
 }

@@ -6,7 +6,7 @@ WEBFILES=$(call rwildcard, res/, *)
 SRC=$(wildcard scr/*$(FORMAT))
 CLASSES=$(wildcard scr/Classes/*$(FORMAT))
 LIBS=$(wildcard scr/Libs/*$(FORMAT))
-SOIL=$(wildcard scr/Libs/soil/*c)
+SOIL=$(wildcard scr/Libs/soil/*.c)
 OBJS=$(wildcard obj/*.o)
 EXEC=bin/AdventureDiscrete
 CFLAGS=-w -Wall -std=c++11
