@@ -143,7 +143,6 @@ void IOHandler::specialKeyboardUp(int key,int x,int y){
   switch(key)
   {
     case GLUT_KEY_UP:
-    GL::moveEditCursor(Util::direction_up);
     if(Scenes::current==Scenes::game){
       if(Player::getPlayerById(0)->orientation>=Util::orientation_right)
             Player::getPlayerById(0)->atackDirection=Util::direction_right;
@@ -151,10 +150,10 @@ void IOHandler::specialKeyboardUp(int key,int x,int y){
             Player::getPlayerById(0)->atackDirection=Util::direction_left;
     }
     Scenes::camera.y.movingCam=0;
+    GL::moveEditCursor(Util::direction_left);
     break;
 
     case GLUT_KEY_DOWN:
-    GL::moveEditCursor(Util::direction_down);
     if(Scenes::current==Scenes::game){
         Player::getPlayerById(0)->canTp=false;
         if(Player::getPlayerById(0)->orientation>=Util::orientation_right)
@@ -163,10 +162,11 @@ void IOHandler::specialKeyboardUp(int key,int x,int y){
             Player::getPlayerById(0)->atackDirection=Util::direction_left;
     }
       Scenes::camera.y.movingCam=0;
+      GL::moveEditCursor(Util::direction_right);
     break;
 
     case GLUT_KEY_LEFT:
-    GL::moveEditCursor(Util::direction_left);
+    
     if(Scenes::current==Scenes::game){
       if(Player::getPlayerById(0)->orientation>=Util::orientation_right)
             Player::getPlayerById(0)->atackDirection=Util::direction_right;
@@ -175,10 +175,10 @@ void IOHandler::specialKeyboardUp(int key,int x,int y){
       SpecReleaseKey=-1;
     }
     Scenes::camera.x.movingCam=0;
+    GL::moveEditCursor(Util::direction_left);
     break;
 
     case GLUT_KEY_RIGHT:
-    GL::moveEditCursor(Util::direction_right);
     if(Scenes::current==Scenes::game){
       if(Player::getPlayerById(0)->orientation>=Util::orientation_right)
             Player::getPlayerById(0)->atackDirection=Util::direction_right;
@@ -187,6 +187,7 @@ void IOHandler::specialKeyboardUp(int key,int x,int y){
       SpecReleaseKey=1;
     }
     Scenes::camera.x.movingCam=0;
+    GL::moveEditCursor(Util::direction_right);
     break;
 
     default:

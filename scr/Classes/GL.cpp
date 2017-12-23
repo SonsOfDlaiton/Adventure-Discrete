@@ -974,14 +974,18 @@ void GL::editTextBehave(nTRectangle collision,string font,string editName,bool n
         editsText.push_back("");
     }
 
-    if(GL::mousePos.x>=collision.p0.x&&GL::mousePos.x<=collision.p1.x&&((GL::mousePos.y>=collision.p0.y&&GL::mousePos.y<=collision.p1.y)||(GL::mousePos.y>=collision.p1.y&&GL::mousePos.y<=collision.p0.y))){
-        if(GL::leftMouseReleased){
+    if(GL::leftMouseReleased){
+        if(GL::mousePos.x>=collision.p0.x&&GL::mousePos.x<=collision.p1.x&&((GL::mousePos.y>=collision.p0.y&&GL::mousePos.y<=collision.p1.y)||(GL::mousePos.y>=collision.p1.y&&GL::mousePos.y<=collision.p0.y))){
             AL::singleton->playSoundByName("mouse");
             GL::leftMouseReleased=0;
             editOnFocous=editId;
             editTextPosition=editsText[editOnFocous].size();
+        }else{
+            GL::leftMouseReleased=0;
+            editOnFocous=-1;
         }
     }
+
 
     GL::drawRectangle(nTRectangle::get(collision.p0.x,collision.p0.y,collision.p1.x,collision.p1.y,collision.p0.z-0.001),GL::getColorByName("white"));
     GL::drawRectangle(nTRectangle::get(collision.p0.x-1,collision.p0.y-1,collision.p1.x+1,collision.p1.y+1,collision.p0.z-0.002),GL::getColorByName("black"));
@@ -1000,39 +1004,58 @@ void GL::editTextBehave(nTRectangle collision,string font,string editName,bool n
             textToDraw.insert(cursor," ");
         }
     }
+    float lineWidth=fnt->calcBoundaries("_").x;
     nTPoint boundaries = fnt->calcBoundaries(textToDraw);
     if(boundaries.x>boxSize.x){
-        float diff=(float)boundaries.x/(float)boxSize.x;
-        for(float i=0;i<=boundaries.x;i+=diff){
-            textToDraw.insert(floor(i),"\n");
+        int maxChars=floor((float)boxSize.x/(float)lineWidth);
+        for(int i=maxChars-1;i<textToDraw.size();i+=maxChars){
+            textToDraw.insert(i,"\n");
             cursor++;
         }
     }
     float lineHeight=fnt->calcBoundaries("|").y;
     boundaries = fnt->calcBoundaries(textToDraw);
-    if(boundaries.y>boxSize.y){
-        
-        int maxLines=floor(boundaries.y/lineHeight);
-        int lines=1;
-        int centerLine=0;
-        int last=0;
-        vector<string> splited;
-        for(int i=0;i<textToDraw.size();i++){
-            if(i==cursor)
-                centerLine=lines;
-            if(textToDraw[i]=='\n'){
-                splited.push_back(textToDraw.substr(last,i-last));
-                last=i+1;
-                lines++;
-            }
-        }
-        splited.push_back(textToDraw.substr(last,textToDraw.size()-last));
-        textToDraw="";
-        for(int i=-(maxLines/2);i<maxLines/2;i++){
-            textToDraw+=splited[centerLine+i]+"\n";
+    int maxLines=ABS(floor(boxSize.y/lineHeight));
+    int lines=1;
+    int centerLine=0;
+    int last=0;
+    vector<string> splited;
+    for(int i=0;i<textToDraw.size();i++){
+        if(i==cursor)
+            centerLine=lines;
+        if(textToDraw[i]=='\n'){
+            splited.push_back(textToDraw.substr(last,i-last));
+            last=i+1;
+            lines++;
         }
     }
-    drawCentered_MultilineX_Text(nTPoint::get(ABS((collision.p0.x+collision.p1.x)/2),collision.p0.y-lineHeight,collision.p0.z),textToDraw,GL::getColorByName("black"));
+    splited.push_back(textToDraw.substr(last,textToDraw.size()-last));
+    if(lines>=maxLines){
+        textToDraw="";
+        int newTextLines=0;
+        int first=-1;
+        for(int i=-maxLines/2;i<maxLines/2;i++){
+            if(centerLine+i<splited.size()&&centerLine+i>=0){
+                if(first<0)
+                    first=centerLine+i;
+                textToDraw+=splited[centerLine+i]+"\n";
+                newTextLines++;
+            }
+        }
+        cout<<centerLine-maxLines/2<<endl;
+        if(newTextLines<maxLines){
+            if(centerLine-maxLines/2<=0){
+                for(int i=newTextLines;i<maxLines-1;i++){
+                    textToDraw+=splited[i]+"\n";
+                }
+            }else{
+                for(int i=1;i<=maxLines-newTextLines-1;i++){
+                    textToDraw=splited[first-i]+"\n"+textToDraw;
+                }
+            }
+        }
+    }
+    drawText(nTPoint::get(collision.p0.x+lineWidth/2,collision.p0.y-lineHeight,collision.p0.z),textToDraw,GL::getColorByName("black"));
     currentFont=fontBKP;
 }
 
@@ -1040,8 +1063,42 @@ void GL::typeOnEdit(char c){
     int cursor=editTextPosition;
     if(cursor<0) cursor=0;
     if(edits.size()>0&&editOnFocous>=0){
-        if((editsNumeric[editOnFocous]&&isdigit(c))||!editsNumeric[editOnFocous])
-        editsText[editOnFocous].insert(cursor,c+"");
+        if((editsNumeric[editOnFocous]&&isdigit(c))||!editsNumeric[editOnFocous]){
+            switch(c){
+                case ' ':
+                    editsText[editOnFocous].insert(cursor," ");
+                    editTextPosition++;
+                    break;
+
+                case 13: // enter
+                    editsText[editOnFocous].insert(cursor,"\n");
+                    editTextPosition++;
+                    break;
+
+                case 8: // backspace
+                    if(cursor!=0){
+                        editsText[editOnFocous].erase(editsText[editOnFocous].begin()+cursor-1);
+                        editTextPosition--;
+                    }
+                    break;
+
+                case 127: // delete
+                    if(cursor!=editsText[editOnFocous].size())
+                        editsText[editOnFocous].erase(editsText[editOnFocous].begin()+cursor);
+                    break;
+
+                default:
+                    if(isgraph(c)){
+                        stringstream ss;
+                        string s;
+                        ss<<c;
+                        ss>>s;
+                        editsText[editOnFocous].insert(cursor,s);
+                        editTextPosition++;
+                    }
+                    break;
+            }
+        }
     }
 }
 

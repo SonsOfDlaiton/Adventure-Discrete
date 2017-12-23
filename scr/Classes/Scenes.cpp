@@ -263,6 +263,9 @@ void Scenes::drawMenu(){
           if(GL::buttonBehave(nTRectangle::get(5*57+400,557+23,6*57+23+400,500,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("theCOM")))
             Scenes::current=credits;
     GL::drawTexture(nTRectangle::get(100,300,700,0,0.4),GL::getTextureByName("legendsLogo"));
+
+    //TODO DELETE ME v
+    GL::editTextBehave(nTRectangle::get(660+Scenes::camera.x.movedCam,290+Scenes::camera.y.movedCam,790+Scenes::camera.x.movedCam,499+Scenes::camera.y.movedCam,1),"BITMAP_TIMES_ROMAN_10","mapEdit::blockData",false);
 }
 
 /**

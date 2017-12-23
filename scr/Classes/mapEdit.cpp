@@ -391,20 +391,22 @@ void mapEdit::draw(){
     nTPoint tmp,tmp1;
     for(int i=0;i<size.y;i++){
         for(int j=0;j<size.x;j++){
-                tmp=nTPoint::get(Blocks::defaultBlockSize.x*(j+(1/2))+Blocks::defaultBlockSize.x/2,Blocks::defaultBlockSize.y*(i+(1/2))+Blocks::defaultBlockSize.y/2,Blocks::defaultBlockSize.z);
-                tmp1=Blocks::defaultBlockSize;
-                tmp.x*=scale.x;
-                tmp.y*=scale.y;
-                tmp1.x*=scale.x;
-                tmp1.y*=scale.y;
+            tmp=nTPoint::get(Blocks::defaultBlockSize.x*(j+(1/2))+Blocks::defaultBlockSize.x/2,Blocks::defaultBlockSize.y*(i+(1/2))+Blocks::defaultBlockSize.y/2,Blocks::defaultBlockSize.z);
+            tmp1=Blocks::defaultBlockSize;
+            tmp.x*=scale.x;
+            tmp.y*=scale.y;
+            tmp1.x*=scale.x;
+            tmp1.y*=scale.y;
+            //if(tmp1.x-Scenes::camera.x.movedCam<HUDarea.x&&tmp1.y-Scenes::camera.y.movedCam<HUDarea.y){ TODO desenhar somente se tiver dentro da area editavel
                 GL::buttonBehave(nTRectangle::getCollision(tmp,tmp1),nTColor::get(0.38,0.38,0.38,0.8),0,true,*mapEditButton,NULL,*mapEraseButton,NULL);
-            if(map[i][j]){
-                tmp.z-=0.1;
-                tmp1.z-=0.1;
-                bl = new Blocks(map[i][j],tmp,tmp1);
-                bl->draw();
-                delete bl;
-            }
+                if(map[i][j]){
+                    tmp.z-=0.1;
+                    tmp1.z-=0.1;
+                    bl = new Blocks(map[i][j],tmp,tmp1);
+                    bl->draw();
+                    delete bl;
+                }
+            //}
         }
     }
 }
