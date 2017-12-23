@@ -61,7 +61,7 @@ public:
     static void clearEdits();
     static void typeOnEdit(char c);
     static void moveEditCursor(int direction);
-    static string editTextBehave(nTRectangle collision,string font,string editName);
+    static string editTextBehave(nTRectangle collision,string font,string editName,bool numeric);
     static string getEditText(string editName);
     static void setEditText(string editName,string text);
     static bool buttonBehave(nTRectangle collision,nTColor pressedColor,GLuint tex,bool holdClick,void(*clickFunction)(int,int),void(*releaseFunction)(int,int),void(*RclickFunction)(int,int),void(*RreleaseFunction)(int,int));
@@ -93,7 +93,9 @@ private:
     static vector<GLuint> textures;
     static vector<void*> fonts;
     static int editOnFocous;
+    static int editTextPosition;
     static vector<string> edits;
+    static vector<bool> editsNumeric;
     static vector<string> editsText;
     friend ostream& operator<<(ostream &strm, const GL &gl);
 };

@@ -23,8 +23,7 @@ bool IOHandler::ReleaseZOffSet=false;
  *	@param y the mouse y position when the key was pressed
 **/
 void IOHandler::specialKeyboard(int key, int x, int y){
-  switch(key)
-  {
+  switch(key){
     case GLUT_KEY_UP:
         if(Scenes::current==Scenes::game&&!GL::isPaused){
             Tutorials::pressKey(GLUT_KEY_UP);
@@ -144,6 +143,7 @@ void IOHandler::specialKeyboardUp(int key,int x,int y){
   switch(key)
   {
     case GLUT_KEY_UP:
+    GL::moveEditCursor(Util::direction_up);
     if(Scenes::current==Scenes::game){
       if(Player::getPlayerById(0)->orientation>=Util::orientation_right)
             Player::getPlayerById(0)->atackDirection=Util::direction_right;
@@ -154,6 +154,7 @@ void IOHandler::specialKeyboardUp(int key,int x,int y){
     break;
 
     case GLUT_KEY_DOWN:
+    GL::moveEditCursor(Util::direction_down);
     if(Scenes::current==Scenes::game){
         Player::getPlayerById(0)->canTp=false;
         if(Player::getPlayerById(0)->orientation>=Util::orientation_right)
@@ -165,6 +166,7 @@ void IOHandler::specialKeyboardUp(int key,int x,int y){
     break;
 
     case GLUT_KEY_LEFT:
+    GL::moveEditCursor(Util::direction_left);
     if(Scenes::current==Scenes::game){
       if(Player::getPlayerById(0)->orientation>=Util::orientation_right)
             Player::getPlayerById(0)->atackDirection=Util::direction_right;
@@ -176,6 +178,7 @@ void IOHandler::specialKeyboardUp(int key,int x,int y){
     break;
 
     case GLUT_KEY_RIGHT:
+    GL::moveEditCursor(Util::direction_right);
     if(Scenes::current==Scenes::game){
       if(Player::getPlayerById(0)->orientation>=Util::orientation_right)
             Player::getPlayerById(0)->atackDirection=Util::direction_right;
@@ -210,46 +213,46 @@ void IOHandler::keyboardUp(unsigned char key,int x,int y){
             ReleaseZOffSet=true;
         break;
 
-        case '0':
-              if(Scenes::current==Scenes::mapEdit)
-                  mapEdit::input+=key;
-        break;
-        case '1':
-              if(Scenes::current==Scenes::mapEdit)
-                  mapEdit::input+=key;
-        break;
-        case '2':
-              if(Scenes::current==Scenes::mapEdit)
-                  mapEdit::input+=key;
-        break;
-        case '3':
-              if(Scenes::current==Scenes::mapEdit)
-                  mapEdit::input+=key;
-        break;
-        case '4':
-              if(Scenes::current==Scenes::mapEdit)
-                  mapEdit::input+=key;
-        break;
-        case '5':
-              if(Scenes::current==Scenes::mapEdit)
-                  mapEdit::input+=key;
-        break;
-        case '6':
-              if(Scenes::current==Scenes::mapEdit)
-                  mapEdit::input+=key;
-        break;
-        case '7':
-              if(Scenes::current==Scenes::mapEdit)
-                  mapEdit::input+=key;
-        break;
-        case '8':
-              if(Scenes::current==Scenes::mapEdit)
-                  mapEdit::input+=key;
-        break;
-        case '9':
-              if(Scenes::current==Scenes::mapEdit)
-                  mapEdit::input+=key;
-        break;
+        // case '0':
+        //       if(Scenes::current==Scenes::mapEdit)
+        //           mapEdit::input+=key;
+        // break;
+        // case '1':
+        //       if(Scenes::current==Scenes::mapEdit)
+        //           mapEdit::input+=key;
+        // break;
+        // case '2':
+        //       if(Scenes::current==Scenes::mapEdit)
+        //           mapEdit::input+=key;
+        // break;
+        // case '3':
+        //       if(Scenes::current==Scenes::mapEdit)
+        //           mapEdit::input+=key;
+        // break;
+        // case '4':
+        //       if(Scenes::current==Scenes::mapEdit)
+        //           mapEdit::input+=key;
+        // break;
+        // case '5':
+        //       if(Scenes::current==Scenes::mapEdit)
+        //           mapEdit::input+=key;
+        // break;
+        // case '6':
+        //       if(Scenes::current==Scenes::mapEdit)
+        //           mapEdit::input+=key;
+        // break;
+        // case '7':
+        //       if(Scenes::current==Scenes::mapEdit)
+        //           mapEdit::input+=key;
+        // break;
+        // case '8':
+        //       if(Scenes::current==Scenes::mapEdit)
+        //           mapEdit::input+=key;
+        // break;
+        // case '9':
+        //       if(Scenes::current==Scenes::mapEdit)
+        //           mapEdit::input+=key;
+        // break;
 
         case 'D':
         case 'd':
@@ -308,6 +311,9 @@ void IOHandler::keyboardUp(unsigned char key,int x,int y){
                 if(mapEdit::input.size())
                     mapEdit::input.erase(mapEdit::input.begin()+mapEdit::input.size()-1);
         break;
+    }
+    if(key>0){
+      GL::typeOnEdit(key);
     }
 }
 

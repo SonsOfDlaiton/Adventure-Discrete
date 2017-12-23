@@ -61,7 +61,9 @@ unsigned long int GL::framesInGame=0;
 nTPoint GL::mousePos;
 nTPoint GL::rawMousePos;
 int GL::editOnFocous=-1;
+int GL::editTextPosition=-1;
 vector<string> GL::edits;
+vector<bool> GL::editsNumeric;
 vector<string> GL::editsText;
 
 
@@ -935,6 +937,7 @@ double GL::getGameMs(){
 void GL::clearEdits(){
     editOnFocous=-1;
     edits.clear();
+    editsNumeric.clear();
     editsText.clear();
 }
 
@@ -952,7 +955,7 @@ void GL::setEditText(string editName,string text){
         }
 }
 
-string GL::editTextBehave(nTRectangle collision,string font,string editName){
+string GL::editTextBehave(nTRectangle collision,string font,string editName,bool numeric){
     int editId=-1;
     for(int i=0;i<edits.size();i++){
         if(edits[i]==editName){
@@ -966,6 +969,7 @@ string GL::editTextBehave(nTRectangle collision,string font,string editName){
     if(editId<0){
         editId=edits.size();
         edits.push_back(editName);
+        editsNumeric.push_back(numeric);
         editsText.push_back("");
     }
 
@@ -974,14 +978,78 @@ string GL::editTextBehave(nTRectangle collision,string font,string editName){
             AL::singleton->playSoundByName("mouse");
             GL::leftMouseReleased=0;
             editOnFocous=editId;
+            editTextPosition=editsText[editOnFocous].size();
         }
     }
+
+    GL::drawRectangle(nTRectangle::get(collision.p0.x,collision.p0.y,collision.p1.x,collision.p1.y,collision.p0.z-0.001),GL::getColorByName("white"));
+    GL::drawRectangle(nTRectangle::get(collision.p0.x-1,collision.p0.y-1,collision.p1.x+1,collision.p1.y+1,collision.p0.z-0.002),GL::getColorByName("black"));
+
+    nTPoint boxSize=nTPoint::get(ABS(collision.p1.x-collision.p0.x),ABS(collision.p1.y-collision.p0.y));
+    int fontBKP=currentFont;
+    GL::setFont(font);
+    nTFont *fnt=(nTFont*) fonts[currentFont];
+    string textToDraw=editsText[editId];
+    int cursor=editTextPosition;
+    if(cursor<0) cursor=textToDraw.size();
+    if(editOnFocous==editId){ //draw text plus | (blinking pipe)
+        if(round(fmodf(GL::getGameMs(),500))){
+            textToDraw.insert(cursor,"|");
+        }else{
+            textToDraw.insert(cursor," ");
+        }
+    }
+    nTPoint boundaries = fnt->calcBoundaries(textToDraw);
+    if(boundaries.x>boxSize.x){
+        float diff=(float)boundaries.x/(float)boxSize.x;
+        for(float i=0;i<=boundaries.x;i+=diff){
+            textToDraw.insert(floor(i),"\n");
+            cursor++;
+        }
+    }
+    boundaries = fnt->calcBoundaries(textToDraw);
+    if(boundaries.y>boxSize.y){
+        float lineHeight=fnt->calcBoundaries("|").y;
+        int maxLines=floor(boundaries.y/lineHeight);
+        int lines=1;
+        int centerLine=0;
+        int last=0;
+        vector<string> splited;
+        for(int i=0;i<textToDraw.size();i++){
+            if(i==cursor)
+                centerLine=lines;
+            if(textToDraw[i]=='\n'){
+                splited.push_back(textToDraw.substr(last,i-last));
+                last=i+1;
+                lines++;
+            }
+        }
+        splited.push_back(textToDraw.substr(last,textToDraw.size()-last));
+        textToDraw="";
+        for(int i=-(maxLines/2);i<maxLines/2;i++){
+            textToDraw+=splited[centerLine+i]+"\n";
+        }
+    }
+    drawCentered_MultilineX_Y_Text(nTPoint::get(ABS((collision.p0.x+collision.p1.x)/2),ABS((collision.p0.y+collision.p1.y)/2),collision.p0.z),textToDraw,GL::getColorByName("black"));
+    currentFont=fontBKP;
 }
 
 void GL::typeOnEdit(char c){
-
+    if(edits.size()>0&&editOnFocous>=0){
+        editsText[editOnFocous].insert(editTextPosition,c+"");
+    }
 }
 
 void GL::moveEditCursor(int direction){
-
+    if(edits.size()>0&&editOnFocous>=0){
+        if(direction==Util::direction_left){
+            editTextPosition--;
+            if(editTextPosition<0)
+                editTextPosition=0;
+        }else if(direction==Util::direction_right){
+            editTextPosition++;
+            if(editTextPosition>editsText[editOnFocous].size())
+                editTextPosition=editsText[editOnFocous].size();
+        }
+    }
 }
