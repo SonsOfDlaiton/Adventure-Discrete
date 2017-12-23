@@ -28,7 +28,7 @@ public:
     static int currentBlock;
     static int currentBackground;
     static int index;
-    static vector<vector<int> > map;
+    static vector<vector<pair<int,string> > > map;
     static short int isCreating;
     static vector<vector<vector<int> > >blockPages;
     static vector<string> pageNames;

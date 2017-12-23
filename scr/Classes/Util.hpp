@@ -154,6 +154,7 @@ public:
     static vector <nTPoint> getRetangleVertexs(nTRectangle rectangle);
     static double angleToRad(double angle);
     static double radToAngle(double RAD);
+    static void replaceAllOccurrences(std::string& subject,const std::string& search,const std::string& replace);
 
     static bool DEBUG;
     static const int direction_left;

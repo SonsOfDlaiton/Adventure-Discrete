@@ -15,7 +15,7 @@ public:
     static void clear();
     static void processCheckpoints();
     static void behave();
-    static void add(string data, bool pause_);
+    static void add(int pos,string data, bool pause_);
 
     static vector<int> checkpoints;
     static bool isPaused;

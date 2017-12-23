@@ -26,22 +26,22 @@ void IOHandler::specialKeyboard(int key, int x, int y){
   switch(key){
     case GLUT_KEY_UP:
         if(Scenes::current==Scenes::game&&!GL::isPaused){
-            Tutorials::pressKey(GLUT_KEY_UP);
+            Tutorials::pressKey(1);
             Player::getPlayerById(0)->atackDirection=Util::direction_up;
             if(Camera::freeCam)
                  Scenes::camera.y.movingCam=-1;
-        }else if(Scenes::current==Scenes::mapEdit)
+        }else if(Scenes::current==Scenes::mapEdit&&!GL::hasEditOnFocous())
             Scenes::camera.y.movingCam=-1;
     break;
 
     case GLUT_KEY_DOWN:
         if(Scenes::current==Scenes::game&&!GL::isPaused){
-            Tutorials::pressKey(GLUT_KEY_DOWN);
+            Tutorials::pressKey(2);
             Player::getPlayerById(0)->atackDirection=Util::direction_down;
             Player::getPlayerById(0)->canTp=true;
             if(Camera::freeCam)
                  Scenes::camera.y.movingCam=1;
-        }  else if(Scenes::current==Scenes::mapEdit)
+        }  else if(Scenes::current==Scenes::mapEdit&&!GL::hasEditOnFocous())
             Scenes::camera.y.movingCam=1;
 
     break;
@@ -50,7 +50,7 @@ void IOHandler::specialKeyboard(int key, int x, int y){
         if(Scenes::current==Scenes::game&&!GL::isPaused){
             if(SpecReleaseKey==-1)
                 SpecReleaseKey=0;
-            Tutorials::pressKey(GLUT_KEY_LEFT);
+            Tutorials::pressKey(3);
              Player::getPlayerById(0)->orientation=Util::orientation_left;
              Player::getPlayerById(0)->atackDirection=Util::direction_left;
              if(glutGetModifiers()==GLUT_ACTIVE_SHIFT){
@@ -60,7 +60,7 @@ void IOHandler::specialKeyboard(int key, int x, int y){
              }
              if(Camera::freeCam)
                     Scenes::camera.x.movingCam=-1;
-        }else if(Scenes::current==Scenes::mapEdit)
+        }else if(Scenes::current==Scenes::mapEdit&&!GL::hasEditOnFocous())
             Scenes::camera.x.movingCam=-1;
     break;
 
@@ -68,7 +68,7 @@ void IOHandler::specialKeyboard(int key, int x, int y){
         if(Scenes::current==Scenes::game&&!GL::isPaused){
             if(SpecReleaseKey==1)
                 SpecReleaseKey=0;
-            Tutorials::pressKey(GLUT_KEY_RIGHT);
+            Tutorials::pressKey(4);
             Player::getPlayerById(0)->orientation=Util::orientation_right;
             Player::getPlayerById(0)->atackDirection=Util::direction_right;
             if(glutGetModifiers()==GLUT_ACTIVE_SHIFT){
@@ -78,7 +78,7 @@ void IOHandler::specialKeyboard(int key, int x, int y){
             }
             if(Camera::freeCam)
                  Scenes::camera.x.movingCam=1;
-        }else if(Scenes::current==Scenes::mapEdit)
+        }else if(Scenes::current==Scenes::mapEdit&&!GL::hasEditOnFocous())
             Scenes::camera.x.movingCam=1;
       break;
     }
@@ -232,7 +232,7 @@ void IOHandler::keyboardUp(unsigned char key,int x,int y){
 
         case 'S':
         case 's':
-            if(Scenes::current==Scenes::game||Scenes::current==Scenes::mapEdit)
+            if((Scenes::current==Scenes::game||Scenes::current==Scenes::mapEdit)&&!GL::hasEditOnFocous())
                 Mechanics::drawCollisionRec=!Mechanics::drawCollisionRec;
             break;
     }

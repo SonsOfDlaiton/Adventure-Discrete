@@ -15,7 +15,7 @@ nTPoint mapEdit::HUDarea=nTPoint::get(650,500,1);
 nTPoint mapEdit::size=nTPoint::get(0,0,1);
 int mapEdit::currentBlock=1;
 int mapEdit::currentBackground=0;
-vector<vector<int> > mapEdit::map;
+vector<vector<pair<int,string> > > mapEdit::map;
 int mapEdit::index;
 vector<vector<vector<int> > >mapEdit::blockPages;
 vector<string> mapEdit::pageNames;
@@ -318,10 +318,13 @@ void mapEditButton(int x,int y){
             i=(int)mapEdit::map.size()-1;
         if(j>=mapEdit::map[0].size())
             j=(int)mapEdit::map[0].size()-1;
-        if(mapEdit::currentBlock<60000)
-            mapEdit::map[i][j]=mapEdit::currentBlock;
-        else
-            mapEdit::currentBlock=mapEdit::map[i][j];
+        if(mapEdit::currentBlock!=60000){
+            mapEdit::map[i][j].first=mapEdit::currentBlock;
+            mapEdit::map[i][j].second=GL::getEditText("mapEdit::blockData");
+        }else{
+            mapEdit::currentBlock=mapEdit::map[i][j].first;
+            GL::setEditText("mapEdit::blockData",mapEdit::map[i][j].second);
+        }
     }
 }
 
@@ -345,7 +348,7 @@ void mapEraseButton(int x,int y){
             i=mapEdit::map.size()-1;
         if(j>=mapEdit::map[0].size())
             j=mapEdit::map[0].size()-1;
-        mapEdit::map[i][j]=0;
+        mapEdit::map[i][j].first=0;
     }
 }
 
@@ -370,8 +373,10 @@ void mapEditSetBlock(int x,int y){
         if(j>=mapEdit::blockPages[mapEdit::pageIndex][0].size())
             j=mapEdit::blockPages[mapEdit::pageIndex][0].size()-1;
         if(mapEdit::blockPages[mapEdit::pageIndex][i][j])
-        if(!(mapEdit::blockPages[mapEdit::pageIndex][i][j]>=451&&mapEdit::blockPages[mapEdit::pageIndex][i][j]<=475))
+        if(!(mapEdit::blockPages[mapEdit::pageIndex][i][j]>=451&&mapEdit::blockPages[mapEdit::pageIndex][i][j]<=475)){
             mapEdit::currentBlock=mapEdit::blockPages[mapEdit::pageIndex][i][j];
+            GL::setEditText("mapEdit::blockData","");
+        }
     }
 }
 /**
@@ -396,10 +401,10 @@ void mapEdit::draw(){
             tmp1.y*=scale.y;
             //if(tmp1.x-Scenes::camera.x.movedCam<HUDarea.x&&tmp1.y-Scenes::camera.y.movedCam<HUDarea.y){ TODO desenhar somente se tiver dentro da area editavel
                 GL::buttonBehave(nTRectangle::getCollision(tmp,tmp1),nTColor::get(0.38,0.38,0.38,0.8),0,true,*mapEditButton,NULL,*mapEraseButton,NULL);
-                if(map[i][j]){
+                if(map[i][j].first){
                     tmp.z-=0.1;
                     tmp1.z-=0.1;
-                    bl = new Blocks(map[i][j],tmp,tmp1);
+                    bl = new Blocks(map[i][j].first,tmp,tmp1);
                     bl->draw();
                     delete bl;
                 }
@@ -674,10 +679,13 @@ void mapEdit::askForLoad(){
 void mapEdit::setMapSize(){
     index=(int)Map::maps.size();
     map.clear();
-    vector<int> tmp;
+    pair<int,string> p;
+    p.first=0;
+    p.second="";
+    vector<pair<int,string> > tmp;
     for(int i=0;i<size.y;i++){
         for(int j=0;j<size.x;j++)
-            tmp.push_back(0);
+            tmp.push_back(p);
         map.push_back(tmp);
         tmp.clear();
     }

@@ -10,7 +10,7 @@ FunctionAnalyser::~FunctionAnalyser() {
 }
 
 bool FunctionAnalyser::PRINT=true;
-bool FunctionAnalyser::ANALYSE=true;
+bool FunctionAnalyser::ANALYSE=false;
 
 vector<FunctionData> FunctionAnalyser::data;
 unsigned long FunctionAnalyser::deltaFrame=0;

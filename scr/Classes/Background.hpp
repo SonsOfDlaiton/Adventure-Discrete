@@ -28,7 +28,7 @@ private:
 };
 typedef struct map{
   vector<Background> backgrounds; //int backgroundId;
-  vector<vector<int> > map;
+  vector<vector<pair<int,string> > > map;
 }nTMap;
 
 #endif /*BACKGROUND_H*/
