@@ -32,6 +32,7 @@ public:
     static vector<void*> dynamicBlocks;
     static vector<nTMap> maps;
     static nTMap usrMap;
+    static nTMap editingMap;
 
     static const int lvlTechnical;
     static const int lvlGraduation;

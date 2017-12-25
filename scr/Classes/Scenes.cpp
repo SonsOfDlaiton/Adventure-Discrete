@@ -36,6 +36,7 @@ bool Scenes::preGameCalled=false;
 bool Scenes::preCampaignCalled=false;
 bool Scenes::preFreeModeCalled=false;
 bool Scenes::freeGameMode=false;
+bool Scenes::testGameMode=false;
 bool Scenes::skipScene=false;
 bool Scenes::posGameCalled=false;
 bool Scenes::posGameEndCalled=false;
@@ -99,9 +100,13 @@ void Scenes::setAllCalledFalseExcept(vector<int> except){
 **/
 void Scenes::drawGame(){
     if(!gameCalled){//acontece na primeira vez
-        if(freeGameMode)
-            Map::changeCurrentMap(Map::usrMap);
-        else{
+        if(freeGameMode||testGameMode){
+            freeGameMode=true;
+            if(testGameMode)
+              Map::changeCurrentMap(Map::editingMap);
+            else
+              Map::changeCurrentMap(Map::usrMap);
+        }else{
             if(Player::lives<0){ Map::GG(false); return;}
             if(Player::stage>=0&&Player::stage<Map::maps.size())
                 Map::changeCurrentMap(Map::maps[Player::stage]);
@@ -177,7 +182,11 @@ void Scenes::drawGame(){
 void Scenes::drawMapEdit(){
     if(!mapEditCalled){//acontece na primeira vez
         setAllCalledFalseExcept(getUnityVector(Scenes::mapEdit));//fala que ja chamou essa cena
-        mapEdit::reset();
+        if(!Scenes::testGameMode){
+          mapEdit::reset();
+        }else{
+          testGameMode=false;
+        }
         Scenes::camera.moveSpeed=10;
         vector<int> tmp;
         tmp.push_back(AL::getSoundByName("mouse"));
@@ -361,6 +370,7 @@ void Scenes::drawPreCampaign(){
   if(!preCampaignCalled){//acontece na primeira vez
       setAllCalledFalseExcept(getUnityVector(preCampaign));//fala que ja chamou essa cena
       freeGameMode=false;
+      testGameMode=false;
       vector<int> tmp;
       tmp.push_back(AL::getSoundByName("mouse"));
       AL::singleton->stopAllSoundsExcept(tmp);
@@ -439,6 +449,7 @@ void Scenes::drawPreFreeMode(){
   if(!preFreeModeCalled){//acontece na primeira vez
       setAllCalledFalseExcept(getUnityVector(preFreeMode));//fala que ja chamou essa cena
       freeGameMode=true;
+      testGameMode=false;
       vector<int> tmp;
       tmp.push_back(AL::getSoundByName("menuSong"));
       tmp.push_back(AL::getSoundByName("mouse"));
@@ -492,6 +503,9 @@ void Scenes::drawPosGame(){
       tmp.push_back(AL::getSoundByName("mouse"));
       AL::singleton->stopAllSoundsExcept(tmp);
       AL::singleton->playSoundByName("diePlayer");
+      if(Scenes::testGameMode){
+        current=mapEdit;
+      }
   }
   GL::drawTexture(nTRectangle::get(camera.x.movedCam,GL::defaultSize.y+camera.y.movedCam,GL::defaultSize.x+camera.x.movedCam,camera.y.movedCam,-0.9),GL::getTextureByName("Cefet"));
   GL::drawTexture(nTRectangle::get(100+camera.x.movedCam,GL::defaultSize.y-200+camera.y.movedCam,GL::defaultSize.x-100+camera.x.movedCam,200+camera.x.movedCam,-0.8),nTColor::get(1,0,0),GL::getTextureByName("GameOver"));

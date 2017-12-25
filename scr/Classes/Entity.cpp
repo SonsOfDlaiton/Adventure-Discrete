@@ -211,8 +211,10 @@ void Entity::applyDamage(double damage){
 void Entity::draw(nTColor color){
     if(GL::isPaused||!this->isVisible)
         return;
-    if(Tutorials::isPaused&&this->isHuman==false)
+    if(Tutorials::isPaused&&this->isHuman==false){
+        GL::drawTexture(nTRectangle::getCollision(pos,size),color,currentTex,orientation);
         return;
+    }
     if((damageState||imuneToDamage)&&round(fmodl(GL::getGameMs(),200)==0)>0)
         return;
     stateControl();

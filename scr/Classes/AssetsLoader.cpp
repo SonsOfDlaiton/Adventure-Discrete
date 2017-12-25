@@ -60,6 +60,7 @@ bool AssetsLoader::loadTextures(){
     if(!GL::loadTexture("Background-","Textures/HUD/Buttons/background-.png")) out=false;
     if(!GL::loadTexture("Background+","Textures/HUD/Buttons/background+.png")) out=false;
     if(!GL::loadTexture("Save","Textures/HUD/Buttons/save.png")) out=false;
+    if(!GL::loadTexture("PlayCircle","Textures/HUD/Buttons/play_circle.png")) out=false;
     if(!GL::loadTexture("Get Block","Textures/HUD/Buttons/getBlock.png")) out=false;
     if(!GL::loadTexture("decomCelebrations","Textures/logo/GameLogo.png")) out=false;
     if(!GL::loadTexture("theCOM","Textures/logo/thecom.png")) out=false;
@@ -375,7 +376,7 @@ bool AssetsLoader::loadSounds(){
 bool AssetsLoader::loadSettings(){
     FILE *fp=fopen("savedGame.bin","rb");
     if(fp==NULL){
-        cout<<"Arquivo savedGame.bin inexistente, criando novo arquivo"<<endl;
+        if(Util::DEBUG)cout<<"Arquivo savedGame.bin inexistente, criando novo arquivo"<<endl;
         saveSettings();
         return false;
     }
@@ -400,7 +401,7 @@ bool AssetsLoader::loadSettings(){
 bool AssetsLoader::saveSettings(){
    FILE *fp=fopen("savedGame.bin","wb");
     if(fp==NULL){
-      cout<<"Erro ao salvar arquivo savedGame.bin"<<endl;
+      if(Util::DEBUG) cout<<"Erro ao salvar arquivo savedGame.bin"<<endl;
       return false;
     }
     SETTINGS tmp;

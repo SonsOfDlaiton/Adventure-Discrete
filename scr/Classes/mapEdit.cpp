@@ -22,6 +22,7 @@ vector<string> mapEdit::pageNames;
 int mapEdit::pageIndex=0;
 short int mapEdit::isCreating=0;
 bool mapEdit::isUser=true;
+const int mapEdit::editingMap=-6000;
 
 /**
  *	Set the page names and contents of the available blocks on the map editor
@@ -214,10 +215,13 @@ void mapEdit::load(int idx){
         index=idx;
         map=Map::maps[idx].map;
         //currentBackground=Map::maps[idx].backgroundId;
-    }else{
+    }else if(idx==-1){
         index=-1;
         map=Map::usrMap.map;
         //currentBackground=Map::usrMap.backgroundId;
+    }else if(idx=mapEdit::editingMap){
+        index=-1;
+        map=Map::editingMap.map;
     }
     size.y=map.size();
     size.x=map[0].size();
@@ -252,7 +256,7 @@ bool mapEdit::save(){
             Map::usrMap=tmp;
     }else
         Map::usrMap=tmp;
-
+    Map::editingMap=tmp;
     if(isUser){
         return Map::saveMap(Util::newPath("Maps/user.map"),-1);
     }else{
@@ -519,14 +523,41 @@ void mapEditPageDown(int x,int y){
 }
 
 /**
- *	Mouse event callback to Save Button
+ *  Mouse event callback to Save Button
  *
- *	@param x mouse x position
- *	@param y mouse y position
+ *  @param x mouse x position
+ *  @param y mouse y position
 **/
 void mapEditSave(int x,int y){
     if(mapEdit::save())
         GL::popupBoxBehave("Você salvou as alterações com sucesso!","BITMAP_HELVETICA_12",1000);
+}
+
+/**
+ *  Mouse event callback to Play Button
+ *
+ *  @param x mouse x position
+ *  @param y mouse y position
+**/
+void mapEditPlay(int x,int y){
+    nTMap tmp;
+    //tmp.backgroundId=currentBackground;
+    tmp.map=mapEdit::map;
+    Map::editingMap=tmp;
+    bool hasSpawn=false;
+    for(int i=0;i<mapEdit::map.size();i++){
+        for(int j=0;j<mapEdit::map[i].size();j++){
+            if(Blocks::checkIfBlocksIsPlayerSpawn(mapEdit::map[i][j].first)){
+                hasSpawn=true;
+                break;
+            }
+        }
+    }
+    if(!hasSpawn){
+        Map::editingMap.map[mapEdit::map.size()/2][4].first=1000;
+    }
+    Scenes::testGameMode=true;
+    Scenes::current=Scenes::game;
 }
 
 /**
@@ -554,6 +585,7 @@ void mapEdit::drawPanel(){
     GL::buttonBehave(nTRectangle::get(230+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,280+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("CameraDefault"),false,*mapEditCamera,NULL,NULL,NULL);
     GL::buttonBehave(nTRectangle::get(290+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,320+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("Get Block"),false,*mapEditGetBlock,NULL,NULL,NULL);
     GL::buttonBehave(nTRectangle::get(330+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,360+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("Save"),false,*mapEditSave,NULL,NULL,NULL);
+    GL::buttonBehave(nTRectangle::get(370+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,400+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("PlayCircle"),false,*mapEditPlay,NULL,NULL,NULL);
     GL::buttonBehave(nTRectangle::get(485+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,515+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("Back"),false,*mapEditLeave,NULL,NULL,NULL);
     GL::buttonBehave(nTRectangle::get(770+Scenes::camera.x.movedCam,60+Scenes::camera.y.movedCam,790+Scenes::camera.x.movedCam,40+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("-"),false,NULL,*mapEditPageDown,NULL,NULL);
     GL::buttonBehave(nTRectangle::get(660+Scenes::camera.x.movedCam,60+Scenes::camera.y.movedCam,680+Scenes::camera.x.movedCam,40+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("+"),false,NULL,*mapEditPageUp,NULL,NULL);

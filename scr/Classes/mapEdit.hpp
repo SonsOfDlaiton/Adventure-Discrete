@@ -33,6 +33,7 @@ public:
     static vector<vector<vector<int> > >blockPages;
     static vector<string> pageNames;
     static int pageIndex;
+    static const int editingMap;
 private:
     static void drawPanel();
     static void drawLines();

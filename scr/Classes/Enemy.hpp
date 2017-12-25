@@ -26,6 +26,7 @@ public:
     static vector<vector<string> >enemyAnim;
     static vector<vector<int> >enemyAnimSize;
 private:
+    static void draw(Enemy* en);
     void stateControl();
     void makeInvencible(double time);
 

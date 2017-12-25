@@ -101,11 +101,15 @@ void Enemy::stateControl(){
 **/
 void Enemy::behave(){
     FunctionAnalyser::startFunction("Enemy::behave");
+    Enemy *en;
     if(GL::isPaused||Tutorials::isPaused){
+        for(int i=0;i<Entity::enemys.size();i++){
+            en=(Enemy*)Entity::enemys[i];
+            draw(en);
+        }
         FunctionAnalyser::endFunction("Enemy::behave");
         return;
     }
-    Enemy *en;
     for(int i=0;i<Entity::enemys.size();i++){
         en=(Enemy*)Entity::enemys[i];
         if(en->isVisible){
@@ -127,16 +131,20 @@ void Enemy::behave(){
                 objCollision var=Mechanics::getCollision(nTRectangle::getCollision(en->pos,en->size),nTRectangle::getCollision(Player::getPlayerById(0)->pos,Player::getPlayerById(0)->size));
                 if(var.firstObj==Mechanics::LEFT||var.firstObj==Mechanics::RIGHT||var.firstObj==Mechanics::BOTTOM||(!Player::getPlayerById(0)->atacking&&Player::getPlayerById(0)->atackDirection!=Util::direction_down&&var.firstObj==Mechanics::TOP))
                     Player::getPlayerById(0)->applyDamage(1);
-                if(Scenes::camera.isInTheXScreen(nTRectangle::getCollision(en->pos,en->size))){
-                    GL::setFont("BITMAP_HELVETICA_10");
-                    GL::drawCentered_X_Text(nTPoint::get(en->pos.x,en->pos.y-en->size.y/2.0,0.7),en->nickname,GL::getColorByName("black"));
-                    en->draw(GL::getColorByName("white"));
-                    GL::drawCenteredTexture(nTPoint::get(en->pos.x,en->pos.y,0.8999),nTPoint::get(en->size.x/1.5,-en->size.y/2.5,0),nTColor::get(1,1,1,0.75),en->lifeLetter());
-                }
+                draw(en);
             }
         }
     }
     FunctionAnalyser::endFunction("Enemy::behave");
+}
+
+
+void Enemy::draw(Enemy* en){
+    GL::setFont("BITMAP_HELVETICA_10");
+    GL::drawCentered_X_Text(nTPoint::get(en->pos.x,en->pos.y-en->size.y/2.0,0.7),en->nickname,GL::getColorByName("black"));
+    Entity* ent=(Entity*)en;
+    ent->draw(GL::getColorByName("white"));
+    GL::drawCenteredTexture(nTPoint::get(en->pos.x,en->pos.y,0.8999),nTPoint::get(en->size.x/1.5,-en->size.y/2.5,0),nTColor::get(1,1,1,0.75),en->lifeLetter());
 }
 
 /**

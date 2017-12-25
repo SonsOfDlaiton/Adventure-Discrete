@@ -29,6 +29,7 @@ int Map::expetedTime=0;
 int Map::totalPowerUps=0;
 vector<nTMap> Map::maps;
 nTMap Map::usrMap;
+nTMap Map::editingMap;
 
 const int Map::lvlTechnical=0;
 const int Map::lvlGraduation=1;

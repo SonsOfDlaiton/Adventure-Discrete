@@ -43,6 +43,7 @@ public:
     static Camera camera;
     static bool skipScene;
     static bool freeGameMode;
+    static bool testGameMode;
 private:
     friend class Map;
     friend class Player;
