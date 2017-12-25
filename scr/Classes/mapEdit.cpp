@@ -239,7 +239,7 @@ void mapEdit::reset(){
 /**
  *	Save the map to a file
 **/
-void mapEdit::save(){
+bool mapEdit::save(){
     nTMap tmp;
     //tmp.backgroundId=currentBackground;
     tmp.map=map;
@@ -254,17 +254,18 @@ void mapEdit::save(){
         Map::usrMap=tmp;
 
     if(isUser){
-        Map::saveMap(Util::newPath("Maps/user.map"),-1);
+        return Map::saveMap(Util::newPath("Maps/user.map"),-1);
     }else{
-        if(index<0)
-             Map::saveMap(Util::newPath("Maps/user.map"),-1);
-        else{
+        if(index<0){
+            return Map::saveMap(Util::newPath("Maps/user.map"),-1);
+        }else{
             char buffer[5];
             snprintf(buffer,5,"%d",index);
             string str(buffer);
-            Map::saveMap(Util::newPath(("Maps/map"+str+".map")),index);
+            return Map::saveMap(Util::newPath(("Maps/map"+str+".map")),index);
         }
     }
+    return false;
 }
 
 /**
@@ -524,7 +525,8 @@ void mapEditPageDown(int x,int y){
  *	@param y mouse y position
 **/
 void mapEditSave(int x,int y){
-    mapEdit::save();
+    if(mapEdit::save())
+        GL::popupBoxBehave("Você salvou as alterações com sucesso!","BITMAP_HELVETICA_12",1000);
 }
 
 /**
@@ -607,7 +609,7 @@ void mapEdit::drawPanel(){
     GL::drawCentered_MultilineX_Text(nTPoint::get(725+Scenes::camera.x.movedCam,272+Scenes::camera.y.movedCam,1),"Selected block\n data:",GL::getColorByName("green"));
     GL::editTextBehave(nTRectangle::get(660+Scenes::camera.x.movedCam,290+Scenes::camera.y.movedCam,790+Scenes::camera.x.movedCam,449+Scenes::camera.y.movedCam,1),"BITMAP_TIMES_ROMAN_10","mapEdit::blockData",false,false);
     GL::setFont("BITMAP_TIMES_ROMAN_10");
-    if(GL::textButtonBehave(nTRectangle::get(660+Scenes::camera.x.movedCam,460+Scenes::camera.y.movedCam,725+Scenes::camera.x.movedCam,490+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),"Paste from file",GL::getColorByName("black"),GL::getTextureByName("btnSkin1"))){
+    if(GL::textButtonBehave(nTRectangle::get(660+Scenes::camera.x.movedCam,452+Scenes::camera.y.movedCam,725+Scenes::camera.x.movedCam,474+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),"Paste from file",GL::getColorByName("black"),GL::getTextureByName("btnSkin1"))){
         // if (clip::has(clip::text_format())) {
         //     string value;
         //     clip::get_text(value);
@@ -616,11 +618,15 @@ void mapEdit::drawPanel(){
         GL::setEditText("mapEdit::blockData",Util::getFromFile("tmp_clipboard.txt"));
         GL::setFocous("mapEdit::blockData");
     }
-    if(GL::textButtonBehave(nTRectangle::get(725+Scenes::camera.x.movedCam,460+Scenes::camera.y.movedCam,790+Scenes::camera.x.movedCam,490+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),"Copy to file",GL::getColorByName("black"),GL::getTextureByName("btnSkin1"))){
+    if(GL::textButtonBehave(nTRectangle::get(725+Scenes::camera.x.movedCam,452+Scenes::camera.y.movedCam,790+Scenes::camera.x.movedCam,474+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),"Copy to file",GL::getColorByName("black"),GL::getTextureByName("btnSkin1"))){
         // if (clip::has(clip::text_format())) {
         //     clip::set_text(GL::getEditText("mapEdit::blockData"));
         // }
         Util::setToFile("tmp_clipboard.txt",GL::getEditText("mapEdit::blockData"));
+        GL::setFocous("mapEdit::blockData");
+    }
+    if(GL::textButtonBehave(nTRectangle::get(692.5+Scenes::camera.x.movedCam,476+Scenes::camera.y.movedCam,757.5+Scenes::camera.x.movedCam,494+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),"Clear",GL::getColorByName("black"),GL::getTextureByName("btnSkin1"))){
+        GL::setEditText("mapEdit::blockData","");
         GL::setFocous("mapEdit::blockData");
     }
 }

@@ -74,7 +74,7 @@ void Scenes::setAllCalledFalseExcept(vector<int> except){
     posGameEndCalled=false;
     posYouWinCalled=false;
 
-    GL::clearEdits();
+    GL::clearUI();
     GL::framesInGame=0;
     camera.putCameraOnOrigin();
     for(int i=0;i<except.size();i++)
@@ -202,13 +202,13 @@ void Scenes::drawMapEdit(){
             mapEdit::askForSize();
             if(GL::buttonBehave(nTRectangle::get(400,550,540,500),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon"))){
                 mapEdit::isCreating=0;
-                GL::clearEdits();
+                GL::clearUI();
             }
         }else if(mapEdit::isCreating==-1){
             mapEdit::askForLoad();
             if(GL::buttonBehave(nTRectangle::get(400,550,540,500),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon"))){
                 mapEdit::isCreating=0;
-                GL::clearEdits();
+                GL::clearUI();
             }
         }
     }else{

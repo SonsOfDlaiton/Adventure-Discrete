@@ -66,11 +66,13 @@ public:
     static void drawPause();
     static void drawHUD();
     static double getGameMs();
-    static void clearEdits();
+    static void clearUI();
     static bool hasEditOnFocous();
     static void setFocous(string editName);
     static void typeOnEdit(char c);
     static void moveEditCursor(int direction);
+    static void popupBoxBehave(string text,string font,int duration);
+    static void drawPopupBox();
     static void editTextBehave(nTRectangle collision,string font,nTColor fontcolor,string initial,string editName,bool numeric,bool setFocous);
     static void editTextBehave(nTRectangle collision,string font,nTColor fontcolor,string editName,bool numeric,bool setFocous);
     static void editTextBehave(nTRectangle collision,string font,string initial,string editName,bool numeric,bool setFocous);
@@ -110,6 +112,11 @@ private:
     static vector<string> edits;
     static vector<bool> editsNumeric;
     static vector<string> editsText;
+    static string popupText;
+    static string popupFont;
+    static double popupMs;
+    static bool popupPaused;
+    static int popupDuration;
     friend ostream& operator<<(ostream &strm, const GL &gl);
 };
 void drawScene(void);

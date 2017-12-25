@@ -46,6 +46,7 @@ void CallbacksHandler::drawScene(void){
         Scenes::drawEndGame();
     else if(Scenes::current==Scenes::posYouWin)
         Scenes::drawYouWin();
+    GL::drawPopupBox();
     glutSwapBuffers();
     FunctionAnalyser::endFrame();
 }

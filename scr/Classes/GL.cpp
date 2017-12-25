@@ -65,6 +65,11 @@ int GL::editTextPosition=-1;
 vector<string> GL::edits;
 vector<bool> GL::editsNumeric;
 vector<string> GL::editsText;
+string GL::popupText="";
+string GL::popupFont="";
+double GL::popupMs;
+bool GL::popupPaused=false;
+int GL::popupDuration=0;
 
 
 /**
@@ -684,7 +689,7 @@ bool GL::textButtonBehave(nTRectangle collision,nTColor pressedColor,string text
     }
 
     collision.p0.z+=0.00001;
-    GL::drawCentered_MultilineX_Y_Text(nTPoint::get((collision.p0.x+collision.p1.x)/2,(collision.p0.y+collision.p1.y)/2+4,collision.p0.z),text,textColor);
+    GL::drawCentered_MultilineX_Y_Text(nTPoint::get((collision.p0.x+collision.p1.x)/2,(collision.p0.y+collision.p1.y)/2+3,collision.p0.z),text,textColor);
     return false;
 }
 
@@ -934,11 +939,14 @@ double GL::getGameMs(){
 }
 
 
-void GL::clearEdits(){
+void GL::clearUI(){
     editOnFocous=-1;
     edits.clear();
     editsNumeric.clear();
     editsText.clear();
+    popupText="";
+    popupMs=0;
+    popupPaused=false;
 }
 
 string GL::getEditText(string editName){
@@ -1145,4 +1153,40 @@ void GL::setFocous(string editName){
             editOnFocous=i;
             return;
         }
+}
+
+void GL::popupBoxBehave(string text,string font,int duration){
+    popupText=text;
+    popupFont=font;
+    popupMs=-GL::getGameMs();
+    popupDuration=duration;
+    popupPaused=false;
+}
+
+void GL::drawPopupBox(){
+    if(popupText!=""){
+        if(!popupPaused&&isPaused){
+            popupPaused=true;
+        }
+        isPaused=true;
+        int fontBKP=currentFont;
+        GL::setFont(popupFont);
+        nTFont *fnt=(nTFont*) fonts[currentFont];
+        nTPoint titleSize=fnt->calcBoundaries("Pop-up Box");
+        nTPoint txtSize=fnt->calcBoundaries(popupText);
+        if(txtSize.x<titleSize.x)
+            titleSize.x=txtSize.x;
+        nTPoint size=nTPoint::get(txtSize.x*1.2,txtSize.y*1.2+titleSize.x*1.6+20,0.98);
+        nTRectangle collision=nTRectangle::getCollision(nTPoint::get(GL::defaultSize.x/2,GL::defaultSize.y/2,0.98),size);
+        GL::drawRectangle(collision,nTColor::get(1,0.9,0.9));
+        GL::drawText(nTPoint::get(collision.p0.x+20,collision.p1.y+20,0.98),"Pop-up Box",nTColor::get(0,0,0));
+        GL::drawCentered_MultilineX_Y_Text(nTPoint::get(GL::defaultSize.x/2,GL::defaultSize.y/2+10+titleSize.y,0.98),popupText,nTColor::get(0,0,0));
+        
+        if((popupMs+GL::getGameMs()>=popupDuration&&popupDuration)||
+            textButtonBehave(nTRectangle::getCollision(nTPoint::get(GL::defaultSize.x/2,collision.p0.y-22,0.99),nTPoint::get(40,20,0.99)),GL::getColorByName("mouseSelected"),"Ok",nTColor::get(0,0,0),GL::getTextureByName("btnSkin1"))){
+          popupText="";
+          isPaused=false;
+        }
+        currentFont=fontBKP;
+    }
 }

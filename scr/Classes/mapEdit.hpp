@@ -13,7 +13,7 @@ public:
     virtual ~mapEdit();
 
     static void draw();
-    static void save();
+    static bool save();
     static void reset();
     static void askForSize();
     static void askForLoad();
