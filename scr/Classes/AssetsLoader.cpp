@@ -48,6 +48,7 @@ bool AssetsLoader::loadTextures(){
     if(!GL::loadTexture("masters","Textures/HUD/Tutorials/masters.png")) out=false;
     if(!GL::loadTexture("work","Textures/HUD/Tutorials/work.png")) out=false;
     if(!GL::loadTexture("teacher","Textures/HUD/Tutorials/teacher.png")) out=false;
+    if(!GL::loadTexture("Cica","Textures/HUD/Tutorials/cica.png")) out=false;
 
     //HUD
     if(!GL::loadTexture("Ballon","Textures/HUD/defaultBallon.png")) out=false;

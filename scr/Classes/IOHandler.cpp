@@ -118,8 +118,10 @@ void IOHandler::keyboard(unsigned char key, int x, int y){
       break;
 
       case 27:
-        if(Scenes::current==Scenes::game)
+        if(Scenes::current==Scenes::game){
             GL::isPaused=!GL::isPaused;
+            Tutorials::catchPause();
+        }
       break;
       default:break;
     }

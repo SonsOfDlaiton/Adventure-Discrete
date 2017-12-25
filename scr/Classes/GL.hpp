@@ -54,6 +54,7 @@ public:
     static nTColor getColorByName(string name);
     static void setFont(string name,int size);
     static void setFont(string name);
+    static nTPoint calcTextBoundaries(string text);
     static void drawText(nTPoint point,string text,nTColor color);
     static void drawCentered_X_Text(nTPoint point, string text, nTColor color);
     static void drawCentered_Y_Text(nTPoint point, string text, nTColor color);

@@ -23,6 +23,9 @@ vector<bool> Tutorials::pause;
 vector<bool> Tutorials::called;
 double Tutorials::startTutMs=0;
 int Tutorials::activeTut=-1;
+vector<string> Tutorials::sinucaTuts;
+int Tutorials::sinucaCurrent=-1;
+double Tutorials::sinucaMs;
 
 /**
  *	Draw the tutorial message text on the screen
@@ -31,18 +34,22 @@ int Tutorials::activeTut=-1;
 **/
 void Tutorials::drawWhispText(string text){
     GL::setFont("BITMAP_HELVETICA_18");
-    int maxChars=50;
-    for(int i=0;i<text.size();i+=maxChars){
-        GL::drawText(nTPoint::get(320+Scenes::camera.x.movedCam,Scenes::camera.y.movedCam+90+(i/maxChars)*25,1),text.substr(i,maxChars),GL::getColorByName("yellow"));
+    float lineWidth=GL::calcTextBoundaries("_").x;
+    nTPoint boundaries=GL::calcTextBoundaries(text);
+    float maxSize=420;
+    if(boundaries.x>maxSize){
+        int maxChars=floor((float)maxSize/(float)lineWidth);
+        for(int i=maxChars-1;i<text.size();i+=maxChars){
+            text.insert(i,"\n");
+        }
     }
+    GL::drawText(nTPoint::get(320+Scenes::camera.x.movedCam,Scenes::camera.y.movedCam+90,1),text,GL::getColorByName("yellow"));
 }
 
 /**
  *	Draw the tutorial on the screen
 **/
-void Tutorials::draw(){
-  if(GL::isPaused)
-    return;
+void Tutorials::draw(string text){
   if(showTutorials){
     GLuint friendTex=GL::getTextureByName("Whisp"); //default for unkown levels
     if(!Scenes::freeGameMode){
@@ -58,9 +65,11 @@ void Tutorials::draw(){
         friendTex=GL::getTextureByName("teacher");
       else if(Player::stage==Map::lvlBadTecher)
         friendTex=GL::getTextureByName("teacher");
-      if(texts[activeTut].find("Douglas")!=string::npos)
-        friendTex=GL::getTextureByName("Douglinhas");
     }
+    if(texts[activeTut].find("Douglas")!=string::npos)
+        friendTex=GL::getTextureByName("Douglinhas");
+    if(GL::isPaused)
+        friendTex=GL::getTextureByName("Cica");
 
     GL::drawTexture((nTRectangle::get(Scenes::camera.x.movedCam,
         300+Scenes::camera.y.movedCam,
@@ -72,11 +81,13 @@ void Tutorials::draw(){
         300+Scenes::camera.x.movedCam,
         Scenes::camera.y.movedCam,0.99998)),
         friendTex);
-    drawWhispText(texts[activeTut]);
+    drawWhispText(text);
   }
 }
 
 void Tutorials::behave(){
+  if(GL::isPaused)
+    return;
   if(activeTut<0){
     double playerPos=Player::getPlayerById(0)->pos.x/Blocks::defaultBlockSize.x;
     for(int i=0;i<tutorials.size();i++){
@@ -92,7 +103,7 @@ void Tutorials::behave(){
     }
   }
   if(activeTut>=0){
-    draw();
+    draw(texts[activeTut]);
     if(startTutMs+GL::getGameMs()>=time[activeTut]&&time[activeTut]){
       activeTut=-1;
       isPaused=false;
@@ -189,7 +200,8 @@ void Tutorials::add(int pos,string data, bool pause_){
       istringstream (duration)>>duration_int;
   }else if(Util::DEBUG) cout<<"ERRORRR - missing \"duration\" on tutorial block\n";
 
-  add(pos,text,keys_vec,duration_int,pause_);
+  if(text!=""&&(keys_vec.size()>0||duration_int>0))
+    add(pos,text,keys_vec,duration_int,pause_);
 }
 
 void Tutorials::pressKey(char key){
@@ -202,4 +214,30 @@ void Tutorials::pressKey(char key){
       }
     }
   }
+}
+
+string Tutorials::getSinucaTut(){
+  if(sinucaTuts.size()==0)
+    return "Que displicencia!";
+  if(sinucaMs+GL::getGameMs()>=5000){
+    int newSinuca=-1;
+    do{
+      newSinuca=rand()%sinucaTuts.size();
+    }while(newSinuca==sinucaCurrent);
+    sinucaCurrent=newSinuca;
+    sinucaMs=-GL::getGameMs();
+  }
+  return sinucaTuts[sinucaCurrent];
+}
+
+void Tutorials::registerSinucaTuts(){
+  sinucaMs=-GL::getGameMs();
+  sinucaCurrent=0;
+  sinucaTuts.clear();
+  sinucaTuts.push_back("Voce pode tentar a jogar do parafuso pra acertar uma bola dificil!");
+  sinucaTuts.push_back("So bate na bola e vai");
+}
+
+void Tutorials::catchPause(){
+  sinucaMs=-GL::getGameMs();
 }

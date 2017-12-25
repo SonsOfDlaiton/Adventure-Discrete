@@ -71,6 +71,18 @@ void Map::changeCurrentMap(nTMap map){
     string mapID(buffer);*/
     sort(map.backgrounds.begin(), map.backgrounds.end()); // coloca em ordem decrescente os backgrounds a serem desenhados
     actualMap=map;//background=GL::getTextureByName("background"+mapID);
+    bool hasSpawn=false;
+    for(int i=0;i<actualMap.map.size();i++){
+        for(int j=0;j<actualMap.map[i].size();j++){
+            if(Blocks::checkIfBlocksIsPlayerSpawn(actualMap.map[i][j].first)){
+                hasSpawn=true;
+                break;
+            }
+        }
+    }
+    if(!hasSpawn){
+        actualMap.map[actualMap.map.size()/2][4].first=1000;
+    }
     setBlockPos();
 }
 

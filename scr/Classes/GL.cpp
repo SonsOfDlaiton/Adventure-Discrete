@@ -439,6 +439,12 @@ void GL::setFont(string name,int size){
     currentFont=font;
 }
 
+
+nTPoint GL::calcTextBoundaries(string text){
+    nTFont *fnt=(nTFont*) fonts[currentFont];
+    return fnt->calcBoundaries(text);
+}
+
 /**
  *	Draw a text
  *
@@ -759,26 +765,27 @@ void GL::drawPause(){
     Scenes::camera.y.movedCam,0.95)),
     nTColor::get(1,1,1,0.5),GL::getTextureByName("dce"));
     if(AL::getSoundState()){
-        GL::buttonBehave(nTRectangle::get(700+Scenes::camera.x.movedCam,50+Scenes::camera.y.movedCam,740+Scenes::camera.x.movedCam,10+Scenes::camera.y.movedCam,1),nTColor::Black(),GL::getTextureByName("soundOn"),false,NULL,*modifySound,NULL,NULL);
+        GL::buttonBehave(nTRectangle::get(700+Scenes::camera.x.movedCam,50+Scenes::camera.y.movedCam,740+Scenes::camera.x.movedCam,10+Scenes::camera.y.movedCam,0.99),nTColor::Black(),GL::getTextureByName("soundOn"),false,NULL,*modifySound,NULL,NULL);
       }else{
-        GL::buttonBehave(nTRectangle::get(700+Scenes::camera.x.movedCam,50+Scenes::camera.y.movedCam,740+Scenes::camera.x.movedCam,10+Scenes::camera.y.movedCam,1),nTColor::Black(),GL::getTextureByName("soundOff"),false,NULL,*modifySound,NULL,NULL);
+        GL::buttonBehave(nTRectangle::get(700+Scenes::camera.x.movedCam,50+Scenes::camera.y.movedCam,740+Scenes::camera.x.movedCam,10+Scenes::camera.y.movedCam,0.99),nTColor::Black(),GL::getTextureByName("soundOff"),false,NULL,*modifySound,NULL,NULL);
       }
       if(AL::getMusicState()){
-        GL::buttonBehave(nTRectangle::get(640+Scenes::camera.x.movedCam,50+Scenes::camera.y.movedCam,680+Scenes::camera.x.movedCam,10+Scenes::camera.y.movedCam,1),nTColor::Black(),GL::getTextureByName("musicOn"),false,NULL,*modifyMusic,NULL,NULL);
+        GL::buttonBehave(nTRectangle::get(640+Scenes::camera.x.movedCam,50+Scenes::camera.y.movedCam,680+Scenes::camera.x.movedCam,10+Scenes::camera.y.movedCam,0.99),nTColor::Black(),GL::getTextureByName("musicOn"),false,NULL,*modifyMusic,NULL,NULL);
       }else{
-        GL::buttonBehave(nTRectangle::get(640+Scenes::camera.x.movedCam,50+Scenes::camera.y.movedCam,680+Scenes::camera.x.movedCam,10+Scenes::camera.y.movedCam,1),nTColor::Black(),GL::getTextureByName("musicOff"),false,NULL,*modifyMusic,NULL,NULL);
+        GL::buttonBehave(nTRectangle::get(640+Scenes::camera.x.movedCam,50+Scenes::camera.y.movedCam,680+Scenes::camera.x.movedCam,10+Scenes::camera.y.movedCam,0.99),nTColor::Black(),GL::getTextureByName("musicOff"),false,NULL,*modifyMusic,NULL,NULL);
       }
-    GL::drawCenteredTexture(nTPoint::get(GL::defaultSize.x/2+Scenes::camera.x.movedCam,Scenes::camera.y.movedCam+GL::defaultSize.y/2,0.99),
+    GL::drawCenteredTexture(nTPoint::get(GL::defaultSize.x/2+Scenes::camera.x.movedCam,Scenes::camera.y.movedCam+GL::defaultSize.y/2,0.96),
                             nTPoint::get(200,60),GL::getTextureByName("Ballon"));
 
     GL::drawCentered_X_Y_Text(nTPoint::get(GL::defaultSize.x/2+Scenes::camera.x.movedCam,Scenes::camera.y.movedCam+GL::defaultSize.y/2,1),text,GL::getColorByName("violet"));
-    if(GL::buttonBehave(nTRectangle::get(600+Scenes::camera.x.movedCam,600+Scenes::camera.y.movedCam,700+Scenes::camera.x.movedCam,550+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("quitIcon"))){
+    if(GL::buttonBehave(nTRectangle::get(600+Scenes::camera.x.movedCam,600+Scenes::camera.y.movedCam,700+Scenes::camera.x.movedCam,550+Scenes::camera.y.movedCam,0.99),GL::getColorByName("mouseSelected"),GL::getTextureByName("quitIcon"))){
         if(Scenes::testGameMode){
             Scenes::current=Scenes::mapEdit;
             mapEdit::load(mapEdit::editingMap);
         }else
             Scenes::current=Scenes::menu;
     }
+    Tutorials::draw(Tutorials::getSinucaTut());
 }
 
 /**

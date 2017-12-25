@@ -8,6 +8,7 @@ int main(int argc, char** argv) {
     GL *gl=new GL("Adventure Discrete",60,GLUT_DOUBLE|GLUT_RGBA|GLUT_DEPTH|GLUT_STENCIL|GLUT_ALPHA,
                   800,600,nTColor::Black(),true,enables,argc,argv);
     Enemy::registerNicks();
+    Tutorials::registerSinucaTuts();
     mapEdit::definePages();
     new Mechanics();
 
