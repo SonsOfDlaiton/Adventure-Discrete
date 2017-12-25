@@ -1087,10 +1087,10 @@ void GL::editTextBehave(nTRectangle collision,string font,nTColor fontcolor,stri
 }
 
 void GL::typeOnEdit(char c){
-    int cursor=editTextPosition;
-    if(cursor<0) cursor=editsText[editOnFocous].size();
-    if(cursor>editsText[editOnFocous].size()) cursor=editsText[editOnFocous].size();
     if(edits.size()>0&&editOnFocous>=0){
+        int cursor=editTextPosition;
+        if(cursor<0) cursor=editsText[editOnFocous].size();
+        if(cursor>editsText[editOnFocous].size()) cursor=editsText[editOnFocous].size();
         switch(c){
             case ' ':
                 editsText[editOnFocous].insert(cursor," ");
