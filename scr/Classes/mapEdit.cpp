@@ -605,13 +605,23 @@ void mapEdit::drawPanel(){
 
     GL::setFont("BITMAP_HELVETICA_18");
     GL::drawCentered_MultilineX_Text(nTPoint::get(725+Scenes::camera.x.movedCam,272+Scenes::camera.y.movedCam,1),"Selected block\n data:",GL::getColorByName("green"));
-    GL::editTextBehave(nTRectangle::get(660+Scenes::camera.x.movedCam,290+Scenes::camera.y.movedCam,790+Scenes::camera.x.movedCam,449+Scenes::camera.y.movedCam,1),"BITMAP_TIMES_ROMAN_10","mapEdit::blockData",false);
+    GL::editTextBehave(nTRectangle::get(660+Scenes::camera.x.movedCam,290+Scenes::camera.y.movedCam,790+Scenes::camera.x.movedCam,449+Scenes::camera.y.movedCam,1),"BITMAP_TIMES_ROMAN_10","mapEdit::blockData",false,false);
     GL::setFont("BITMAP_TIMES_ROMAN_10");
-    if(GL::textButtonBehave(nTRectangle::get(660+Scenes::camera.x.movedCam,460+Scenes::camera.y.movedCam,725+Scenes::camera.x.movedCam,490+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),"Paste from clip",GL::getColorByName("black"),GL::getTextureByName("btnSkin1"))){
-        //TODO paste from clipboard
+    if(GL::textButtonBehave(nTRectangle::get(660+Scenes::camera.x.movedCam,460+Scenes::camera.y.movedCam,725+Scenes::camera.x.movedCam,490+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),"Paste from file",GL::getColorByName("black"),GL::getTextureByName("btnSkin1"))){
+        // if (clip::has(clip::text_format())) {
+        //     string value;
+        //     clip::get_text(value);
+        //     GL::setEditText("mapEdit::blockData",value);
+        // }
+        GL::setEditText("mapEdit::blockData",Util::getFromFile("tmp_clipboard.txt"));
+        GL::setFocous("mapEdit::blockData");
     }
-    if(GL::textButtonBehave(nTRectangle::get(725+Scenes::camera.x.movedCam,460+Scenes::camera.y.movedCam,790+Scenes::camera.x.movedCam,490+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),"Copy to clip",GL::getColorByName("black"),GL::getTextureByName("btnSkin1"))){
-        //TODO cpy to clipboard
+    if(GL::textButtonBehave(nTRectangle::get(725+Scenes::camera.x.movedCam,460+Scenes::camera.y.movedCam,790+Scenes::camera.x.movedCam,490+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),"Copy to file",GL::getColorByName("black"),GL::getTextureByName("btnSkin1"))){
+        // if (clip::has(clip::text_format())) {
+        //     clip::set_text(GL::getEditText("mapEdit::blockData"));
+        // }
+        Util::setToFile("tmp_clipboard.txt",GL::getEditText("mapEdit::blockData"));
+        GL::setFocous("mapEdit::blockData");
     }
 }
 
@@ -625,8 +635,8 @@ void mapEdit::askForSize(){
     GL::drawText(nTPoint::get(200,400,1),"Seu mapa fica salvo em ./Maps/user.map",GL::getColorByName("red"));
     GL::drawText(nTPoint::get(200,200,1),"Digite o numero de linhas do mapa(19):",GL::getColorByName("red"));
     GL::drawText(nTPoint::get(200,250,1),"Digite o numero de colunas do mapa(19):",GL::getColorByName("red"));
-    GL::editTextBehave(nTRectangle::get(550,175,640,200,1),"BITMAP_HELVETICA_18",GL::getColorByName("blue"),"19","mapEdit::askForSizeY",true);
-    GL::editTextBehave(nTRectangle::get(550,225,640,250,1),"BITMAP_HELVETICA_18",GL::getColorByName("blue"),"19","mapEdit::askForSizeX",true);
+    GL::editTextBehave(nTRectangle::get(550,175,640,200,1),"BITMAP_HELVETICA_18",GL::getColorByName("blue"),"19","mapEdit::askForSizeY",true,true);
+    GL::editTextBehave(nTRectangle::get(550,225,640,250,1),"BITMAP_HELVETICA_18",GL::getColorByName("blue"),"19","mapEdit::askForSizeX",true,false);
 
     if(GL::textButtonBehave(nTRectangle::get(610,275,660,300,1),GL::getColorByName("mouseSelected"),"ok",GL::getColorByName("black"),GL::getTextureByName("btnSkin1"))){
         double X,Y;
@@ -652,7 +662,7 @@ void mapEdit::askForLoad(){
         snprintf(buffer,10,"%d",(Map::maps.size()-1));
         string maxMap(buffer);
     GL::drawText(nTPoint::get(200,200,1),"Digite qual mapa quer carregar(0-"+maxMap+")(u):",GL::getColorByName("red"));
-    GL::editTextBehave(nTRectangle::get(530,175,600,200,1),"BITMAP_HELVETICA_18",GL::getColorByName("blue"),"mapEdit::askForLoad",false);
+    GL::editTextBehave(nTRectangle::get(530,175,600,200,1),"BITMAP_HELVETICA_18",GL::getColorByName("blue"),"mapEdit::askForLoad",false,true);
     string input=GL::getEditText("mapEdit::askForLoad");
     for(int i=0;i<input.size();i++)
         if(isalpha(input[i])&&tolower(input[i])!='u'){

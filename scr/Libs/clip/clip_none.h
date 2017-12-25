@@ -1,6 +1,10 @@
 // Clip Library
 // Copyright (c) 2015-2016 David Capello
 
+#ifndef CLIP_H_NONE
+#define CLIP_H_NONE
+
+
 #include <cassert>
 #include <map>
 #include <vector>
@@ -73,8 +77,10 @@ public:
 
 };
 
-format register_format(const std::string& name) {
-  return g_last_format++;
-}
+//format register_format(const std::string& name) {
+ // return g_last_format++;
+//}
 
 } // namespace clip
+
+#endif

@@ -957,19 +957,19 @@ void GL::setEditText(string editName,string text){
         }
 }
 
-void GL::editTextBehave(nTRectangle collision,string font,string editName,bool numeric){
-    editTextBehave(collision,font,nTColor::get(0,0,0),"",editName,numeric);
+void GL::editTextBehave(nTRectangle collision,string font,string editName,bool numeric,bool setFocous){
+    editTextBehave(collision,font,nTColor::get(0,0,0),"",editName,numeric,setFocous);
 }
 
-void GL::editTextBehave(nTRectangle collision,string font,string initial,string editName,bool numeric){
-    editTextBehave(collision,font,nTColor::get(0,0,0),initial,editName,numeric);
+void GL::editTextBehave(nTRectangle collision,string font,string initial,string editName,bool numeric,bool setFocous){
+    editTextBehave(collision,font,nTColor::get(0,0,0),initial,editName,numeric,setFocous);
 }
 
-void GL::editTextBehave(nTRectangle collision,string font,nTColor fontcolor,string editName,bool numeric){
-    editTextBehave(collision,font,fontcolor,"",editName,numeric);
+void GL::editTextBehave(nTRectangle collision,string font,nTColor fontcolor,string editName,bool numeric,bool setFocous){
+    editTextBehave(collision,font,fontcolor,"",editName,numeric,setFocous);
 }
 
-void GL::editTextBehave(nTRectangle collision,string font,nTColor fontcolor,string initial,string editName,bool numeric){
+void GL::editTextBehave(nTRectangle collision,string font,nTColor fontcolor,string initial,string editName,bool numeric,bool setFocous){
     int editId=-1;
     for(int i=0;i<edits.size();i++){
         if(edits[i]==editName){
@@ -985,12 +985,14 @@ void GL::editTextBehave(nTRectangle collision,string font,nTColor fontcolor,stri
         edits.push_back(editName);
         editsNumeric.push_back(numeric);
         editsText.push_back(initial);
+        if(setFocous)
+            editOnFocous=editId;
     }
 
-    if(GL::leftMouseReleased){
+    if(GL::leftMouseClicked){
         if(GL::mousePos.x>=collision.p0.x&&GL::mousePos.x<=collision.p1.x&&((GL::mousePos.y>=collision.p0.y&&GL::mousePos.y<=collision.p1.y)||(GL::mousePos.y>=collision.p1.y&&GL::mousePos.y<=collision.p0.y))){
             AL::singleton->playSoundByName("mouse");
-            GL::leftMouseReleased=0;
+            GL::leftMouseClicked=0;
             editOnFocous=editId;
             editTextPosition=editsText[editOnFocous].size();
         }else{
@@ -1009,6 +1011,7 @@ void GL::editTextBehave(nTRectangle collision,string font,nTColor fontcolor,stri
     string textToDraw=editsText[editId];
     int cursor=editTextPosition;
     if(cursor<0) cursor=textToDraw.size();
+    if(cursor>textToDraw.size()) cursor=textToDraw.size();
     if(editOnFocous==editId){ //draw text plus | (blinking pipe)
         if(round(fmodl(GL::getGameMs(),500)>250)){
             textToDraw.insert(cursor,"|");
@@ -1134,4 +1137,12 @@ void GL::moveEditCursor(int direction){
                 editTextPosition=editsText[editOnFocous].size();
         }
     }
+}
+
+void GL::setFocous(string editName){
+    for(int i=0;i<edits.size();i++)
+        if(editName==edits[i]){
+            editOnFocous=i;
+            return;
+        }
 }

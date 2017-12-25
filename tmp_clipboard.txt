@@ -1,0 +1,3 @@
+text:"bem vindo"
+keys:{a,arrow_up}
+duration2000

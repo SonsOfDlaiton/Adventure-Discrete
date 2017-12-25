@@ -196,16 +196,20 @@ void Scenes::drawMapEdit(){
                 mapEdit::isCreating=-1;
             if(GL::buttonBehave(nTRectangle::get(450,350,650,150),GL::getColorByName("mouseSelected"),GL::getTextureByName("newMapIcon")))
                 mapEdit::isCreating=1;
-            if(GL::buttonBehave(nTRectangle::get(200,550,340,500),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon")))
-            current=menu;
+            if(GL::buttonBehave(nTRectangle::get(400,550,540,500),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon")))
+              current=menu;
         }else if(mapEdit::isCreating==1){
             mapEdit::askForSize();
-            if(GL::buttonBehave(nTRectangle::get(400,550,540,500),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon")))
+            if(GL::buttonBehave(nTRectangle::get(400,550,540,500),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon"))){
                 mapEdit::isCreating=0;
+                GL::clearEdits();
+            }
         }else if(mapEdit::isCreating==-1){
             mapEdit::askForLoad();
-            if(GL::buttonBehave(nTRectangle::get(400,550,540,500),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon")))
+            if(GL::buttonBehave(nTRectangle::get(400,550,540,500),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon"))){
                 mapEdit::isCreating=0;
+                GL::clearEdits();
+            }
         }
     }else{
         gluLookAt(camera.moveSpeed*camera.x.movingCam,camera.moveSpeed*camera.y.movingCam,0,camera.moveSpeed*camera.x.movingCam,camera.moveSpeed*camera.y.movingCam,-1,0,1,0);

@@ -130,6 +130,7 @@ void Map::setBlockPos(){
                     nTPoint pos=bl->pos;
                     pos.z=0.89;
                     pos.y-=Blocks::defaultBlockSize.y;
+                    Tutorials::add(j-floor(GL::defaultSize.x/Blocks::defaultBlockSize.x/2)+ceil((float)Player::defaultPSize.x/(float)Blocks::defaultBlockSize.x)*3,bl->data,true);
                     new Enemy((actualMap.map[i][j].first-5000)+1000,Enemy::bossLife,pos,Enemy::bossSize,Entity::getAnimationVector(Enemy::enemyAnim[0],Enemy::enemyAnimSize[0]),0);
                     nOfEnemys+=3;
                 }else if(Blocks::checkIfBlocksIsTutorial(actualMap.map[i][j].first)){

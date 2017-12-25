@@ -7,6 +7,7 @@ SRC=$(wildcard scr/*$(FORMAT))
 CLASSES=$(wildcard scr/Classes/*$(FORMAT))
 LIBS=$(wildcard scr/Libs/*$(FORMAT))
 SOIL=$(wildcard scr/Libs/soil/*.c)
+CLIP=scr/Libs/clip/clip.cpp
 OBJS=$(wildcard obj/*.o)
 EXEC=bin/AdventureDiscrete
 CFLAGS=-w -Wall -std=c++11
@@ -17,11 +18,11 @@ all:
 	echo type web, compileAll, compile, link, linkMac, run, runMac, compileAndLink, compileAndLinkMac, compileLinkAndRun, compileLinkAndRunMac
 
 web:
-	$(JSC) -s LEGACY_GL_EMULATION=1 -s ALLOW_MEMORY_GROWTH=1 -std=c++11 -O3 $(SRC) $(CLASSES) $(LIBS) $(SOIL) -o Web.html $(foreach var,$(WEBFILES),--preload-file $(var))
+	$(JSC) -s LEGACY_GL_EMULATION=1 -s ALLOW_MEMORY_GROWTH=1 -std=c++11 -O3 $(SRC) $(CLASSES) $(LIBS) $(SOIL) $(CLIP) -o Web.html $(foreach var,$(WEBFILES),--preload-file $(var))
 	@mv Web.* bin/
 
 compileAll:
-	$(CC) -c $(CFLAGS) $(SRC) $(CLASSES) $(LIBS) $(SOIL)
+	$(CC) -c $(CFLAGS) $(SRC) $(CLASSES) $(LIBS) $(SOIL) $(CLIP)
 	if [ ! -d "obj" ]; then mkdir obj; fi
 	@mv *.o obj/
 

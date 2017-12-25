@@ -137,3 +137,24 @@ void Util::replaceAllOccurrences(std::string& subject,const std::string& search,
          pos += replace.length();
     }
 }
+
+string Util::getFromFile(string path){
+  string tmp,out="";
+  ifstream file(path);
+  if(file.is_open())
+      while(file.good())
+        while(getline(file,tmp))
+          out+=tmp+"\n";
+  else if(DEBUG) cout<<"ERROR - Loading the file: "<<path<<endl;
+  file.close();
+  out.erase(out.begin()+out.size()-1);
+  return out;
+}
+
+void Util::setToFile(string path, string data){
+  ofstream file(path,ofstream::trunc);
+  if(file.is_open())
+      file<<data;
+  else if(DEBUG) cout<<"ERROR - Loading the file: "<<path<<endl;
+  file.close();
+}

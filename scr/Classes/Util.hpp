@@ -117,6 +117,7 @@ typedef struct rectangle{
 #include <string>
 #include <cstdlib>
 #include <iostream>
+#include <fstream>
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -147,6 +148,8 @@ public:
     Util(const Util& orig);
     virtual ~Util();
 
+    static string getFromFile(string path);
+    static void setToFile(string path,string data);
     static string newPath(string path);
     static string getDinamicPath(string p1,int idx, string p3);
     static string getDinamicName(string p1,int idx);

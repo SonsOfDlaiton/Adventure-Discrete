@@ -11,6 +11,14 @@
 #endif
 #include <time.h>
 #include "../Libs/soil/SOIL.h"
+#include "../Libs/clip/clip.h"
+#ifdef _WIN32
+  #include "../Libs/clip/clip_win.h"
+#elif __APPLE__
+  #include "../Libs/clip/clip_osx.h"
+#else
+  #include "../Libs/clip/clip_none.h"
+#endif
 #include "Util.hpp"
 #include "Map.hpp"
 #include "nTFont.hpp"
@@ -60,12 +68,13 @@ public:
     static double getGameMs();
     static void clearEdits();
     static bool hasEditOnFocous();
+    static void setFocous(string editName);
     static void typeOnEdit(char c);
     static void moveEditCursor(int direction);
-    static void editTextBehave(nTRectangle collision,string font,nTColor fontcolor,string initial,string editName,bool numeric);
-    static void editTextBehave(nTRectangle collision,string font,nTColor fontcolor,string editName,bool numeric);
-    static void editTextBehave(nTRectangle collision,string font,string initial,string editName,bool numeric);
-    static void editTextBehave(nTRectangle collision,string font,string editName,bool numeric);
+    static void editTextBehave(nTRectangle collision,string font,nTColor fontcolor,string initial,string editName,bool numeric,bool setFocous);
+    static void editTextBehave(nTRectangle collision,string font,nTColor fontcolor,string editName,bool numeric,bool setFocous);
+    static void editTextBehave(nTRectangle collision,string font,string initial,string editName,bool numeric,bool setFocous);
+    static void editTextBehave(nTRectangle collision,string font,string editName,bool numeric,bool setFocous);
     static string getEditText(string editName);
     static void setEditText(string editName,string text);
     static bool buttonBehave(nTRectangle collision,nTColor pressedColor,GLuint tex,bool holdClick,void(*clickFunction)(int,int),void(*releaseFunction)(int,int),void(*RclickFunction)(int,int),void(*RreleaseFunction)(int,int));

@@ -7,12 +7,13 @@
 	<AL/alc.h>
 	"Util.hpp"
 
-1514060796 /home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/Util.hpp
+1514209235 /home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/Util.hpp
 	"FunctionAnalyser.hpp"
 	<vector>
 	<string>
 	<cstdlib>
 	<iostream>
+	<fstream>
 	<math.h>
 	<stdlib.h>
 	<stdio.h>
@@ -32,7 +33,7 @@
 1513734400 /home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/Language.hpp
 	"Util.hpp"
 
-1514064628 source:/home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/Tutorials.cpp
+1514067565 source:/home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/Tutorials.cpp
 	"Tutorials.hpp"
 	"Scenes.hpp"
 
@@ -40,12 +41,16 @@
 	"Util.hpp"
 	"GL.hpp"
 
-1514055186 /home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/GL.hpp
+1514210709 /home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/GL.hpp
 	<GL/glut.h>
 	<GLUT/glut.h>
 	<GL/freeglut.h>
 	<time.h>
 	"../Libs/soil/SOIL.h"
+	"../Libs/clip/clip.h"
+	"../Libs/clip/clip_win.h"
+	"../Libs/clip/clip_osx.h"
+	"../Libs/clip/clip_none.h"
 	"Util.hpp"
 	"Map.hpp"
 	"nTFont.hpp"
@@ -261,7 +266,7 @@
 1514062442 source:/home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/FunctionAnalyser.cpp
 	"FunctionAnalyser.hpp"
 
-1514057399 source:/home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/GL.cpp
+1514210991 source:/home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/GL.cpp
 	"GL.hpp"
 	"AssetsLoader.hpp"
 	"IOHandler.hpp"
@@ -283,7 +288,7 @@
 	"AssetsLoader.hpp"
 	"Camera.hpp"
 
-1514059211 source:/home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/mapEdit.cpp
+1514210788 source:/home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/mapEdit.cpp
 	"mapEdit.hpp"
 
 1513823796 source:/home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/Mechanics.cpp
@@ -307,13 +312,34 @@
 	"Scenes.hpp"
 	"Camera.hpp"
 
-1514067185 source:/home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/Scenes.cpp
+1514211124 source:/home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/Scenes.cpp
 	"Scenes.hpp"
 	"Bullet.hpp"
 	"powerUp.hpp"
 	"AL.hpp"
 	"Camera.hpp"
 
-1514060794 source:/home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/Util.cpp
+1514210635 source:/home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Classes/Util.cpp
 	"Util.hpp"
+
+1503925431 /home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Libs/clip/clip.h
+	<cassert>
+	<string>
+
+1503925431 source:/home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Libs/clip/clip.cpp
+	"clip.h"
+	"clip_win.h"
+	"clip_osx.h"
+	"clip_none.h"
+	<vector>
+	<stdexcept>
+
+1503925431 /home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Libs/clip/clip_win.h
+
+1503925431 /home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Libs/clip/clip_osx.h
+
+1514069181 /home/nanotech/Data/CEFET/iniciacao_3p/The.COM-Reborn/Adventure-Discrete/scr/Libs/clip/clip_none.h
+	<cassert>
+	<map>
+	<vector>
 

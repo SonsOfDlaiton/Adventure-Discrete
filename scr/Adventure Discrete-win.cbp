@@ -105,7 +105,6 @@
 		<Unit filename="Classes/nTFontChar.hpp" />
 		<Unit filename="Classes/powerUp.cpp" />
 		<Unit filename="Classes/powerUp.hpp" />
-		<Unit filename="Libs/importLibs.h" />
 		<Unit filename="Libs/soil/SOIL.c">
 			<Option compilerVar="CC" />
 		</Unit>
