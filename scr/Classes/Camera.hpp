@@ -1,7 +1,10 @@
 #ifndef CAMERA_H
 #define CAMERA_H
+
 #include "Util.hpp"
 #include "GL.hpp"
+
+class Player;
 
 typedef struct scenesP{
     short int movingCam;
@@ -25,6 +28,7 @@ public:
     void setCam(double moveSpeed_);
     void putCameraOnOrigin();
     void lookAt(nTPoint pos);
+    void followPlayer(Player* pl);
     bool isInTheScreen(nTRectangle collision);
     bool isInTheXScreen(nTRectangle collision);
     bool isInTheYScreen(nTRectangle collision);

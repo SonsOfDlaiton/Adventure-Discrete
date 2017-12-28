@@ -51,6 +51,12 @@ bool AssetsLoader::loadTextures(){
     if(!GL::loadTexture("Cica","Textures/HUD/Tutorials/cica.png")) out=false;
 
     //HUD
+    if(!GL::loadTexture("miniLvl0","Textures/HUD/Buttons/miniLevels/0.png")) out=false;
+    if(!GL::loadTexture("miniLvl1","Textures/HUD/Buttons/miniLevels/1.png")) out=false;
+    if(!GL::loadTexture("miniLvl2","Textures/HUD/Buttons/miniLevels/2.png")) out=false;
+    if(!GL::loadTexture("miniLvl3","Textures/HUD/Buttons/miniLevels/3.png")) out=false;
+    if(!GL::loadTexture("miniLvl4","Textures/HUD/Buttons/miniLevels/4.png")) out=false;
+    if(!GL::loadTexture("miniLvl5","Textures/HUD/Buttons/miniLevels/5.png")) out=false;
     if(!GL::loadTexture("Ballon","Textures/HUD/defaultBallon.png")) out=false;
     if(!GL::loadTexture("-","Textures/HUD/Buttons/arrowMinus.png")) out=false;
     if(!GL::loadTexture("+","Textures/HUD/Buttons/arrowPlus.png")) out=false;
@@ -386,6 +392,7 @@ bool AssetsLoader::loadSettings(){
     AL::setMusicState(tmp.music);
     AL::setSoundState(tmp.sound);
     Player::lives=tmp.lives;
+    Player::beatGame=tmp.beatGame;
     Player::checkpoint=tmp.checkpoint;
     Player::stage=tmp.currentStage;
     Player::globalCoeficiente=tmp.CR;
@@ -409,6 +416,7 @@ bool AssetsLoader::saveSettings(){
         tmp.sound=AL::getSoundState();
         tmp.music=AL::getMusicState();
         tmp.lives=Player::lives;
+        tmp.beatGame=Player::beatGame;
         tmp.checkpoint=Player::checkpoint;
         tmp.currentStage=Player::stage;
         tmp.CR=Player::globalCoeficiente;

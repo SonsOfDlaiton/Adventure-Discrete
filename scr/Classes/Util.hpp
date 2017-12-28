@@ -137,7 +137,7 @@ typedef struct collision{
 
 typedef struct settings{
     const char version[50] = "Adventure Discrete - Beta 1.0";
-    bool sound=true,music=true;
+    bool sound=true,music=true,beatGame=false;
     int lives=0,checkpoint=0,currentStage=0,sword=0;
     double CR=0;
 }SETTINGS;

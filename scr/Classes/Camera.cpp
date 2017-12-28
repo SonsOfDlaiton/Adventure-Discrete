@@ -1,4 +1,5 @@
 #include "Camera.hpp"
+#include "Player.hpp"
 
 Camera::Camera(){
 }
@@ -145,4 +146,37 @@ bool Camera::isInTheYScreen(nTRectangle collision){
     if(y.movedCam-offSet.y<=collision.p1.y&&collision.p1.y<GL::defaultSize.y+y.movedCam+offSet.y)
             out=true;
     return out;
+}
+
+void Camera::followPlayer(Player* pl){
+    if(ABS(pl->hSpeed)>0)
+        moveSpeed=ABS(pl->hSpeed/GL::getFPS());
+//    else if(Player::getPlayerById(0)->OnMOveBLock)
+//        moveSpeed=ABS(150/GL::getFPS());
+    else
+        moveSpeed=ABS(Entity::walkSpeed/GL::getFPS());
+
+    if((pl->pos.x>GL::defaultSize.x/2*1.11+x.movedCam))
+        x.movingCam=1;
+    else if((pl->pos.x<GL::defaultSize.x/2*0.99+x.movedCam)&&(x.movedCam>1.11))
+        x.movingCam=-1;
+    else
+        x.movingCam=0;
+
+    if(pl->pos.y<Map::size.y*1.3){
+         if((pl->pos.y>GL::defaultSize.y/1.5*1.11+y.movedCam))
+            y.movingCam=1;
+         else if((pl->pos.y<GL::defaultSize.y/2*0.49+y.movedCam)&&(y.movedCam>1.11))
+            y.movingCam=-1;
+        else
+            y.movingCam=0;
+    }else if(!Camera::freeCam)
+            y.movingCam=0;
+
+
+    gluLookAt(moveSpeed*x.movingCam,moveSpeed*y.movingCam,0,moveSpeed*x.movingCam,moveSpeed*y.movingCam,-1,0,1,0);
+    if(x.movingCam)
+        x.movedCam+=moveSpeed*x.movingCam;
+    if(y.movingCam)
+        y.movedCam+=moveSpeed*y.movingCam;
 }

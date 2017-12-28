@@ -120,36 +120,8 @@ void Scenes::drawGame(){
         AL::singleton->stopAllSoundsExcept(tmp);
         camera.lookAt(Player::getPlayerById(0)->pos);
     }
-    if(ABS(Player::getPlayerById(0)->hSpeed)>0)
-        Scenes::camera.moveSpeed=ABS(Player::getPlayerById(0)->hSpeed/GL::getFPS());
-//    else if(Player::getPlayerById(0)->OnMOveBLock)
-//        Scenes::camera.moveSpeed=ABS(150/GL::getFPS());
-    else
-        Scenes::camera.moveSpeed=ABS(Entity::walkSpeed/GL::getFPS());
 
-    if((Player::getPlayerById(0)->pos.x>GL::defaultSize.x/2*1.11+Scenes::camera.x.movedCam))
-        Scenes::camera.x.movingCam=1;
-    else if((Player::getPlayerById(0)->pos.x<GL::defaultSize.x/2*0.99+Scenes::camera.x.movedCam)&&(Scenes::camera.x.movedCam>1.11))
-        Scenes::camera.x.movingCam=-1;
-    else
-        Scenes::camera.x.movingCam=0;
-
-    if(Player::getPlayerById(0)->pos.y<Map::size.y*1.3){
-         if((Player::getPlayerById(0)->pos.y>GL::defaultSize.y/1.5*1.11+Scenes::camera.y.movedCam))
-            Scenes::camera.y.movingCam=1;
-         else if((Player::getPlayerById(0)->pos.y<GL::defaultSize.y/2*0.49+Scenes::camera.y.movedCam)&&(Scenes::camera.y.movedCam>1.11))
-            Scenes::camera.y.movingCam=-1;
-        else
-            Scenes::camera.y.movingCam=0;
-    }else if(!Camera::freeCam)
-            Scenes::camera.y.movingCam=0;
-
-
-    gluLookAt(camera.moveSpeed*camera.x.movingCam,camera.moveSpeed*camera.y.movingCam,0,camera.moveSpeed*camera.x.movingCam,camera.moveSpeed*camera.y.movingCam,-1,0,1,0);
-    if(camera.x.movingCam)
-        camera.x.movedCam+=camera.moveSpeed*camera.x.movingCam;
-    if(camera.y.movingCam)
-        camera.y.movedCam+=camera.moveSpeed*camera.y.movingCam;
+    camera.followPlayer(Player::getPlayerById(0));
     Mechanics::singleton->applyForce();
     Map::refresh();
     Entity::behave();
@@ -169,6 +141,12 @@ void Scenes::drawGame(){
             }else if(Player::stage==1){
                 AL::singleton->playSoundByName("stage1");
             }else if(Player::stage==2){
+                AL::singleton->playSoundByName("stage2");
+            }else if(Player::stage==3){
+                AL::singleton->playSoundByName("stage2");
+            }else if(Player::stage==4){
+                AL::singleton->playSoundByName("stage2");
+            }else if(Player::stage==5){
                 AL::singleton->playSoundByName("stage2");
             }
         }
@@ -375,21 +353,42 @@ void Scenes::drawPreCampaign(){
       tmp.push_back(AL::getSoundByName("mouse"));
       AL::singleton->stopAllSoundsExcept(tmp);
   }
-
-
-
-
-
+  if(Player::beatGame){
+    if(GL::buttonBehave(nTRectangle::get(37.5,250,262.5,100),GL::getColorByName("mouseSelected"),GL::getTextureByName("miniLvl0"))){
+      Player::stage=0;
+      Player::checkpoint=0;
+      Player::getPlayerById(0)->life=Player::defaultLife;
+    }
+    if(GL::buttonBehave(nTRectangle::get(287.5,250,512.5,100),GL::getColorByName("mouseSelected"),GL::getTextureByName("miniLvl1"))){
+      Player::stage=1;
+      Player::checkpoint=0;
+      Player::getPlayerById(0)->life=Player::defaultLife;
+    }
+    if(GL::buttonBehave(nTRectangle::get(537.5,250,762.5,100),GL::getColorByName("mouseSelected"),GL::getTextureByName("miniLvl2"))){
+      Player::stage=2;
+      Player::checkpoint=0;
+      Player::getPlayerById(0)->life=Player::defaultLife;
+    }
+    if(GL::buttonBehave(nTRectangle::get(37.5,450,262.5,300),GL::getColorByName("mouseSelected"),GL::getTextureByName("miniLvl3"))){
+      Player::stage=3;
+      Player::checkpoint=0;
+      Player::getPlayerById(0)->life=Player::defaultLife;
+    }
+    if(GL::buttonBehave(nTRectangle::get(287.5,450,512.5,300),GL::getColorByName("mouseSelected"),GL::getTextureByName("miniLvl4"))){
+      Player::stage=4;
+      Player::checkpoint=0;
+      Player::getPlayerById(0)->life=Player::defaultLife;
+    }
+    if(GL::buttonBehave(nTRectangle::get(537.5,450,762.5,300),GL::getColorByName("mouseSelected"),GL::getTextureByName("miniLvl5"))){
+      Player::stage=5;
+      Player::checkpoint=0;
+      Player::getPlayerById(0)->life=Player::defaultLife;
+    }
+    if(GL::buttonBehave(nTRectangle::get(340,550,480,500),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon")))
+      current=menu;
+  }else{
     //TODO: DESCOMENTAR
-
-
-
-
-
-
-
-
-  //nao descomentar v
+    //nao descomentar v
   // if(GL::buttonBehave(Util::nTRectangleSet(340,550,480,500,0,0),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon")))
     // current=preGame;
   //nao descomentar ^
@@ -438,8 +437,7 @@ void Scenes::drawPreCampaign(){
     current=game;
   // else
   //     al->playSoundByName("makeTest");
-
-
+  }
 }
 
 /**

@@ -347,7 +347,7 @@ void Map::refresh(){
                     if(!Scenes::freeGameMode){
                         Player::checkpoint=0;
                         Player::stage++;
-                        if(Player::stage>=Map::nOfMaps){
+                        if(Player::stage==lvlGoodTecher||Player::stage==lvlBadTecher){
                             Player::stage=0;
                             Map::GG(true);
                         }else{
@@ -442,14 +442,14 @@ void Map::GG(bool isWinner){
         return;
     }
     Player::refreshGlobalcoeficiente();
-    Player::lives=3;
-    Player::checkpoint=0;
-    Player::stage=0;
-    Player::checkpoint=0;
-
     if(isWinner){
+        Player::lives++;
+        Player::beatGame=true;
         Scenes::current=Scenes::posYouWin;
     }else{
+        Player::stage=0;
+        Player::checkpoint=0;
+        Player::lives=3;
         Player::globalCoeficiente=0;
         Scenes::current=Scenes::posGameEnd;
     }

@@ -30,6 +30,7 @@ public:
     bool spacePressed;
     bool itsInTheWater;
     int atackDirection;
+    static bool beatGame;
     static int stage;
     static int lives;
     static int checkpoint;

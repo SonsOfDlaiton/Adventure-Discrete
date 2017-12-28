@@ -51,6 +51,7 @@ Player::~Player() {
 }
 
 int Player::lives=3;
+bool Player::beatGame=false;
 const int Player::ranged=64651;
 const int Player::meleeProjectile=16165;
 const int Player::melee=165165;
