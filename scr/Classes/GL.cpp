@@ -729,8 +729,8 @@ ostream& operator<<(ostream &strm, const GL &gl) {
  *	@param b do nothing
 **/
 void modifySound(int a,int b){
-  AL::setSoundState(!AL::getSoundState());
-  AssetsLoader::saveSettings();
+    AL::setSoundState(!AL::getSoundState());
+    AssetsLoader::saveSettings();
 }
 
 /**
@@ -740,8 +740,8 @@ void modifySound(int a,int b){
  *	@param b do nothing
 **/
 void modifyMusic(int a,int b){
-  AL::setMusicState(!AL::getMusicState());
-  AssetsLoader::saveSettings();
+    AL::setMusicState(!AL::getMusicState());
+    AssetsLoader::saveSettings();
 }
 
 /**
@@ -759,16 +759,16 @@ void GL::drawPause(){
     GL::defaultSize.x+Scenes::camera.x.movedCam,
     Scenes::camera.y.movedCam,0.95)),
     nTColor::get(1,1,1,0.5),GL::getTextureByName("dce"));
-    if(AL::getSoundState()){
+    if(AL::getSoundState())
         GL::buttonBehave(nTRectangle::get(100+Scenes::camera.x.movedCam,550+Scenes::camera.y.movedCam,140+Scenes::camera.x.movedCam,510+Scenes::camera.y.movedCam,0.99),nTColor::Black(),GL::getTextureByName("soundOn"),false,NULL,*modifySound,NULL,NULL);
-      }else{
+    else
         GL::buttonBehave(nTRectangle::get(100+Scenes::camera.x.movedCam,550+Scenes::camera.y.movedCam,140+Scenes::camera.x.movedCam,510+Scenes::camera.y.movedCam,0.99),nTColor::Black(),GL::getTextureByName("soundOff"),false,NULL,*modifySound,NULL,NULL);
-      }
-      if(AL::getMusicState()){
+    
+    if(AL::getMusicState())
         GL::buttonBehave(nTRectangle::get(40+Scenes::camera.x.movedCam,550+Scenes::camera.y.movedCam,80+Scenes::camera.x.movedCam,510+Scenes::camera.y.movedCam,0.99),nTColor::Black(),GL::getTextureByName("musicOn"),false,NULL,*modifyMusic,NULL,NULL);
-      }else{
+    else
         GL::buttonBehave(nTRectangle::get(40+Scenes::camera.x.movedCam,550+Scenes::camera.y.movedCam,80+Scenes::camera.x.movedCam,510+Scenes::camera.y.movedCam,0.99),nTColor::Black(),GL::getTextureByName("musicOff"),false,NULL,*modifyMusic,NULL,NULL);
-      }
+    
     GL::drawCenteredTexture(nTPoint::get(GL::defaultSize.x/2+Scenes::camera.x.movedCam,Scenes::camera.y.movedCam+GL::defaultSize.y/2,0.96),
                             nTPoint::get(200,60),GL::getTextureByName("Ballon"));
 
@@ -1193,9 +1193,9 @@ void GL::drawPopupBox(){
 
         if((popupMs+GL::getGameMs()>=popupDuration&&popupDuration)||
             textButtonBehave(nTRectangle::getCollision(nTPoint::get(GL::defaultSize.x/2+Scenes::camera.x.movedCam,collision.p0.y-22+Scenes::camera.y.movedCam,0.99),nTPoint::get(40,20,0.99)),GL::getColorByName("mouseSelected"),"Ok",nTColor::get(0,0,0),GL::getTextureByName("btnSkin1"))){
-          popupText="";
-          isPaused=false;
-        }
+            popupText="";
+            isPaused=false;
+        }   
         currentFont=fontBKP;
     }
 }

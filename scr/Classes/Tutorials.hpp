@@ -6,7 +6,7 @@
 
 class Tutorials {
 public:
-    Tutorials(string text,int key);
+    Tutorials();
     Tutorials(const Tutorials& orig);
     virtual ~Tutorials();
 

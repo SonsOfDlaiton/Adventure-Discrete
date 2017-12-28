@@ -311,7 +311,7 @@ void IOHandler::mouseActiveMotion(int x,int y){
  *	@param y the mouse y position
 **/
 void IOHandler::mouseWheel(int button, int dir, int x, int y){
-    if (dir > 0){
+    if (dir>0){
         // Zoom in
         if(Scenes::current==Scenes::mapEdit){
             if(mapEdit::scale.x<0.99){
