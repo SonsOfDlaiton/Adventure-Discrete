@@ -82,7 +82,7 @@ void Bullet::behave(){
         if(bu->type==errorBlockBullet||bu->type==hyperbolicParaboloidBullet){//tiro de bloco
             bu->checkCollisionWithEntity(Player::getPlayerById(0)->pos,Player::getPlayerById(0)->size,true);
         }else if(bu->type==strongSwordBullet){//espada
-            if(round(fmodl(GL::getGameMs(),(int)Entity::getSpriteMs()*3))==0){
+            if(Util::timerWithInterval(Entity::getSpriteMs()*3)){
                 if(bu->tex==GL::getTextureByName("SwordBullet0"))
                     bu->tex=GL::getTextureByName("SwordBullet1");
                 else
@@ -90,7 +90,7 @@ void Bullet::behave(){
             }
             bu->checkCollisionWithEntity(nTPoint::Origin(),nTPoint::Origin(),false);
         }else if(bu->type==strongXAtackBullet){//atk forte
-            if(round(fmodl(GL::getGameMs(),(int)Entity::getSpriteMs()))==0){
+            if(Util::timerWithInterval(Entity::getSpriteMs())){
                 bu->spriteIndex++;
                 if(bu->spriteIndex==4)
                     bu->spriteIndex=0;
@@ -101,7 +101,7 @@ void Bullet::behave(){
             }
             bu->checkCollisionWithEntity(nTPoint::Origin(),nTPoint::Origin(),false);
         }else if(bu->type==weakXAtackBullet){//atk fraco
-            if(round(fmodl(GL::getGameMs(),(int)Entity::getSpriteMs()))==0){
+            if(Util::timerWithInterval(Entity::getSpriteMs())){
                 bu->spriteIndex++;
                 if(bu->spriteIndex==3)
                     bu->spriteIndex=0;

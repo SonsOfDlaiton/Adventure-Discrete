@@ -100,7 +100,7 @@ void Entity::execAnimation(){
         FunctionAnalyser::endFunction("Entity::execAnimation");
         return;
     }
-    if(round(fmodl(GL::getGameMs(),(int)Entity::getSpriteMs()))==0){
+    if(Util::timerWithInterval(Entity::getSpriteMs())){
         Player* pl;
         Enemy* en;
         if(currentIndex>=animations[currentState].size()){
@@ -215,7 +215,7 @@ void Entity::draw(nTColor color){
         GL::drawTexture(nTRectangle::getCollision(pos,size),color,currentTex,orientation);
         return;
     }
-    if((damageState||imuneToDamage)&&round(fmodl(GL::getGameMs(),200)==0)>0)
+    if((damageState||imuneToDamage)&&Util::timerWithInterval(200))
         return;
     stateControl();
     if(!isVisible) return;

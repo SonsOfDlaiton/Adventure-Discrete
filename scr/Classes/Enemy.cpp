@@ -123,7 +123,7 @@ void Enemy::behave(){
                     en->orientation=Util::orientation_right;
                 else
                     en->orientation=Util::orientation_left;
-                if(round(fmodl(GL::getGameMs(),1200)==0)>0&&!en->damageState&&Scenes::camera.isInTheXScreen(nTRectangle::getCollision(en->pos,en->size))){
+                if(Util::timerWithInterval(1200)&&!en->damageState&&Scenes::camera.isInTheXScreen(nTRectangle::getCollision(en->pos,en->size))){
                     new Bullet(Bullet::hyperbolicParaboloidBullet,Bullet::baseSpeed*en->orientation/1.5,nTPoint::get(en->pos.x,Player::getPlayerById(0)->pos.y+4+((rand()%300)/10-17),1),nTPoint::get(23,16,1));
                 }
             }

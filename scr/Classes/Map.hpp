@@ -29,6 +29,7 @@ public:
     static int totalPowerUps;
     static int expetedTime;
     static vector<void*> staticBlocks;
+    static vector<vector<int> > staticBlocksArr;
     static vector<void*> dynamicBlocks;
     static vector<nTMap> maps;
     static nTMap usrMap;

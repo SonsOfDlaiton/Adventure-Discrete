@@ -70,6 +70,7 @@ string GL::popupFont="";
 double GL::popupMs;
 bool GL::popupPaused=false;
 int GL::popupDuration=0;
+bool GL::editCharCursor;
 
 
 /**
@@ -353,7 +354,7 @@ void GL::drawCenteredTexture(nTPoint pos,nTPoint size,GLuint tex){
 **/
 nTColor GL::getColorByName(string name){
 	for(int i=0;name[i];i++)name[i]=tolower(name[i]);
-	double R=1,G=1,B=1;
+	float R=1,G=1,B=1;
 	if(name=="black"){
 		R=0;G=0;B=0;
 	}else if(name=="red"){
@@ -369,13 +370,13 @@ nTColor GL::getColorByName(string name){
 	}else if(name=="cyan"){
 		R=0;G=1;B=1;
 	}else if(name=="grey"){
-		R=0.6;G=0.6;B=0.6;
+		R=0.6f;G=0.6f;B=0.6f;
 	}else if(name=="violet"){   //mish 153,112,205 ou 99,70,CD
-		R=0.6;G=0.4392156;B=0.80392156;
+		R=0.6f;G=0.4392156f;B=0.80392156f;
 	}else if(name=="white"){
 		R=1;G=1;B=1;
-	}else if(name=="mouseSelected"){
-		R=0.3;G=0.3;B=0.3;
+	}else if(name=="mouseselected"){
+		R=0.2f;G=0.2f;B=0.2f;
 	}
 	return nTColor::get(R,G,B);
 }
@@ -580,12 +581,10 @@ vector<GLuint> GL::getTexturesByName(string name,int nOfTex){
  *  @return true if the button is being left mouse clicked
 **/
 bool GL::buttonBehave(nTRectangle collision,nTColor pressedColor,GLuint tex,bool holdClick,void(*clickFunction)(int,int),void(*releaseFunction)(int,int),void(*RclickFunction)(int,int),void(*RreleaseFunction)(int,int)){
-    if(GL::mousePos.x>=collision.p0.x&&GL::mousePos.x<=collision.p1.x&&((GL::mousePos.y>=collision.p0.y&&GL::mousePos.y<=collision.p1.y)||(GL::mousePos.y>=collision.p1.y&&GL::mousePos.y<=collision.p0.y))){
+    if(Util::isInsideBox(collision,GL::mousePos)){
         if(tex){
-            collision.p0.z+=0.00001;
             GL::drawTexture(collision,pressedColor,tex);
         }else{
-            collision.p0.z+=0.00001;
             GL::drawRectangle(collision,pressedColor);
         }
         if(GL::leftMouseClicked||GL::rightMouseClicked)
@@ -618,7 +617,6 @@ bool GL::buttonBehave(nTRectangle collision,nTColor pressedColor,GLuint tex,bool
         }
     }else{
         if(tex){
-            collision.p0.z-=0.00001;
             GL::drawTexture(collision,tex);
         }
     }
@@ -653,12 +651,11 @@ bool GL::buttonBehave(nTRectangle collision,nTColor pressedColor,GLuint tex){
  *  @return true if the button is being left mouse clicked
 **/
 bool GL::textButtonBehave(nTRectangle collision,nTColor pressedColor,string text,nTColor textColor,GLuint tex,bool holdClick,void(*clickFunction)(int,int),void(*releaseFunction)(int,int),void(*RclickFunction)(int,int),void(*RreleaseFunction)(int,int)){
-    if(GL::mousePos.x>=collision.p0.x&&GL::mousePos.x<=collision.p1.x&&((GL::mousePos.y>=collision.p0.y&&GL::mousePos.y<=collision.p1.y)||(GL::mousePos.y>=collision.p1.y&&GL::mousePos.y<=collision.p0.y))){
+    collision.p0.z-=0.00001;
+    if(Util::isInsideBox(collision,GL::mousePos)){
         if(tex){
-            collision.p0.z+=0.00002;
             GL::drawTexture(collision,pressedColor,tex);
         }else{
-            collision.p0.z+=0.00002;
             GL::drawRectangle(collision,pressedColor);
         }
         if(GL::leftMouseClicked||GL::rightMouseClicked)
@@ -690,10 +687,8 @@ bool GL::textButtonBehave(nTRectangle collision,nTColor pressedColor,string text
             return false;
         }
     }else{
-        collision.p0.z-=0.00001;
         GL::drawTexture(collision,tex);
     }
-
     collision.p0.z+=0.00001;
     GL::drawCentered_MultilineX_Y_Text(nTPoint::get((collision.p0.x+collision.p1.x)/2,(collision.p0.y+collision.p1.y)/2+3,collision.p0.z),text,textColor);
     return false;
@@ -765,14 +760,14 @@ void GL::drawPause(){
     Scenes::camera.y.movedCam,0.95)),
     nTColor::get(1,1,1,0.5),GL::getTextureByName("dce"));
     if(AL::getSoundState()){
-        GL::buttonBehave(nTRectangle::get(700+Scenes::camera.x.movedCam,50+Scenes::camera.y.movedCam,740+Scenes::camera.x.movedCam,10+Scenes::camera.y.movedCam,0.99),nTColor::Black(),GL::getTextureByName("soundOn"),false,NULL,*modifySound,NULL,NULL);
+        GL::buttonBehave(nTRectangle::get(100+Scenes::camera.x.movedCam,550+Scenes::camera.y.movedCam,140+Scenes::camera.x.movedCam,510+Scenes::camera.y.movedCam,0.99),nTColor::Black(),GL::getTextureByName("soundOn"),false,NULL,*modifySound,NULL,NULL);
       }else{
-        GL::buttonBehave(nTRectangle::get(700+Scenes::camera.x.movedCam,50+Scenes::camera.y.movedCam,740+Scenes::camera.x.movedCam,10+Scenes::camera.y.movedCam,0.99),nTColor::Black(),GL::getTextureByName("soundOff"),false,NULL,*modifySound,NULL,NULL);
+        GL::buttonBehave(nTRectangle::get(100+Scenes::camera.x.movedCam,550+Scenes::camera.y.movedCam,140+Scenes::camera.x.movedCam,510+Scenes::camera.y.movedCam,0.99),nTColor::Black(),GL::getTextureByName("soundOff"),false,NULL,*modifySound,NULL,NULL);
       }
       if(AL::getMusicState()){
-        GL::buttonBehave(nTRectangle::get(640+Scenes::camera.x.movedCam,50+Scenes::camera.y.movedCam,680+Scenes::camera.x.movedCam,10+Scenes::camera.y.movedCam,0.99),nTColor::Black(),GL::getTextureByName("musicOn"),false,NULL,*modifyMusic,NULL,NULL);
+        GL::buttonBehave(nTRectangle::get(40+Scenes::camera.x.movedCam,550+Scenes::camera.y.movedCam,80+Scenes::camera.x.movedCam,510+Scenes::camera.y.movedCam,0.99),nTColor::Black(),GL::getTextureByName("musicOn"),false,NULL,*modifyMusic,NULL,NULL);
       }else{
-        GL::buttonBehave(nTRectangle::get(640+Scenes::camera.x.movedCam,50+Scenes::camera.y.movedCam,680+Scenes::camera.x.movedCam,10+Scenes::camera.y.movedCam,0.99),nTColor::Black(),GL::getTextureByName("musicOff"),false,NULL,*modifyMusic,NULL,NULL);
+        GL::buttonBehave(nTRectangle::get(40+Scenes::camera.x.movedCam,550+Scenes::camera.y.movedCam,80+Scenes::camera.x.movedCam,510+Scenes::camera.y.movedCam,0.99),nTColor::Black(),GL::getTextureByName("musicOff"),false,NULL,*modifyMusic,NULL,NULL);
       }
     GL::drawCenteredTexture(nTPoint::get(GL::defaultSize.x/2+Scenes::camera.x.movedCam,Scenes::camera.y.movedCam+GL::defaultSize.y/2,0.96),
                             nTPoint::get(200,60),GL::getTextureByName("Ballon"));
@@ -1010,7 +1005,7 @@ void GL::editTextBehave(nTRectangle collision,string font,nTColor fontcolor,stri
     }
 
     if(GL::leftMouseClicked){
-        if(GL::mousePos.x>=collision.p0.x&&GL::mousePos.x<=collision.p1.x&&((GL::mousePos.y>=collision.p0.y&&GL::mousePos.y<=collision.p1.y)||(GL::mousePos.y>=collision.p1.y&&GL::mousePos.y<=collision.p0.y))){
+        if(Util::isInsideBox(collision,GL::mousePos)){
             AL::singleton->playSoundByName("mouse");
             GL::leftMouseClicked=0;
             editOnFocous=editId;
@@ -1033,10 +1028,12 @@ void GL::editTextBehave(nTRectangle collision,string font,nTColor fontcolor,stri
     if(cursor<0) cursor=textToDraw.size();
     if(cursor>textToDraw.size()) cursor=textToDraw.size();
     if(editOnFocous==editId){ //draw text plus | (blinking pipe)
-        if(round(fmodl(GL::getGameMs(),500)>250)){
-            textToDraw.insert(cursor,"|");
-        }else{
-            textToDraw.insert(cursor," ");
+        if(Util::timerWithInterval(500)){
+            if(editCharCursor)
+                textToDraw.insert(cursor,"|");
+            else
+                textToDraw.insert(cursor," ");
+            editCharCursor=!editCharCursor;
         }
     }
     float lineWidth=fnt->calcBoundaries("_").x;

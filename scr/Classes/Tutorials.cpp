@@ -66,7 +66,7 @@ void Tutorials::draw(string text){
       else if(Player::stage==Map::lvlBadTecher)
         friendTex=GL::getTextureByName("teacher");
     }
-    if(texts[activeTut].find("Douglas")!=string::npos)
+    if(text.find("Douglas")!=string::npos)
         friendTex=GL::getTextureByName("Douglinhas");
     if(GL::isPaused)
         friendTex=GL::getTextureByName("Cica");

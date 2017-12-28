@@ -18,6 +18,7 @@ Map::Map(const Map& orig) {
 Map::~Map() {
 }
 
+vector<vector<int> > Map::staticBlocksArr;
 vector<void*> Map::staticBlocks;
 vector<void*> Map::dynamicBlocks;
 nTMap Map::actualMap;//GLuint Map::background;
@@ -106,6 +107,7 @@ void Map::deleteAllBlocks(){
     }
     dynamicBlocks.clear();
     staticBlocks.clear();
+    staticBlocksArr.clear();
     Entity::enemys.clear();
     nOfEnemys=0;
     expetedTime=0;
@@ -120,7 +122,10 @@ void Map::setBlockPos(){
     Tutorials::clear();
     Blocks *bl;
     for(int i=0;i<actualMap.map.size();i++){
+        vector<int> v;
+        staticBlocksArr.push_back(v);
         for(int j=0;j<actualMap.map[0].size();j++){
+            staticBlocksArr[i].push_back(-1);
             bl=new Blocks(actualMap.map[i][j].first,nTPoint::get(Blocks::defaultBlockSize.x*(j+(1/2))+Blocks::defaultBlockSize.x/2,Blocks::defaultBlockSize.y*(i+(1/2))+Blocks::defaultBlockSize.y/2,Blocks::defaultBlockSize.z),Blocks::defaultBlockSize,actualMap.map[i][j].second);
             if(Blocks::checkIfBlocksIsDynamic(actualMap.map[i][j].first)){
                 if(Blocks::checkIfBlocksIsPlayerSpawn(actualMap.map[i][j].first)&&(Player::checkpoint==0||Scenes::freeGameMode)){
@@ -159,6 +164,7 @@ void Map::setBlockPos(){
                 }
             }else if(!Blocks::checkIfBlocksIsAir(actualMap.map[i][j].first)){
                 bl->id=staticBlocks.size();
+                staticBlocksArr[i][j]=bl->id;
                 staticBlocks.push_back(bl);
             }
             if(Blocks::checkIfBlocksIsCheckpoint(actualMap.map[i][j].first)){
@@ -245,6 +251,7 @@ vector <mapCollision> Map::checkCollision(nTPoint pos,nTPoint size){
         if(j>=0 && j<=actualMap.map.size() && i>=0 && i<=actualMap.map[0].size()){
             blockCenter.set(i*y32+y16,j*x32-x16,0);
             Blocks* bl=getBlockById(getIdByPosition(blockCenter));
+            if(bl!=nullptr)
             if(Blocks::checkIfBlocksIsMassive(bl->type)){
                 if(bl->id!=blockId&&bl->id){
                     adc.blockId=bl->id;
@@ -295,7 +302,7 @@ void Map::refresh(){
             else if(Blocks::checkIfBlocksIsHalfBlockH(bl->type)&&Scenes::camera.isInTheYScreen(nTRectangle::getCollision(bl->pos,bl->size)))
                 bl->move(Util::direction_left,bl->moveSpeed/GL::getFPS());
             else if(Blocks::checkIfBlocksIsShooter(bl->type)&&Scenes::camera.isInTheXScreen(nTRectangle::getCollision(bl->pos,bl->size))){
-                if(round(fmodl(GL::getGameMs(),(int)Bullet::timeToShoot/2.5))==0&&Player::getPlayerById(0)->life>0){
+                if(Util::timerWithInterval(Bullet::timeToShoot/2.5)&&Player::getPlayerById(0)->life>0){
                     nTPoint tmp=bl->pos;
                     tmp.z=0.9;
                     tmp.x+=Blocks::defaultBlockSize.x*1.2;
@@ -304,7 +311,7 @@ void Map::refresh(){
                     new Bullet(Bullet::errorBlockBullet,-Bullet::baseSpeed,tmp,nTPoint::get(40,20,1));
                 }
             }else if(bl->type==Blocks::BusShooterBlock){
-                if(round(fmodl(GL::getGameMs(),(int)Bullet::timeToShoot))==0&&Player::getPlayerById(0)->life>0){
+                if(Util::timerWithInterval(Bullet::timeToShoot)&&Player::getPlayerById(0)->life>0){
                     nTPoint tmp=bl->pos;
                     tmp.z=0.9;
                     tmp.y-=Blocks::defaultBlockSize.y/3;
@@ -394,20 +401,34 @@ void Map::refresh(){
  *	@return id of the block on the vectors
 **/
 int Map::getIdByPosition(nTPoint pos){
-  Blocks* bl;
-  for(int i=0; i<staticBlocks.size(); i++){
-    bl=(Blocks*)staticBlocks[i];
-    if(bl->pos.x==pos.x && bl->pos.y==pos.y){
-      return bl->id;
+    FunctionAnalyser::startFunction("Map::getIdByPosition");
+    Blocks* bl;
+    for(int i=0; i<dynamicBlocks.size(); i++){
+        bl=(Blocks*)dynamicBlocks[i];
+        if(bl->pos.x==pos.x && bl->pos.y==pos.y){
+            FunctionAnalyser::endFunction("Map::getIdByPosition");
+            return bl->id;
+        }
     }
-  }
-  for(int i=0; i<dynamicBlocks.size(); i++){
-    bl=(Blocks*)dynamicBlocks[i];
-    if(bl->pos.x==pos.x && bl->pos.y==pos.y){
-      return bl->id;
+    int y=(int)floor(pos.y/Blocks::defaultBlockSize.y);
+    if(y<staticBlocksArr.size()){
+        int x=(int)floor(pos.x/Blocks::defaultBlockSize.x);
+        if(x<staticBlocksArr[y].size()){
+            if(staticBlocksArr[y][x]>=0){
+                FunctionAnalyser::endFunction("Map::getIdByPosition");
+                return staticBlocksArr[y][x];
+            }
+        }
     }
-  }
-  return 0;
+    for(int i=0; i<staticBlocks.size(); i++){
+        bl=(Blocks*)staticBlocks[i];
+        if(bl->pos.x==pos.x && bl->pos.y==pos.y){
+            FunctionAnalyser::endFunction("Map::getIdByPosition");
+            return bl->id;
+        }
+    }
+    FunctionAnalyser::endFunction("Map::getIdByPosition");
+    return 0;
 }
 
 /**
@@ -591,7 +612,7 @@ Blocks* Map::getBlockById(int id){
         }else{
             return nullptr;
         }
-    }else{
+    }else if(id>=0){
         return (Blocks*)Map::staticBlocks[id];
     }
     return nullptr;

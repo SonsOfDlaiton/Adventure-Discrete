@@ -108,6 +108,7 @@ private:
     static vector<string> textureNames;
     static vector<GLuint> textures;
     static vector<void*> fonts;
+    static bool editCharCursor;
     static int editOnFocous;
     static int editTextPosition;
     static vector<string> edits;

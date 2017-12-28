@@ -9,7 +9,7 @@ FunctionAnalyser::FunctionAnalyser(const FunctionAnalyser& orig) {
 FunctionAnalyser::~FunctionAnalyser() {
 }
 
-bool FunctionAnalyser::PRINT=true;
+bool FunctionAnalyser::PRINT=false;
 bool FunctionAnalyser::ANALYSE=false;
 
 vector<FunctionData> FunctionAnalyser::data;
@@ -23,7 +23,7 @@ vector<unsigned long> FunctionAnalyser::functionsEndTime;
 const int FunctionAnalyser::milliseconds=1000000;
 const int FunctionAnalyser::microseconds=1000;
 const int FunctionAnalyser::nanoseconds=1;
-int FunctionAnalyser::timescale=milliseconds;
+int FunctionAnalyser::timescale=microseconds;
 
 unsigned long FunctionAnalyser::getCurrentTime(){
     return std::chrono::high_resolution_clock::now().time_since_epoch().count();

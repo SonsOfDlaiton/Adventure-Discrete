@@ -158,6 +158,8 @@ public:
     static double angleToRad(double angle);
     static double radToAngle(double RAD);
     static void replaceAllOccurrences(std::string& subject,const std::string& search,const std::string& replace);
+    static bool timerWithInterval(double interval);
+    static bool isInsideBox(nTRectangle collider, nTPoint point);
 
     static bool DEBUG;
     static const int direction_left;

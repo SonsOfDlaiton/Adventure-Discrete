@@ -1,4 +1,5 @@
 #include "Util.hpp"
+#include "GL.hpp"
 Util::Util() {
 };
 
@@ -157,4 +158,28 @@ void Util::setToFile(string path, string data){
       file<<data;
   else if(DEBUG) cout<<"ERROR - Loading the file: "<<path<<endl;
   file.close();
+}
+
+bool Util::timerWithInterval(double interval){
+  return round(fmodf(GL::getGameMs(),interval))==0;
+}
+
+bool Util::isInsideBox(nTRectangle collider, nTPoint point){
+  double x,X,y,Y;
+  if(collider.p0.x>collider.p1.x){
+    x=collider.p1.x;
+    X=collider.p0.x;
+  }else{
+    x=collider.p0.x;
+    X=collider.p1.x;
+  }
+  if(collider.p0.y>collider.p1.y){
+    y=collider.p1.y;
+    Y=collider.p0.y;
+  }else{
+    y=collider.p0.y;
+    Y=collider.p1.y;
+  }
+
+  return point.x>=x&&point.x<=X&&point.y>=y&&point.y<=Y;
 }
