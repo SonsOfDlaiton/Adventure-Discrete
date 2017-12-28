@@ -13,13 +13,13 @@ Entity::~Entity() {
 }
 
 const double Entity::SpritesPerSecond=4;
-const double Entity::jumpSpeed=303;
-const double Entity::horizontalRecoil=270;
-const double Entity::verticalRecoil=300;
-const double Entity::walkSpeed=150;
-const double Entity::runAceleration=66;
-const double Entity::maxRunSpeed=250;
-const double Entity::imunityTime=200;
+const double Entity::jumpSpeed=312;
+const double Entity::horizontalRecoil=280;
+const double Entity::verticalRecoil=330;
+const double Entity::walkSpeed=166;
+const double Entity::runAceleration=70;
+const double Entity::maxRunSpeed=280;
+const double Entity::imunityTime=300;
 const int Entity::state_Idle=0;
 const int Entity::state_Walking=1;
 const int Entity::state_Running=2;
