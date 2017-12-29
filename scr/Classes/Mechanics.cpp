@@ -64,15 +64,15 @@ void Mechanics::applyGravity(){//38% de consumo de processador
         }
     }
 
-    // powerUp *pu;
-    // for(int i=0;i<powerUp::self.size();i++){
-    //     pu=(powerUp*)powerUp::self[i];
-    //     if(!checkNormalForce(pu->pos,pu->size)){
-    //         pu->vSpeed+=gravity/2/GL::getFPS();
-    //     }else if(pu->vSpeed>0){
-    //         pu->vSpeed=0;
-    //     }
-    // }
+    powerUp *pu;
+    for(int i=0;i<powerUp::self.size();i++){
+        pu=(powerUp*)powerUp::self[i];
+        if(!checkNormalForce(pu->pos,pu->size)){
+            pu->vSpeed+=gravity/2/GL::getFPS();
+        }else if(pu->vSpeed>0){
+            pu->vSpeed=0;
+        }
+    }
 
 
     FunctionAnalyser::endFunction("Mechanics::applyGravity");
@@ -118,21 +118,21 @@ void Mechanics::applyForce(){
         }
     }
 
-    // powerUp *pu;
-    // for(int i=0;i<powerUp::self.size();i++){
-    //     pu=(powerUp*)powerUp::self[i];
-    //     if(pu->hSpeed!=0){
-    //         double tmp=pu->hSpeed;
-    //         pu->move(Util::direction_left,pu->hSpeed/GL::getFPS());
-    //         if(pu->hSpeed==0)
-    //             pu->hSpeed=-tmp;
-    //     }
-    //     if(pu->vSpeed>0){
-    //         pu->move(Util::direction_down,pu->vSpeed/GL::getFPS());
-    //     }else if(pu->vSpeed<0){
-    //         pu->move(Util::direction_up,pu->vSpeed/GL::getFPS());
-    //     }
-    // }
+    powerUp *pu;
+    for(int i=0;i<powerUp::self.size();i++){
+        pu=(powerUp*)powerUp::self[i];
+        if(pu->hSpeed!=0){
+            double tmp=pu->hSpeed;
+            pu->move(Util::direction_left,pu->hSpeed/GL::getFPS());
+            if(pu->hSpeed==0)
+                pu->hSpeed=-tmp;
+        }
+        if(pu->vSpeed>0){
+            pu->move(Util::direction_down,pu->vSpeed/GL::getFPS());
+        }else if(pu->vSpeed<0){
+            pu->move(Util::direction_up,pu->vSpeed/GL::getFPS());
+        }
+    }
 
     FunctionAnalyser::endFunction("Mechanics::applyForce");
 }
@@ -217,13 +217,9 @@ bool Mechanics::checkNormalForce(nTPoint pos_,nTPoint size_){
     bool collision=false;
     var=Map::checkCollision(pos_,size_);
     for(int i=0;i<var.size();i++){
-        type=0;
-        if(var[i].blockId>=Map::staticBlocks.size()){ //ve se e bloco dinamico
-          bl=(Blocks*)Map::dynamicBlocks[var[i].blockId-Map::staticBlocks.size()];
-          type=bl->type;
-        }
-        bool jesus=(Player::getPlayerById(0)->god&&Blocks::checkIfBlocksIsLiquid(type));
-        if(var[i].collision.firstObj==BOTTOM&&(Blocks::checkIfBlocksIsFilled(type)||jesus)&&!ignoreCollisionWithPlayer(pos_,type)){
+        bl=Map::getBlockById(var[i].blockId);
+        bool jesus=(Player::getPlayerById(0)->god&&Blocks::checkIfBlocksIsLiquid(bl->type));
+        if(var[i].collision.firstObj==BOTTOM&&(Blocks::checkIfBlocksIsFilled(bl->type)||jesus)&&!ignoreCollisionWithPlayer(pos_,bl->type)){
           collision=true;
           break;
         }

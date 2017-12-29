@@ -167,41 +167,33 @@ void Player::stateControl(){
     bool collisionIce=false;
     var=Map::checkCollision(getGroundPos(),size);
     for(int i=0; i<var.size(); i++){
-        if(var[i].blockId>=Map::staticBlocks.size()){
-            bl=(Blocks*) Map::dynamicBlocks[var[i].blockId-Map::staticBlocks.size()];
-            if(var[i].collision.firstObj!=Mechanics::NOCOLLISION){
-                if(bl->type==Blocks::AnimatedLava1||bl->type==Blocks::AnimatedLava2||bl->type==Blocks::StaticLava){
-                    if(!god) life=0;
-                    collisionWater=false;
-                }else if(Blocks::checkIfBlocksIsLiquid(bl->type)){
-                    collisionWater=true;
-                }else if(bl->type==Blocks::IceHHalfBlock||bl->type==Blocks::IceVHalfBlock){
-                    if(var[i].collision.firstObj==Mechanics::BOTTOM)
-                        collisionIce=true;
-                }
-                if((Blocks::checkIfBlocksIsTeleportPipe(bl->type)||Blocks::checkIfBlocksIsTeleportDoor(bl->type))&&canTp){
-                    Blocks* tp;
-                    for(int j=0;j<Map::dynamicBlocks.size();j++){
-                       tp=(Blocks*)Map::dynamicBlocks[j];
-                       if(tp->type==bl->type&&bl!=tp){
-                         canTp=false;
-                           pos=tp->pos;
-                           AL::singleton->playSoundByName("TP");
-                           if(Blocks::checkIfBlocksIsTeleportPipe(tp->type))
-                                pos.y-=Blocks::defaultBlockSize.y*1.5;
-                           else
-                               pos.y-=Blocks::defaultBlockSize.y/2;
-                           pos.z=0.9;
-                           Scenes::camera.lookAt(pos);
-                         }
-                    }
-                }
-            }
-        }else{
-            if(var[i].collision.firstObj==Mechanics::BOTTOM){
-                bl=(Blocks*)Map::staticBlocks[var[i].blockId];
-                if(bl->type==Blocks::IceBlock)
+        bl=Map::getBlockById(var[i].blockId);
+        if(var[i].collision.firstObj!=Mechanics::NOCOLLISION){
+            if(bl->type==Blocks::AnimatedLava1||bl->type==Blocks::AnimatedLava2||bl->type==Blocks::StaticLava){
+                if(!god) life=0;
+                collisionWater=false;
+            }else if(Blocks::checkIfBlocksIsLiquid(bl->type)){
+                collisionWater=true;
+            }else if(bl->type==Blocks::IceHHalfBlock||bl->type==Blocks::IceVHalfBlock||bl->type==Blocks::IceBlock){
+                if(var[i].collision.firstObj==Mechanics::BOTTOM)
                     collisionIce=true;
+            }
+            if((Blocks::checkIfBlocksIsTeleportPipe(bl->type)||Blocks::checkIfBlocksIsTeleportDoor(bl->type))&&canTp){
+                Blocks* tp;
+                for(int j=0;j<Map::dynamicBlocks.size();j++){
+                   tp=(Blocks*)Map::dynamicBlocks[j];
+                   if(tp->type==bl->type&&bl!=tp){
+                     canTp=false;
+                       pos=tp->pos;
+                       AL::singleton->playSoundByName("TP");
+                       if(Blocks::checkIfBlocksIsTeleportPipe(tp->type))
+                            pos.y-=Blocks::defaultBlockSize.y*1.5;
+                       else
+                           pos.y-=Blocks::defaultBlockSize.y/2;
+                       pos.z=0.9;
+                       Scenes::camera.lookAt(pos);
+                     }
+                }
             }
         }
     }

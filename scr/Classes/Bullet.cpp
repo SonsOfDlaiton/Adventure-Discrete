@@ -168,10 +168,8 @@ void Bullet::move(int dir,double steeps){
                 Player::getPlayerById(0)->haveBulletSword=false;
             if(type==strongXAtackBullet||type==weakXAtackBullet)
                 Player::getPlayerById(0)->haveBulletSpec=false;
-            //if(type>=0){  DELETE ME
-                isVisible=false;
-                delete this;
-            //}
+            isVisible=false;
+            delete this;
             if(!isVisible){
                 FunctionAnalyser::endFunction("Bullet::move");
                 return;
