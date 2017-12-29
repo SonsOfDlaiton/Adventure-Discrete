@@ -122,13 +122,13 @@ void Scenes::drawGame(){
     }
 
     camera.followPlayer(Player::getPlayerById(0));
-    Mechanics::singleton->applyForce();
+    Mechanics::applyForce();
     Map::refresh();
     Entity::behave();
     powerUp::behave();
     Bullet::behave();
-    Map::transparencyLayerDraw();
     Tutorials::behave();
+    Map::transparencyLayerDraw();
     playStageSong();
     if(GL::isPaused)
         GL::drawPause();

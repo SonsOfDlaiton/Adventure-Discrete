@@ -362,10 +362,10 @@ void Map::refresh(){
             }else if(Blocks::checkIfBlocksIsPowerUpBlock(bl->type)){
                 objCollision var;
                 var=Mechanics::getCollision(Player::getPlayerById(0)->swordCollision,nTRectangle::getCollision(bl->pos,bl->size));
-                if(var.firstObj==Mechanics::TOP){
+                if((var.secondObj==Mechanics::BOTTOM||var.secondObj==Mechanics::LEFT||var.secondObj==Mechanics::RIGHT)&&Player::getPlayerById(0)->atackDirection==Util::direction_up){
                     nTPoint tmp=bl->pos;
                     tmp.y-=Blocks::defaultBlockSize.y*1.5;
-                    new powerUp(Blocks::getPowerUpBlockId(bl->type),tmp,nTPoint::get(20,20),true);
+                    new powerUp(Blocks::getPowerUpBlockId(bl->type),tmp,nTPoint::get(20,20));
                     bl->type=Blocks::InvalidPowerUpBlock;
                     bl->tex=GL::getTextureByName("PowerupOff");
                     Player::getPlayerById(0)->powerUpsActiveted++;
@@ -376,7 +376,7 @@ void Map::refresh(){
                 if(var.firstObj!=Mechanics::NOCOLLISION){
                     nTPoint tmp=bl->pos;
                     tmp.y-=Blocks::defaultBlockSize.y*1.5;
-                    new powerUp(Blocks::getPowerUpChestId(bl->type),tmp,nTPoint::get(20,20),true);
+                    new powerUp(Blocks::getPowerUpChestId(bl->type),tmp,nTPoint::get(20,20));
                     bl->type=Blocks::InvalidPowerUpChest;
                     AL::singleton->playSoundByName("chestOpen");
                     bl->tex=GL::getTextureByName("BauOff");
@@ -514,7 +514,7 @@ bool Map::loadMap(string path){
                     if(tmp2[i]!='\''){
                         tmp5+=tmp2[i];
                     }else{
-                        size_t found = tmp5.find_first_of("-");
+                        size_t found = tmp5.find_first_of("\\");
                         if(found!=string::npos){
                             tmp4.second=tmp5.substr(found+1,tmp5.size()-found);
                             Util::replaceAllOccurrences(tmp4.second,"\"-ad-Xchar-13-\"","\n");
@@ -580,7 +580,7 @@ bool Map::saveMap(string path,int idx){
             for(int j=0;j<save.map[i].size();j++){
                 replace(save.map[i][j].second.begin(),save.map[i][j].second.end(), '\'', '\"');
                 Util::replaceAllOccurrences(save.map[i][j].second,"\n","\"-ad-Xchar-13-\"");
-                mapFILE<<save.map[i][j].first<<'-'<<save.map[i][j].second<<'\'';
+                mapFILE<<save.map[i][j].first<<'\\'<<save.map[i][j].second<<'\'';
             }
             mapFILE<<endl;
         }

@@ -4,9 +4,9 @@
 #include "Mechanics.hpp"
 #include "Entity.hpp"
 
-class powerUp {
+class powerUp:public Mechanics {
 public:
-    powerUp(int type,nTPoint pos,nTPoint size,bool haveGravity);
+    powerUp(int type,nTPoint pos,nTPoint size);
     powerUp(const powerUp& orig);
     virtual ~powerUp();
 
@@ -17,19 +17,15 @@ public:
     static const int imortality;
     static const int minusLife;
 
+    int id;
+    bool isVisible;
     static vector<void*> self;
 private:
     void draw();
     void checkCollisionWithPlayer(nTPoint pos,nTPoint size);
-    void move(int dir,double steeps);
 
-    double vSpeed;
-    double hSpeed;
-    nTPoint size;
-    nTPoint pos;
     int type;
     GLuint tex;
-    bool haveGravity;
     static const double moveSpeed;
 };
 

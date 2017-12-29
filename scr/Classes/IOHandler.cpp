@@ -39,7 +39,7 @@ void IOHandler::specialKeyboard(int key, int x, int y){
             Tutorials::pressKey(2);
             Player::getPlayerById(0)->atackDirection=Util::direction_down;
             Player::getPlayerById(0)->canTp=true;
-            Player::getPlayerById(0)->lowered=true;
+            if(!Player::getPlayerById(0)->atacking&&Player::getPlayerById(0)->vSpeed==0)Player::getPlayerById(0)->lowered=true;
             if(Camera::freeCam)
                  Scenes::camera.y.movingCam=1;
         }  else if(Scenes::current==Scenes::mapEdit&&!GL::hasEditOnFocous())

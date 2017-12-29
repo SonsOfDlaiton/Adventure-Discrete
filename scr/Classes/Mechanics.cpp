@@ -1,11 +1,11 @@
 #include "Mechanics.hpp"
 #include "Player.hpp"
+#include "powerUp.hpp"
 #include "Enemy.hpp"
 #include "Blocks.hpp"
 #include "Camera.hpp"
 
 Mechanics::Mechanics(){
-    singleton=this;
 };
 
 Mechanics::Mechanics(const Mechanics& orig) {
@@ -20,7 +20,6 @@ const int Mechanics::BOTTOM=2;
 const int Mechanics::RIGHT=3;
 const int Mechanics::LEFT=4;
 const int Mechanics::NOCOLLISION=0;
-Mechanics* Mechanics::singleton=nullptr;
 bool Mechanics::drawCollisionRec=false;
 
 /**
@@ -56,7 +55,7 @@ void Mechanics::applyGravity(){//38% de consumo de processador
     for(int i=0;i<Entity::enemys.size();i++){
         en=(Enemy*)Entity::enemys[i];
         if(!checkNormalForce(en->pos,en->size)){
-            en->vSpeed+=gravity*(1/GL::getFPS());
+            en->vSpeed+=gravity/GL::getFPS();
             en->canJump=false;
         }else{
             if(en->vSpeed>0)
@@ -64,11 +63,23 @@ void Mechanics::applyGravity(){//38% de consumo de processador
             en->canJump=true;
         }
     }
+
+    // powerUp *pu;
+    // for(int i=0;i<powerUp::self.size();i++){
+    //     pu=(powerUp*)powerUp::self[i];
+    //     if(!checkNormalForce(pu->pos,pu->size)){
+    //         pu->vSpeed+=gravity/2/GL::getFPS();
+    //     }else if(pu->vSpeed>0){
+    //         pu->vSpeed=0;
+    //     }
+    // }
+
+
     FunctionAnalyser::endFunction("Mechanics::applyGravity");
 }
 
 /**
- *	Transforms speed into moviment for the instantiated entitities on the world
+ *  Transforms speed into moviment for the instantiated entitities on the world
 **/
 void Mechanics::applyForce(){
     FunctionAnalyser::startFunction("Mechanics::applyForce");
@@ -93,6 +104,7 @@ void Mechanics::applyForce(){
     Enemy *en;
     for(int i=0;i<Entity::enemys.size();i++){
         en=(Enemy*)Entity::enemys[i];
+
         if(en->hSpeed!=0){
             double tmp=en->hSpeed;
             en->move(Util::direction_left,en->hSpeed/GL::getFPS());
@@ -105,6 +117,23 @@ void Mechanics::applyForce(){
             en->move(Util::direction_up,en->vSpeed/GL::getFPS());
         }
     }
+
+    // powerUp *pu;
+    // for(int i=0;i<powerUp::self.size();i++){
+    //     pu=(powerUp*)powerUp::self[i];
+    //     if(pu->hSpeed!=0){
+    //         double tmp=pu->hSpeed;
+    //         pu->move(Util::direction_left,pu->hSpeed/GL::getFPS());
+    //         if(pu->hSpeed==0)
+    //             pu->hSpeed=-tmp;
+    //     }
+    //     if(pu->vSpeed>0){
+    //         pu->move(Util::direction_down,pu->vSpeed/GL::getFPS());
+    //     }else if(pu->vSpeed<0){
+    //         pu->move(Util::direction_up,pu->vSpeed/GL::getFPS());
+    //     }
+    // }
+
     FunctionAnalyser::endFunction("Mechanics::applyForce");
 }
 

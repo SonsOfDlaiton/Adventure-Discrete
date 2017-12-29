@@ -10,7 +10,6 @@ int main(int argc, char** argv) {
     Enemy::registerNicks();
     Tutorials::registerSinucaTuts();
     mapEdit::definePages();
-    new Mechanics();
     if(!AssetsLoader::loadSettings()) if(Util::DEBUG) cout<<"erro ao carregar configs"<<endl;
     if(!AssetsLoader::loadMaps(Map::nOfMaps)) if(Util::DEBUG) cout<<"erro ao carregar mapas"<<endl;
     new AL();
