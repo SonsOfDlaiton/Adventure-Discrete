@@ -22,8 +22,9 @@ public:
     nTPoint size;
     double hSpeed;
     double vSpeed;
-    bool lastMapCollCalc;
-    nTPoint lastMapCollPos;
+    
+    void collideWithMap(nTPoint pos_); 
+    void collideWithMap(); 
     vector <mapCollision> lastMapColl;
     static bool drawCollisionRec;
     static const int TOP,BOTTOM,LEFT,RIGHT,NOCOLLISION;
@@ -31,6 +32,9 @@ private:
     static void applyGravity();
     static bool ignoreCollisionWithPlayer(nTPoint pos,int blockType);
 
+    bool lastMapCollCalc;
+    nTPoint lastMapCollPos;
+    
     static const double gravity;
 protected:
 

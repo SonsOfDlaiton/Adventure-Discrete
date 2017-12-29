@@ -161,16 +161,15 @@ void Mechanics::move(int dir,double steeps){
     }
     Blocks *bl;
     int type;
-    vector <mapCollision> var;
     bool collision=false;
     if(dir==Util::direction_left||dir==Util::direction_right){
       nTPoint tmp;
       tmp.set(pos.x+steeps,pos.y,pos.z);
-      var=Map::checkCollision(tmp,size);
-      for(int i=0; i<var.size(); i++){
-        bl=Map::getBlockById(var[i].blockId);
+      collideWithMap(tmp);
+      for(int i=0; i<lastMapColl.size(); i++){
+        bl=Map::getBlockById(lastMapColl[i].blockId);
         type=bl->type;
-        if((var[i].collision.firstObj==RIGHT||var[i].collision.firstObj==LEFT)&&Blocks::checkIfBlocksIsFilled(type)&&!ignoreCollisionWithPlayer(pos,type)){
+        if((lastMapColl[i].collision.firstObj==RIGHT||lastMapColl[i].collision.firstObj==LEFT)&&Blocks::checkIfBlocksIsFilled(type)&&!ignoreCollisionWithPlayer(pos,type)){
           collision=true;
           break;
         }
@@ -182,12 +181,12 @@ void Mechanics::move(int dir,double steeps){
     }else if(dir==Util::direction_up||dir==Util::direction_down){
       nTPoint tmp;
       tmp.set(pos.x,pos.y+steeps,pos.z);
-      var=Map::checkCollision(tmp,size);
-      for(int i=0; i<var.size(); i++){
-        bl=Map::getBlockById(var[i].blockId);
+      collideWithMap(tmp);
+      for(int i=0; i<lastMapColl.size(); i++){
+        bl=Map::getBlockById(lastMapColl[i].blockId);
         type=bl->type;
         bool fixPlayerInVerticalPlatform=!(Blocks::checkIfBlocksIsHalfBlockV(type)&&dir==Util::direction_down);
-        if((var[i].collision.firstObj==BOTTOM||var[i].collision.firstObj==TOP)&&fixPlayerInVerticalPlatform&&Blocks::checkIfBlocksIsFilled(type)&&!ignoreCollisionWithPlayer(pos,type)){
+        if((lastMapColl[i].collision.firstObj==BOTTOM||lastMapColl[i].collision.firstObj==TOP)&&fixPlayerInVerticalPlatform&&Blocks::checkIfBlocksIsFilled(type)&&!ignoreCollisionWithPlayer(pos,type)){
             collision=true;
             break;
           }
@@ -216,14 +215,13 @@ bool Mechanics::checkNormalForce(){
 **/
 bool Mechanics::checkNormalForce(nTPoint pos_){
     FunctionAnalyser::startFunction("Mechanics::checkNormalForce");
-    vector <mapCollision> var;
     Blocks *bl;
     bool collision=false;
-    var=Map::checkCollision(pos_,size);
-    for(int i=0;i<var.size();i++){
-        bl=Map::getBlockById(var[i].blockId);
+    collideWithMap(pos_);
+    for(int i=0;i<lastMapColl.size();i++){
+        bl=Map::getBlockById(lastMapColl[i].blockId);
         bool jesus=(Player::getPlayerById(0)->god&&Blocks::checkIfBlocksIsLiquid(bl->type));
-        if(var[i].collision.firstObj==BOTTOM&&(Blocks::checkIfBlocksIsFilled(bl->type)||jesus)&&!ignoreCollisionWithPlayer(pos_,bl->type)){
+        if(lastMapColl[i].collision.firstObj==BOTTOM&&(Blocks::checkIfBlocksIsFilled(bl->type)||jesus)&&!ignoreCollisionWithPlayer(pos_,bl->type)){
           collision=true;
           break;
         }
@@ -309,4 +307,17 @@ objCollision Mechanics::getCollision(nTRectangle r1, nTRectangle r2){
     }
     FunctionAnalyser::endFunction("Mechanics::getCollision");
     return adc;
+}
+
+void Mechanics::collideWithMap(nTPoint pos_){
+    if(lastMapCollCalc==false||floor(pos_.x)!=floor(lastMapCollPos.x)||ceil(pos_.y)!=ceil(lastMapCollPos.y)){
+        lastMapCollCalc=true;
+        lastMapCollPos=pos_;
+        lastMapColl=Map::checkCollision(pos_,size);
+    }
+}
+
+
+void Mechanics::collideWithMap(){
+    collideWithMap(pos);
 }

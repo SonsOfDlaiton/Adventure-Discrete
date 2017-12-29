@@ -165,7 +165,7 @@ void Player::stateControl(){
     vector <mapCollision> var;
     bool collisionWater=false;
     bool collisionIce=false;
-    var=Map::checkCollision(getGroundPos(),size);
+    collideWithMap(getGroundPos());
     for(int i=0; i<var.size(); i++){
         bl=Map::getBlockById(var[i].blockId);
         if(var[i].collision.firstObj!=Mechanics::NOCOLLISION){

@@ -80,12 +80,11 @@ void Enemy::stateControl(){
     }
     Entity::stateControl();
     Blocks *bl;
-    vector <mapCollision> var;
-    var=Map::checkCollision(pos,size);
-    for(int i=0; i<var.size(); i++){
-        if(var[i].blockId>=Map::staticBlocks.size()&&var[i].blockId>0){
-            bl=(Blocks*) Map::dynamicBlocks[var[i].blockId-Map::staticBlocks.size()];
-            if(var[i].collision.firstObj!=Mechanics::NOCOLLISION){
+    collideWithMap();
+    for(int i=0; i<lastMapColl.size(); i++){
+        if(lastMapColl[i].blockId>=Map::staticBlocks.size()&&lastMapColl[i].blockId>0){
+            bl=(Blocks*) Map::dynamicBlocks[lastMapColl[i].blockId-Map::staticBlocks.size()];
+            if(lastMapColl[i].collision.firstObj!=Mechanics::NOCOLLISION){
 				bool isLava=bl->type==Blocks::AnimatedLava1||bl->type==Blocks::AnimatedLava2||bl->type==Blocks::StaticLava;
                 if(isLava)
                     life=0;
@@ -130,7 +129,7 @@ void Enemy::behave(){
                         new Bullet(Bullet::hyperbolicParaboloidBullet,Bullet::baseSpeed*en->orientation/1.5,nTPoint::get(en->pos.x,Player::getPlayerById(0)->pos.y+4+((rand()%300)/10-17),1),nTPoint::get(23,16,1));
                     }
                 }
-            
+
                 objCollision var=Mechanics::getCollision(nTRectangle::getCollision(en->pos,en->size),nTRectangle::getCollision(Player::getPlayerById(0)->pos,Player::getPlayerById(0)->size));
                 if(var.firstObj==Mechanics::LEFT||var.firstObj==Mechanics::RIGHT||var.firstObj==Mechanics::BOTTOM||(!Player::getPlayerById(0)->atacking&&Player::getPlayerById(0)->atackDirection!=Util::direction_down&&var.firstObj==Mechanics::TOP))
                     Player::getPlayerById(0)->applyDamage(1);
