@@ -35,7 +35,7 @@ void Mechanics::applyGravity(){//38% de consumo de processador
     for(int i=0;i<Entity::players.size();i++){
         pl=(Player*)Entity::players[i];
         if(!pl->itsInTheWater){
-            if(!checkNormalForce(pl->getGroundPos(),pl->size)){
+            if(!pl->checkNormalForce(pl->getGroundPos())){
                 pl->lastMapCollCalc=false;
                 pl->vSpeed+=gravity/GL::getFPS();
                 if(!pl->god)pl->canJump=false;
@@ -53,7 +53,7 @@ void Mechanics::applyGravity(){//38% de consumo de processador
     for(int i=0;i<Entity::enemys.size();i++){
         en->lastMapCollCalc=false;
         en=(Enemy*)Entity::enemys[i];
-        if(!checkNormalForce(en->pos,en->size)){
+        if(!en->checkNormalForce()){
             en->vSpeed+=gravity/GL::getFPS();
             en->canJump=false;
         }else{
@@ -67,7 +67,7 @@ void Mechanics::applyGravity(){//38% de consumo de processador
     for(int i=0;i<powerUp::self.size();i++){
         pu->lastMapCollCalc=false;
         pu=(powerUp*)powerUp::self[i];
-        if(!checkNormalForce(pu->pos,pu->size)){
+        if(!pu->checkNormalForce()){
             pu->vSpeed+=gravity/2/GL::getFPS();
         }else if(pu->vSpeed>0){
             pu->vSpeed=0;
@@ -202,6 +202,11 @@ void Mechanics::move(int dir,double steeps){
         move(dir,steepsAgain);
 }
 
+
+bool Mechanics::checkNormalForce(){
+    return checkNormalForce(pos);
+}
+
 /**
  *	Check if a body is touching the ground
  *
@@ -209,12 +214,12 @@ void Mechanics::move(int dir,double steeps){
  *	@param size_ size of the body
  *	@return true if is touching the ground, otherwise false
 **/
-bool Mechanics::checkNormalForce(nTPoint pos_,nTPoint size_){
+bool Mechanics::checkNormalForce(nTPoint pos_){
     FunctionAnalyser::startFunction("Mechanics::checkNormalForce");
     vector <mapCollision> var;
     Blocks *bl;
     bool collision=false;
-    var=Map::checkCollision(pos_,size_);
+    var=Map::checkCollision(pos_,size);
     for(int i=0;i<var.size();i++){
         bl=Map::getBlockById(var[i].blockId);
         bool jesus=(Player::getPlayerById(0)->god&&Blocks::checkIfBlocksIsLiquid(bl->type));

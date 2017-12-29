@@ -14,14 +14,17 @@ public:
     static void applyForce();
     virtual void move(int dir,double steeps);
     static double getGravity();
-    static bool checkNormalForce(nTPoint pos_,nTPoint size_);
+    bool checkNormalForce(nTPoint pos_);//delete me
+    bool checkNormalForce();
     static objCollision getCollision(nTRectangle r1, nTRectangle r2);
 
     nTPoint pos;
     nTPoint size;
     double hSpeed;
     double vSpeed;
-    
+    bool lastMapCollCalc;
+    nTPoint lastMapCollPos;
+    vector <mapCollision> lastMapColl;
     static bool drawCollisionRec;
     static const int TOP,BOTTOM,LEFT,RIGHT,NOCOLLISION;
 private:
