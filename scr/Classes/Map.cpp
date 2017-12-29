@@ -193,7 +193,6 @@ void Map::draw(){
     FunctionAnalyser::startFunction("Map::draw");
     Blocks* bl;
     drawMapBackground();
-    //GL::drawTexture(nTRectangle::get(Scenes::camera.x.movedCam,GL::defaultSize.y+Scenes::camera.y.movedCam,GL::defaultSize.x+Scenes::camera.x.movedCam,Scenes::camera.y.movedCam,-0.9),background);
     for(int i=0;i<dynamicBlocks.size();i++){
         bl=(Blocks*)dynamicBlocks[i];
         if(!Blocks::checkIfBlocksIsLiquid(bl->type)||Scenes::current!=Scenes::game)
@@ -246,8 +245,8 @@ vector <mapCollision> Map::checkCollision(nTPoint pos,nTPoint size){
     j_inf=ceil(objRec.p1.y/Blocks::defaultBlockSize.y);
     j_sup=ceil(objRec.p0.y/Blocks::defaultBlockSize.y);
     pointPrincipal.set(i_inf*y32+y16,j_inf*x32+x16,0);
-    for(i=i_inf-1; i<=i_sup+1; i++){
-      for(j=j_inf-1;j<=j_sup+1; j++){
+    for(i=i_inf; i<=i_sup; i++){ // -1 +1 nos limites
+      for(j=j_inf;j<=j_sup; j++){// -1 +1 nos limites
         if(j>=0 && j<=actualMap.map.size() && i>=0 && i<=actualMap.map[0].size()){
             blockCenter.set(i*y32+y16,j*x32-x16,0);
             Blocks* bl=getBlockById(getIdByPosition(blockCenter));
@@ -259,22 +258,25 @@ vector <mapCollision> Map::checkCollision(nTPoint pos,nTPoint size){
                     adc.collision=Mechanics::getCollision(objRec,blockRec);//verifica colisao
                     if(adc.collision.firstObj!=Mechanics::NOCOLLISION){
                         result.push_back(adc);
-                  }
-                }
-            }
+                        if(Mechanics::drawCollisionRec) GL::drawCollision(blockRec,3,nTColor::get(0,1,0));
+                    }else if(Mechanics::drawCollisionRec)GL::drawCollision(nTRectangle::getCollision(blockCenter,Blocks::defaultBlockSize),3,nTColor::get(0,0,1));
+                }else if(Mechanics::drawCollisionRec)GL::drawCollision(nTRectangle::getCollision(blockCenter,Blocks::defaultBlockSize),3,nTColor::get(0,0,1));
+            }else if(Mechanics::drawCollisionRec)GL::drawCollision(nTRectangle::getCollision(blockCenter,Blocks::defaultBlockSize),3,nTColor::get(0,0,1));
         }
       }
     }
     Blocks *bl;
     for(int i=0;i<dynamicBlocks.size();i++){
         bl=(Blocks*)dynamicBlocks[i];
-        if((Blocks::checkIfBlocksIsHalfBlockV(bl->type)&&Scenes::camera.isInTheXScreen(nTRectangle::getCollision(bl->pos,bl->size)))||(Blocks::checkIfBlocksIsHalfBlockH(bl->type)&&Scenes::camera.isInTheYScreen(nTRectangle::getCollision(bl->pos,bl->size)))){
+        blockRec=nTRectangle::getCollision(bl->pos,bl->size);
+        if((Blocks::checkIfBlocksIsHalfBlockV(bl->type)&&Scenes::camera.isInTheXScreen(blockRec))||(Blocks::checkIfBlocksIsHalfBlockH(bl->type)&&Scenes::camera.isInTheYScreen(blockRec))){
             if(bl->id!=blockId){
                 adc.blockId=bl->id;
-                blockRec=nTRectangle::getCollision(bl->pos,bl->size);
                 adc.collision=Mechanics::getCollision(objRec,blockRec);//verifica colisao
-                if(adc.collision.firstObj!=Mechanics::NOCOLLISION)
+                if(adc.collision.firstObj!=Mechanics::NOCOLLISION){
                     result.push_back(adc);
+                    if(Mechanics::drawCollisionRec) GL::drawCollision(blockRec,3,nTColor::get(0,1,0));
+                }
             }
         }
     }
@@ -415,13 +417,6 @@ int Map::getIdByPosition(nTPoint pos){
     }
     for(int i=0; i<dynamicBlocks.size(); i++){
         bl=(Blocks*)dynamicBlocks[i];
-        if(bl->pos.x==pos.x && bl->pos.y==pos.y){
-            FunctionAnalyser::endFunction("Map::getIdByPosition");
-            return bl->id;
-        }
-    }
-    for(int i=0; i<staticBlocks.size(); i++){
-        bl=(Blocks*)staticBlocks[i];
         if(bl->pos.x==pos.x && bl->pos.y==pos.y){
             FunctionAnalyser::endFunction("Map::getIdByPosition");
             return bl->id;

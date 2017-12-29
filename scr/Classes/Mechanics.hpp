@@ -21,12 +21,13 @@ public:
     nTPoint size;
     double hSpeed;
     double vSpeed;
+    bool normalForce;
     static Mechanics* singleton;
     static bool drawCollisionRec;
     static const int TOP,BOTTOM,LEFT,RIGHT,NOCOLLISION;
 private:
     virtual void applyGravity();
-    static bool ignoreCollisionWithPlayer(nTPoint pos,int blockId);
+    static bool ignoreCollisionWithPlayer(nTPoint pos,int blockType);
 
     static const double gravity;
 protected:

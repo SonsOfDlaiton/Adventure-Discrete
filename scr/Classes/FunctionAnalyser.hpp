@@ -13,8 +13,11 @@ struct FunctionData{
         string name;
         int nCalls;
         unsigned long delta;
-        static bool sort(FunctionData a, FunctionData b){
+        static bool sortName(FunctionData a, FunctionData b){
             return a.name<b.name;
+        }
+        static bool sortDelta(FunctionData a, FunctionData b){
+            return a.delta>b.delta;
         }
 };
 
@@ -40,6 +43,7 @@ public:
 
     static bool PRINT;
     static bool ANALYSE;
+    static bool SORTBYCONSUMPTION;
 private:
     static vector<FunctionData> data;
     static unsigned long deltaFrame;

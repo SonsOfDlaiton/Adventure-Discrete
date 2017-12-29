@@ -211,14 +211,23 @@ void GL::drawCollisionLine(nTPoint p0,nTPoint p1){
 }
 
 /**
- *	Draw a black rectangle, used to draw collision boundaries
+ *  Draw a black rectangle, used to draw collision boundaries
  *
- *	@param pos collision box(the coordinates of the rectangle)
+ *  @param pos collision box(the coordinates of the rectangle)
 **/
 void GL::drawCollision(nTRectangle pos){
+    drawCollision(pos,2,nTColor::Black());
+}
+
+/**
+ *  Draw a black rectangle, used to draw collision boundaries
+ *
+ *  @param pos collision box(the coordinates of the rectangle)
+**/
+void GL::drawCollision(nTRectangle pos,float width,nTColor color){
     nTColor tmp=getColor();
-    setColor(getColorByName("black"));
-    glLineWidth(2);
+    setColor(color);
+    glLineWidth(width);
     glBegin(GL_LINE_LOOP);
         glVertex3f(pos.p0.x, pos.p0.y, 0.999);
         glVertex3f(pos.p1.x, pos.p0.y, 0.999);
@@ -763,12 +772,12 @@ void GL::drawPause(){
         GL::buttonBehave(nTRectangle::get(100+Scenes::camera.x.movedCam,550+Scenes::camera.y.movedCam,140+Scenes::camera.x.movedCam,510+Scenes::camera.y.movedCam,0.99),nTColor::Black(),GL::getTextureByName("soundOn"),false,NULL,*modifySound,NULL,NULL);
     else
         GL::buttonBehave(nTRectangle::get(100+Scenes::camera.x.movedCam,550+Scenes::camera.y.movedCam,140+Scenes::camera.x.movedCam,510+Scenes::camera.y.movedCam,0.99),nTColor::Black(),GL::getTextureByName("soundOff"),false,NULL,*modifySound,NULL,NULL);
-    
+
     if(AL::getMusicState())
         GL::buttonBehave(nTRectangle::get(40+Scenes::camera.x.movedCam,550+Scenes::camera.y.movedCam,80+Scenes::camera.x.movedCam,510+Scenes::camera.y.movedCam,0.99),nTColor::Black(),GL::getTextureByName("musicOn"),false,NULL,*modifyMusic,NULL,NULL);
     else
         GL::buttonBehave(nTRectangle::get(40+Scenes::camera.x.movedCam,550+Scenes::camera.y.movedCam,80+Scenes::camera.x.movedCam,510+Scenes::camera.y.movedCam,0.99),nTColor::Black(),GL::getTextureByName("musicOff"),false,NULL,*modifyMusic,NULL,NULL);
-    
+
     GL::drawCenteredTexture(nTPoint::get(GL::defaultSize.x/2+Scenes::camera.x.movedCam,Scenes::camera.y.movedCam+GL::defaultSize.y/2,0.96),
                             nTPoint::get(200,60),GL::getTextureByName("Ballon"));
 
@@ -907,16 +916,16 @@ void GL::drawHUD(){
         GL::drawTexture(r,GL::getTextureByName("S2"));
     }
     point.set(Scenes::camera.x.movedCam+10,Scenes::camera.y.movedCam+23,1);
-    GL::drawCentered_Y_Text(point,"Vida:",GL::getColorByName("black"));
+    GL::drawCentered_Y_Text(point,"Vida:",nTColor::Black());
     point.set(Scenes::camera.x.movedCam+650,Scenes::camera.y.movedCam+23,1);
     snprintf(buffer,5,"%d",(int)GL::getGameMs()/1000);
     string strT(buffer);
-    GL::drawCentered_Y_Text(point,"Tempo(s): "+strT,GL::getColorByName("black"));
+    GL::drawCentered_Y_Text(point,"Tempo(s): "+strT,nTColor::Black());
     if(!Scenes::freeGameMode){
         point.set(Scenes::camera.x.movedCam+186,Scenes::camera.y.movedCam+23,1);
         snprintf(buffer,5,"%d",Player::lives);
         string strL(buffer);
-        GL::drawCentered_Y_Text(point,"Vidas: "+strL,GL::getColorByName("black"));
+        GL::drawCentered_Y_Text(point,"Vidas: "+strL,nTColor::Black());
         point.set(Scenes::camera.x.movedCam+280,Scenes::camera.y.movedCam+23,1);
         string strF;
         if(Player::stage==1){
@@ -932,13 +941,13 @@ void GL::drawHUD(){
         }else{
             strF="Cefetinho";
         }
-        GL::drawCentered_Y_Text(point,"Fase: "+strF,GL::getColorByName("black"));
+        GL::drawCentered_Y_Text(point,"Fase: "+strF,nTColor::Black());
         point.set(Scenes::camera.x.movedCam+480,Scenes::camera.y.movedCam+23,1);
         snprintf(buffer,5,"%.4f",Player::coeficiente);
 
 
         string strC(buffer);
-        GL::drawCentered_Y_Text(point,"Coeficiente: "+strC,GL::getColorByName("black"));
+        GL::drawCentered_Y_Text(point,"Coeficiente: "+strC,nTColor::Black());
     }
 }
 
@@ -1022,8 +1031,8 @@ void GL::editTextBehave(nTRectangle collision,string font,nTColor fontcolor,stri
     }
 
 
-    GL::drawRectangle(nTRectangle::get(collision.p0.x,collision.p0.y,collision.p1.x,collision.p1.y,collision.p0.z-0.001),GL::getColorByName("white"));
-    GL::drawRectangle(nTRectangle::get(collision.p0.x-1,collision.p0.y-1,collision.p1.x+1,collision.p1.y+1,collision.p0.z-0.002),GL::getColorByName("black"));
+    GL::drawRectangle(nTRectangle::get(collision.p0.x,collision.p0.y,collision.p1.x,collision.p1.y,collision.p0.z-0.001),nTColor::White());
+    GL::drawRectangle(nTRectangle::get(collision.p0.x-1,collision.p0.y-1,collision.p1.x+1,collision.p1.y+1,collision.p0.z-0.002),nTColor::Black());
 
     nTPoint boxSize=nTPoint::get(ABS(collision.p1.x-collision.p0.x),ABS(collision.p1.y-collision.p0.y));
     int fontBKP=currentFont;
@@ -1092,7 +1101,7 @@ void GL::editTextBehave(nTRectangle collision,string font,nTColor fontcolor,stri
             }
         }
     }
-    drawText(nTPoint::get(collision.p0.x+lineWidth/2,collision.p0.y-((float)lineHeight*1.1f),collision.p0.z),textToDraw,GL::getColorByName("black"));
+    drawText(nTPoint::get(collision.p0.x+lineWidth/2,collision.p0.y-((float)lineHeight*1.1f),collision.p0.z),textToDraw,nTColor::Black());
     currentFont=fontBKP;
 }
 
@@ -1201,7 +1210,7 @@ void GL::drawPopupBox(){
             textButtonBehave(nTRectangle::getCollision(nTPoint::get(GL::defaultSize.x/2+Scenes::camera.x.movedCam,collision.p0.y-22+Scenes::camera.y.movedCam,0.99),nTPoint::get(40,20,0.99)),GL::getColorByName("mouseSelected"),"Ok",nTColor::get(0,0,0),GL::getTextureByName("btnSkin1"))){
             popupText="";
             isPaused=false;
-        }   
+        }
         currentFont=fontBKP;
     }
 }

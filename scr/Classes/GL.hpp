@@ -42,6 +42,7 @@ public:
     static vector<GLuint> loadTextures(string name,int nOfTex,string path);
     static void drawRectangle(nTRectangle pos,nTColor color);
     static void drawCollision(nTRectangle pos);
+    static void drawCollision(nTRectangle pos,float width,nTColor color);
     static void drawCollisionLine(nTPoint p0,nTPoint p1);
     static void drawTexture(nTRectangle pos,nTColor color,GLuint tex,int Orientation);
     static void drawCenteredTexture(nTPoint pos,nTPoint size,nTColor color,GLuint tex,int Orientation);

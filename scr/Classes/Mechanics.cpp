@@ -139,14 +139,8 @@ void Mechanics::move(int dir,double steeps){
       tmp.set(pos.x+steeps,pos.y,pos.z);
       var=Map::checkCollision(tmp,size);
       for(int i=0; i<var.size(); i++){
-        type=0;
-        if(var[i].blockId>=Map::staticBlocks.size()&&var[i].blockId>0){
-          bl=(Blocks*)Map::dynamicBlocks[var[i].blockId-Map::staticBlocks.size()];
-          type=bl->type;
-        }else if(var[i].blockId>0){
-          bl=(Blocks*)Map::staticBlocks[var[i].blockId];
-          type=bl->type;
-        }
+        bl=Map::getBlockById(var[i].blockId);
+        type=bl->type;
         if((var[i].collision.firstObj==RIGHT||var[i].collision.firstObj==LEFT)&&Blocks::checkIfBlocksIsFilled(type)&&!ignoreCollisionWithPlayer(pos,type)){
           collision=true;
           break;
@@ -161,11 +155,8 @@ void Mechanics::move(int dir,double steeps){
       tmp.set(pos.x,pos.y+steeps,pos.z);
       var=Map::checkCollision(tmp,size);
       for(int i=0; i<var.size(); i++){
-        type=0;
-        if(var[i].blockId>=Map::staticBlocks.size()){
-          bl=(Blocks*)Map::dynamicBlocks[var[i].blockId-Map::staticBlocks.size()];
-          type=bl->type;
-        }
+        bl=Map::getBlockById(var[i].blockId);
+        type=bl->type;
         bool fixPlayerInVerticalPlatform=!(Blocks::checkIfBlocksIsHalfBlockV(type)&&dir==Util::direction_down);
         if((var[i].collision.firstObj==BOTTOM||var[i].collision.firstObj==TOP)&&fixPlayerInVerticalPlatform&&Blocks::checkIfBlocksIsFilled(type)&&!ignoreCollisionWithPlayer(pos,type)){
             collision=true;
@@ -216,11 +207,11 @@ bool Mechanics::checkNormalForce(nTPoint pos_,nTPoint size_){
  *	Check a block collision with the player must be ignored
  *
  *	@param pos position of the body
- *	@param blockId the type of the block
+ *	@param blockType the type of the block
  *	@return true if is must be ignored, otherwise false
 **/
-bool Mechanics::ignoreCollisionWithPlayer(nTPoint pos,int blockId){
-    if(blockId!=526)
+bool Mechanics::ignoreCollisionWithPlayer(nTPoint pos,int blockType){
+    if(!Blocks::checkIfBlocksIsEnemyCollider(blockType))
         return false;
     else{
         if(pos.x==Player::getPlayerById(0)->pos.x&&(pos.y==Player::getPlayerById(0)->pos.y||pos.y==Player::getPlayerById(0)->getGroundPos().y))

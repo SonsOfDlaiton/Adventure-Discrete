@@ -277,7 +277,7 @@ bool mapEdit::save(){
 **/
 void mapEdit::drawLines(){
     nTColor tmp=GL::getColor();
-    GL::setColor(GL::getColorByName("white"));
+    GL::setColor(nTColor::White());
     glLineWidth(1);
     for(int i=0;i<=size.y;i++){
         glBegin(GL_LINE_STRIP);
@@ -590,8 +590,8 @@ void mapEdit::drawPanel(){
     GL::buttonBehave(nTRectangle::get(770+Scenes::camera.x.movedCam,60+Scenes::camera.y.movedCam,790+Scenes::camera.x.movedCam,40+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("-"),false,NULL,*mapEditPageDown,NULL,NULL);
     GL::buttonBehave(nTRectangle::get(660+Scenes::camera.x.movedCam,60+Scenes::camera.y.movedCam,680+Scenes::camera.x.movedCam,40+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("+"),false,NULL,*mapEditPageUp,NULL,NULL);
     GL::setFont("BITMAP_HELVETICA_12");
-    GL::drawText(nTPoint::get(550+Scenes::camera.x.movedCam,536+Scenes::camera.y.movedCam,1),"Bloco Atual",GL::getColorByName("black"));
-    GL::drawText(nTPoint::get(550+Scenes::camera.x.movedCam,588+Scenes::camera.y.movedCam,1),Blocks::getTexNameByIndex(currentBlock)+getMoreInfoAboutBlocks(currentBlock),GL::getColorByName("black"));
+    GL::drawText(nTPoint::get(550+Scenes::camera.x.movedCam,536+Scenes::camera.y.movedCam,1),"Bloco Atual",nTColor::Black());
+    GL::drawText(nTPoint::get(550+Scenes::camera.x.movedCam,588+Scenes::camera.y.movedCam,1),Blocks::getTexNameByIndex(currentBlock)+getMoreInfoAboutBlocks(currentBlock),nTColor::Black());
     if(currentBlock<60000&&currentBlock!=0)
         GL::drawTexture(nTRectangle::get(550+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,580+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getTextureByName(Blocks::getTexNameByIndex(currentBlock)));
     else if(currentBlock==0)
@@ -616,8 +616,8 @@ void mapEdit::drawPanel(){
         nTPoint poinT=GL::mousePos;
         poinT.x-=10*strT.size();
         poinT.z=1;
-        GL::drawText(poinT,strT,GL::getColorByName("black"));
-        GL::drawRectangle(nTRectangle::get(GL::mousePos.x-5,GL::mousePos.y-2,poinT.x,GL::mousePos.y-19,1),GL::getColorByName("white"));
+        GL::drawText(poinT,strT,nTColor::Black());
+        GL::drawRectangle(nTRectangle::get(GL::mousePos.x-5,GL::mousePos.y-2,poinT.x,GL::mousePos.y-19,1),nTColor::White());
     }
     GL::setFont("BITMAP_TIMES_ROMAN_24");
     if(!isUser)
@@ -641,7 +641,7 @@ void mapEdit::drawPanel(){
     GL::drawCentered_MultilineX_Text(nTPoint::get(725+Scenes::camera.x.movedCam,272+Scenes::camera.y.movedCam,1),"Selected block\n data:",GL::getColorByName("green"));
     GL::editTextBehave(nTRectangle::get(660+Scenes::camera.x.movedCam,290+Scenes::camera.y.movedCam,790+Scenes::camera.x.movedCam,449+Scenes::camera.y.movedCam,1),"BITMAP_TIMES_ROMAN_10","mapEdit::blockData",false,false);
     GL::setFont("BITMAP_TIMES_ROMAN_10");
-    if(GL::textButtonBehave(nTRectangle::get(660+Scenes::camera.x.movedCam,452+Scenes::camera.y.movedCam,725+Scenes::camera.x.movedCam,474+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),"Paste from file",GL::getColorByName("black"),GL::getTextureByName("btnSkin1"))){
+    if(GL::textButtonBehave(nTRectangle::get(660+Scenes::camera.x.movedCam,452+Scenes::camera.y.movedCam,725+Scenes::camera.x.movedCam,474+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),"Paste from file",nTColor::Black(),GL::getTextureByName("btnSkin1"))){
         // if (clip::has(clip::text_format())) {
         //     string value;
         //     clip::get_text(value);
@@ -650,14 +650,14 @@ void mapEdit::drawPanel(){
         GL::setEditText("mapEdit::blockData",Util::getFromFile("tmp_clipboard.txt"));
         GL::setFocous("mapEdit::blockData");
     }
-    if(GL::textButtonBehave(nTRectangle::get(725+Scenes::camera.x.movedCam,452+Scenes::camera.y.movedCam,790+Scenes::camera.x.movedCam,474+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),"Copy to file",GL::getColorByName("black"),GL::getTextureByName("btnSkin1"))){
+    if(GL::textButtonBehave(nTRectangle::get(725+Scenes::camera.x.movedCam,452+Scenes::camera.y.movedCam,790+Scenes::camera.x.movedCam,474+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),"Copy to file",nTColor::Black(),GL::getTextureByName("btnSkin1"))){
         // if (clip::has(clip::text_format())) {
         //     clip::set_text(GL::getEditText("mapEdit::blockData"));
         // }
         Util::setToFile("tmp_clipboard.txt",GL::getEditText("mapEdit::blockData"));
         GL::setFocous("mapEdit::blockData");
     }
-    if(GL::textButtonBehave(nTRectangle::get(692.5+Scenes::camera.x.movedCam,476+Scenes::camera.y.movedCam,757.5+Scenes::camera.x.movedCam,494+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),"Clear",GL::getColorByName("black"),GL::getTextureByName("btnSkin1"))){
+    if(GL::textButtonBehave(nTRectangle::get(692.5+Scenes::camera.x.movedCam,476+Scenes::camera.y.movedCam,757.5+Scenes::camera.x.movedCam,494+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),"Clear",nTColor::Black(),GL::getTextureByName("btnSkin1"))){
         GL::setEditText("mapEdit::blockData","");
         GL::setFocous("mapEdit::blockData");
     }
@@ -676,7 +676,7 @@ void mapEdit::askForSize(){
     GL::editTextBehave(nTRectangle::get(550,175,640,200,1),"BITMAP_HELVETICA_18",GL::getColorByName("blue"),"19","mapEdit::askForSizeY",true,true);
     GL::editTextBehave(nTRectangle::get(550,225,640,250,1),"BITMAP_HELVETICA_18",GL::getColorByName("blue"),"19","mapEdit::askForSizeX",true,false);
 
-    if(GL::textButtonBehave(nTRectangle::get(610,275,660,300,1),GL::getColorByName("mouseSelected"),"ok",GL::getColorByName("black"),GL::getTextureByName("btnSkin1"))){
+    if(GL::textButtonBehave(nTRectangle::get(610,275,660,300,1),GL::getColorByName("mouseSelected"),"ok",nTColor::Black(),GL::getTextureByName("btnSkin1"))){
         double X,Y;
         istringstream (GL::getEditText("mapEdit::askForSizeY")) >> Y;
         istringstream (GL::getEditText("mapEdit::askForSizeX")) >> X;
@@ -708,7 +708,7 @@ void mapEdit::askForLoad(){
             i--;
             GL::setEditText("mapEdit::askForLoad",input);
         }
-    if(GL::textButtonBehave(nTRectangle::get(610,175,660,200,1),GL::getColorByName("mouseSelected"),"ok",GL::getColorByName("black"),GL::getTextureByName("btnSkin1"))){
+    if(GL::textButtonBehave(nTRectangle::get(610,175,660,200,1),GL::getColorByName("mouseSelected"),"ok",nTColor::Black(),GL::getTextureByName("btnSkin1"))){
         if(tolower(input[0])=='u'){
             mapEdit::load(-1);
         }else{

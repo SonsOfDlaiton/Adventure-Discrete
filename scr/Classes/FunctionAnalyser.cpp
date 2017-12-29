@@ -10,7 +10,8 @@ FunctionAnalyser::~FunctionAnalyser() {
 }
 
 bool FunctionAnalyser::PRINT=false;
-bool FunctionAnalyser::ANALYSE=false;
+bool FunctionAnalyser::ANALYSE=PRINT;
+bool FunctionAnalyser::SORTBYCONSUMPTION=true;
 
 vector<FunctionData> FunctionAnalyser::data;
 unsigned long FunctionAnalyser::deltaFrame=0;
@@ -103,7 +104,10 @@ void FunctionAnalyser::analyseData(){
         }
         Efunctions+=(functionsEndTime[i]-functionsStartTime[i]);
     }
-    sort(data.begin(), data.end(), FunctionData::sort);
+    if(SORTBYCONSUMPTION)
+        sort(data.begin(), data.end(), FunctionData::sortDelta);
+    else
+        sort(data.begin(), data.end(), FunctionData::sortName);
 }
 void FunctionAnalyser::printData(){
     if(!PRINT||!ANALYSE) return;
