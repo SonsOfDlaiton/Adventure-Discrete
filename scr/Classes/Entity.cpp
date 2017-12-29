@@ -272,10 +272,13 @@ void Entity::jump(){
     if(life<=0||lowered)
         return;
     if(canJump&&!atacking){
-        vSpeed-=jumpSpeed;
+        float js=jumpSpeed;
+        if(itsInTheWater)
+            js/=2.6;
+        vSpeed-=js;
         canJump=false;
-        if(vSpeed<jumpSpeed*1.3)
-            vSpeed=-jumpSpeed;
+        if(vSpeed<js*1.3)
+            vSpeed=-js;
     }
 }
 

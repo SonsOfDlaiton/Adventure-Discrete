@@ -23,6 +23,7 @@ Enemy::Enemy(int enemyType,double life,nTPoint spawn,nTPoint size,vector<vector<
     this->lowered=false;
     this->isVisible=true;
     this->damageState=false;
+    this->itsInTheWater=false;
     this->imuneToDamage=false;
     if(!checkIfEnemyIsBoss(type)){
       if(Scenes::freeGameMode)

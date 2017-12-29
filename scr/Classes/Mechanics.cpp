@@ -36,6 +36,7 @@ void Mechanics::applyGravity(){//38% de consumo de processador
         pl=(Player*)Entity::players[i];
         if(!pl->itsInTheWater){
             if(!checkNormalForce(pl->getGroundPos(),pl->size)){
+                pl->lastMapCollCalc=false;
                 pl->vSpeed+=gravity/GL::getFPS();
                 if(!pl->god)pl->canJump=false;
             }else{
@@ -46,13 +47,11 @@ void Mechanics::applyGravity(){//38% de consumo de processador
         }else{
             pl->vSpeed+=gravity/GL::getFPS()/3;
             pl->canJump=true;
-            if(checkNormalForce(pl->pos,pl->size))
-                if(pl->vSpeed>0)
-                    pl->vSpeed=0;
         }
     }
     Enemy *en;
     for(int i=0;i<Entity::enemys.size();i++){
+        en->lastMapCollCalc=false;
         en=(Enemy*)Entity::enemys[i];
         if(!checkNormalForce(en->pos,en->size)){
             en->vSpeed+=gravity/GL::getFPS();
@@ -66,6 +65,7 @@ void Mechanics::applyGravity(){//38% de consumo de processador
 
     powerUp *pu;
     for(int i=0;i<powerUp::self.size();i++){
+        pu->lastMapCollCalc=false;
         pu=(powerUp*)powerUp::self[i];
         if(!checkNormalForce(pu->pos,pu->size)){
             pu->vSpeed+=gravity/2/GL::getFPS();

@@ -28,7 +28,6 @@ public:
     bool canTp;
     bool canWalk;
     bool spacePressed;
-    bool itsInTheWater;
     int atackDirection;
     static bool beatGame;
     static int stage;

@@ -21,6 +21,7 @@ public:
     nTPoint size;
     double hSpeed;
     double vSpeed;
+    
     static bool drawCollisionRec;
     static const int TOP,BOTTOM,LEFT,RIGHT,NOCOLLISION;
 private:
