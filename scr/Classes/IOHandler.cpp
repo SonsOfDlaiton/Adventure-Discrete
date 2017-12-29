@@ -30,7 +30,7 @@ void IOHandler::specialKeyboard(int key, int x, int y){
             Player::getPlayerById(0)->atackDirection=Util::direction_up;
             if(Camera::freeCam)
                  Scenes::camera.y.movingCam=-1;
-        }else if(Scenes::current==Scenes::mapEdit&&!GL::hasEditOnFocous())
+        }else if(Scenes::current==Scenes::MapEdit&&!GL::hasEditOnFocous())
             Scenes::camera.y.movingCam=-1;
     break;
 
@@ -42,7 +42,7 @@ void IOHandler::specialKeyboard(int key, int x, int y){
             if(!Player::getPlayerById(0)->atacking&&Player::getPlayerById(0)->vSpeed==0)Player::getPlayerById(0)->lowered=true;
             if(Camera::freeCam)
                  Scenes::camera.y.movingCam=1;
-        }  else if(Scenes::current==Scenes::mapEdit&&!GL::hasEditOnFocous())
+        }  else if(Scenes::current==Scenes::MapEdit&&!GL::hasEditOnFocous())
             Scenes::camera.y.movingCam=1;
 
     break;
@@ -61,7 +61,7 @@ void IOHandler::specialKeyboard(int key, int x, int y){
              }
              if(Camera::freeCam)
                     Scenes::camera.x.movingCam=-1;
-        }else if(Scenes::current==Scenes::mapEdit&&!GL::hasEditOnFocous())
+        }else if(Scenes::current==Scenes::MapEdit&&!GL::hasEditOnFocous())
             Scenes::camera.x.movingCam=-1;
     break;
 
@@ -79,7 +79,7 @@ void IOHandler::specialKeyboard(int key, int x, int y){
             }
             if(Camera::freeCam)
                  Scenes::camera.x.movingCam=1;
-        }else if(Scenes::current==Scenes::mapEdit&&!GL::hasEditOnFocous())
+        }else if(Scenes::current==Scenes::MapEdit&&!GL::hasEditOnFocous())
             Scenes::camera.x.movingCam=1;
       break;
     }
@@ -219,8 +219,8 @@ void IOHandler::keyboardUp(unsigned char key,int x,int y){
 
         case 'D':
         case 'd':
-              if(Scenes::current==Scenes::mapEdit&&!GL::hasEditOnFocous())
-                  mapEdit::isUser=!mapEdit::isUser;
+              if(Scenes::current==Scenes::MapEdit&&!GL::hasEditOnFocous())
+                  MapEdit::isUser=!MapEdit::isUser;
         break;
 
         case 'C':
@@ -236,7 +236,7 @@ void IOHandler::keyboardUp(unsigned char key,int x,int y){
 
         case 'S':
         case 's':
-            if((Scenes::current==Scenes::game||Scenes::current==Scenes::mapEdit)&&!GL::hasEditOnFocous())
+            if((Scenes::current==Scenes::game||Scenes::current==Scenes::MapEdit)&&!GL::hasEditOnFocous())
                 Mechanics::drawCollisionRec=!Mechanics::drawCollisionRec;
             break;
     }
@@ -278,8 +278,8 @@ void IOHandler::mousePress(int button,int state,int x,int y){
       if(state==GLUT_DOWN){
       }
       if(state==GLUT_UP){
-        if(Scenes::current==Scenes::mapEdit)
-          mapEdit::currentBlock=60000;
+        if(Scenes::current==Scenes::MapEdit)
+          MapEdit::currentBlock=60000;
       }
     }
 }
@@ -315,18 +315,18 @@ void IOHandler::mouseActiveMotion(int x,int y){
 void IOHandler::mouseWheel(int button, int dir, int x, int y){
     if (dir>0){
         // Zoom in
-        if(Scenes::current==Scenes::mapEdit){
-            if(mapEdit::scale.x<0.99){
-                mapEdit::scale.x+=0.01;
-                mapEdit::scale.y+=0.01;
+        if(Scenes::current==Scenes::MapEdit){
+            if(MapEdit::scale.x<0.99){
+                MapEdit::scale.x+=0.01;
+                MapEdit::scale.y+=0.01;
             }
         }
     }else{
         // Zoom out
-        if(Scenes::current==Scenes::mapEdit){
-            if(mapEdit::scale.x>0.01){
-                mapEdit::scale.x-=0.01;
-                mapEdit::scale.y-=0.01;
+        if(Scenes::current==Scenes::MapEdit){
+            if(MapEdit::scale.x>0.01){
+                MapEdit::scale.x-=0.01;
+                MapEdit::scale.y-=0.01;
             }
         }
     }

@@ -151,13 +151,12 @@ void Blocks::move(int dir,double steeps){
         steepsAgain=signal*(ABS(steeps)-Entity::walkSpeed/GL::getFPS());
         steeps=signal*Entity::walkSpeed/GL::getFPS();
     }
-    vector <mapCollision> var;
     bool collision=false;
     if(dir==Util::direction_left||dir==Util::direction_right){
         pos.x+=steeps;
-        var=Map::checkCollision(pos,size);
-        for(int i=0; i<var.size(); i++){
-            if((var[i].collision.firstObj==Mechanics::RIGHT||var[i].collision.firstObj==Mechanics::LEFT)&&var[i].blockId!=id){
+        collideWithMap();
+        for(int i=0; i<lastMapColl.size(); i++){
+            if((lastMapColl[i].collision.firstObj==Mechanics::RIGHT||lastMapColl[i].collision.firstObj==Mechanics::LEFT)&&lastMapColl[i].blockId!=id){
                 collision=true;
                 break;
             }
@@ -175,12 +174,13 @@ void Blocks::move(int dir,double steeps){
             }else if(playerCol.firstObj==Mechanics::TOP || playerCol.secondObj==Mechanics::BOTTOM){
                 Player::getPlayerById(0)->move(dir,steeps);
             }else if(playerCol.firstObj==Mechanics::LEFT || playerCol.firstObj==Mechanics::RIGHT){
-                var=Map::checkCollision(Player::getPlayerById(0)->pos,Player::getPlayerById(0)->size);
+                Player* pl=Player::getPlayerById(0);
+                pl->collideWithMap();
                 collision=false;
-                for(int i=0; i<var.size(); i++){
-                    if(var[i].blockId!=id){
-                        if((var[i].collision.firstObj==Mechanics::RIGHT&&playerCol.secondObj==Mechanics::LEFT)||
-                           (var[i].collision.firstObj==Mechanics::LEFT&&playerCol.secondObj==Mechanics::RIGHT)){
+                for(int i=0; i<pl->lastMapColl.size(); i++){
+                    if(pl->lastMapColl[i].blockId!=id){
+                        if((pl->lastMapColl[i].collision.firstObj==Mechanics::RIGHT&&playerCol.secondObj==Mechanics::LEFT)||
+                           (pl->lastMapColl[i].collision.firstObj==Mechanics::LEFT&&playerCol.secondObj==Mechanics::RIGHT)){
                             pos.x-=steeps*2;
                             moveSpeed*=-1;
                             collision=true;
@@ -196,9 +196,9 @@ void Blocks::move(int dir,double steeps){
     }else if(dir==Util::direction_up || dir==Util::direction_down){
         objCollision playerCol=Mechanics::getCollision(nTRectangle::getCollision(pos,size),nTRectangle::getCollision(Player::getPlayerById(0)->pos,Player::getPlayerById(0)->size));
         pos.y-=steeps;
-        var=Map::checkCollision(pos,size);
-        for(int i=0; i<var.size(); i++){
-            if((var[i].collision.firstObj==Mechanics::TOP||var[i].collision.firstObj==Mechanics::BOTTOM)&&var[i].blockId!=id){
+        collideWithMap();
+        for(int i=0; i<lastMapColl.size(); i++){
+            if((lastMapColl[i].collision.firstObj==Mechanics::TOP||lastMapColl[i].collision.firstObj==Mechanics::BOTTOM)&&lastMapColl[i].blockId!=id){
                 pos.y+=steeps;
                 moveSpeed*=-1;
                 break;
@@ -208,12 +208,13 @@ void Blocks::move(int dir,double steeps){
             if(type==HalfBlockVCactus) //cacto
                 Player::getPlayerById(0)->applyDamage(1);
             else if(playerCol.secondObj==Mechanics::TOP||playerCol.secondObj==Mechanics::BOTTOM){
-                var=Map::checkCollision(Player::getPlayerById(0)->getGroundPos(),Player::getPlayerById(0)->size);
+                Player* pl=Player::getPlayerById(0);
+                pl->collideWithMap(pl->getGroundPos());
                 collision=false;
-                for(int i=0; i<var.size(); i++){
-                    if(var[i].blockId!=id){
-                        if((var[i].collision.firstObj==Mechanics::BOTTOM&&playerCol.secondObj==Mechanics::TOP)||
-                           (var[i].collision.firstObj==Mechanics::TOP&&playerCol.secondObj==Mechanics::BOTTOM)){
+                for(int i=0; i<pl->lastMapColl.size(); i++){
+                    if(pl->lastMapColl[i].blockId!=id){
+                        if((pl->lastMapColl[i].collision.firstObj==Mechanics::BOTTOM&&playerCol.secondObj==Mechanics::TOP)||
+                           (pl->lastMapColl[i].collision.firstObj==Mechanics::TOP&&playerCol.secondObj==Mechanics::BOTTOM)){
                             pos.y+=2*steeps;
                             moveSpeed*=-1;
                             collision=true;
@@ -468,7 +469,7 @@ string Blocks::getTexNameByIndex(int BlockType){
     }else if(BlockType==25||BlockType==369){
         return string("Tronco com folhas");
     }else if(BlockType==18){
-        if(Scenes::current==Scenes::mapEdit)
+        if(Scenes::current==Scenes::MapEdit)
             return string("block");
         return string("Invisivel");
     }else
@@ -536,9 +537,9 @@ string Blocks::getTexNameByIndex(int BlockType){
         }else if(BlockType==500){
         return string("BauOff");
         }else if(BlockType>=301&&BlockType<=324){
-        return string("Powerup");
+        return string("PowerUp");
         }else if(BlockType==325){
-        return string("PowerupOff");
+        return string("PowerUpOff");
         }else
 
         //mapPoints
@@ -592,15 +593,15 @@ string Blocks::getTexNameByIndex(int BlockType){
 
         //outros
         else if(BlockType==526){
-            if(Scenes::current==Scenes::mapEdit)
+            if(Scenes::current==Scenes::MapEdit)
                 return string("EnemyCtrl");
             return string("Invisivel");
         }else if(BlockType==527){
-            if(Scenes::current==Scenes::mapEdit)
+            if(Scenes::current==Scenes::MapEdit)
                 return string("TutorialBlock");
             return string("Invisivel");
         }else if(BlockType==528){
-            if(Scenes::current==Scenes::mapEdit)
+            if(Scenes::current==Scenes::MapEdit)
                 return string("TutorialPauseBlock");
             return string("Invisivel");
         }

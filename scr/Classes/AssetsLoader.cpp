@@ -77,7 +77,7 @@ bool AssetsLoader::loadTextures(){
     if(!GL::loadTexture("optionsIcon","Textures/HUD/Buttons/options.png")) out=false;
     if(!GL::loadTexture("quitIcon","Textures/HUD/Buttons/quit.png")) out=false;
     if(!GL::loadTexture("playIcon","Textures/HUD/Buttons/play.png")) out=false;
-    if(!GL::loadTexture("mapEditIcon","Textures/HUD/Buttons/mapEdit.png")) out=false;
+    if(!GL::loadTexture("MapEditIcon","Textures/HUD/Buttons/mapEdit.png")) out=false;
     if(!GL::loadTexture("optionsIcon","Textures/HUD/Buttons/options.png")) out=false;
     if(!GL::loadTexture("btnSkin1","Textures/HUD/Buttons/btn_skin1.png")) out=false;
     if(!GL::loadTexture("S2","Textures/HUD/heart.png")) out=false;
@@ -105,7 +105,7 @@ bool AssetsLoader::loadTextures(){
     if(!GL::loadTexture("Continuar1","Textures/HUD/Buttons/continuar.png")) out=false;
     if(!GL::loadTexture("Jubilado","Textures/HUD/Buttons/jubilado.png")) out=false;
 
-    //powerups
+    //powerUps
     if(!GL::loadTexture("cogumelo0","Textures/powerups/cogumelo.png")) out=false;
     if(!GL::loadTexture("cogumelo1","Textures/powerups/estrela.png")) out=false;
     if(!GL::loadTexture("gcc","Textures/powerups/gcc.png")) out=false;
@@ -183,8 +183,8 @@ bool AssetsLoader::loadTextures(){
     if(!GL::loadTexture("Agua1","Textures/blocks/219-b.png"))out=false;
     if(!GL::loadTexture("LavaF","Textures/blocks/lavafull.png"))out=false;
     if(!GL::loadTexture("AguaF","Textures/blocks/aguafull.png"))out=false;
-    if(!GL::loadTexture("Powerup","Textures/blocks/220.png"))out=false;
-    if(!GL::loadTexture("PowerupOff","Textures/blocks/220-b.png"))out=false;
+    if(!GL::loadTexture("powerUp","Textures/blocks/220.png"))out=false;
+    if(!GL::loadTexture("powerUpOff","Textures/blocks/220-b.png"))out=false;
     if(!GL::loadTexture("Shooter","Textures/blocks/221.png"))out=false;
     if(!GL::loadTexture("ShooterBus","Textures/blocks/224.png"))out=false;
     if(!GL::loadTexture("jump spring","Textures/blocks/jumpPad.png"))out=false;

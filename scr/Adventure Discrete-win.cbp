@@ -97,14 +97,14 @@
 		<Unit filename="Classes/Tutorials.hpp" />
 		<Unit filename="Classes/Util.cpp" />
 		<Unit filename="Classes/Util.hpp" />
-		<Unit filename="Classes/mapEdit.cpp" />
-		<Unit filename="Classes/mapEdit.hpp" />
+		<Unit filename="Classes/MapEdit.cpp" />
+		<Unit filename="Classes/MapEdit.hpp" />
 		<Unit filename="Classes/nTFont.cpp" />
 		<Unit filename="Classes/nTFont.hpp" />
 		<Unit filename="Classes/nTFontChar.cpp" />
 		<Unit filename="Classes/nTFontChar.hpp" />
-		<Unit filename="Classes/powerUp.cpp" />
-		<Unit filename="Classes/powerUp.hpp" />
+		<Unit filename="Classes/PowerUp.cpp" />
+		<Unit filename="Classes/PowerUp.hpp" />
 		<Unit filename="Libs/soil/SOIL.c">
 			<Option compilerVar="CC" />
 		</Unit>

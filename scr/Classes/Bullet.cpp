@@ -72,13 +72,6 @@ void Bullet::behave(){
             FunctionAnalyser::endFunction("Bullet::behave");
             return;
         }
-        if(bu->hSpeed!=0){
-            bu->move(Util::direction_left,bu->hSpeed/GL::getFPS());
-        }
-        if(!bu->isVisible){
-            FunctionAnalyser::endFunction("Bullet::behave");
-            return;
-        }
         if(bu->type==errorBlockBullet||bu->type==hyperbolicParaboloidBullet){//tiro de bloco
             bu->checkCollisionWithEntity(Player::getPlayerById(0)->pos,Player::getPlayerById(0)->size,true);
         }else if(bu->type==strongSwordBullet){//espada
@@ -143,40 +136,38 @@ void Bullet::move(int dir,double steeps){
         steeps=signal*Entity::walkSpeed/GL::getFPS();
     }
     if(type!=busBullet){
-        vector <mapCollision> var;
         bool collision=false;
         if(dir==Util::direction_left||dir==Util::direction_right){
-          nTPoint tmp;
-          tmp.set(pos.x+steeps,pos.y,pos.z);
-          var=Map::checkCollision(tmp,size);
-          for(int i=0; i<var.size(); i++){
-            if(var[i].collision.firstObj==Mechanics::LEFT||var[i].collision.firstObj==Mechanics::RIGHT){
-              collision=true;
-                if(var[i].blockId>=Map::staticBlocks.size()){
-                    Blocks* bl=(Blocks*) Map::dynamicBlocks[var[i].blockId-Map::staticBlocks.size()];
-                    if(Blocks::checkIfBlocksIsEnemyCollider(bl->type))
-                        collision=false;
-                    else
-                        break;
+            nTPoint tmp;
+            tmp.set(pos.x+steeps,pos.y,pos.z);
+            collideWithMap(tmp);
+            for(int i=0; i<lastMapColl.size(); i++){
+                if(lastMapColl[i].collision.firstObj==Mechanics::LEFT||lastMapColl[i].collision.firstObj==Mechanics::RIGHT){
+                    collision=true;
+                    if(lastMapColl[i].blockId>=Map::staticBlocks.size()){
+                        Blocks* bl=(Blocks*) Map::dynamicBlocks[lastMapColl[i].blockId-Map::staticBlocks.size()];
+                        if(Blocks::checkIfBlocksIsEnemyCollider(bl->type))
+                            collision=false;
+                        else
+                            break;
+                    }
                 }
             }
-          }
-          if(!collision)
-            pos.x+=steeps;
-          else{
-            if(type==strongSwordBullet)
-                Player::getPlayerById(0)->haveBulletSword=false;
-            if(type==strongXAtackBullet||type==weakXAtackBullet)
-                Player::getPlayerById(0)->haveBulletSpec=false;
-            isVisible=false;
-            delete this;
-            if(!isVisible){
-                FunctionAnalyser::endFunction("Bullet::move");
-                return;
+            if(!collision)
+                pos.x+=steeps;
+            else{
+                if(type==strongSwordBullet)
+                    Player::getPlayerById(0)->haveBulletSword=false;
+                if(type==strongXAtackBullet||type==weakXAtackBullet)
+                    Player::getPlayerById(0)->haveBulletSpec=false;
+                isVisible=false;
+                delete this;
+                if(!isVisible){
+                    FunctionAnalyser::endFunction("Bullet::move");
+                    return;
+                }
+                hSpeed*=-1;
             }
-            hSpeed*=-1;
-          }
-
         }
     }else{
         pos.x+=steeps;

@@ -3,7 +3,7 @@
 #include "Util.hpp"
 #include "Mechanics.hpp"
 #include "Tutorials.hpp"
-#include "mapEdit.hpp"
+#include "MapEdit.hpp"
 #include "Enemy.hpp"
 #include "Camera.hpp"
 
@@ -29,7 +29,7 @@ public:
     static int current;
     static const int game;
     static const int menu;
-    static const int mapEdit;
+    static const int MapEdit;
     static const int splash;
     static const int preGame;
     static const int credits;
@@ -53,7 +53,7 @@ private:
     static bool optionsCalled;
     static bool splashCalled;
     static bool creditsCalled;
-    static bool mapEditCalled;
+    static bool MapEditCalled;
     static bool preGameCalled;
     static bool preCampaignCalled;
     static bool preFreeModeCalled;

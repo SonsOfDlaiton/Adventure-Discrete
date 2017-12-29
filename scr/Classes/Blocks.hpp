@@ -7,7 +7,7 @@
 
 class GL;
 
-class Blocks {
+class Blocks:public Mechanics {
 public:
     Blocks(int type,nTPoint pos,nTPoint size,string data);
     Blocks(int type,nTPoint pos,nTPoint size);
@@ -47,7 +47,6 @@ public:
     static string getTexNameByIndex(int BlockType);
 
     int type;
-    nTPoint pos;
     int id;
     bool isVisible;
     int brokeStage;
@@ -81,7 +80,6 @@ private:
     unsigned long int timeToVunerability;
     bool damageState;
     static double imunityTime;
-    nTPoint size;
     GLuint tex;
     nTColor color;
 };

@@ -18,10 +18,10 @@
 #include "Classes/Entity.hpp"
 #include "Classes/Player.hpp"
 #include "Classes/Enemy.hpp"
-#include "Classes/mapEdit.hpp"
+#include "Classes/MapEdit.hpp"
 #include "Classes/nTFont.hpp"
 #include "Classes/nTFontChar.hpp"
-#include "Classes/powerUp.hpp"
+#include "Classes/PowerUp.hpp"
 #include "Classes/Bullet.hpp"
 #include "Classes/Language.hpp"
 

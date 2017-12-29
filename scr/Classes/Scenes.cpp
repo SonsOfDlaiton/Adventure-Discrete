@@ -1,6 +1,6 @@
 #include "Scenes.hpp"
 #include "Bullet.hpp"
-#include "powerUp.hpp"
+#include "PowerUp.hpp"
 #include "AL.hpp"
 #include "Camera.hpp"
 
@@ -14,7 +14,7 @@ Scenes::~Scenes() {
 }
 
 int Scenes::current=300;
-const int Scenes::mapEdit=98746;
+const int Scenes::MapEdit=98746;
 const int Scenes::menu=-565;
 const int Scenes::game=6516;
 const int Scenes::credits=12;
@@ -28,7 +28,7 @@ const int Scenes::posGameEnd=69;
 const int Scenes::posYouWin=7454;
 bool Scenes::menuCalled=false;
 bool Scenes::gameCalled=false;
-bool Scenes::mapEditCalled=false;
+bool Scenes::MapEditCalled=false;
 bool Scenes::splashCalled=false;
 bool Scenes::optionsCalled=false;
 bool Scenes::creditsCalled=false;
@@ -63,7 +63,7 @@ vector<int> Scenes::getUnityVector(int value){
 **/
 void Scenes::setAllCalledFalseExcept(vector<int> except){
     gameCalled=false;
-    mapEditCalled=false;
+    MapEditCalled=false;
     menuCalled=false;
     splashCalled=false;
     optionsCalled=false;
@@ -81,7 +81,7 @@ void Scenes::setAllCalledFalseExcept(vector<int> except){
     for(int i=0;i<except.size();i++)
         switch(except[i]){
             case game: gameCalled=true; break;
-            case Scenes::mapEdit: mapEditCalled=true; break;
+            case Scenes::MapEdit: MapEditCalled=true; break;
             case menu: menuCalled=true; break;
             case splash:  splashCalled=true;break;
             case options: optionsCalled=true;break;
@@ -125,7 +125,7 @@ void Scenes::drawGame(){
     Mechanics::applyForce();
     Map::refresh();
     Entity::behave();
-    powerUp::behave();
+    PowerUp::behave();
     Bullet::behave();
     Tutorials::behave();
     Map::transparencyLayerDraw();
@@ -140,10 +140,10 @@ void Scenes::drawGame(){
  *	Draw, behave and handle events of MapEdit scene on the screen
 **/
 void Scenes::drawMapEdit(){
-    if(!mapEditCalled){//acontece na primeira vez
-        setAllCalledFalseExcept(getUnityVector(Scenes::mapEdit));//fala que ja chamou essa cena
+    if(!MapEditCalled){//acontece na primeira vez
+        setAllCalledFalseExcept(getUnityVector(Scenes::MapEdit));//fala que ja chamou essa cena
         if(!Scenes::testGameMode){
-          mapEdit::reset();
+          MapEdit::reset();
         }else{
           testGameMode=false;
         }
@@ -154,29 +154,29 @@ void Scenes::drawMapEdit(){
         AL::singleton->stopAllSoundsExcept(tmp);
     }
     AL::singleton->playSoundByName("menuSong");
-    if(mapEdit::size.x==0){
+    if(MapEdit::size.x==0){
         GL::drawTexture(nTRectangle::get(0,GL::defaultSize.y,GL::defaultSize.x,0,-0.9),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("background0"));
-         if(mapEdit::isCreating==0){
+         if(MapEdit::isCreating==0){
             GL::setFont("BITMAP_TIMES_ROMAN_24");
             GL::drawText(nTPoint::get(100,75,1),"Selecione o modo de edi��o:",GL::getColorByName("violet"));
             GL::drawText(nTPoint::get(75,400,1),"Editar um mapa existente.",GL::getColorByName("violet"));
             GL::drawText(nTPoint::get(450,400,1),"Criar um novo mapa.",GL::getColorByName("violet"));
             if(GL::buttonBehave(nTRectangle::get(100,350,300,150),GL::getColorByName("mouseSelected"),GL::getTextureByName("editMapIcon")))
-                mapEdit::isCreating=-1;
+                MapEdit::isCreating=-1;
             if(GL::buttonBehave(nTRectangle::get(450,350,650,150),GL::getColorByName("mouseSelected"),GL::getTextureByName("newMapIcon")))
-                mapEdit::isCreating=1;
+                MapEdit::isCreating=1;
             if(GL::buttonBehave(nTRectangle::get(400,550,540,500),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon")))
               current=menu;
-        }else if(mapEdit::isCreating==1){
-            mapEdit::askForSize();
+        }else if(MapEdit::isCreating==1){
+            MapEdit::askForSize();
             if(GL::buttonBehave(nTRectangle::get(400,550,540,500),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon"))){
-                mapEdit::isCreating=0;
+                MapEdit::isCreating=0;
                 GL::clearUI();
             }
-        }else if(mapEdit::isCreating==-1){
-            mapEdit::askForLoad();
+        }else if(MapEdit::isCreating==-1){
+            MapEdit::askForLoad();
             if(GL::buttonBehave(nTRectangle::get(400,550,540,500),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon"))){
-                mapEdit::isCreating=0;
+                MapEdit::isCreating=0;
                 GL::clearUI();
             }
         }
@@ -186,7 +186,7 @@ void Scenes::drawMapEdit(){
             camera.x.movedCam+=camera.moveSpeed*camera.x.movingCam;
         if(camera.y.movingCam)
             camera.y.movedCam+=camera.moveSpeed*camera.y.movingCam;
-        mapEdit::draw();
+        MapEdit::draw();
     }
 }
 
@@ -215,8 +215,8 @@ void Scenes::drawMenu(){
     }
     if(GL::buttonBehave(nTRectangle::get(350,362+10,450,330,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("playIcon")))
      	Scenes::current=preGame;
-    if(GL::buttonBehave(nTRectangle::get(250,404+10,550,372,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("mapEditIcon")))
-    	Scenes::current=mapEdit;
+    if(GL::buttonBehave(nTRectangle::get(250,404+10,550,372,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("MapEditIcon")))
+    	Scenes::current=MapEdit;
 //    if(GL::buttonBehave(nTRectangle::get(340,446+10,460,414,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("optionsIcon")))
 //      Scenes::current=menu;
     if(GL::buttonBehave(nTRectangle::get(360,446+10,440,414,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("quitIcon")))
@@ -486,7 +486,7 @@ void Scenes::drawPosGame(){
 		AL::singleton->stopAllSoundsExcept(tmp);
 		AL::singleton->playSoundByName("diePlayer");
 		if(Scenes::testGameMode){
-			current=mapEdit;
+			current=MapEdit;
 		}
 	}
 	GL::drawTexture(nTRectangle::get(camera.x.movedCam,GL::defaultSize.y+camera.y.movedCam,GL::defaultSize.x+camera.x.movedCam,camera.y.movedCam,-0.9),GL::getTextureByName("Cefet"));

@@ -64,7 +64,7 @@ int Player::loadedLife=defaultLife;
 double Player::coeficiente=0;
 double Player::globalCoeficiente=0;
 int Player::enemysKilled=0;
-int Player::powerUpsActiveted=0;
+int Player::PowerUpsActiveted=0;
 const nTPoint Player::defaultPSize=nTPoint::get(28,60);
 vector<vector<string> >Player::playerAnim;
 vector<vector<int> >Player::playerAnimSize;
@@ -162,20 +162,19 @@ void Player::stateControl(){
     }
     if(atacking&&!lowered) atack(atacking);
     Blocks *bl;
-    vector <mapCollision> var;
     bool collisionWater=false;
     bool collisionIce=false;
     collideWithMap(getGroundPos());
-    for(int i=0; i<var.size(); i++){
-        bl=Map::getBlockById(var[i].blockId);
-        if(var[i].collision.firstObj!=Mechanics::NOCOLLISION){
+    for(int i=0; i<lastMapColl.size(); i++){
+        bl=Map::getBlockById(lastMapColl[i].blockId);
+        if(lastMapColl[i].collision.firstObj!=Mechanics::NOCOLLISION){
             if(bl->type==Blocks::AnimatedLava1||bl->type==Blocks::AnimatedLava2||bl->type==Blocks::StaticLava){
                 if(!god) life=0;
                 collisionWater=false;
             }else if(Blocks::checkIfBlocksIsLiquid(bl->type)){
                 collisionWater=true;
             }else if(bl->type==Blocks::IceHHalfBlock||bl->type==Blocks::IceVHalfBlock||bl->type==Blocks::IceBlock){
-                if(var[i].collision.firstObj==Mechanics::BOTTOM)
+                if(lastMapColl[i].collision.firstObj==Mechanics::BOTTOM)
                     collisionIce=true;
             }
             if((Blocks::checkIfBlocksIsTeleportPipe(bl->type)||Blocks::checkIfBlocksIsTeleportDoor(bl->type))&&canTp){
@@ -279,7 +278,7 @@ void Player::spawn(nTPoint spawn,double life){
     this->lowered=false;
     alReadyAtacked=false;
     enemysKilled=0;
-    powerUpsActiveted=0;
+    PowerUpsActiveted=0;
     int anim=0;
     if(Scenes::freeGameMode)
         anim=rand()%playerAnim.size();
@@ -436,7 +435,7 @@ void Player::refreshCoeficiente(){
     if(Map::nOfEnemys)
         coeficiente+=100*Player::enemysKilled/Map::nOfEnemys         *3;
     if(Map::totalPowerUps)
-        coeficiente+=100*Player::powerUpsActiveted/Map::totalPowerUps*2;
+        coeficiente+=100*Player::PowerUpsActiveted/Map::totalPowerUps*2;
     if(GL::getGameMs()){
         double temp=100000*Map::expetedTime/GL::getGameMs()            *1;
         if(temp>100)

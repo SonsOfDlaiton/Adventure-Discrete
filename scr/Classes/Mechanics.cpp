@@ -1,6 +1,6 @@
 #include "Mechanics.hpp"
 #include "Player.hpp"
-#include "powerUp.hpp"
+#include "PowerUp.hpp"
 #include "Enemy.hpp"
 #include "Blocks.hpp"
 #include "Camera.hpp"
@@ -25,7 +25,7 @@ bool Mechanics::drawCollisionRec=false;
 /**
  *	Apply gravity to the instantiated entitities on the world
 **/
-void Mechanics::applyGravity(){//38% de consumo de processador
+void Mechanics::applyGravity(){
     FunctionAnalyser::startFunction("Mechanics::applyGravity");
     if(GL::isPaused||Tutorials::isPaused){//||!Scenes::camera.isInTheXScreen(nTRectangle::getCollision(this->pos,this->size)))
         FunctionAnalyser::endFunction("Mechanics::applyGravity");
@@ -42,7 +42,8 @@ void Mechanics::applyGravity(){//38% de consumo de processador
             }else{
                 if(pl->vSpeed>0)
                     pl->vSpeed=0;
-                if(!pl->spacePressed)pl->canJump=true;
+                if(!pl->spacePressed)
+                    pl->canJump=true;
             }
         }else{
             pl->vSpeed+=gravity/GL::getFPS()/3;
@@ -63,10 +64,10 @@ void Mechanics::applyGravity(){//38% de consumo de processador
         }
     }
 
-    powerUp *pu;
-    for(int i=0;i<powerUp::self.size();i++){
+    PowerUp *pu;
+    for(int i=0;i<PowerUp::self.size();i++){
         pu->lastMapCollCalc=false;
-        pu=(powerUp*)powerUp::self[i];
+        pu=(PowerUp*)PowerUp::self[i];
         if(!pu->checkNormalForce()){
             pu->vSpeed+=gravity/2/GL::getFPS();
         }else if(pu->vSpeed>0){
@@ -118,9 +119,9 @@ void Mechanics::applyForce(){
         }
     }
 
-    powerUp *pu;
-    for(int i=0;i<powerUp::self.size();i++){
-        pu=(powerUp*)powerUp::self[i];
+    PowerUp *pu;
+    for(int i=0;i<PowerUp::self.size();i++){
+        pu=(PowerUp*)PowerUp::self[i];
         if(pu->hSpeed!=0){
             double tmp=pu->hSpeed;
             pu->move(Util::direction_left,pu->hSpeed/GL::getFPS());
@@ -131,6 +132,14 @@ void Mechanics::applyForce(){
             pu->move(Util::direction_down,pu->vSpeed/GL::getFPS());
         }else if(pu->vSpeed<0){
             pu->move(Util::direction_up,pu->vSpeed/GL::getFPS());
+        }
+    }
+
+    Bullet *bu;
+    for(int i=0;i<Bullet::self.size();i++){
+        bu=(Bullet*)Bullet::self[i];
+        if(bu->hSpeed!=0){
+            bu->move(Util::direction_left,bu->hSpeed/GL::getFPS());
         }
     }
 

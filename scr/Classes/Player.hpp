@@ -34,7 +34,7 @@ public:
     static int lives;
     static int checkpoint;
     static int enemysKilled;
-    static int powerUpsActiveted;
+    static int PowerUpsActiveted;
     static int loadedLife;
     static double coeficiente;
     static const int defaultLife;

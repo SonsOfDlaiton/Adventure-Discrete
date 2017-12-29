@@ -9,7 +9,7 @@ int main(int argc, char** argv) {
                   800,600,nTColor::Black(),true,enables,argc,argv);
     Enemy::registerNicks();
     Tutorials::registerSinucaTuts();
-    mapEdit::definePages();
+    MapEdit::definePages();
     if(!AssetsLoader::loadSettings()) if(Util::DEBUG) cout<<"erro ao carregar configs"<<endl;
     if(!AssetsLoader::loadMaps(Map::nOfMaps)) if(Util::DEBUG) cout<<"erro ao carregar mapas"<<endl;
     new AL();

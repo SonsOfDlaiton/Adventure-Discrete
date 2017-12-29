@@ -24,7 +24,7 @@ void CallbacksHandler::drawScene(void){
             GL::framesInGame=0;
     if(Scenes::current==Scenes::game)
         Scenes::drawGame();
-    else if(Scenes::current==Scenes::mapEdit)
+    else if(Scenes::current==Scenes::MapEdit)
         Scenes::drawMapEdit();
     else if(Scenes::current==Scenes::menu)
         Scenes::drawMenu();

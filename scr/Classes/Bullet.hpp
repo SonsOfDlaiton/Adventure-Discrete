@@ -4,7 +4,7 @@
 #include "Scenes.hpp"
 #include "Camera.hpp"
 
-class Bullet {
+class Bullet:public Mechanics {
 public:
     Bullet(int type,double moveSpeed,nTPoint pos,nTPoint size);
     Bullet(const Bullet& orig);
@@ -23,14 +23,11 @@ public:
     static const double timeToShoot;
     static const double baseDamage;
     static const double baseSpeed;
+    void move(int dir,double steeps);
 private:
     void draw();
     void checkCollisionWithEntity(nTPoint pos,nTPoint size,bool withPlayer);
-    void move(int dir,double steeps);
 
-    double hSpeed;
-    nTPoint size;
-    nTPoint pos;
     int type;
     int spriteIndex;
     GLuint tex;

@@ -784,8 +784,8 @@ void GL::drawPause(){
     GL::drawCentered_X_Y_Text(nTPoint::get(GL::defaultSize.x/2+Scenes::camera.x.movedCam,Scenes::camera.y.movedCam+GL::defaultSize.y/2,1),text,GL::getColorByName("violet"));
     if(GL::buttonBehave(nTRectangle::get(600+Scenes::camera.x.movedCam,600+Scenes::camera.y.movedCam,700+Scenes::camera.x.movedCam,550+Scenes::camera.y.movedCam,0.99),GL::getColorByName("mouseSelected"),GL::getTextureByName("quitIcon"))){
         if(Scenes::testGameMode){
-            Scenes::current=Scenes::mapEdit;
-            mapEdit::load(mapEdit::editingMap);
+            Scenes::current=Scenes::MapEdit;
+            MapEdit::load(MapEdit::editingMap);
         }else
             Scenes::current=Scenes::menu;
     }

@@ -5,7 +5,7 @@
 #include "Blocks.hpp"
 #include "Tutorials.hpp"
 #include "Bullet.hpp"
-#include "powerUp.hpp"
+#include "PowerUp.hpp"
 #include "AssetsLoader.hpp"
 #include "Camera.hpp"
 
@@ -47,7 +47,7 @@ const int Map::lvlBadTecher=5;
 void Map::changeCurrentMap(nTMap map){
     Enemy* en;
     Bullet* bu;
-    powerUp* pu;
+    PowerUp* pu;
     for(int i=0;i<Entity::enemys.size();i++){
         en=(Enemy*) Entity::enemys[i];
         delete en;
@@ -56,13 +56,13 @@ void Map::changeCurrentMap(nTMap map){
         bu=(Bullet*) Bullet::self[i];
         free(bu);
     }
-    for(int i=0;i<powerUp::self.size();i++){
-        pu=(powerUp*) powerUp::self[i];
+    for(int i=0;i<PowerUp::self.size();i++){
+        pu=(PowerUp*) PowerUp::self[i];
         delete pu;
     }
     Entity::enemys.clear();
     Bullet::self.clear();
-    powerUp::self.clear();
+    PowerUp::self.clear();
     actualMap.map.clear();
     actualMap.backgrounds.clear();
 
@@ -304,7 +304,7 @@ void Map::refresh(){
                 bl->move(Util::direction_up,bl->moveSpeed/GL::getFPS());
             else if(Blocks::checkIfBlocksIsHalfBlockH(bl->type)&&Scenes::camera.isInTheYScreen(nTRectangle::getCollision(bl->pos,bl->size)))
                 bl->move(Util::direction_left,bl->moveSpeed/GL::getFPS());
-            else if(Blocks::checkIfBlocksIsShooter(bl->type)&&Scenes::camera.isInTheXScreen(nTRectangle::getCollision(bl->pos,bl->size))){
+            else if(Blocks::checkIfBlocksIsShooter(bl->type)&&!bl->type==Blocks::BusShooterBlock&&Scenes::camera.isInTheXScreen(nTRectangle::getCollision(bl->pos,bl->size))){
                 if(Util::timerWithInterval(Bullet::timeToShoot/2.5)&&Player::getPlayerById(0)->life>0){
                     nTPoint tmp=bl->pos;
                     tmp.z=0.9;
@@ -360,21 +360,21 @@ void Map::refresh(){
                 if((var.secondObj==Mechanics::BOTTOM||var.secondObj==Mechanics::LEFT||var.secondObj==Mechanics::RIGHT)&&Player::getPlayerById(0)->atackDirection==Util::direction_up){
                     nTPoint tmp=bl->pos;
                     tmp.y-=Blocks::defaultBlockSize.y*1.5;
-                    new powerUp(Blocks::getPowerUpBlockId(bl->type),tmp,nTPoint::get(20,20));
+                    new PowerUp(Blocks::getPowerUpBlockId(bl->type),tmp,nTPoint::get(20,20));
                     bl->type=Blocks::InvalidPowerUpBlock;
-                    bl->tex=GL::getTextureByName("PowerupOff");
-                    Player::getPlayerById(0)->powerUpsActiveted++;
+                    bl->tex=GL::getTextureByName("PowerUpOff");
+                    Player::getPlayerById(0)->PowerUpsActiveted++;
                 }
             }else if(Blocks::checkIfBlocksIsPowerUpChest(bl->type)&&Player::getPlayerById(0)->atacking){
                 objCollision var=Mechanics::getCollision(Player::getPlayerById(0)->swordCollision,nTRectangle::getCollision(bl->pos,bl->size));
                 if(var.firstObj!=Mechanics::NOCOLLISION){
                     nTPoint tmp=bl->pos;
                     tmp.y-=Blocks::defaultBlockSize.y*1.5;
-                    new powerUp(Blocks::getPowerUpChestId(bl->type),tmp,nTPoint::get(20,20));
+                    new PowerUp(Blocks::getPowerUpChestId(bl->type),tmp,nTPoint::get(20,20));
                     bl->type=Blocks::InvalidPowerUpChest;
                     AL::singleton->playSoundByName("chestOpen");
                     bl->tex=GL::getTextureByName("BauOff");
-                    Player::getPlayerById(0)->powerUpsActiveted++;
+                    Player::getPlayerById(0)->PowerUpsActiveted++;
                 }
             }else if(Blocks::checkIfBlocksIsDestrutive(bl->type)&&Player::getPlayerById(0)->atacking){
                 objCollision var=Mechanics::getCollision(Player::getPlayerById(0)->swordCollision,nTRectangle::getCollision(bl->pos,bl->size));
