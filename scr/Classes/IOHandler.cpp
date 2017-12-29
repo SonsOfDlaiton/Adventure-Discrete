@@ -39,6 +39,7 @@ void IOHandler::specialKeyboard(int key, int x, int y){
             Tutorials::pressKey(2);
             Player::getPlayerById(0)->atackDirection=Util::direction_down;
             Player::getPlayerById(0)->canTp=true;
+            Player::getPlayerById(0)->lowered=true;
             if(Camera::freeCam)
                  Scenes::camera.y.movingCam=1;
         }  else if(Scenes::current==Scenes::mapEdit&&!GL::hasEditOnFocous())
@@ -157,6 +158,7 @@ void IOHandler::specialKeyboardUp(int key,int x,int y){
     case GLUT_KEY_DOWN:
     if(Scenes::current==Scenes::game){
         Player::getPlayerById(0)->canTp=false;
+        Player::getPlayerById(0)->lowered=false;
         if(Player::getPlayerById(0)->orientation>=Util::orientation_right)
             Player::getPlayerById(0)->atackDirection=Util::direction_right;
         else

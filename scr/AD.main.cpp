@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
     if(!AssetsLoader::loadTextures()) if(Util::DEBUG) cout<<"erro ao carregar texturas"<<endl;
     if(!AssetsLoader::loadFonts()) if(Util::DEBUG) cout<<"erro ao carregar fontes"<<endl;
     Entity::setSprites();
-    new Player(Player::defaultLife,nTPoint::Origin(),Player::defaultPSize,Entity::getAnimationVector(Player::playerAnim[0],Player::playerAnimSize[0]),1);
+    new Player(Player::defaultLife,nTPoint::Origin(),Player::defaultPSize,1);
     gl->start();
     return 0;
 }

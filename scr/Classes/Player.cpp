@@ -1,10 +1,9 @@
 #include "Player.hpp"
 
-Player::Player(double life,nTPoint spawn,nTPoint size,vector<vector<GLuint> > animations,bool isHuman) {
+Player::Player(double life,nTPoint spawn,nTPoint size,bool isHuman) {
     spawn.z=0.9;
     this->pos=spawn;
     this->size=size;
-    this->animations=animations;
     this->vSpeed=0;
     this->hSpeed=0;
     this->currentState=Entity::state_Idle;
@@ -32,6 +31,7 @@ Player::Player(double life,nTPoint spawn,nTPoint size,vector<vector<GLuint> > an
     this->canTp=false;
     this->imuneToDamage=false;
     this->god=false;
+    this->lowered=false;
 
     Entity::players.push_back(this);
     this->id=-((unsigned int)Entity::players.size());
@@ -99,7 +99,7 @@ void playerChangeDamageState(int id){
     try{
         pl=(Player*)Entity::players[idx];
         pl->damageState=false;
-    }catch(const std::exception& e){
+    }catch(const exception& e){
         cout<<"pCDS-catch error: "<<e.what()<<endl;
     }
 }
@@ -125,7 +125,7 @@ void Player::stateControl(){
         imuneToDamage=false;
     }
     Entity::stateControl();
-    if(nextState!=Entity::state_TakingDamage&&nextState!=Entity::state_Dying&&currentState!=Entity::state_TakingDamage&&currentState!=Entity::state_Dying&&atacking){
+    if(nextState!=Entity::state_TakingDamage&&nextState!=Entity::state_Dying&&currentState!=Entity::state_TakingDamage&&currentState!=Entity::state_Dying&&atacking&&!lowered){
         if(atacking==Player::melee){
             if(vSpeed!=0){//air
                 if(atackDirection==Util::direction_down)
@@ -160,7 +160,7 @@ void Player::stateControl(){
             nextState=Entity::state_Holding;
         }
     }
-    if(atacking) atack(atacking);
+    if(atacking&&!lowered) atack(atacking);
     Blocks *bl;
     vector <mapCollision> var;
     bool collisionWater=false;
@@ -219,10 +219,16 @@ void Player::stateControl(){
     if(hSpeed==0||!collisionIce)AL::singleton->stopSound(AL::singleton->getSoundByName("ice"));
     if(IOHandler::ReleaseZOffSet){
         if(!GL::isPaused){
-            //Tutorials::pressedKey='z'; ?????????????  TODO REMOVE
             atacking=Player::meleeProjectile;
         }
         IOHandler::ReleaseZOffSet=false;
+    }
+    if(lowered&&size.y==defaultPSize.y){
+        size.y=defaultPSize.y/2;
+        pos.y+=defaultPSize.y/4;
+    }else if(!lowered&&size.y!=defaultPSize.y){
+        size.y=defaultPSize.y;
+        pos.y-=defaultPSize.y/4;
     }
     execAnimation();
     FunctionAnalyser::endFunction("Player::stateControl");
@@ -278,9 +284,16 @@ void Player::spawn(nTPoint spawn,double life){
     this->god=false;
     this->canTp=false;
     this->canJump=false;
+    this->lowered=false;
     alReadyAtacked=false;
     enemysKilled=0;
     powerUpsActiveted=0;
+    int anim=0;
+    if(Scenes::freeGameMode)
+        anim=rand()%playerAnim.size();
+    else
+        anim=Player::stage;
+    animations=Entity::getAnimationVector(Player::playerAnim[anim],Player::playerAnimSize[anim]);
     Scenes::camera.lookAt(this->pos);
 }
 /**
@@ -302,10 +315,10 @@ void Player::especificDraw(){
         canJump=true;
     }
     Player::refreshCoeficiente();
-    char buffer[5];
-    snprintf(buffer,5,"%d",sword);
-    string sID(buffer);
-    if(atacking){
+    if(atacking&&!lowered){
+        char buffer[5];
+        snprintf(buffer,5,"%d",sword);
+        string sID(buffer);
         swordCollision.p0.z=1;
         swordCollision.p1.z=1;
         if(atackDirection==Util::direction_up||atackDirection==Util::direction_down)

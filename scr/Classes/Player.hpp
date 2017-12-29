@@ -13,7 +13,7 @@
 
 class Player:public Entity {
 public:
-    Player(double life,nTPoint spawn,nTPoint size,vector<vector<GLuint> > animations,bool isHuman);
+    Player(double life,nTPoint spawn,nTPoint size,bool isHuman);
     Player(const Player& orig);
     virtual ~Player();
 

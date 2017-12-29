@@ -20,6 +20,7 @@ Enemy::Enemy(int enemyType,double life,nTPoint spawn,nTPoint size,vector<vector<
     this->type=enemyType;
     this->canJump=true;
     this->reducing=false;
+    this->lowered=false;
     this->isVisible=true;
     this->damageState=false;
     this->imuneToDamage=false;

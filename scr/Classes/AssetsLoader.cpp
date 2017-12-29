@@ -100,10 +100,10 @@ bool AssetsLoader::loadTextures(){
     if(!GL::loadTexture("D","Textures/enemys/letters/D.png")) out=false;
     if(!GL::loadTexture("E","Textures/enemys/letters/E.png")) out=false;
     if(!GL::loadTexture("F","Textures/enemys/letters/F.png")) out=false;
-    if(!GL::loadTexture("GameOver","Textures/HUD/Buttons//texturagameover.png")) out=false;
-    if(!GL::loadTexture("Menu1","Textures/HUD/Buttons//menu.png")) out=false;
-    if(!GL::loadTexture("Continuar1","Textures/HUD/Buttons//continuar.png")) out=false;
-    if(!GL::loadTexture("Jubilado","Textures/HUD/Buttons//jubilado.png")) out=false;
+    if(!GL::loadTexture("GameOver","Textures/HUD/Buttons/texturagameover.png")) out=false;
+    if(!GL::loadTexture("Menu1","Textures/HUD/Buttons/menu.png")) out=false;
+    if(!GL::loadTexture("Continuar1","Textures/HUD/Buttons/continuar.png")) out=false;
+    if(!GL::loadTexture("Jubilado","Textures/HUD/Buttons/jubilado.png")) out=false;
 
     //powerups
     if(!GL::loadTexture("cogumelo0","Textures/powerups/cogumelo.png")) out=false;
@@ -114,17 +114,17 @@ bool AssetsLoader::loadTextures(){
 
 
     //Espada
-    if(!GL::loadTexture("Sword0","Textures/characters/swords/0.png")) out=false;
-    if(!GL::loadTexture("Sword1","Textures/characters/swords/1.png")) out=false;
-    if(!GL::loadTexture("Sword2","Textures/characters/swords/2.png")) out=false;
-    if((GL::loadTextures("StrongAtk",4,"Textures/characters/specialAtack/strong/")).size()!=4)out=false;
-    if((GL::loadTextures("WeakAtk",3,"Textures/characters/specialAtack/weak/")).size()!=3)out=false;
+    if(!GL::loadTexture("Sword0","Textures/swords/0.png")) out=false;
+    if(!GL::loadTexture("Sword1","Textures/swords/1.png")) out=false;
+    if(!GL::loadTexture("Sword2","Textures/swords/2.png")) out=false;
+    if((GL::loadTextures("StrongAtk",4,"Textures/specialAtack/strong/")).size()!=4)out=false;
+    if((GL::loadTextures("WeakAtk",3,"Textures/specialAtack/weak/")).size()!=3)out=false;
 
     //Bullets
     if(!GL::loadTexture("WinBullet","Textures/enemys/bullets/windowsShot.png")) out=false;
     if(!GL::loadTexture("Intercampi","Textures/enemys/bullets/intercamp0.png")) out=false;
-    if(!GL::loadTexture("SwordBullet0","Textures/characters/swords/swordProjectile/0.png")) out=false;
-    if(!GL::loadTexture("SwordBullet1","Textures/characters/swords/swordProjectile/1.png")) out=false;
+    if(!GL::loadTexture("SwordBullet0","Textures/swords/swordProjectile/0.png")) out=false;
+    if(!GL::loadTexture("SwordBullet1","Textures/swords/swordProjectile/1.png")) out=false;
 
     //??? u
     if(!GL::loadTexture("Unknow","Textures/blocks/unknow.png")) out=false;
@@ -230,89 +230,126 @@ bool AssetsLoader::loadTextures(){
     if((GL::loadTextures("calcWalk",4,"Textures/enemys/cassio/walk/")).size()!=4)out=false;
 
     //Player
-    //Air
-        if((GL::loadTextures("cefetinhoAtkMeleeAirDown",1,"Textures/characters/cefetinho/atack/melee/air/down/")).size()!=1)out=false;
-        if((GL::loadTextures("cefetinhoAtkMeleeAirFront",1,"Textures/characters/cefetinho/atack/melee/air/front/")).size()!=1)out=false;
-        if((GL::loadTextures("cefetinhoAtkMeleeAirUp",1,"Textures/characters/cefetinho/atack/melee/air/up/")).size()!=1)out=false;
-      //ground
-        if((GL::loadTextures("cefetinhoAtkMeleeGroundFront",1,"Textures/characters/cefetinho/atack/melee/ground/front/")).size()!=1)out=false;
-        if((GL::loadTextures("cefetinhoAtkMeleeGroundUp",1,"Textures/characters/cefetinho/atack/melee/ground/up/")).size()!=1)out=false;
-    //ranged
-      //air
-        if((GL::loadTextures("cefetinhoAtkRangedAirDown",1,"Textures/characters/cefetinho/atack/ranged/air/down/")).size()!=1)out=false;
-        if((GL::loadTextures("cefetinhoAtkRangedAirFront",1,"Textures/characters/cefetinho/atack/ranged/air/front/")).size()!=1)out=false;
-        if((GL::loadTextures("cefetinhoAtkRangedAirUp",1,"Textures/characters/cefetinho/atack/ranged/air/up/")).size()!=1)out=false;
-      //ground
-        if((GL::loadTextures("cefetinhoAtkRangedGroundFront",4,"Textures/characters/cefetinho/atack/ranged/ground/front/")).size()!=4)out=false;
-        if((GL::loadTextures("cefetinhoAtkRangedGroundUp",1,"Textures/characters/cefetinho/atack/ranged/ground/up/")).size()!=1)out=false;
-          //damage
-            if((GL::loadTextures("cefetinhoDmgAir",1,"Textures/characters/cefetinho/damage/air/")).size()!=1)out=false;
-            if((GL::loadTextures("cefetinhoDmgGround",1,"Textures/characters/cefetinho/damage/ground/")).size()!=1)out=false;
-          if((GL::loadTextures("cefetinhoDie",4,"Textures/characters/cefetinho/die/")).size()!=4)out=false;
-          if((GL::loadTextures("cefetinhoIdle",5,"Textures/characters/cefetinho/idle/")).size()!=5)out=false;
-          if((GL::loadTextures("cefetinhoJump",1,"Textures/characters/cefetinho/jump/")).size()!=1)out=false;
-          //move
-            if((GL::loadTextures("cefetinhoMoveRun",4,"Textures/characters/cefetinho/move/run/")).size()!=4)out=false;
-            if((GL::loadTextures("cefetinhoMoveWalk",4,"Textures/characters/cefetinho/move/walk/")).size()!=4)out=false;
-          if((GL::loadTextures("cefetinhoSpawn",7,"Textures/characters/cefetinho/spawn/")).size()!=7)out=false;
-
-        //graduacao
-          //atack
-            //melee
-              //air
-                if((GL::loadTextures("graduacaoAtkMeleeAirDown",1,"Textures/characters/graduacao/atack/melee/air/down/")).size()!=1)out=false;
-                if((GL::loadTextures("graduacaoAtkMeleeAirFront",1,"Textures/characters/graduacao/atack/melee/air/front/")).size()!=1)out=false;
-                if((GL::loadTextures("graduacaoAtkMeleeAirUp",1,"Textures/characters/graduacao/atack/melee/air/up/")).size()!=1)out=false;
-              //ground
-                if((GL::loadTextures("graduacaoAtkMeleeGroundFront",1,"Textures/characters/graduacao/atack/melee/ground/front/")).size()!=1)out=false;
-                if((GL::loadTextures("graduacaoAtkMeleeGroundUp",1,"Textures/characters/graduacao/atack/melee/ground/up/")).size()!=1)out=false;
-            //ranged
-              //air
-                if((GL::loadTextures("graduacaoAtkRangedAirDown",1,"Textures/characters/graduacao/atack/ranged/air/down/")).size()!=1)out=false;
-                if((GL::loadTextures("graduacaoAtkRangedAirFront",1,"Textures/characters/graduacao/atack/ranged/air/front/")).size()!=1)out=false;
-                if((GL::loadTextures("graduacaoAtkRangedAirUp",1,"Textures/characters/graduacao/atack/ranged/air/up/")).size()!=1)out=false;
-              //ground
-                if((GL::loadTextures("posgradAtkRangedGroundFront",4,"Textures/characters/graduacao/atack/ranged/ground/front/")).size()!=4)out=false;
-                if((GL::loadTextures("posgradAtkRangedGroundUp",1,"Textures/characters/graduacao/atack/ranged/ground/up/")).size()!=1)out=false;
-          //damage
-            if((GL::loadTextures("graduacaoDmgAir",1,"Textures/characters/graduacao/damage/air/")).size()!=1)out=false;
-            if((GL::loadTextures("graduacaoDmgGround",1,"Textures/characters/graduacao/damage/ground/")).size()!=1)out=false;
-          if((GL::loadTextures("graduacaoDie",4,"Textures/characters/graduacao/die/")).size()!=4)out=false;
-          if((GL::loadTextures("graduacaoIdle",5,"Textures/characters/graduacao/idle/")).size()!=5)out=false;
-          if((GL::loadTextures("graduacaoJump",1,"Textures/characters/graduacao/jump/")).size()!=1)out=false;
-          //move
-            if((GL::loadTextures("graduacaoMoveRun",4,"Textures/characters/graduacao/move/run/")).size()!=4)out=false;
-            if((GL::loadTextures("graduacaoMoveWalk",4,"Textures/characters/graduacao/move/walk/")).size()!=4)out=false;
-          if((GL::loadTextures("graduacaoSpawn",7,"Textures/characters/graduacao/spawn/")).size()!=7)out=false;
-
-        //posgrad
-        //atack
-          //melee
-            //air
-              if((GL::loadTextures("posgradAtkMeleeAirDown",1,"Textures/characters/posgrad/atack/melee/air/down/")).size()!=1)out=false;
-              if((GL::loadTextures("posgradAtkMeleeAirFront",1,"Textures/characters/posgrad/atack/melee/air/front/")).size()!=1)out=false;
-              if((GL::loadTextures("posgradAtkMeleeAirUp",1,"Textures/characters/posgrad/atack/melee/air/up/")).size()!=1)out=false;
-            //ground
-              if((GL::loadTextures("posgradAtkMeleeGroundFront",1,"Textures/characters/posgrad/atack/melee/ground/front/")).size()!=1)out=false;
-              if((GL::loadTextures("posgradAtkMeleeGroundUp",1,"Textures/characters/posgrad/atack/melee/ground/up/")).size()!=1)out=false;
-          //ranged
-            //air
-              if((GL::loadTextures("posgradAtkRangedAirDown",1,"Textures/characters/posgrad/atack/ranged/air/down/")).size()!=1)out=false;
-              if((GL::loadTextures("posgradAtkRangedAirFront",1,"Textures/characters/posgrad/atack/ranged/air/front/")).size()!=1)out=false;
-              if((GL::loadTextures("posgradAtkRangedAirUp",1,"Textures/characters/posgrad/atack/ranged/air/up/")).size()!=1)out=false;
-            //ground
-              if((GL::loadTextures("posgradAtkRangedGroundFront",4,"Textures/characters/posgrad/atack/ranged/ground/front/")).size()!=4)out=false;
-              if((GL::loadTextures("posgradAtkRangedGroundUp",1,"Textures/characters/posgrad/atack/ranged/ground/up/")).size()!=1)out=false;
-        //damage
-          if((GL::loadTextures("posgradDmgAir",1,"Textures/characters/posgrad/damage/air/")).size()!=1)out=false;
-          if((GL::loadTextures("posgradDmgGround",1,"Textures/characters/posgrad/damage/ground/")).size()!=1)out=false;
-        if((GL::loadTextures("posgradDie",4,"Textures/characters/posgrad/die/")).size()!=4)out=false;
-        if((GL::loadTextures("posgradIdle",5,"Textures/characters/posgrad/idle/")).size()!=5)out=false;
-        if((GL::loadTextures("posgradJump",1,"Textures/characters/posgrad/jump/")).size()!=1)out=false;
-        //move
-          if((GL::loadTextures("posgradMoveRun",4,"Textures/characters/posgrad/move/run/")).size()!=4)out=false;
-          if((GL::loadTextures("posgradMoveWalk",4,"Textures/characters/posgrad/move/walk/")).size()!=4)out=false;
-        if((GL::loadTextures("posgradSpawn",7,"Textures/characters/posgrad/spawn/")).size()!=7)out=false;
+        //technical
+        if((GL::loadTextures("technicalAtkMeleeAirDown",1,"Textures/characters/technical/atack/melee/air/down/")).size()!=1)out=false;
+        if((GL::loadTextures("technicalAtkMeleeAirFront",1,"Textures/characters/technical/atack/melee/air/front/")).size()!=1)out=false;
+        if((GL::loadTextures("technicalAtkMeleeAirUp",1,"Textures/characters/technical/atack/melee/air/up/")).size()!=1)out=false;
+        if((GL::loadTextures("technicalAtkMeleeGroundFront",1,"Textures/characters/technical/atack/melee/ground/front/")).size()!=1)out=false;
+        if((GL::loadTextures("technicalAtkMeleeGroundUp",1,"Textures/characters/technical/atack/melee/ground/up/")).size()!=1)out=false;
+        if((GL::loadTextures("technicalAtkRangedAirDown",1,"Textures/characters/technical/atack/ranged/air/down/")).size()!=1)out=false;
+        if((GL::loadTextures("technicalAtkRangedAirFront",1,"Textures/characters/technical/atack/ranged/air/front/")).size()!=1)out=false;
+        if((GL::loadTextures("technicalAtkRangedAirUp",1,"Textures/characters/technical/atack/ranged/air/up/")).size()!=1)out=false;
+        if((GL::loadTextures("technicalAtkRangedGroundFront",4,"Textures/characters/technical/atack/ranged/ground/front/")).size()!=4)out=false;
+        if((GL::loadTextures("technicalAtkRangedGroundUp",1,"Textures/characters/technical/atack/ranged/ground/up/")).size()!=1)out=false;
+        if((GL::loadTextures("technicalDmgAir",1,"Textures/characters/technical/damage/air/")).size()!=1)out=false;
+        if((GL::loadTextures("technicalDmgGround",1,"Textures/characters/technical/damage/ground/")).size()!=1)out=false;
+        if((GL::loadTextures("technicalDie",4,"Textures/characters/technical/die/")).size()!=4)out=false;
+        if((GL::loadTextures("technicalIdle",5,"Textures/characters/technical/idle/")).size()!=5)out=false;
+        if((GL::loadTextures("technicalJump",1,"Textures/characters/technical/jump/")).size()!=1)out=false;
+        if((GL::loadTextures("technicalMoveRun",4,"Textures/characters/technical/move/run/")).size()!=4)out=false;
+        if((GL::loadTextures("technicalMoveWalk",4,"Textures/characters/technical/move/walk/")).size()!=4)out=false;
+        if((GL::loadTextures("technicalSpawn",7,"Textures/characters/technical/spawn/")).size()!=7)out=false;
+        if((GL::loadTextures("technicalLowered",3,"Textures/characters/technical/lowered/")).size()!=3)out=false;
+        //graduation
+        if((GL::loadTextures("graduationAtkMeleeAirDown",1,"Textures/characters/graduation/atack/melee/air/down/")).size()!=1)out=false;
+        if((GL::loadTextures("graduationAtkMeleeAirFront",1,"Textures/characters/graduation/atack/melee/air/front/")).size()!=1)out=false;
+        if((GL::loadTextures("graduationAtkMeleeAirUp",1,"Textures/characters/graduation/atack/melee/air/up/")).size()!=1)out=false;
+        if((GL::loadTextures("graduationAtkMeleeGroundFront",1,"Textures/characters/graduation/atack/melee/ground/front/")).size()!=1)out=false;
+        if((GL::loadTextures("graduationAtkMeleeGroundUp",1,"Textures/characters/graduation/atack/melee/ground/up/")).size()!=1)out=false;
+        if((GL::loadTextures("graduationAtkRangedAirDown",1,"Textures/characters/graduation/atack/ranged/air/down/")).size()!=1)out=false;
+        if((GL::loadTextures("graduationAtkRangedAirFront",1,"Textures/characters/graduation/atack/ranged/air/front/")).size()!=1)out=false;
+        if((GL::loadTextures("graduationAtkRangedAirUp",1,"Textures/characters/graduation/atack/ranged/air/up/")).size()!=1)out=false;
+        if((GL::loadTextures("graduationAtkRangedGroundFront",4,"Textures/characters/graduation/atack/ranged/ground/front/")).size()!=4)out=false;
+        if((GL::loadTextures("graduationAtkRangedGroundUp",1,"Textures/characters/graduation/atack/ranged/ground/up/")).size()!=1)out=false;
+        if((GL::loadTextures("graduationDmgAir",1,"Textures/characters/graduation/damage/air/")).size()!=1)out=false;
+        if((GL::loadTextures("graduationDmgGround",1,"Textures/characters/graduation/damage/ground/")).size()!=1)out=false;
+        if((GL::loadTextures("graduationDie",4,"Textures/characters/graduation/die/")).size()!=4)out=false;
+        if((GL::loadTextures("graduationIdle",5,"Textures/characters/graduation/idle/")).size()!=5)out=false;
+        if((GL::loadTextures("graduationJump",1,"Textures/characters/graduation/jump/")).size()!=1)out=false;
+        if((GL::loadTextures("graduationMoveRun",4,"Textures/characters/graduation/move/run/")).size()!=4)out=false;
+        if((GL::loadTextures("graduationMoveWalk",4,"Textures/characters/graduation/move/walk/")).size()!=4)out=false;
+        if((GL::loadTextures("graduationSpawn",7,"Textures/characters/graduation/spawn/")).size()!=7)out=false;
+        if((GL::loadTextures("graduationLowered",3,"Textures/characters/graduation/lowered/")).size()!=3)out=false;
+        //masters
+        if((GL::loadTextures("mastersAtkMeleeAirDown",1,"Textures/characters/masters/atack/melee/air/down/")).size()!=1)out=false;
+        if((GL::loadTextures("mastersAtkMeleeAirFront",1,"Textures/characters/masters/atack/melee/air/front/")).size()!=1)out=false;
+        if((GL::loadTextures("mastersAtkMeleeAirUp",1,"Textures/characters/masters/atack/melee/air/up/")).size()!=1)out=false;
+        if((GL::loadTextures("mastersAtkMeleeGroundFront",1,"Textures/characters/masters/atack/melee/ground/front/")).size()!=1)out=false;
+        if((GL::loadTextures("mastersAtkMeleeGroundUp",1,"Textures/characters/masters/atack/melee/ground/up/")).size()!=1)out=false;
+        if((GL::loadTextures("mastersAtkRangedAirDown",1,"Textures/characters/masters/atack/ranged/air/down/")).size()!=1)out=false;
+        if((GL::loadTextures("mastersAtkRangedAirFront",1,"Textures/characters/masters/atack/ranged/air/front/")).size()!=1)out=false;
+        if((GL::loadTextures("mastersAtkRangedAirUp",1,"Textures/characters/masters/atack/ranged/air/up/")).size()!=1)out=false;
+        if((GL::loadTextures("mastersAtkRangedGroundFront",4,"Textures/characters/masters/atack/ranged/ground/front/")).size()!=4)out=false;
+        if((GL::loadTextures("mastersAtkRangedGroundUp",1,"Textures/characters/masters/atack/ranged/ground/up/")).size()!=1)out=false;
+        if((GL::loadTextures("mastersDmgAir",1,"Textures/characters/masters/damage/air/")).size()!=1)out=false;
+        if((GL::loadTextures("mastersDmgGround",1,"Textures/characters/masters/damage/ground/")).size()!=1)out=false;
+        if((GL::loadTextures("mastersDie",4,"Textures/characters/masters/die/")).size()!=4)out=false;
+        if((GL::loadTextures("mastersIdle",5,"Textures/characters/masters/idle/")).size()!=5)out=false;
+        if((GL::loadTextures("mastersJump",1,"Textures/characters/masters/jump/")).size()!=1)out=false;
+        if((GL::loadTextures("mastersMoveRun",4,"Textures/characters/masters/move/run/")).size()!=4)out=false;
+        if((GL::loadTextures("mastersMoveWalk",4,"Textures/characters/masters/move/walk/")).size()!=4)out=false;
+        if((GL::loadTextures("mastersSpawn",7,"Textures/characters/masters/spawn/")).size()!=7)out=false;
+        if((GL::loadTextures("mastersLowered",3,"Textures/characters/masters/lowered/")).size()!=3)out=false;
+        //work
+        if((GL::loadTextures("workAtkMeleeAirDown",1,"Textures/characters/work/atack/melee/air/down/")).size()!=1)out=false;
+        if((GL::loadTextures("workAtkMeleeAirFront",1,"Textures/characters/work/atack/melee/air/front/")).size()!=1)out=false;
+        if((GL::loadTextures("workAtkMeleeAirUp",1,"Textures/characters/work/atack/melee/air/up/")).size()!=1)out=false;
+        if((GL::loadTextures("workAtkMeleeGroundFront",1,"Textures/characters/work/atack/melee/ground/front/")).size()!=1)out=false;
+        if((GL::loadTextures("workAtkMeleeGroundUp",1,"Textures/characters/work/atack/melee/ground/up/")).size()!=1)out=false;
+        if((GL::loadTextures("workAtkRangedAirDown",1,"Textures/characters/work/atack/ranged/air/down/")).size()!=1)out=false;
+        if((GL::loadTextures("workAtkRangedAirFront",1,"Textures/characters/work/atack/ranged/air/front/")).size()!=1)out=false;
+        if((GL::loadTextures("workAtkRangedAirUp",1,"Textures/characters/work/atack/ranged/air/up/")).size()!=1)out=false;
+        if((GL::loadTextures("workAtkRangedGroundFront",4,"Textures/characters/work/atack/ranged/ground/front/")).size()!=4)out=false;
+        if((GL::loadTextures("workAtkRangedGroundUp",1,"Textures/characters/work/atack/ranged/ground/up/")).size()!=1)out=false;
+        if((GL::loadTextures("workDmgAir",1,"Textures/characters/work/damage/air/")).size()!=1)out=false;
+        if((GL::loadTextures("workDmgGround",1,"Textures/characters/work/damage/ground/")).size()!=1)out=false;
+        if((GL::loadTextures("workDie",4,"Textures/characters/work/die/")).size()!=4)out=false;
+        if((GL::loadTextures("workIdle",5,"Textures/characters/work/idle/")).size()!=5)out=false;
+        if((GL::loadTextures("workJump",1,"Textures/characters/work/jump/")).size()!=1)out=false;
+        if((GL::loadTextures("workMoveRun",4,"Textures/characters/work/move/run/")).size()!=4)out=false;
+        if((GL::loadTextures("workMoveWalk",4,"Textures/characters/work/move/walk/")).size()!=4)out=false;
+        if((GL::loadTextures("workSpawn",7,"Textures/characters/work/spawn/")).size()!=7)out=false;
+        if((GL::loadTextures("workLowered",3,"Textures/characters/work/lowered/")).size()!=3)out=false;
+        //gteacher
+        if((GL::loadTextures("gteacherAtkMeleeAirDown",1,"Textures/characters/gteacher/atack/melee/air/down/")).size()!=1)out=false;
+        if((GL::loadTextures("gteacherAtkMeleeAirFront",1,"Textures/characters/gteacher/atack/melee/air/front/")).size()!=1)out=false;
+        if((GL::loadTextures("gteacherAtkMeleeAirUp",1,"Textures/characters/gteacher/atack/melee/air/up/")).size()!=1)out=false;
+        if((GL::loadTextures("gteacherAtkMeleeGroundFront",1,"Textures/characters/gteacher/atack/melee/ground/front/")).size()!=1)out=false;
+        if((GL::loadTextures("gteacherAtkMeleeGroundUp",1,"Textures/characters/gteacher/atack/melee/ground/up/")).size()!=1)out=false;
+        if((GL::loadTextures("gteacherAtkRangedAirDown",1,"Textures/characters/gteacher/atack/ranged/air/down/")).size()!=1)out=false;
+        if((GL::loadTextures("gteacherAtkRangedAirFront",1,"Textures/characters/gteacher/atack/ranged/air/front/")).size()!=1)out=false;
+        if((GL::loadTextures("gteacherAtkRangedAirUp",1,"Textures/characters/gteacher/atack/ranged/air/up/")).size()!=1)out=false;
+        if((GL::loadTextures("gteacherAtkRangedGroundFront",4,"Textures/characters/gteacher/atack/ranged/ground/front/")).size()!=4)out=false;
+        if((GL::loadTextures("gteacherAtkRangedGroundUp",1,"Textures/characters/gteacher/atack/ranged/ground/up/")).size()!=1)out=false;
+        if((GL::loadTextures("gteacherDmgAir",1,"Textures/characters/gteacher/damage/air/")).size()!=1)out=false;
+        if((GL::loadTextures("gteacherDmgGround",1,"Textures/characters/gteacher/damage/ground/")).size()!=1)out=false;
+        if((GL::loadTextures("gteacherDie",4,"Textures/characters/gteacher/die/")).size()!=4)out=false;
+        if((GL::loadTextures("gteacherIdle",5,"Textures/characters/gteacher/idle/")).size()!=5)out=false;
+        if((GL::loadTextures("gteacherJump",1,"Textures/characters/gteacher/jump/")).size()!=1)out=false;
+        if((GL::loadTextures("gteacherMoveRun",4,"Textures/characters/gteacher/move/run/")).size()!=4)out=false;
+        if((GL::loadTextures("gteacherMoveWalk",4,"Textures/characters/gteacher/move/walk/")).size()!=4)out=false;
+        if((GL::loadTextures("gteacherSpawn",7,"Textures/characters/gteacher/spawn/")).size()!=7)out=false;
+        if((GL::loadTextures("gteacherLowered",3,"Textures/characters/gteacher/lowered/")).size()!=3)out=false;
+        //bteacher
+        if((GL::loadTextures("bteacherAtkMeleeAirDown",1,"Textures/characters/bteacher/atack/melee/air/down/")).size()!=1)out=false;
+        if((GL::loadTextures("bteacherAtkMeleeAirFront",1,"Textures/characters/bteacher/atack/melee/air/front/")).size()!=1)out=false;
+        if((GL::loadTextures("bteacherAtkMeleeAirUp",1,"Textures/characters/bteacher/atack/melee/air/up/")).size()!=1)out=false;
+        if((GL::loadTextures("bteacherAtkMeleeGroundFront",1,"Textures/characters/bteacher/atack/melee/ground/front/")).size()!=1)out=false;
+        if((GL::loadTextures("bteacherAtkMeleeGroundUp",1,"Textures/characters/bteacher/atack/melee/ground/up/")).size()!=1)out=false;
+        if((GL::loadTextures("bteacherAtkRangedAirDown",1,"Textures/characters/bteacher/atack/ranged/air/down/")).size()!=1)out=false;
+        if((GL::loadTextures("bteacherAtkRangedAirFront",1,"Textures/characters/bteacher/atack/ranged/air/front/")).size()!=1)out=false;
+        if((GL::loadTextures("bteacherAtkRangedAirUp",1,"Textures/characters/bteacher/atack/ranged/air/up/")).size()!=1)out=false;
+        if((GL::loadTextures("bteacherAtkRangedGroundFront",4,"Textures/characters/bteacher/atack/ranged/ground/front/")).size()!=4)out=false;
+        if((GL::loadTextures("bteacherAtkRangedGroundUp",1,"Textures/characters/bteacher/atack/ranged/ground/up/")).size()!=1)out=false;
+        if((GL::loadTextures("bteacherDmgAir",1,"Textures/characters/bteacher/damage/air/")).size()!=1)out=false;
+        if((GL::loadTextures("bteacherDmgGround",1,"Textures/characters/bteacher/damage/ground/")).size()!=1)out=false;
+        if((GL::loadTextures("bteacherDie",4,"Textures/characters/bteacher/die/")).size()!=4)out=false;
+        if((GL::loadTextures("bteacherIdle",5,"Textures/characters/bteacher/idle/")).size()!=5)out=false;
+        if((GL::loadTextures("bteacherJump",1,"Textures/characters/bteacher/jump/")).size()!=1)out=false;
+        if((GL::loadTextures("bteacherMoveRun",4,"Textures/characters/bteacher/move/run/")).size()!=4)out=false;
+        if((GL::loadTextures("bteacherMoveWalk",4,"Textures/characters/bteacher/move/walk/")).size()!=4)out=false;
+        if((GL::loadTextures("bteacherSpawn",7,"Textures/characters/bteacher/spawn/")).size()!=7)out=false;
+        if((GL::loadTextures("bteacherLowered",3,"Textures/characters/bteacher/lowered/")).size()!=3)out=false;
     return out;
 }
 

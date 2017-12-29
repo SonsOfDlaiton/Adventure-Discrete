@@ -403,13 +403,6 @@ void Map::refresh(){
 int Map::getIdByPosition(nTPoint pos){
     FunctionAnalyser::startFunction("Map::getIdByPosition");
     Blocks* bl;
-    for(int i=0; i<dynamicBlocks.size(); i++){
-        bl=(Blocks*)dynamicBlocks[i];
-        if(bl->pos.x==pos.x && bl->pos.y==pos.y){
-            FunctionAnalyser::endFunction("Map::getIdByPosition");
-            return bl->id;
-        }
-    }
     int y=(int)floor(pos.y/Blocks::defaultBlockSize.y);
     if(y<staticBlocksArr.size()){
         int x=(int)floor(pos.x/Blocks::defaultBlockSize.x);
@@ -418,6 +411,13 @@ int Map::getIdByPosition(nTPoint pos){
                 FunctionAnalyser::endFunction("Map::getIdByPosition");
                 return staticBlocksArr[y][x];
             }
+        }
+    }
+    for(int i=0; i<dynamicBlocks.size(); i++){
+        bl=(Blocks*)dynamicBlocks[i];
+        if(bl->pos.x==pos.x && bl->pos.y==pos.y){
+            FunctionAnalyser::endFunction("Map::getIdByPosition");
+            return bl->id;
         }
     }
     for(int i=0; i<staticBlocks.size(); i++){

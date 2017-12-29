@@ -29,6 +29,7 @@ public:
     int atacking;
     bool canJump;
     double life;
+    bool lowered;
     bool reducing;
     int orientation;
     static const double walkSpeed;

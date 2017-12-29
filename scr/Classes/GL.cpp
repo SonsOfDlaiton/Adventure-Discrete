@@ -923,6 +923,12 @@ void GL::drawHUD(){
             strF="Graduando";
         }else if(Player::stage==2){
             strF="Pos Grad";
+        }else if(Player::stage==3){
+            strF="Trabalho";
+        }else if(Player::stage==4){
+            strF="Bom Prof";
+        }else if(Player::stage==5){
+            strF="Mau Prof";
         }else{
             strF="Cefetinho";
         }

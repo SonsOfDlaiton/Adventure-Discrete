@@ -129,29 +129,11 @@ void Scenes::drawGame(){
     Bullet::behave();
     Map::transparencyLayerDraw();
     Tutorials::behave();
+    playStageSong();
     if(GL::isPaused)
         GL::drawPause();
-    else{
+    else
         GL::drawHUD();
-        if(freeGameMode){
-            AL::singleton->playSoundByName("userSong");
-        }else{
-            if(Player::stage==0){
-                AL::singleton->playSoundByName("stage0");
-            }else if(Player::stage==1){
-                AL::singleton->playSoundByName("stage1");
-            }else if(Player::stage==2){
-                AL::singleton->playSoundByName("stage2");
-            }else if(Player::stage==3){
-                AL::singleton->playSoundByName("stage2");
-            }else if(Player::stage==4){
-                AL::singleton->playSoundByName("stage2");
-            }else if(Player::stage==5){
-                AL::singleton->playSoundByName("stage2");
-            }
-        }
-        AL::singleton->stopSound(AL::getSoundByName("sinuca"));
-    }
 }
 
 /**
@@ -357,31 +339,37 @@ void Scenes::drawPreCampaign(){
 			Player::stage=0;
 			Player::checkpoint=0;
 			Player::getPlayerById(0)->life=Player::defaultLife;
+      current=game;
 		}
 		if(GL::buttonBehave(nTRectangle::get(287.5,250,512.5,100),GL::getColorByName("mouseSelected"),GL::getTextureByName("miniLvl1"))){
 			Player::stage=1;
 			Player::checkpoint=0;
 			Player::getPlayerById(0)->life=Player::defaultLife;
+      current=game;
 		}
 		if(GL::buttonBehave(nTRectangle::get(537.5,250,762.5,100),GL::getColorByName("mouseSelected"),GL::getTextureByName("miniLvl2"))){
 			Player::stage=2;
 			Player::checkpoint=0;
 			Player::getPlayerById(0)->life=Player::defaultLife;
+      current=game;
 		}
 		if(GL::buttonBehave(nTRectangle::get(37.5,450,262.5,300),GL::getColorByName("mouseSelected"),GL::getTextureByName("miniLvl3"))){
 			Player::stage=3;
 			Player::checkpoint=0;
 			Player::getPlayerById(0)->life=Player::defaultLife;
+      current=game;
 		}
 		if(GL::buttonBehave(nTRectangle::get(287.5,450,512.5,300),GL::getColorByName("mouseSelected"),GL::getTextureByName("miniLvl4"))){
 			Player::stage=4;
 			Player::checkpoint=0;
 			Player::getPlayerById(0)->life=Player::defaultLife;
+      current=game;
 		}
 		if(GL::buttonBehave(nTRectangle::get(537.5,450,762.5,300),GL::getColorByName("mouseSelected"),GL::getTextureByName("miniLvl5"))){
 			Player::stage=5;
 			Player::checkpoint=0;
 			Player::getPlayerById(0)->life=Player::defaultLife;
+      current=game;
 		}
 		if(GL::buttonBehave(nTRectangle::get(340,550,480,500),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon")))
 			current=menu;
@@ -550,4 +538,25 @@ void Scenes::drawYouWin(){
 	GL::drawText(nTPoint::get(345,420,1),"Coeficiente Global: "+strC,GL::getColorByName("green"));
 	if(GL::buttonBehave(nTRectangle::get(460,500,600,425),GL::getColorByName("mouseSelected"),GL::getTextureByName("Menu1")))
 		current=credits;
+}
+
+void Scenes::playStageSong(){
+  if(freeGameMode){
+      AL::singleton->playSoundByName("userSong");
+  }else{
+      if(Player::stage==0){
+          AL::singleton->playSoundByName("stage0");
+      }else if(Player::stage==1){
+          AL::singleton->playSoundByName("stage1");
+      }else if(Player::stage==2){
+          AL::singleton->playSoundByName("stage2");
+      }else if(Player::stage==3){
+          AL::singleton->playSoundByName("stage2");
+      }else if(Player::stage==4){
+          AL::singleton->playSoundByName("stage2");
+      }else if(Player::stage==5){
+          AL::singleton->playSoundByName("stage2");
+      }
+  }
+  if(!GL::isPaused)AL::singleton->stopSound(AL::getSoundByName("sinuca"));
 }

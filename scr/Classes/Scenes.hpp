@@ -60,6 +60,7 @@ private:
     static bool posGameCalled;
     static bool posGameEndCalled;
     static bool posYouWinCalled;
+    static void playStageSong();
     static void setAllCalledFalseExcept(vector<int> except);
     static vector<int> getUnityVector(int value);
 };
