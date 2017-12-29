@@ -26,7 +26,7 @@ public:
     void move(int dir,double steeps);
 private:
     void draw();
-    void checkCollisionWithEntity(nTPoint pos,nTPoint size,bool withPlayer);
+    void checkCollisionWithEntity(bool withPlayer);
 
     int type;
     int spriteIndex;

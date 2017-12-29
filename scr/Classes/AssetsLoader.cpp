@@ -183,8 +183,8 @@ bool AssetsLoader::loadTextures(){
     if(!GL::loadTexture("Agua1","Textures/blocks/219-b.png"))out=false;
     if(!GL::loadTexture("LavaF","Textures/blocks/lavafull.png"))out=false;
     if(!GL::loadTexture("AguaF","Textures/blocks/aguafull.png"))out=false;
-    if(!GL::loadTexture("powerUp","Textures/blocks/220.png"))out=false;
-    if(!GL::loadTexture("powerUpOff","Textures/blocks/220-b.png"))out=false;
+    if(!GL::loadTexture("PowerUp","Textures/blocks/220.png"))out=false;
+    if(!GL::loadTexture("PowerUpOff","Textures/blocks/220-b.png"))out=false;
     if(!GL::loadTexture("Shooter","Textures/blocks/221.png"))out=false;
     if(!GL::loadTexture("ShooterBus","Textures/blocks/224.png"))out=false;
     if(!GL::loadTexture("jump spring","Textures/blocks/jumpPad.png"))out=false;

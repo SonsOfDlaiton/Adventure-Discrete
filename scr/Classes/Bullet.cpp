@@ -73,7 +73,7 @@ void Bullet::behave(){
             return;
         }
         if(bu->type==errorBlockBullet||bu->type==hyperbolicParaboloidBullet){//tiro de bloco
-            bu->checkCollisionWithEntity(Player::getPlayerById(0)->pos,Player::getPlayerById(0)->size,true);
+            bu->checkCollisionWithEntity(true);
         }else if(bu->type==strongSwordBullet){//espada
             if(Util::timerWithInterval(Entity::getSpriteMs()*3)){
                 if(bu->tex==GL::getTextureByName("SwordBullet0"))
@@ -81,7 +81,7 @@ void Bullet::behave(){
                 else
                     bu->tex=GL::getTextureByName("SwordBullet0");
             }
-            bu->checkCollisionWithEntity(nTPoint::Origin(),nTPoint::Origin(),false);
+            bu->checkCollisionWithEntity(false);
         }else if(bu->type==strongXAtackBullet){//atk forte
             if(Util::timerWithInterval(Entity::getSpriteMs())){
                 bu->spriteIndex++;
@@ -92,7 +92,7 @@ void Bullet::behave(){
                 string str(buffer);
                 bu->tex=GL::getTextureByName("StrongAtk"+str);
             }
-            bu->checkCollisionWithEntity(nTPoint::Origin(),nTPoint::Origin(),false);
+            bu->checkCollisionWithEntity(false);
         }else if(bu->type==weakXAtackBullet){//atk fraco
             if(Util::timerWithInterval(Entity::getSpriteMs())){
                 bu->spriteIndex++;
@@ -103,9 +103,9 @@ void Bullet::behave(){
                 string str(buffer);
                 bu->tex=GL::getTextureByName("WeakAtk"+str);
             }
-            bu->checkCollisionWithEntity(nTPoint::Origin(),nTPoint::Origin(),false);
+            bu->checkCollisionWithEntity(false);
         }else if(bu->type==busBullet){//intercamp
-            bu->checkCollisionWithEntity(Player::getPlayerById(0)->pos,Player::getPlayerById(0)->size,true);
+            bu->checkCollisionWithEntity(true);
             AL::singleton->playSoundByName("intercampi");
         }
         if(!bu->isVisible){
@@ -184,11 +184,11 @@ void Bullet::move(int dir,double steeps){
  *	@param size size of the entity
  *	@param withPlayer must be true case the entity in question is the player
 **/
-void Bullet::checkCollisionWithEntity(nTPoint pos,nTPoint size, bool withPlayer){
+void Bullet::checkCollisionWithEntity(bool withPlayer){
     FunctionAnalyser::startFunction("Bullet::ckCollWithEntity");
     objCollision var;
     if(withPlayer){
-        var=Mechanics::getCollision(nTRectangle::getCollision(this->pos,this->size),nTRectangle::getCollision(pos,size));
+        var=Mechanics::getCollision(nTRectangle::getCollision(this->pos,this->size),nTRectangle::getCollision(Player::getPlayerById(0)->pos,Player::getPlayerById(0)->size));
         if(var.firstObj!=Mechanics::NOCOLLISION){
             if(type==busBullet){
                 Player::getPlayerById(0)->applyDamage(2);
@@ -219,7 +219,6 @@ void Bullet::checkCollisionWithEntity(nTPoint pos,nTPoint size, bool withPlayer)
                 if(en->life<=0)
                         Player::enemysKilled++;
                 isVisible=false;
-                pos.x=-100;
                 delete this;
                 i--;
                 FunctionAnalyser::endFunction("Bullet::ckCollWithEntity");
@@ -232,7 +231,6 @@ void Bullet::checkCollisionWithEntity(nTPoint pos,nTPoint size, bool withPlayer)
                     if(bu->type!=strongSwordBullet&&bu->type!=weakXAtackBullet&&bu->type!=strongXAtackBullet){
                         if(Mechanics::getCollision(nTRectangle::getCollision(this->pos,this->size),nTRectangle::getCollision(bu->pos,bu->size)).firstObj!=Mechanics::NOCOLLISION){
                             isVisible=false;
-                            pos.x=-100;
                             Player::getPlayerById(0)->haveBulletSword=false;
                             bu->isVisible=false;
                             delete bu;
