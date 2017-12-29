@@ -219,7 +219,7 @@ void mapEdit::load(int idx){
         index=-1;
         map=Map::usrMap.map;
         //currentBackground=Map::usrMap.backgroundId;
-    }else if(idx=mapEdit::editingMap){
+    }else if(idx==mapEdit::editingMap){
         index=-1;
         map=Map::editingMap.map;
     }
@@ -697,7 +697,7 @@ void mapEdit::askForLoad(){
     GL::setFont("BITMAP_HELVETICA_18");
     GL::drawText(nTPoint::get(200,400,1),"Seu mapa fica salvo em ./Maps/user.map",GL::getColorByName("red"));
         char buffer[10];
-        snprintf(buffer,10,"%d",(Map::maps.size()-1));
+        snprintf(buffer,10,"%d",(int)(Map::maps.size()-1));
         string maxMap(buffer);
     GL::drawText(nTPoint::get(200,200,1),"Digite qual mapa quer carregar(0-"+maxMap+")(u):",GL::getColorByName("red"));
     GL::editTextBehave(nTRectangle::get(530,175,600,200,1),"BITMAP_HELVETICA_18",GL::getColorByName("blue"),"mapEdit::askForLoad",false,true);

@@ -213,7 +213,6 @@ bool Mechanics::checkNormalForce(nTPoint pos_,nTPoint size_){
     FunctionAnalyser::startFunction("Mechanics::checkNormalForce");
     vector <mapCollision> var;
     Blocks *bl;
-    int type;
     bool collision=false;
     var=Map::checkCollision(pos_,size_);
     for(int i=0;i<var.size();i++){

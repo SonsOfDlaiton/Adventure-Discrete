@@ -52,11 +52,12 @@ void Background::setPath(string path){
 void Background::drawParalaxBackground(nTPoint size){
 	Player* pl = Player::getPlayerById(0);
 	double delta = ABS(this->local.p1.x - this->local.p0.x)/100*GL::defaultSize.x;
-	if(ABS(pos-initialPos)>=delta+deltaX)
+	if(ABS(pos-initialPos)>=delta+deltaX){
 		if(deltaX==0)
 			pos=initialPos-delta;
 		else
 			pos=initialPos;
+    }
 	if(Scenes::camera.x.movingCam)
 		pos+=(pl->hSpeed)/GL::getFPS();
 	if(pl->hSpeed!=0)

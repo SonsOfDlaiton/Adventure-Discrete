@@ -187,10 +187,11 @@ void nTFont::drawText(string text, nTPoint pos, nTColor color){
                     else
                         cchar=nullptr;
                 }
-            }else
+            }else{
                 cchar=(nTFontChar*)chars[charValue];
-                if(cchar!=nullptr){
-                 if(cchar->width>0&&cchar->height>0&&cchar->width<=6666&&cchar->height<=6666){
+            }
+            if(cchar!=nullptr){
+                if(cchar->width>0&&cchar->height>0&&cchar->width<=6666&&cchar->height<=6666){
                     double p0x=pos.x+cchar->offsetX;
                     double p0y=pos.y+cchar->offsetY-lineHeight;
                     double p1x=p0x+cchar->width;
@@ -240,9 +241,10 @@ nTPoint nTFont::calcBoundaries(string text){
                     else
                         cchar=nullptr;
                 }
-            }else
+            }else{
                 cchar=(nTFontChar*)chars[charValue];
-                if(cchar!=nullptr){
+            }
+            if(cchar!=nullptr){
                 pos.x+=cchar->advance;
             }else{
                 if(Util::DEBUG) cout<<"Unknown character \'"<<text[i]<<"\' with "<<*this;

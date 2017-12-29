@@ -198,13 +198,7 @@ void Blocks::move(int dir,double steeps){
         pos.y-=steeps;
         var=Map::checkCollision(pos,size);
         for(int i=0; i<var.size(); i++){
-            bool anotherCactus=false;
-                if(type==HalfBlockVCactus&&var[i].blockId>=Map::staticBlocks.size()){
-                    Blocks* bl=(Blocks*)(Map::dynamicBlocks[var[i].blockId-Map::staticBlocks.size()]);
-                    if(bl->type==HalfBlockVCactus)
-                        anotherCactus=true;
-                }
-            if((var[i].collision.firstObj==Mechanics::TOP||var[i].collision.firstObj==Mechanics::BOTTOM)&&!anotherCactus&&var[i].blockId!=id){
+            if((var[i].collision.firstObj==Mechanics::TOP||var[i].collision.firstObj==Mechanics::BOTTOM)&&var[i].blockId!=id){
                 pos.y+=steeps;
                 moveSpeed*=-1;
                 break;

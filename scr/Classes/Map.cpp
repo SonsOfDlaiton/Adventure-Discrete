@@ -250,18 +250,19 @@ vector <mapCollision> Map::checkCollision(nTPoint pos,nTPoint size){
         if(j>=0 && j<=actualMap.map.size() && i>=0 && i<=actualMap.map[0].size()){
             blockCenter.set(i*y32+y16,j*x32-x16,0);
             Blocks* bl=getBlockById(getIdByPosition(blockCenter));
-            if(bl!=nullptr)
-            if(Blocks::checkIfBlocksIsMassive(bl->type)){
-                if(bl->id!=blockId&&bl->id){
-                    adc.blockId=bl->id;
-                    blockRec=nTRectangle::getCollision(blockCenter,Blocks::defaultBlockSize);
-                    adc.collision=Mechanics::getCollision(objRec,blockRec);//verifica colisao
-                    if(adc.collision.firstObj!=Mechanics::NOCOLLISION){
-                        result.push_back(adc);
-                        if(Mechanics::drawCollisionRec) GL::drawCollision(blockRec,3,nTColor::get(0,1,0));
+            if(bl!=nullptr){
+                if(Blocks::checkIfBlocksIsMassive(bl->type)){
+                    if(bl->id!=blockId&&bl->id){
+                        adc.blockId=bl->id;
+                        blockRec=nTRectangle::getCollision(blockCenter,Blocks::defaultBlockSize);
+                        adc.collision=Mechanics::getCollision(objRec,blockRec);//verifica colisao
+                        if(adc.collision.firstObj!=Mechanics::NOCOLLISION){
+                            result.push_back(adc);
+                            if(Mechanics::drawCollisionRec) GL::drawCollision(blockRec,3,nTColor::get(0,1,0));
+                        }else if(Mechanics::drawCollisionRec)GL::drawCollision(nTRectangle::getCollision(blockCenter,Blocks::defaultBlockSize),3,nTColor::get(0,0,1));
                     }else if(Mechanics::drawCollisionRec)GL::drawCollision(nTRectangle::getCollision(blockCenter,Blocks::defaultBlockSize),3,nTColor::get(0,0,1));
                 }else if(Mechanics::drawCollisionRec)GL::drawCollision(nTRectangle::getCollision(blockCenter,Blocks::defaultBlockSize),3,nTColor::get(0,0,1));
-            }else if(Mechanics::drawCollisionRec)GL::drawCollision(nTRectangle::getCollision(blockCenter,Blocks::defaultBlockSize),3,nTColor::get(0,0,1));
+            }
         }
       }
     }
@@ -326,25 +327,20 @@ void Map::refresh(){
                     }
                 }
             }else if(Blocks::checkIfBlocksIsJumpBoost(bl->type)){
-                objCollision var;
-                nTPoint point=Player::getPlayerById(0)->pos;
-                point.y+=2;
-                var=Mechanics::getCollision(nTRectangle::getCollision(point,Player::getPlayerById(0)->size),nTRectangle::getCollision(bl->pos,bl->size));
+                objCollision var=Mechanics::getCollision(nTRectangle::getCollision(Player::getPlayerById(0)->getGroundPos(),Player::getPlayerById(0)->size),nTRectangle::getCollision(bl->pos,bl->size));
                 if(var.firstObj==Mechanics::BOTTOM){
                     Player::getPlayerById(0)->vSpeed=-Player::getPlayerById(0)->jumpSpeed*1.5;
                     Player::getPlayerById(0)->canJump=false;
                     AL::singleton->playSoundByName("mola");
                 }
             }else if(Blocks::checkIfBlocksIsCheckpoint(bl->type)){
-                objCollision var;
-                var=Mechanics::getCollision(nTRectangle::getCollision(bl->pos,bl->size),nTRectangle::getCollision(Player::getPlayerById(0)->pos,Player::getPlayerById(0)->size));
+                objCollision var=Mechanics::getCollision(nTRectangle::getCollision(bl->pos,bl->size),nTRectangle::getCollision(Player::getPlayerById(0)->pos,Player::getPlayerById(0)->size));
                 if(var.firstObj!=Mechanics::NOCOLLISION&&Player::checkpoint<Blocks::getCheckPointId(bl->type)&&!Scenes::freeGameMode){
                     Player::checkpoint=Blocks::getCheckPointId(bl->type);
                     AssetsLoader::saveSettings();
                 }
             }else if(bl->type==Blocks::EndLevelBlock){
-                objCollision var;
-                var=Mechanics::getCollision(nTRectangle::getCollision(bl->pos,bl->size),nTRectangle::getCollision(Player::getPlayerById(0)->pos,Player::getPlayerById(0)->size));
+                objCollision var=Mechanics::getCollision(nTRectangle::getCollision(bl->pos,bl->size),nTRectangle::getCollision(Player::getPlayerById(0)->pos,Player::getPlayerById(0)->size));
                 if(var.firstObj!=Mechanics::NOCOLLISION){
                     if(!Scenes::freeGameMode){
                         Player::checkpoint=0;
@@ -360,8 +356,7 @@ void Map::refresh(){
                         Map::next();
                 }
             }else if(Blocks::checkIfBlocksIsPowerUpBlock(bl->type)){
-                objCollision var;
-                var=Mechanics::getCollision(Player::getPlayerById(0)->swordCollision,nTRectangle::getCollision(bl->pos,bl->size));
+                objCollision var=Mechanics::getCollision(Player::getPlayerById(0)->swordCollision,nTRectangle::getCollision(bl->pos,bl->size));
                 if((var.secondObj==Mechanics::BOTTOM||var.secondObj==Mechanics::LEFT||var.secondObj==Mechanics::RIGHT)&&Player::getPlayerById(0)->atackDirection==Util::direction_up){
                     nTPoint tmp=bl->pos;
                     tmp.y-=Blocks::defaultBlockSize.y*1.5;
@@ -371,8 +366,7 @@ void Map::refresh(){
                     Player::getPlayerById(0)->powerUpsActiveted++;
                 }
             }else if(Blocks::checkIfBlocksIsPowerUpChest(bl->type)&&Player::getPlayerById(0)->atacking){
-                objCollision var;
-                var=Mechanics::getCollision(Player::getPlayerById(0)->swordCollision,nTRectangle::getCollision(bl->pos,bl->size));
+                objCollision var=Mechanics::getCollision(Player::getPlayerById(0)->swordCollision,nTRectangle::getCollision(bl->pos,bl->size));
                 if(var.firstObj!=Mechanics::NOCOLLISION){
                     nTPoint tmp=bl->pos;
                     tmp.y-=Blocks::defaultBlockSize.y*1.5;
@@ -383,8 +377,7 @@ void Map::refresh(){
                     Player::getPlayerById(0)->powerUpsActiveted++;
                 }
             }else if(Blocks::checkIfBlocksIsDestrutive(bl->type)&&Player::getPlayerById(0)->atacking){
-                objCollision var;
-                var=Mechanics::getCollision(Player::getPlayerById(0)->swordCollision,nTRectangle::getCollision(bl->pos,bl->size));
+                objCollision var=Mechanics::getCollision(Player::getPlayerById(0)->swordCollision,nTRectangle::getCollision(bl->pos,bl->size));
                 if(var.firstObj!=Mechanics::NOCOLLISION){
                     bl->applyDamage(1);
                 }

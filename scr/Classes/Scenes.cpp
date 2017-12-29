@@ -221,11 +221,9 @@ void Scenes::drawMenu(){
 //      Scenes::current=menu;
     if(GL::buttonBehave(nTRectangle::get(360,446+10,440,414,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("quitIcon")))
       	exit(0);
-    if(GL::buttonBehave(nTRectangle::get(57,557+23,2*57+23,500,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("cefetLogo")))
-    	Scenes::current=credits;
-    if(GL::buttonBehave(nTRectangle::get(3*57+190,557+23,4*57+23+190,500,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("decomLogo")))
-    	Scenes::current=credits;
-  	if(GL::buttonBehave(nTRectangle::get(5*57+400,557+23,6*57+23+400,500,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("theCOM")))
+    if(GL::buttonBehave(nTRectangle::get(57,557+23,2*57+23,500,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("cefetLogo"))||
+      GL::buttonBehave(nTRectangle::get(3*57+190,557+23,4*57+23+190,500,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("decomLogo"))||
+      GL::buttonBehave(nTRectangle::get(5*57+400,557+23,6*57+23+400,500,0.4),nTColor::get(0.4,0.4,0.4),GL::getTextureByName("theCOM")))
         Scenes::current=credits;
     GL::drawTexture(nTRectangle::get(100,300,700,0,0.4),GL::getTextureByName("legendsLogo"));
 }

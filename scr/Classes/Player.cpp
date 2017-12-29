@@ -124,7 +124,7 @@ void Player::stateControl(){
         damageState=false;
         imuneToDamage=false;
     }
-    Entity::stateControl();
+    Entity::stateControl(); 
     if(nextState!=Entity::state_TakingDamage&&nextState!=Entity::state_Dying&&currentState!=Entity::state_TakingDamage&&currentState!=Entity::state_Dying&&atacking&&!lowered){
         if(atacking==Player::melee){
             if(vSpeed!=0){//air
@@ -315,8 +315,12 @@ void Player::especificDraw(){
         swordCollision.p1.z=1;
         if(atackDirection==Util::direction_up||atackDirection==Util::direction_down)
             GL::drawTexture(swordCollision,GL::getTextureByName("Sword"+sID),Util::orientation_rotated);
-        else
-            GL::drawTexture(swordCollision,GL::getTextureByName("Sword"+sID));
+        else{
+            if(atackDirection==Util::direction_right)
+                GL::drawTexture(swordCollision,GL::getTextureByName("Sword"+sID));
+            else
+                GL::drawTexture(swordCollision,GL::getTextureByName("Sword"+sID),Util::orientation_left);
+        }
     }
     FunctionAnalyser::endFunction("Player::especificDraw");
 }
@@ -372,11 +376,6 @@ void Player::atack(int type){
             }else if(atackDirection==Util::direction_left){
                 angle=2;
             }else if(atackDirection==Util::direction_down){
-                if(canJump&&!itsInTheWater){
-                    atacking=false;
-                    FunctionAnalyser::endFunction("Player::atack");
-                    return;
-                }
                 angle=1;
                 swordPos.set(pos.x,pos.y,1);
             }
@@ -393,6 +392,10 @@ void Player::atack(int type){
             }else if(atackDirection==Util::direction_down){
                 swordCollision.p0.y+=swordSize.y*3;
                 swordCollision.p1.y+=swordSize.y*3;
+            }else if(atackDirection==Util::direction_left){
+                nTPoint tmp=swordCollision.p0;
+                swordCollision.p0=swordCollision.p1;
+                swordCollision.p1=tmp;
             }
             if(Mechanics::drawCollisionRec)GL::drawCollision(swordCollision);
             if(!alReadyAtacked){

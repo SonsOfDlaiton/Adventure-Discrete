@@ -14,7 +14,7 @@ namespace clip {
 typedef std::vector<char> Buffer;
 typedef std::map<format, Buffer> Map;
 
-static format g_last_format = 100; // TODO create an enum with common formats
+//static format g_last_format = 100; // TODO create an enum with common formats
 static Map g_data;
 
 class lock::impl {

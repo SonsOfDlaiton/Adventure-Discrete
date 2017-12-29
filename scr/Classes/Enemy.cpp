@@ -114,21 +114,22 @@ void Enemy::behave(){
     for(int i=0;i<Entity::enemys.size();i++){
         en=(Enemy*)Entity::enemys[i];
         if(en->isVisible){
-            if(!checkIfEnemyIsBoss(en->type)){
-                if(en->hSpeed>0)
-                    en->orientation=Util::orientation_right;
-                else
-                    en->orientation=Util::orientation_left;
-            }else{
-                if(Player::getPlayerById(0)->pos.x>=en->pos.x)
-                    en->orientation=Util::orientation_right;
-                else
-                    en->orientation=Util::orientation_left;
-                if(Util::timerWithInterval(1200)&&!en->damageState&&Scenes::camera.isInTheXScreen(nTRectangle::getCollision(en->pos,en->size))){
-                    new Bullet(Bullet::hyperbolicParaboloidBullet,Bullet::baseSpeed*en->orientation/1.5,nTPoint::get(en->pos.x,Player::getPlayerById(0)->pos.y+4+((rand()%300)/10-17),1),nTPoint::get(23,16,1));
-                }
-            }
             if(Scenes::camera.isInTheXScreen(nTRectangle::getCollision(en->pos,en->size))){
+                if(!checkIfEnemyIsBoss(en->type)){
+                    if(en->hSpeed>0)
+                        en->orientation=Util::orientation_right;
+                    else
+                        en->orientation=Util::orientation_left;
+                }else{
+                    if(Player::getPlayerById(0)->pos.x>=en->pos.x)
+                        en->orientation=Util::orientation_right;
+                    else
+                        en->orientation=Util::orientation_left;
+                    if(Util::timerWithInterval(1200)&&!en->damageState&&Scenes::camera.isInTheXScreen(nTRectangle::getCollision(en->pos,en->size))){
+                        new Bullet(Bullet::hyperbolicParaboloidBullet,Bullet::baseSpeed*en->orientation/1.5,nTPoint::get(en->pos.x,Player::getPlayerById(0)->pos.y+4+((rand()%300)/10-17),1),nTPoint::get(23,16,1));
+                    }
+                }
+            
                 objCollision var=Mechanics::getCollision(nTRectangle::getCollision(en->pos,en->size),nTRectangle::getCollision(Player::getPlayerById(0)->pos,Player::getPlayerById(0)->size));
                 if(var.firstObj==Mechanics::LEFT||var.firstObj==Mechanics::RIGHT||var.firstObj==Mechanics::BOTTOM||(!Player::getPlayerById(0)->atacking&&Player::getPlayerById(0)->atackDirection!=Util::direction_down&&var.firstObj==Mechanics::TOP))
                     Player::getPlayerById(0)->applyDamage(1);
