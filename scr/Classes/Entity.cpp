@@ -54,7 +54,7 @@ void Entity::stateControl(){
         return;
     }
     if(pos.x<0||pos.y<0||pos.x>=Map::size.x+Blocks::defaultBlockSize.x*1.5||pos.y>=Map::size.y+Blocks::defaultBlockSize.y*1.5)
-        if(!Player::getPlayerById(0)->god||pos.x!=Player::getPlayerById(0)->pos.x||pos.y!=Player::getPlayerById(0)->pos.y) life=0;
+        if(!Player::getPlayerById(0)->god) life=0;
     if(life<=0){
         if(currentState!=state_Dying) currentIndex=0;
         currentState=state_Dying;
@@ -131,21 +131,6 @@ void Entity::execAnimation(){
                     }else{
                       Player::enemysKilled++;
                         en=(Enemy*)Entity::enemys[id];
-                        if(Enemy::checkIfEnemyIsBoss(en->type)&&en->isVisible){
-                            Blocks* bl;
-                            bool haveGG=false;
-                            for(int i=0;i<Map::dynamicBlocks.size();i++){
-                                bl=(Blocks*)Map::dynamicBlocks[i];
-                                if(Blocks::checkIfBlocksIsEndLevel(bl->type))
-                                    haveGG=true;
-                            }
-                            if(!haveGG){
-                                nTPoint ggPos=en->pos;
-                                ggPos.x+=en->orientation*Blocks::defaultBlockSize.x;
-                                bl=new Blocks(Blocks::EndLevelBlock,ggPos,Blocks::defaultBlockSize);
-                                Map::dynamicBlocks.push_back(bl);
-                            }
-                        }
                         en->isVisible=false;
                         delete en;
                         FunctionAnalyser::endFunction("Entity::execAnimation");
@@ -213,7 +198,7 @@ void Entity::applyDamage(double damage){
 void Entity::draw(nTColor color){
     if(GL::isPaused||!this->isVisible)
         return;
-    if(Tutorials::isPaused&&this->isHuman==false){
+    if(Tutorials::isPaused){
         GL::drawTexture(nTRectangle::getCollision(pos,size),color,currentTex,orientation);
         return;
     }

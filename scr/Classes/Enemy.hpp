@@ -15,13 +15,10 @@ public:
     static void behave();
     GLuint lifeLetter();
     static void registerNicks();
-    static bool checkIfEnemyIsBoss(int type);
 
     int type;
     static const int defaultLife;
-    static const int bossLife;
     static const nTPoint defaultSize;
-    static const nTPoint bossSize;
     static const double imunityTime;
     static vector<vector<string> >enemyAnim;
     static vector<vector<int> >enemyAnimSize;

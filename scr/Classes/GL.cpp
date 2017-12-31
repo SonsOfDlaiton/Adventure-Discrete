@@ -13,8 +13,8 @@ GL::GL(string name,double FPS,GLbitfield displayMode,int windowXsize,int windowY
     currentViewPort=nTRectangle::get(0,0,defaultSize.x,defaultSize.y);
     glutInitWindowPosition(0, 0);
     glutCreateWindow(name.c_str());
-    GL::clearColor.set(clearcolor.R, clearcolor.G, clearcolor.B, clearcolor.A);
-    glClearColor(clearcolor.R, clearcolor.G, clearcolor.B, clearcolor.A);
+    GL::clearColor.set(clearcolor.R,clearcolor.G,clearcolor.B,clearcolor.A);
+    glClearColor(clearcolor.R,clearcolor.G,clearcolor.B,clearcolor.A);
     for(GLenum en:enables){
         if(en==GL_ALPHA_TEST)glAlphaFunc(GL_GREATER,0.1);
         glEnable(en);
@@ -60,7 +60,7 @@ bool GL::rightMouseReleased=false;
 unsigned long int GL::framesInGame=0;
 nTPoint GL::mousePos;
 nTPoint GL::rawMousePos;
-int GL::editOnFocous=-1;
+int GL::editOnfocus=-1;
 int GL::editTextPosition=-1;
 vector<string> GL::edits;
 vector<bool> GL::editsNumeric;
@@ -580,7 +580,7 @@ vector<GLuint> GL::getTexturesByName(string name,int nOfTex){
  *  Draw and manage mouse events of a button
  *
  *  @param collision the coordinates of the button
- *  @param pressedColor the draw color of the button when has the mouse over it
+ *  @param focusColor the draw color of the button when has the mouse over it
  *  @param tex texture id of the button
  *  @param holdClick if false only compute one click
  *  @param clickFunction the function to be called when the button is left mouse clicked
@@ -589,12 +589,12 @@ vector<GLuint> GL::getTexturesByName(string name,int nOfTex){
  *  @param RreleaseFunction the function to be called when the right mouse clicked button is released
  *  @return true if the button is being left mouse clicked
 **/
-bool GL::buttonBehave(nTRectangle collision,nTColor pressedColor,GLuint tex,bool holdClick,void(*clickFunction)(int,int),void(*releaseFunction)(int,int),void(*RclickFunction)(int,int),void(*RreleaseFunction)(int,int)){
+bool GL::buttonBehave(nTRectangle collision,nTColor focusColor,GLuint tex,bool holdClick,void(*clickFunction)(int,int),void(*releaseFunction)(int,int),void(*RclickFunction)(int,int),void(*RreleaseFunction)(int,int)){
     if(Util::isInsideBox(collision,GL::mousePos)){
         if(tex){
-            GL::drawTexture(collision,pressedColor,tex);
+            GL::drawTexture(collision,focusColor,tex);
         }else{
-            GL::drawRectangle(collision,pressedColor);
+            GL::drawRectangle(collision,focusColor);
         }
         if(GL::leftMouseClicked||GL::rightMouseClicked)
             AL::singleton->playSoundByName("mouse");
@@ -636,19 +636,19 @@ bool GL::buttonBehave(nTRectangle collision,nTColor pressedColor,GLuint tex,bool
  *  Draw and manage mouse events of a button
  *
  *  @param collision the coordinates of the button
- *  @param pressedColor the draw color of the button when has the mouse over it
+ *  @param focusColor the draw color of the button when has the mouse over it
  *  @param tex texture id of the button
  *  @return true if the button is being left mouse clicked
 **/
-bool GL::buttonBehave(nTRectangle collision,nTColor pressedColor,GLuint tex){
-    return GL::buttonBehave(collision,pressedColor,tex,false,NULL,NULL,NULL,NULL);
+bool GL::buttonBehave(nTRectangle collision,nTColor focusColor,GLuint tex){
+    return GL::buttonBehave(collision,focusColor,tex,false,NULL,NULL,NULL,NULL);
 }
 
 /**
  *  Draw and manage mouse events of a button
  *
  *  @param collision the coordinates of the button
- *  @param pressedColor the draw color of the button when has the mouse over it
+ *  @param focusColor the draw color of the button when has the mouse over it
  *  @param text text of the button
  *  @param textColor the text color
  *  @param tex texture id of the button
@@ -659,13 +659,13 @@ bool GL::buttonBehave(nTRectangle collision,nTColor pressedColor,GLuint tex){
  *  @param RreleaseFunction the function to be called when the right mouse clicked button is released
  *  @return true if the button is being left mouse clicked
 **/
-bool GL::textButtonBehave(nTRectangle collision,nTColor pressedColor,string text,nTColor textColor,GLuint tex,bool holdClick,void(*clickFunction)(int,int),void(*releaseFunction)(int,int),void(*RclickFunction)(int,int),void(*RreleaseFunction)(int,int)){
+bool GL::textButtonBehave(nTRectangle collision,nTColor focusColor,string text,nTColor textColor,GLuint tex,bool holdClick,void(*clickFunction)(int,int),void(*releaseFunction)(int,int),void(*RclickFunction)(int,int),void(*RreleaseFunction)(int,int)){
     collision.p0.z-=0.00001;
     if(Util::isInsideBox(collision,GL::mousePos)){
         if(tex){
-            GL::drawTexture(collision,pressedColor,tex);
+            GL::drawTexture(collision,focusColor,tex);
         }else{
-            GL::drawRectangle(collision,pressedColor);
+            GL::drawRectangle(collision,focusColor);
         }
         if(GL::leftMouseClicked||GL::rightMouseClicked)
             AL::singleton->playSoundByName("mouse");
@@ -707,13 +707,13 @@ bool GL::textButtonBehave(nTRectangle collision,nTColor pressedColor,string text
  *  Draw and manage mouse events of a button
  *
  *  @param collision the coordinates of the button
- *  @param pressedColor the draw color of the button when has the mouse over it
+ *  @param focusColor the draw color of the button when has the mouse over it
  *  @param text text of the button
  *  @param tex texture id of the button
  *  @return true if the button is being left mouse clicked
 **/
-bool GL::textButtonBehave(nTRectangle collision,nTColor pressedColor,string text,nTColor textColor,GLuint tex){
-    return GL::textButtonBehave(collision,pressedColor,text,textColor,tex,false,NULL,NULL,NULL,NULL);
+bool GL::textButtonBehave(nTRectangle collision,nTColor focusColor,string text,nTColor textColor,GLuint tex){
+    return GL::textButtonBehave(collision,focusColor,text,textColor,tex,false,NULL,NULL,NULL,NULL);
 }
 
 /**
@@ -867,17 +867,13 @@ nTPoint GL::getModelViewPoint(nTPoint point){
     GLfloat matrixf[16];
     vector<vector<double> >Mpoint;
     vector<vector<double> >out;
-
     Mpoint.resize(4,vector<double>(1,0));
     out.resize(4,vector<double>(4,0));
-
     glGetFloatv(GL_MODELVIEW_MATRIX, matrixf);
-
     Mpoint[0][0]=point.x;
     Mpoint[1][0]=point.y;
     Mpoint[2][0]=point.z;
     Mpoint[3][0]=1;
-
     out[0][0]=(double)matrixf[0];
     out[0][1]=(double)matrixf[1];
     out[0][2]=(double)matrixf[2];
@@ -895,7 +891,6 @@ nTPoint GL::getModelViewPoint(nTPoint point){
     out[3][2]=(double)matrixf[14];
     out[3][3]=(double)matrixf[15];
     Mpoint=Util::multiplyMatrix(out,Mpoint);
-
     point.set(Mpoint[0][0],Mpoint[1][0],Mpoint[2][0]);
     return point;
 }
@@ -935,11 +930,11 @@ void GL::drawHUD(){
         }else if(Player::stage==3){
             strF="Trabalho";
         }else if(Player::stage==4){
-            strF="Bom Prof";
+            strF="Prof. Bom";
         }else if(Player::stage==5){
-            strF="Mau Prof";
+            strF="Prof. Mau";
         }else{
-            strF="Cefetinho";
+            strF="Tecnico";
         }
         GL::drawCentered_Y_Text(point,"Fase: "+strF,nTColor::Black());
         point.set(Scenes::camera.x.movedCam+480,Scenes::camera.y.movedCam+23,1);
@@ -962,7 +957,7 @@ double GL::getGameMs(){
 
 
 void GL::clearUI(){
-    editOnFocous=-1;
+    editOnfocus=-1;
     edits.clear();
     editsNumeric.clear();
     editsText.clear();
@@ -987,19 +982,19 @@ void GL::setEditText(string editName,string text){
         }
 }
 
-void GL::editTextBehave(nTRectangle collision,string font,string editName,bool numeric,bool setFocous){
-    editTextBehave(collision,font,nTColor::get(0,0,0),"",editName,numeric,setFocous);
+void GL::editTextBehave(nTRectangle collision,string font,string editName,bool numeric,bool setfocus){
+    editTextBehave(collision,font,nTColor::get(0,0,0),"",editName,numeric,setfocus);
 }
 
-void GL::editTextBehave(nTRectangle collision,string font,string initial,string editName,bool numeric,bool setFocous){
-    editTextBehave(collision,font,nTColor::get(0,0,0),initial,editName,numeric,setFocous);
+void GL::editTextBehave(nTRectangle collision,string font,string initial,string editName,bool numeric,bool setfocus){
+    editTextBehave(collision,font,nTColor::get(0,0,0),initial,editName,numeric,setfocus);
 }
 
-void GL::editTextBehave(nTRectangle collision,string font,nTColor fontcolor,string editName,bool numeric,bool setFocous){
-    editTextBehave(collision,font,fontcolor,"",editName,numeric,setFocous);
+void GL::editTextBehave(nTRectangle collision,string font,nTColor fontcolor,string editName,bool numeric,bool setfocus){
+    editTextBehave(collision,font,fontcolor,"",editName,numeric,setfocus);
 }
 
-void GL::editTextBehave(nTRectangle collision,string font,nTColor fontcolor,string initial,string editName,bool numeric,bool setFocous){
+void GL::editTextBehave(nTRectangle collision,string font,nTColor fontcolor,string initial,string editName,bool numeric,bool setfocus){
     int editId=-1;
     for(int i=0;i<edits.size();i++){
         if(edits[i]==editName){
@@ -1015,25 +1010,21 @@ void GL::editTextBehave(nTRectangle collision,string font,nTColor fontcolor,stri
         edits.push_back(editName);
         editsNumeric.push_back(numeric);
         editsText.push_back(initial);
-        if(setFocous)
-            editOnFocous=editId;
+        if(setfocus)
+            editOnfocus=editId;
     }
-
     if(GL::leftMouseClicked){
         if(Util::isInsideBox(collision,GL::mousePos)){
             AL::singleton->playSoundByName("mouse");
             GL::leftMouseClicked=0;
-            editOnFocous=editId;
-            editTextPosition=editsText[editOnFocous].size();
+            editOnfocus=editId;
+            editTextPosition=editsText[editOnfocus].size();
         }else{
-            editOnFocous=-1;
+            editOnfocus=-1;
         }
     }
-
-
     GL::drawRectangle(nTRectangle::get(collision.p0.x,collision.p0.y,collision.p1.x,collision.p1.y,collision.p0.z-0.001),nTColor::White());
     GL::drawRectangle(nTRectangle::get(collision.p0.x-1,collision.p0.y-1,collision.p1.x+1,collision.p1.y+1,collision.p0.z-0.002),nTColor::Black());
-
     nTPoint boxSize=nTPoint::get(ABS(collision.p1.x-collision.p0.x),ABS(collision.p1.y-collision.p0.y));
     int fontBKP=currentFont;
     GL::setFont(font);
@@ -1042,7 +1033,7 @@ void GL::editTextBehave(nTRectangle collision,string font,nTColor fontcolor,stri
     int cursor=editTextPosition;
     if(cursor<0) cursor=textToDraw.size();
     if(cursor>textToDraw.size()) cursor=textToDraw.size();
-    if(editOnFocous==editId){ //draw text plus | (blinking pipe)
+    if(editOnfocus==editId){ //draw text plus | (blinking pipe)
         if(Util::timerWithInterval(500)){
             if(editCharCursor)
                 textToDraw.insert(cursor,"|");
@@ -1106,46 +1097,46 @@ void GL::editTextBehave(nTRectangle collision,string font,nTColor fontcolor,stri
 }
 
 void GL::typeOnEdit(char c){
-    if(edits.size()>0&&editOnFocous>=0){
+    if(edits.size()>0&&editOnfocus>=0){
         int cursor=editTextPosition;
-        if(cursor<0) cursor=editsText[editOnFocous].size();
-        if(cursor>editsText[editOnFocous].size()) cursor=editsText[editOnFocous].size();
+        if(cursor<0) cursor=editsText[editOnfocus].size();
+        if(cursor>editsText[editOnfocus].size()) cursor=editsText[editOnfocus].size();
         switch(c){
             case ' ':
-                editsText[editOnFocous].insert(cursor," ");
+                editsText[editOnfocus].insert(cursor," ");
                 editTextPosition++;
                 break;
 
             case 13: // enter
-                editsText[editOnFocous].insert(cursor,"\n");
+                editsText[editOnfocus].insert(cursor,"\n");
                 editTextPosition++;
                 break;
 
             case 8: // backspace
                 if(cursor!=0){
-                    editsText[editOnFocous].erase(editsText[editOnFocous].begin()+cursor-1);
+                    editsText[editOnfocus].erase(editsText[editOnfocus].begin()+cursor-1);
                     editTextPosition--;
                 }
                 break;
 
             case 9: // tab
-                editOnFocous++;
-                if(editOnFocous>=edits.size()||editOnFocous<0)
-                    editOnFocous=0;
+                editOnfocus++;
+                if(editOnfocus>=edits.size()||editOnfocus<0)
+                    editOnfocus=0;
                 break;
 
             case 127: // delete
-                if(cursor!=editsText[editOnFocous].size())
-                    editsText[editOnFocous].erase(editsText[editOnFocous].begin()+cursor);
+                if(cursor!=editsText[editOnfocus].size())
+                    editsText[editOnfocus].erase(editsText[editOnfocus].begin()+cursor);
                 break;
 
             default:
-                if((editsNumeric[editOnFocous]&&isdigit(c))||(!editsNumeric[editOnFocous]&&isgraph(c))){
+                if((editsNumeric[editOnfocus]&&isdigit(c))||(!editsNumeric[editOnfocus]&&isgraph(c))){
                     stringstream ss;
                     string s;
                     ss<<c;
                     ss>>s;
-                    editsText[editOnFocous].insert(cursor,s);
+                    editsText[editOnfocus].insert(cursor,s);
                     editTextPosition++;
                 }
                 break;
@@ -1153,28 +1144,28 @@ void GL::typeOnEdit(char c){
     }
 }
 
-bool GL::hasEditOnFocous(){
-    return edits.size()>0&&editOnFocous>=0;
+bool GL::hasEditOnfocus(){
+    return edits.size()>0&&editOnfocus>=0;
 }
 
 void GL::moveEditCursor(int direction){
-    if(edits.size()>0&&editOnFocous>=0){
+    if(edits.size()>0&&editOnfocus>=0){
         if(direction==Util::direction_left){
             editTextPosition--;
             if(editTextPosition<0)
                 editTextPosition=0;
         }else if(direction==Util::direction_right){
             editTextPosition++;
-            if(editTextPosition>editsText[editOnFocous].size())
-                editTextPosition=editsText[editOnFocous].size();
+            if(editTextPosition>editsText[editOnfocus].size())
+                editTextPosition=editsText[editOnfocus].size();
         }
     }
 }
 
-void GL::setFocous(string editName){
+void GL::setfocus(string editName){
     for(int i=0;i<edits.size();i++)
         if(editName==edits[i]){
-            editOnFocous=i;
+            editOnfocus=i;
             return;
         }
 }
@@ -1205,7 +1196,6 @@ void GL::drawPopupBox(){
         GL::drawRectangle(collision,nTColor::get(1,0.9,0.9));
         GL::drawText(nTPoint::get(collision.p0.x+20,collision.p1.y+20,0.98),"Pop-up Box",nTColor::get(0,0,0));
         GL::drawCentered_MultilineX_Y_Text(nTPoint::get(GL::defaultSize.x/2+Scenes::camera.x.movedCam,GL::defaultSize.y/2+10+titleSize.y+Scenes::camera.y.movedCam,0.98),popupText,nTColor::get(0,0,0));
-
         if((popupMs+GL::getGameMs()>=popupDuration&&popupDuration)||
             textButtonBehave(nTRectangle::getCollision(nTPoint::get(GL::defaultSize.x/2+Scenes::camera.x.movedCam,collision.p0.y-22+Scenes::camera.y.movedCam,0.99),nTPoint::get(40,20,0.99)),GL::getColorByName("mouseSelected"),"Ok",nTColor::get(0,0,0),GL::getTextureByName("btnSkin1"))){
             popupText="";

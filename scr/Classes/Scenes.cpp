@@ -121,7 +121,7 @@ void Scenes::drawGame(){
         camera.lookAt(Player::getPlayerById(0)->pos);
     }
 
-    camera.followPlayer(Player::getPlayerById(0));
+    camera.behave(Player::getPlayerById(0));
     Mechanics::applyForce();
     Map::refresh();
     Entity::behave();

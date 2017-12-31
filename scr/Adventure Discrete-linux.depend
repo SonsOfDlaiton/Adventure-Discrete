@@ -371,7 +371,7 @@
 	"Classes/Bullet.hpp"
 	"Classes/Language.hpp"
 
-1514552882 /home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/GL.hpp
+1514706279 /home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/GL.hpp
 	<GL/glut.h>
 	<GLUT/glut.h>
 	<GL/freeglut.h>
@@ -420,7 +420,7 @@
 	<algorithm>
 	<iomanip>
 
-1514577811 /home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Map.hpp
+1514704616 /home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Map.hpp
 	"Util.hpp"
 	"GL.hpp"
 	"Background.hpp"
@@ -476,7 +476,7 @@
 	"Util.hpp"
 	"GL.hpp"
 
-1514469038 /home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Enemy.hpp
+1514703837 /home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Enemy.hpp
 	"Util.hpp"
 	"Scenes.hpp"
 	"Entity.hpp"
@@ -504,7 +504,7 @@
 	"AL.hpp"
 	"Player.hpp"
 
-1514491074 /home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Camera.hpp
+1514706091 /home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Camera.hpp
 	"Util.hpp"
 	"GL.hpp"
 
@@ -536,7 +536,7 @@
 	"GL.hpp"
 	"Scenes.hpp"
 
-1514578098 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/CallbacksHandler.cpp
+1514703687 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/CallbacksHandler.cpp
 	"CallbacksHandler.hpp"
 	"GL.hpp"
 	"Scenes.hpp"
@@ -545,14 +545,14 @@
 1514469038 /home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/CallbacksHandler.hpp
 	"Util.hpp"
 
-1514491090 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Camera.cpp
+1514706092 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Camera.cpp
 	"Camera.hpp"
 	"Player.hpp"
 
-1514553850 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/FunctionAnalyser.cpp
+1514579736 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/FunctionAnalyser.cpp
 	"FunctionAnalyser.hpp"
 
-1514578099 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/IOHandler.cpp
+1514706278 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/IOHandler.cpp
 	"IOHandler.hpp"
 	"Scenes.hpp"
 
@@ -562,7 +562,7 @@
 1514577801 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/mapEdit.cpp
 	"mapEdit.hpp"
 
-1514577810 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Mechanics.cpp
+1514579632 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Mechanics.cpp
 	"Mechanics.hpp"
 	"Player.hpp"
 	"PowerUp.hpp"
@@ -576,7 +576,7 @@
 1514469037 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/nTFontChar.cpp
 	"nTFontChar.hpp"
 
-1514577809 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Player.cpp
+1514704292 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Player.cpp
 	"Player.hpp"
 
 1514561837 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/powerUp.cpp
@@ -584,14 +584,14 @@
 	"Scenes.hpp"
 	"Camera.hpp"
 
-1514578113 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Scenes.cpp
+1514706087 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Scenes.cpp
 	"Scenes.hpp"
 	"Bullet.hpp"
 	"PowerUp.hpp"
 	"AL.hpp"
 	"Camera.hpp"
 
-1514494418 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Tutorials.cpp
+1514704615 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Tutorials.cpp
 	"Tutorials.hpp"
 	"Scenes.hpp"
 
@@ -653,28 +653,28 @@
 
 1514469039 /home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Libs/soil/stbi_DDS_aug_c.h
 
-1514578096 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Blocks.cpp
+1514703216 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Blocks.cpp
 	"Blocks.hpp"
 
-1514579163 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Bullet.cpp
+1514579286 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Bullet.cpp
 	"Bullet.hpp"
 
-1514579037 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Enemy.cpp
+1514705697 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Enemy.cpp
 	"Enemy.hpp"
 
-1514572012 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Entity.cpp
+1514705569 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Entity.cpp
 	"Entity.hpp"
 	"Player.hpp"
 	"Enemy.hpp"
 	"Blocks.hpp"
 
-1514578099 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/GL.cpp
+1514706713 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/GL.cpp
 	"GL.hpp"
 	"AssetsLoader.hpp"
 	"IOHandler.hpp"
 	"CallbacksHandler.hpp"
 
-1514577811 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Map.cpp
+1514704943 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Map.cpp
 	"Map.hpp"
 	"Player.hpp"
 	"Enemy.hpp"
@@ -707,6 +707,6 @@
 	"Camera.hpp"
 	"Background.hpp"
 
-1514578100 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/MapEdit.cpp
+1514706276 source:/home/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/MapEdit.cpp
 	"MapEdit.hpp"
 

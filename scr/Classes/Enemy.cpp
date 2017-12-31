@@ -7,10 +7,7 @@ Enemy::Enemy(int enemyType,double life,nTPoint spawn,nTPoint size,vector<vector<
     this->animations=animations;
     this->vSpeed=0;
     this->atacking=false;
-    if(enemyType<100)
-        this->hSpeed=Entity::walkSpeed;
-    else
-        this->hSpeed=0;
+    this->hSpeed=Entity::walkSpeed;
     this->currentState=Entity::state_Idle;
     this->currentIndex=0;
     this->nextState=Entity::state_Holding;
@@ -25,25 +22,12 @@ Enemy::Enemy(int enemyType,double life,nTPoint spawn,nTPoint size,vector<vector<
     this->damageState=false;
     this->itsInTheWater=false;
     this->imuneToDamage=false;
-    if(!checkIfEnemyIsBoss(type)){
-      if(Scenes::freeGameMode)
+    if(Scenes::freeGameMode)
         this->nickname="Provas";
-      else if(Player::stage>=0&&Player::stage<nicks.size())
-          this->nickname=nicks[Player::stage][rand()%nicks[Player::stage].size()];
-      else
-          this->nickname="NULL";
-    }else{
-      if(Scenes::freeGameMode)
-        this->nickname="       BOSS";
-      else if(Player::stage==0)
-        this->nickname="       ENEM";
-      else if(Player::stage==1)
-        this->nickname="       TCC";
-      else if(Player::stage==2)
-        this->nickname="  MONOGRAFIA";
-      else
+    else if(Player::stage>=0&&Player::stage<nicks.size())
+        this->nickname=nicks[Player::stage][rand()%nicks[Player::stage].size()];
+    else
         this->nickname="NULL";
-    }
     Entity::enemys.push_back(this);
     this->id=(unsigned int)Entity::enemys.size()-1;
 };
@@ -62,8 +46,6 @@ Enemy::~Enemy() {
 
 const double Enemy::imunityTime=200;
 const nTPoint Enemy::defaultSize=nTPoint::get(40,48);
-const nTPoint Enemy::bossSize=nTPoint::get(48,100);
-const int Enemy::bossLife=33;
 const int Enemy::defaultLife=3;
 vector<vector<string> >Enemy::nicks;
 vector<vector<string> >Enemy::enemyAnim;
@@ -115,21 +97,10 @@ void Enemy::behave(){
         en=(Enemy*)Entity::enemys[i];
         if(en->isVisible){
             if(Scenes::camera.isInTheXScreen(nTRectangle::getCollision(en->pos,en->size))){
-                if(!checkIfEnemyIsBoss(en->type)){
-                    if(en->hSpeed>0)
-                        en->orientation=Util::orientation_right;
-                    else
-                        en->orientation=Util::orientation_left;
-                }else{
-                    if(Player::getPlayerById(0)->pos.x>=en->pos.x)
-                        en->orientation=Util::orientation_right;
-                    else
-                        en->orientation=Util::orientation_left;
-                    if(Util::timerWithInterval(1200)&&!en->damageState&&Scenes::camera.isInTheXScreen(nTRectangle::getCollision(en->pos,en->size))){
-                        new Bullet(Bullet::hyperbolicParaboloidBullet,Bullet::baseSpeed*en->orientation/1.5,nTPoint::get(en->pos.x,Player::getPlayerById(0)->pos.y+4+((rand()%300)/10-17),1),nTPoint::get(23,16,1));
-                    }
-                }
-
+                if(en->hSpeed>0)
+                    en->orientation=Util::orientation_right;
+                else
+                    en->orientation=Util::orientation_left;
                 objCollision var=Mechanics::getCollision(nTRectangle::getCollision(en->pos,en->size),nTRectangle::getCollision(Player::getPlayerById(0)->pos,Player::getPlayerById(0)->size));
                 if(var.firstObj==Mechanics::LEFT||var.firstObj==Mechanics::RIGHT||var.firstObj==Mechanics::BOTTOM||(!Player::getPlayerById(0)->atacking&&Player::getPlayerById(0)->atackDirection!=Util::direction_down&&var.firstObj==Mechanics::TOP))
                     Player::getPlayerById(0)->applyDamage(1);
@@ -156,10 +127,7 @@ void Enemy::draw(Enemy* en){
 **/
 void Enemy::makeInvencible(double time){
     damageState=true;
-    if(checkIfEnemyIsBoss(type))
-        timeToVunerability=GL::getGameMs()+imunityTime*2;
-    else
-        timeToVunerability=GL::getGameMs()+imunityTime;
+    timeToVunerability=GL::getGameMs()+imunityTime;
 }
 
 /**
@@ -236,21 +204,19 @@ void Enemy::registerNicks(){
 **/
 GLuint Enemy::lifeLetter(){
   double Life=this->life/Enemy::defaultLife;
-  if(Life<=0.1)
+  if(Player::stage==Map::lvlBadTeacher)
+    Life=1-Life;
+  if(Life<=0.2)
     return GL::getTextureByName("A");
-  if(Life<=0.3&&Life>0.1)
+  if(Life>=0.2&&Life<0.4)
     return GL::getTextureByName("B");
-  if(Life<=0.4&&Life>0.3)
+  if(Life>=0.4&&Life<0.6)
     return GL::getTextureByName("C");
-  if(Life<=0.6&&Life>0.4)
+  if(Life>=0.6&&Life<0.8)
     return GL::getTextureByName("D");
-  if(Life<=0.7&&Life>0.6)
+  if(Life>=0.8&&Life<1)
     return GL::getTextureByName("E");
-  if(Life>0.7)
+  if(Life>=1)
     return GL::getTextureByName("F");
   return GL::getTextureByName("F");
-}
-
-bool Enemy::checkIfEnemyIsBoss(int type){
-    return type>=1000;
 }

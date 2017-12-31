@@ -28,7 +28,7 @@ public:
     void setCam(double moveSpeed_);
     void putCameraOnOrigin();
     void lookAt(nTPoint pos);
-    void followPlayer(Player* pl);
+    void behave(Player* pl);
     bool isInTheScreen(nTRectangle collision);
     bool isInTheXScreen(nTRectangle collision);
     bool isInTheYScreen(nTRectangle collision);

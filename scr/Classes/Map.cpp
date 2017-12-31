@@ -21,7 +21,7 @@ Map::~Map() {
 vector<vector<int> > Map::staticBlocksArr;
 vector<void*> Map::staticBlocks;
 vector<void*> Map::dynamicBlocks;
-nTMap Map::actualMap;//GLuint Map::background;
+nTMap Map::actualMap;
 nTPoint Map::size;
 int Map::nOfMaps=6;
 int Map::nOfBackgrounds=3;
@@ -36,8 +36,8 @@ const int Map::lvlTechnical=0;
 const int Map::lvlGraduation=1;
 const int Map::lvlMasters=2;
 const int Map::lvlWork=3;
-const int Map::lvlGoodTecher=4;
-const int Map::lvlBadTecher=5;
+const int Map::lvlGoodTeacher=4;
+const int Map::lvlBadTeacher=5;
 
 /**
  *	Change the current map
@@ -65,13 +65,9 @@ void Map::changeCurrentMap(nTMap map){
     PowerUp::self.clear();
     actualMap.map.clear();
     actualMap.backgrounds.clear();
-
     size.set((map.map[0].size()-1)*Blocks::defaultBlockSize.x,(map.map.size()-1)*Blocks::defaultBlockSize.y,0);
-    /*char buffer[5];
-    snprintf(buffer,5,"%d",map.backgroundId);
-    string mapID(buffer);*/
     sort(map.backgrounds.begin(), map.backgrounds.end()); // coloca em ordem decrescente os backgrounds a serem desenhados
-    actualMap=map;//background=GL::getTextureByName("background"+mapID);
+    actualMap=map;
     bool hasSpawn=false;
     for(int i=0;i<actualMap.map.size();i++){
         for(int j=0;j<actualMap.map[i].size();j++){
@@ -149,8 +145,7 @@ void Map::setBlockPos(){
                     pos.z=0.89;
                     pos.y-=Blocks::defaultBlockSize.y;
                     Tutorials::add(j-floor(GL::defaultSize.x/Blocks::defaultBlockSize.x/2)+ceil((float)Player::defaultPSize.x/(float)Blocks::defaultBlockSize.x)*3,bl->data,true);
-                    new Enemy((actualMap.map[i][j].first-5000)+1000,Enemy::bossLife,pos,Enemy::bossSize,Entity::getAnimationVector(Enemy::enemyAnim[0],Enemy::enemyAnimSize[0]),0);
-                    nOfEnemys+=3;
+                    //new Boss((actualMap.map[i][j].first-5000)+1000,Enemy::bossLife,pos,Enemy::bossSize,Entity::getAnimationVector(Enemy::enemyAnim[0],Enemy::enemyAnimSize[0]),0);
                 }else if(Blocks::checkIfBlocksIsTutorial(actualMap.map[i][j].first)){
                     Tutorials::add(j,bl->data,false);
                 }else if(Blocks::checkIfBlocksIsTutorialPause(actualMap.map[i][j].first)){
@@ -245,26 +240,26 @@ vector <mapCollision> Map::checkCollision(nTPoint pos,nTPoint size){
     j_inf=ceil(objRec.p1.y/Blocks::defaultBlockSize.y);
     j_sup=ceil(objRec.p0.y/Blocks::defaultBlockSize.y);
     pointPrincipal.set(i_inf*y32+y16,j_inf*x32+x16,0);
-    for(i=i_inf; i<=i_sup; i++){ // -1 +1 nos limites
-      for(j=j_inf;j<=j_sup; j++){// -1 +1 nos limites
-        if(j>=0 && j<=actualMap.map.size() && i>=0 && i<=actualMap.map[0].size()){
-            blockCenter.set(i*y32+y16,j*x32-x16,0);
-            Blocks* bl=getBlockById(getIdByPosition(blockCenter));
-            if(bl!=nullptr){
-                if(Blocks::checkIfBlocksIsMassive(bl->type)){
-                    if(bl->id!=blockId&&bl->id){
-                        adc.blockId=bl->id;
-                        blockRec=nTRectangle::getCollision(blockCenter,Blocks::defaultBlockSize);
-                        adc.collision=Mechanics::getCollision(objRec,blockRec);//verifica colisao
-                        if(adc.collision.firstObj!=Mechanics::NOCOLLISION){
-                            result.push_back(adc);
-                            if(Mechanics::drawCollisionRec) GL::drawCollision(blockRec,3,nTColor::get(0,1,0));
+    for(i=i_inf;i<=i_sup;i++){
+        for(j=j_inf;j<=j_sup;j++){
+            if(j>=0 && j<=actualMap.map.size() && i>=0 && i<=actualMap.map[0].size()){
+                blockCenter.set(i*y32+y16,j*x32-x16,0);
+                Blocks* bl=getBlockById(getIdByPosition(blockCenter));
+                if(bl!=nullptr){
+                    if(Blocks::checkIfBlocksIsMassive(bl->type)){
+                        if(bl->id!=blockId&&bl->id){
+                            adc.blockId=bl->id;
+                            blockRec=nTRectangle::getCollision(blockCenter,Blocks::defaultBlockSize);
+                            adc.collision=Mechanics::getCollision(objRec,blockRec);//verifica colisao
+                            if(adc.collision.firstObj!=Mechanics::NOCOLLISION){
+                                result.push_back(adc);
+                                if(Mechanics::drawCollisionRec) GL::drawCollision(blockRec,3,nTColor::get(0,1,0));
+                            }else if(Mechanics::drawCollisionRec)GL::drawCollision(nTRectangle::getCollision(blockCenter,Blocks::defaultBlockSize),3,nTColor::get(0,0,1));
                         }else if(Mechanics::drawCollisionRec)GL::drawCollision(nTRectangle::getCollision(blockCenter,Blocks::defaultBlockSize),3,nTColor::get(0,0,1));
                     }else if(Mechanics::drawCollisionRec)GL::drawCollision(nTRectangle::getCollision(blockCenter,Blocks::defaultBlockSize),3,nTColor::get(0,0,1));
-                }else if(Mechanics::drawCollisionRec)GL::drawCollision(nTRectangle::getCollision(blockCenter,Blocks::defaultBlockSize),3,nTColor::get(0,0,1));
+                }
             }
         }
-      }
     }
     Blocks *bl;
     for(int i=0;i<dynamicBlocks.size();i++){
@@ -291,7 +286,6 @@ vector <mapCollision> Map::checkCollision(nTPoint pos,nTPoint size){
 void Map::refresh(){
     FunctionAnalyser::startFunction("Map::refresh");
     if(GL::isPaused){
-        //GL::drawTexture(nTRectangle::get(Scenes::camera.x.movedCam,GL::defaultSize.y+Scenes::camera.y.movedCam,GL::defaultSize.x+Scenes::camera.x.movedCam,Scenes::camera.y.movedCam,-0.9),background);
         drawMapBackground();
         FunctionAnalyser::endFunction("Map::refresh");
         return;
@@ -345,7 +339,7 @@ void Map::refresh(){
                     if(!Scenes::freeGameMode){
                         Player::checkpoint=0;
                         Player::stage++;
-                        if(Player::stage==lvlGoodTecher||Player::stage==lvlBadTecher){
+                        if(Player::stage==lvlGoodTeacher||Player::stage==lvlBadTeacher){
                             Player::stage=0;
                             Map::GG(true);
                         }else{

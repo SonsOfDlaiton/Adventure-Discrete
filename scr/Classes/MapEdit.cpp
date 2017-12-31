@@ -30,8 +30,8 @@ const int MapEdit::editingMap=-6000;
 void MapEdit::definePages(){
     blockPages.clear();
     pageNames.clear();
-    vector <vector<int> > pageTmp;
-    vector < int > rowTmp;
+    vector<vector<int> > pageTmp;
+    vector<int> rowTmp;
 
     pageNames.push_back("Solidos");
     for(int i=1;i<7;i++)
@@ -404,16 +404,14 @@ void MapEdit::draw(){
             tmp.y*=scale.y;
             tmp1.x*=scale.x;
             tmp1.y*=scale.y;
-            //if(tmp1.x-Scenes::camera.x.movedCam<HUDarea.x&&tmp1.y-Scenes::camera.y.movedCam<HUDarea.y){ TODO desenhar somente se tiver dentro da area editavel
-                GL::buttonBehave(nTRectangle::getCollision(tmp,tmp1),nTColor::get(0.38,0.38,0.38,0.8),0,true,*MapEditButton,NULL,*mapEraseButton,NULL);
-                if(map[i][j].first){
-                    tmp.z-=0.1;
-                    tmp1.z-=0.1;
-                    bl = new Blocks(map[i][j].first,tmp,tmp1);
-                    bl->draw();
-                    delete bl;
-                }
-            //}
+            GL::buttonBehave(nTRectangle::getCollision(tmp,tmp1),nTColor::get(0.38,0.38,0.38,0.8),0,true,*MapEditButton,NULL,*mapEraseButton,NULL);
+            if(map[i][j].first){
+                tmp.z-=0.1;
+                tmp1.z-=0.1;
+                bl = new Blocks(map[i][j].first,tmp,tmp1);
+                bl->draw();
+                delete bl;
+            }
         }
     }
 }
@@ -473,7 +471,7 @@ void MapEditZoomOut(int x,int y){
 void MapEditBackgroundUp(int x,int y){
     MapEdit::currentBackground++;
     if(MapEdit::currentBackground>=Map::nOfBackgrounds)
-         MapEdit::currentBackground=Map::nOfBackgrounds-1;
+        MapEdit::currentBackground=Map::nOfBackgrounds-1;
 }
 
 /**
@@ -485,7 +483,7 @@ void MapEditBackgroundUp(int x,int y){
 void MapEditBackgroundDown(int x,int y){
     MapEdit::currentBackground--;
     if(MapEdit::currentBackground<0)
-         MapEdit::currentBackground=0;
+        MapEdit::currentBackground=0;
 }
 
 /**
@@ -648,18 +646,18 @@ void MapEdit::drawPanel(){
         //     GL::setEditText("MapEdit::blockData",value);
         // }
         GL::setEditText("MapEdit::blockData",Util::getFromFile("tmp_clipboard.txt"));
-        GL::setFocous("MapEdit::blockData");
+        GL::setfocus("MapEdit::blockData");
     }
     if(GL::textButtonBehave(nTRectangle::get(725+Scenes::camera.x.movedCam,452+Scenes::camera.y.movedCam,790+Scenes::camera.x.movedCam,474+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),"Copy to file",nTColor::Black(),GL::getTextureByName("btnSkin1"))){
         // if (clip::has(clip::text_format())) {
         //     clip::set_text(GL::getEditText("MapEdit::blockData"));
         // }
         Util::setToFile("tmp_clipboard.txt",GL::getEditText("MapEdit::blockData"));
-        GL::setFocous("MapEdit::blockData");
+        GL::setfocus("MapEdit::blockData");
     }
     if(GL::textButtonBehave(nTRectangle::get(692.5+Scenes::camera.x.movedCam,476+Scenes::camera.y.movedCam,757.5+Scenes::camera.x.movedCam,494+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),"Clear",nTColor::Black(),GL::getTextureByName("btnSkin1"))){
         GL::setEditText("MapEdit::blockData","");
-        GL::setFocous("MapEdit::blockData");
+        GL::setfocus("MapEdit::blockData");
     }
 }
 
@@ -668,7 +666,7 @@ void MapEdit::drawPanel(){
 **/
 void MapEdit::askForSize(){
     GL::setFont("BITMAP_TIMES_ROMAN_24");
-    GL::drawText(nTPoint::get(200,150,1),"Digite os valores e apos digitar precione enter:",GL::getColorByName("red"));
+    GL::drawText(nTPoint::get(200,150,1),"Digite os valores e apos digitar pressione ok:",GL::getColorByName("red"));
     GL::setFont("BITMAP_HELVETICA_18");
     GL::drawText(nTPoint::get(200,400,1),"Seu mapa fica salvo em ./Maps/user.map",GL::getColorByName("red"));
     GL::drawText(nTPoint::get(200,200,1),"Digite o numero de linhas do mapa(19):",GL::getColorByName("red"));
@@ -693,7 +691,7 @@ void MapEdit::askForSize(){
 **/
 void MapEdit::askForLoad(){
     GL::setFont("BITMAP_TIMES_ROMAN_24");
-    GL::drawText(nTPoint::get(200,150,1),"Digite os valores e apos digitar precione enter:",GL::getColorByName("red"));
+    GL::drawText(nTPoint::get(200,150,1),"Digite os valores e apos digitar pressione ok:",GL::getColorByName("red"));
     GL::setFont("BITMAP_HELVETICA_18");
     GL::drawText(nTPoint::get(200,400,1),"Seu mapa fica salvo em ./Maps/user.map",GL::getColorByName("red"));
         char buffer[10];

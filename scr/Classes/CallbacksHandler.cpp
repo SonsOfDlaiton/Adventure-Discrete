@@ -61,26 +61,24 @@ void CallbacksHandler::drawScene(void){
 void CallbacksHandler::reshape(int width, int height){
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(Scenes::camera.x.movedCam, GL::defaultSize.x+Scenes::camera.x.movedCam,GL::defaultSize.y+Scenes::camera.y.movedCam, Scenes::camera.y.movedCam, -1, 1);
-    
+    glOrtho(Scenes::camera.x.movedCam,GL::defaultSize.x+Scenes::camera.x.movedCam,GL::defaultSize.y+Scenes::camera.y.movedCam,Scenes::camera.y.movedCam,-1,1);
     float newAspectRatio=(float)width/(float)height;
     float oldAspectRatio=(float)GL::defaultSize.x/(float)GL::defaultSize.y;
     float scale=1;
     nTPoint crop=nTPoint::get(0,0);
-    if(newAspectRatio > oldAspectRatio){
-        scale = (float)height/(float)GL::defaultSize.y;
-        crop.x = (width - GL::defaultSize.x*scale)/2;
-    }else if(newAspectRatio < oldAspectRatio){
-        scale = (float)width/(float)GL::defaultSize.x;
-        crop.y = (height - GL::defaultSize.y*scale)/2;
+    if(newAspectRatio>oldAspectRatio){
+        scale=(float)height/(float)GL::defaultSize.y;
+        crop.x= (width-GL::defaultSize.x*scale)/2;
+    }else if(newAspectRatio<oldAspectRatio){
+        scale=(float)width/(float)GL::defaultSize.x;
+        crop.y=(height-GL::defaultSize.y*scale)/2;
     }else{
-        scale = (float)width/(float)GL::defaultSize.x;
+        scale=(float)width/(float)GL::defaultSize.x;
     }
-    float w = (float)GL::defaultSize.x*scale;
-    float h = (float)GL::defaultSize.y*scale;
-    GL::currentViewPort=nTRectangle::get(crop.x, crop.y, w, h);
-    glViewport(crop.x, crop.y, w, h);
-
+    float w=(float)GL::defaultSize.x*scale;
+    float h=(float)GL::defaultSize.y*scale;
+    GL::currentViewPort=nTRectangle::get(crop.x,crop.y,w,h);
+    glViewport(crop.x,crop.y,w,h);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
@@ -123,5 +121,5 @@ void CallbacksHandler::update(int n){
     }
     if(GL::rightMouseReleased)IOHandler::ReleaseMouseROffSet=true;
     glutPostRedisplay();
-    glutTimerFunc(GL::getMs(), update, 0);
+    glutTimerFunc(GL::getMs(),update,0);
 }

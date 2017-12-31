@@ -111,7 +111,6 @@ void Blocks::draw(){
         }
         tex=getTextureByIndex();
     }
-
     GL::drawTexture(nTRectangle::getCollision(pos,newSize),color,tex);
     if(checkIfBlocksIsDestrutive(type)){
         nTPoint tmp=pos;
@@ -120,15 +119,6 @@ void Blocks::draw(){
         snprintf(buffer,5,"%d",brokeStage);
         string bID(buffer);
         GL::drawTexture(nTRectangle::getCollision(tmp,newSize),GL::getTextureByName("Quebrado"+bID));
-        if(brokeStage>=10){
-            if(type==GlassBlock)
-                AL::singleton->playSoundByName("glassBreak");
-            else
-                AL::singleton->playSoundByName("BlockBreak");
-            this->isVisible=false;
-            this->pos.x=-16;
-            this->pos.y=-16;
-        }
     }
     if(Mechanics::drawCollisionRec&&checkIfBlocksIsMassive(type))GL::drawCollision(nTRectangle::getCollision(pos, size));
 }
@@ -248,11 +238,12 @@ void Blocks::applyDamage(double damage){
     if(damageState)
         return;
     brokeStage+=damage*3.1;
-    if(brokeStage<0){
-        AL::singleton->playSoundByName("BlockBreak");
+    if(brokeStage>=10){
+        if(type==GlassBlock)
+            AL::singleton->playSoundByName("glassBreak");
+        else
+            AL::singleton->playSoundByName("BlockBreak");
         this->isVisible=false;
-        this->pos.x=-16;
-        this->pos.y=-16;
         delete this;
         return;
     }
@@ -474,139 +465,139 @@ string Blocks::getTexNameByIndex(int BlockType){
         return string("Invisivel");
     }else
 
-        //meio bloco
-        if(BlockType==201||BlockType==251){
-            return string("Meio bloco pedra");
-        }else if(BlockType==202||BlockType==252){
-            return string("Meio bloco madeira");
-        }else if(BlockType==203||BlockType==253){
-            return string("Meio bloco arenito");
-        }else if(BlockType==204||BlockType==254){
-            return string("Meio bloco gelo");
-        }else if(BlockType==255){
-            return string("Meio bloco Cacto");
-        }else
+    //meio bloco
+    if(BlockType==201||BlockType==251){
+        return string("Meio bloco pedra");
+    }else if(BlockType==202||BlockType==252){
+        return string("Meio bloco madeira");
+    }else if(BlockType==203||BlockType==253){
+        return string("Meio bloco arenito");
+    }else if(BlockType==204||BlockType==254){
+        return string("Meio bloco gelo");
+    }else if(BlockType==255){
+        return string("Meio bloco Cacto");
+    }else
 
-        //spawn
-        if(BlockType==1000||(BlockType>=2000&&BlockType<=3000)||(BlockType>5000&&BlockType<60000)){
-        return string("Spawn");
-        }else
+    //spawn
+    if(BlockType==1000||(BlockType>=2000&&BlockType<=3000)||(BlockType>5000&&BlockType<60000)){
+    return string("Spawn");
+    }else
 
-        //alavanca
-        //    if(BlockType>=451&&BlockType<=475){
-        //        return string("Alavanca");
-        //    }else
+    //alavanca
+    //    if(BlockType>=451&&BlockType<=475){
+    //        return string("Alavanca");
+    //    }else
 
-        //tp
-        if(BlockType<0&&BlockType>-200){
-            return string("Cano");
-        }else if(BlockType<0&&BlockType>-400){
-            return string("Door down");
-        }else
+    //tp
+    if(BlockType<0&&BlockType>-200){
+        return string("Cano");
+    }else if(BlockType<0&&BlockType>-400){
+        return string("Door down");
+    }else
 
-        //jumppad
-        if(BlockType==501){
-        return string("jump spring");
-        }else
+    //jumppad
+    if(BlockType==501){
+    return string("jump spring");
+    }else
 
-        //atira
-        if(BlockType>=101&&BlockType<200){
-        return string("Shooter");
-        }else if(BlockType==200){
-        return string("ShooterBus");
-        }else
+    //atira
+    if(BlockType>=101&&BlockType<200){
+    return string("Shooter");
+    }else if(BlockType==200){
+    return string("ShooterBus");
+    }else
 
-        //liquids
-        if(BlockType==376){
-        return string("Agua");
-        }else if(BlockType==377){
-        return string("Lava");
-        }else if(BlockType==378){
-        return string("AguaF");
-        }else if(BlockType==379){
-        return string("LavaF");
-        }else if(BlockType==380){
-        return string("Agua1");
-        }else if(BlockType==381){
-        return string("Lava1");
-        }else
+    //liquids
+    if(BlockType==376){
+    return string("Agua");
+    }else if(BlockType==377){
+    return string("Lava");
+    }else if(BlockType==378){
+    return string("AguaF");
+    }else if(BlockType==379){
+    return string("LavaF");
+    }else if(BlockType==380){
+    return string("Agua1");
+    }else if(BlockType==381){
+    return string("Lava1");
+    }else
 
-        //baus
-        if(BlockType>=476&&BlockType<500){
-        return string("Bau");
-        }else if(BlockType==500){
-        return string("BauOff");
-        }else if(BlockType>=301&&BlockType<=324){
-        return string("PowerUp");
-        }else if(BlockType==325){
-        return string("PowerUpOff");
-        }else
+    //baus
+    if(BlockType>=476&&BlockType<500){
+    return string("Bau");
+    }else if(BlockType==500){
+    return string("BauOff");
+    }else if(BlockType>=301&&BlockType<=324){
+    return string("PowerUp");
+    }else if(BlockType==325){
+    return string("PowerUpOff");
+    }else
 
-        //mapPoints
-        if(BlockType==666){
-        return string("End Game (GG)");
-        }else if(BlockType==4001){
-        return string("checkpoint0");
-        }else if(BlockType==4002){
-        return string("checkpoint1");
-        }else
+    //mapPoints
+    if(BlockType==666){
+    return string("End Game (GG)");
+    }else if(BlockType==4001){
+    return string("checkpoint0");
+    }else if(BlockType==4002){
+    return string("checkpoint1");
+    }else
 
-        //blocos que quebram
-        if(BlockType==326){
-        return string("Tijolo pedra quebrado");
-        }else if(BlockType==327){
-        return string("Pedregulho");
-        }else if(BlockType==328){
-        return string("Bedrock");
-        }else if(BlockType==329){
-        return string("The end");
-        }else if(BlockType==330){
-        return string("Glass");
-        }else
+    //blocos que quebram
+    if(BlockType==326){
+    return string("Tijolo pedra quebrado");
+    }else if(BlockType==327){
+    return string("Pedregulho");
+    }else if(BlockType==328){
+    return string("Bedrock");
+    }else if(BlockType==329){
+    return string("The end");
+    }else if(BlockType==330){
+    return string("Glass");
+    }else
 
-        //decorativos
-        if(BlockType==401){
-            return string("Cogumelos azuis");
-        }else if(BlockType==402){
-            return string("Muda pinheiro");
-        }else if(BlockType==403){
-            return string("Trigo");
-        }else if(BlockType==404){
-            return string("Trigo2");
-        }else if(BlockType==405){
-            return string("Muda seca");
-        }else if(BlockType==406){
-            return string("Muda neve");
-        }else if(BlockType==407){
-            return string("Flor Vermelha");
-        }else if(BlockType==408){
-            return string("Flor Amarela");
-        }else if(BlockType==409){
-            return string("Cogumelo Nether");
-        }else if(BlockType==410){
-            return string("Door up");
-        }else if(BlockType==411){
-            return string("Web");
-        }else if(BlockType==412){
-            return string("Folha");
-        }
+    //decorativos
+    if(BlockType==401){
+        return string("Cogumelos azuis");
+    }else if(BlockType==402){
+        return string("Muda pinheiro");
+    }else if(BlockType==403){
+        return string("Trigo");
+    }else if(BlockType==404){
+        return string("Trigo2");
+    }else if(BlockType==405){
+        return string("Muda seca");
+    }else if(BlockType==406){
+        return string("Muda neve");
+    }else if(BlockType==407){
+        return string("Flor Vermelha");
+    }else if(BlockType==408){
+        return string("Flor Amarela");
+    }else if(BlockType==409){
+        return string("Cogumelo Nether");
+    }else if(BlockType==410){
+        return string("Door up");
+    }else if(BlockType==411){
+        return string("Web");
+    }else if(BlockType==412){
+        return string("Folha");
+    }
 
-        //outros
-        else if(BlockType==526){
-            if(Scenes::current==Scenes::MapEdit)
-                return string("EnemyCtrl");
-            return string("Invisivel");
-        }else if(BlockType==527){
-            if(Scenes::current==Scenes::MapEdit)
-                return string("TutorialBlock");
-            return string("Invisivel");
-        }else if(BlockType==528){
-            if(Scenes::current==Scenes::MapEdit)
-                return string("TutorialPauseBlock");
-            return string("Invisivel");
-        }
+    //outros
+    else if(BlockType==526){
+        if(Scenes::current==Scenes::MapEdit)
+            return string("EnemyCtrl");
+        return string("Invisivel");
+    }else if(BlockType==527){
+        if(Scenes::current==Scenes::MapEdit)
+            return string("TutorialBlock");
+        return string("Invisivel");
+    }else if(BlockType==528){
+        if(Scenes::current==Scenes::MapEdit)
+            return string("TutorialPauseBlock");
+        return string("Invisivel");
+    }
 
-        else{
-            return string("Unknow");
-        }
+    else{
+        return string("Unknow");
+    }
 }

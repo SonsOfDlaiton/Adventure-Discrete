@@ -237,7 +237,6 @@ void Player::makeInvencible(double time){
     else if(sword<0)
         sword=0;
     imuneToDamage=true;
-    //glutTimerFunc(time,playerChangeDamageState,id);
     timeToVunerability=GL::getGameMs()+time;
 }
 

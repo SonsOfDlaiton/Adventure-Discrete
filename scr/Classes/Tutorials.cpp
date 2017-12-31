@@ -60,9 +60,9 @@ void Tutorials::draw(string text){
 			friendTex=GL::getTextureByName("masters");
 		else if(Player::stage==Map::lvlWork)
 			friendTex=GL::getTextureByName("work");
-		else if(Player::stage==Map::lvlGoodTecher)
+		else if(Player::stage==Map::lvlGoodTeacher)
 			friendTex=GL::getTextureByName("teacher");
-		else if(Player::stage==Map::lvlBadTecher)
+		else if(Player::stage==Map::lvlBadTeacher)
 			friendTex=GL::getTextureByName("teacher");
     }
 	if(text.find("Douglas")!=string::npos)

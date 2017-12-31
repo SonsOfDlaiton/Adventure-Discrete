@@ -39,8 +39,8 @@ public:
     static const int lvlGraduation;
     static const int lvlMasters;
     static const int lvlWork;
-    static const int lvlGoodTecher;
-    static const int lvlBadTecher;
+    static const int lvlGoodTeacher;
+    static const int lvlBadTeacher;
 private:
     friend class GL;
 

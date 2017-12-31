@@ -148,7 +148,7 @@ bool Camera::isInTheYScreen(nTRectangle collision){
     return out;
 }
 
-void Camera::followPlayer(Player* pl){
+void Camera::behave(Player* pl){
     if(ABS(pl->hSpeed)>0)
         moveSpeed=ABS(pl->hSpeed/GL::getFPS());
 //    else if(Player::getPlayerById(0)->OnMOveBLock)
@@ -162,7 +162,6 @@ void Camera::followPlayer(Player* pl){
         x.movingCam=-1;
     else
         x.movingCam=0;
-
     if(pl->pos.y<Map::size.y*1.3){
          if((pl->pos.y>GL::defaultSize.y/1.5*1.11+y.movedCam))
             y.movingCam=1;
@@ -172,8 +171,6 @@ void Camera::followPlayer(Player* pl){
             y.movingCam=0;
     }else if(!Camera::freeCam)
             y.movingCam=0;
-
-
     gluLookAt(moveSpeed*x.movingCam,moveSpeed*y.movingCam,0,moveSpeed*x.movingCam,moveSpeed*y.movingCam,-1,0,1,0);
     if(x.movingCam)
         x.movedCam+=moveSpeed*x.movingCam;
