@@ -9,7 +9,7 @@ FunctionAnalyser::FunctionAnalyser(const FunctionAnalyser& orig) {
 FunctionAnalyser::~FunctionAnalyser() {
 }
 
-bool FunctionAnalyser::PRINT=false;
+bool FunctionAnalyser::PRINT=true;
 bool FunctionAnalyser::ANALYSE=PRINT;
 bool FunctionAnalyser::SORTBYCONSUMPTION=true;
 
@@ -19,6 +19,7 @@ unsigned long FunctionAnalyser::Efunctions=0;
 unsigned long FunctionAnalyser::frameStartTime=0;
 unsigned long FunctionAnalyser::frameEndTime=0;
 vector<string> FunctionAnalyser::functionsName;
+vector<string> FunctionAnalyser::activeFunctions;
 vector<unsigned long> FunctionAnalyser::functionsStartTime;
 vector<unsigned long> FunctionAnalyser::functionsEndTime;
 const int FunctionAnalyser::milliseconds=1000000;
@@ -32,6 +33,7 @@ unsigned long FunctionAnalyser::getCurrentTime(){
 
 void FunctionAnalyser::startFrame(){
     if(!ANALYSE) return;
+    activeFunctions.clear();
     functionsName.clear();
     functionsStartTime.clear();
     functionsEndTime.clear();
@@ -56,6 +58,7 @@ int FunctionAnalyser::getIdOfFunction(string name, int startIdx){
 void FunctionAnalyser::startFunction(string name){
     if(!ANALYSE) return;
     int id=getIdOfFunction(name,0);
+    activeFunctions.push_back(name);
     if(id<0){
         functionsName.push_back(name);
         functionsEndTime.push_back(0);
@@ -69,12 +72,16 @@ void FunctionAnalyser::startFunction(string name){
 void FunctionAnalyser::endFunction(string name){
     if(!ANALYSE) return;
     unsigned long endtime=getCurrentTime();
+    activeFunctions.pop_back();
     int idxToSearch=0;
     while(1){
         int idx=getIdOfFunction(name,idxToSearch);
         if(idx<0) return;
         if(functionsEndTime[idx]==0){
             functionsEndTime[idx]=endtime;
+            if(activeFunctions.size()>0&&activeFunctions[activeFunctions.size()-1]!=name){
+                functionsStartTime[getIdOfFunction(activeFunctions[activeFunctions.size()-1],0)]+=endtime-functionsStartTime[idx];
+            }
             return;
         }
         idxToSearch=idx+1;

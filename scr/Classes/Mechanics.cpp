@@ -34,6 +34,7 @@ void Mechanics::applyGravity(){
     Player *pl;
     for(int i=0;i<Entity::players.size();i++){
         pl=(Player*)Entity::players[i];
+        pl->lastMapCollCalc=false;
         if(!pl->itsInTheWater){
             if(!pl->checkNormalForce(pl->getGroundPos())){
                 pl->lastMapCollCalc=false;
@@ -52,8 +53,8 @@ void Mechanics::applyGravity(){
     }
     Enemy *en;
     for(int i=0;i<Entity::enemys.size();i++){
-        en->lastMapCollCalc=false;
         en=(Enemy*)Entity::enemys[i];
+        en->lastMapCollCalc=false;
         if(!en->checkNormalForce()){
             en->vSpeed+=gravity/GL::getFPS();
             en->canJump=false;
@@ -66,8 +67,8 @@ void Mechanics::applyGravity(){
 
     PowerUp *pu;
     for(int i=0;i<PowerUp::self.size();i++){
-        pu->lastMapCollCalc=false;
         pu=(PowerUp*)PowerUp::self[i];
+        pu->lastMapCollCalc=false;
         if(!pu->checkNormalForce()){
             pu->vSpeed+=gravity/2/GL::getFPS();
         }else if(pu->vSpeed>0){

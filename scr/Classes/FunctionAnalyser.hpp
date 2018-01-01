@@ -50,6 +50,7 @@ private:
     static unsigned long Efunctions;
     static unsigned long frameStartTime;
     static unsigned long frameEndTime;
+    static vector<string> activeFunctions;
     static vector<string> functionsName;
     static vector<unsigned long> functionsStartTime;
     static vector<unsigned long> functionsEndTime;

@@ -1,0 +1,355 @@
+# depslib dependency file v1.0
+1514736800 source:z:\programming\the.com-reborn\adventure-discrete\scr\ad.main.cpp
+	"importLibs.h"
+
+1514736808 z:\programming\the.com-reborn\adventure-discrete\scr\importlibs.h
+	<iostream>
+	<cstdio>
+	<cstdlib>
+	<vector>
+	<string>
+	<memory>
+	<time.h>
+	"Classes/GL.hpp"
+	"Classes/AL.hpp"
+	"Classes/AssetsLoader.hpp"
+	"Classes/Util.hpp"
+	"Classes/Scenes.hpp"
+	"Classes/Tutorials.hpp"
+	"Classes/Mechanics.hpp"
+	"Classes/Entity.hpp"
+	"Classes/Player.hpp"
+	"Classes/Enemy.hpp"
+	"Classes/MapEdit.hpp"
+	"Classes/nTFont.hpp"
+	"Classes/nTFontChar.hpp"
+	"Classes/PowerUp.hpp"
+	"Classes/Bullet.hpp"
+	"Classes/Language.hpp"
+
+1514736804 z:\programming\the.com-reborn\adventure-discrete\scr\classes\gl.hpp
+	<GL/glut.h>
+	<GLUT/glut.h>
+	<GL/freeglut.h>
+	<time.h>
+	"../Libs/soil/SOIL.h"
+	"../Libs/clip/clip.h"
+	"../Libs/clip/clip_win.h"
+	"../Libs/clip/clip_osx.h"
+	"../Libs/clip/clip_none.h"
+	"Util.hpp"
+	"Map.hpp"
+	"nTFont.hpp"
+
+1514736806 z:\programming\the.com-reborn\adventure-discrete\scr\libs\soil\soil.h
+
+1514736806 z:\programming\the.com-reborn\adventure-discrete\scr\libs\clip\clip.h
+	<cassert>
+	<string>
+
+1514736806 z:\programming\the.com-reborn\adventure-discrete\scr\libs\clip\clip_win.h
+
+1514736806 z:\programming\the.com-reborn\adventure-discrete\scr\libs\clip\clip_osx.h
+
+1514736806 z:\programming\the.com-reborn\adventure-discrete\scr\libs\clip\clip_none.h
+	<cassert>
+	<map>
+	<vector>
+
+1514736804 z:\programming\the.com-reborn\adventure-discrete\scr\classes\util.hpp
+	"FunctionAnalyser.hpp"
+	<vector>
+	<string>
+	<cstdlib>
+	<iostream>
+	<fstream>
+	<math.h>
+	<stdlib.h>
+	<stdio.h>
+	<algorithm>
+
+1514751544 z:\programming\the.com-reborn\adventure-discrete\scr\classes\functionanalyser.hpp
+	<chrono>
+	<iostream>
+	<vector>
+	<string>
+	<algorithm>
+	<iomanip>
+
+1514736802 z:\programming\the.com-reborn\adventure-discrete\scr\classes\map.hpp
+	"Util.hpp"
+	"GL.hpp"
+	"Background.hpp"
+
+1514736802 z:\programming\the.com-reborn\adventure-discrete\scr\classes\background.hpp
+	"Util.hpp"
+
+1514736806 z:\programming\the.com-reborn\adventure-discrete\scr\classes\ntfont.hpp
+	<iostream>
+	<fstream>
+	<sstream>
+	"GL.hpp"
+	"nTFontChar.hpp"
+	"Util.hpp"
+
+1514736800 z:\programming\the.com-reborn\adventure-discrete\scr\classes\ntfontchar.hpp
+	"Util.hpp"
+
+1514736802 z:\programming\the.com-reborn\adventure-discrete\scr\classes\al.hpp
+	<AL/al.h>
+	<AL/alc.h>
+	"Util.hpp"
+
+1514736806 z:\programming\the.com-reborn\adventure-discrete\scr\classes\assetsloader.hpp
+	"Util.hpp"
+	"GL.hpp"
+	"AL.hpp"
+	"Player.hpp"
+
+1514736804 z:\programming\the.com-reborn\adventure-discrete\scr\classes\player.hpp
+	"Util.hpp"
+	"Entity.hpp"
+	"GL.hpp"
+	"Mechanics.hpp"
+	"Enemy.hpp"
+	"Bullet.hpp"
+	"Blocks.hpp"
+	"IOHandler.hpp"
+	"Camera.hpp"
+
+1514736802 z:\programming\the.com-reborn\adventure-discrete\scr\classes\entity.hpp
+	"Util.hpp"
+	"GL.hpp"
+	"Mechanics.hpp"
+
+1514736804 z:\programming\the.com-reborn\adventure-discrete\scr\classes\mechanics.hpp
+	"Util.hpp"
+	"GL.hpp"
+	"Map.hpp"
+	"Tutorials.hpp"
+
+1514736800 z:\programming\the.com-reborn\adventure-discrete\scr\classes\tutorials.hpp
+	"Util.hpp"
+	"GL.hpp"
+
+1514736804 z:\programming\the.com-reborn\adventure-discrete\scr\classes\enemy.hpp
+	"Util.hpp"
+	"Scenes.hpp"
+	"Entity.hpp"
+	"Bullet.hpp"
+	"Camera.hpp"
+
+1514736802 z:\programming\the.com-reborn\adventure-discrete\scr\classes\scenes.hpp
+	"Util.hpp"
+	"Mechanics.hpp"
+	"Tutorials.hpp"
+	"MapEdit.hpp"
+	"Enemy.hpp"
+	"Camera.hpp"
+
+1514736804 z:\programming\the.com-reborn\adventure-discrete\scr\classes\mapedit.hpp
+	"Util.hpp"
+	"GL.hpp"
+	"Blocks.hpp"
+	"Camera.hpp"
+	"Background.hpp"
+
+1514736806 z:\programming\the.com-reborn\adventure-discrete\scr\classes\blocks.hpp
+	"Util.hpp"
+	"Scenes.hpp"
+	"AL.hpp"
+	"Player.hpp"
+
+1514736802 z:\programming\the.com-reborn\adventure-discrete\scr\classes\camera.hpp
+	"Util.hpp"
+	"GL.hpp"
+
+1514736804 z:\programming\the.com-reborn\adventure-discrete\scr\classes\bullet.hpp
+	"Util.hpp"
+	"Scenes.hpp"
+	"Camera.hpp"
+
+1514736806 z:\programming\the.com-reborn\adventure-discrete\scr\classes\iohandler.hpp
+	"Util.hpp"
+	"GL.hpp"
+
+1514736802 z:\programming\the.com-reborn\adventure-discrete\scr\classes\powerup.hpp
+	"Util.hpp"
+	"Mechanics.hpp"
+	"Entity.hpp"
+
+1514736800 z:\programming\the.com-reborn\adventure-discrete\scr\classes\language.hpp
+	"Util.hpp"
+
+1514736804 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\al.cpp
+	"AL.hpp"
+
+1514736802 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\assetsloader.cpp
+	"AssetsLoader.hpp"
+
+1514736802 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\background.cpp
+	"Background.hpp"
+	"GL.hpp"
+	"Scenes.hpp"
+
+1514736802 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\blocks.cpp
+	"Blocks.hpp"
+
+1514736804 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\bullet.cpp
+	"Bullet.hpp"
+
+1514736804 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\callbackshandler.cpp
+	"CallbacksHandler.hpp"
+	"GL.hpp"
+	"Scenes.hpp"
+	"IOHandler.hpp"
+
+1514736806 z:\programming\the.com-reborn\adventure-discrete\scr\classes\callbackshandler.hpp
+	"Util.hpp"
+
+1514736802 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\camera.cpp
+	"Camera.hpp"
+	"Player.hpp"
+
+1514736806 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\enemy.cpp
+	"Enemy.hpp"
+
+1514736804 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\entity.cpp
+	"Entity.hpp"
+	"Player.hpp"
+	"Enemy.hpp"
+	"Blocks.hpp"
+
+1514736802 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\functionanalyser.cpp
+	"FunctionAnalyser.hpp"
+
+1514736802 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\gl.cpp
+	"GL.hpp"
+	"AssetsLoader.hpp"
+	"IOHandler.hpp"
+	"CallbacksHandler.hpp"
+
+1514736802 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\iohandler.cpp
+	"IOHandler.hpp"
+	"Scenes.hpp"
+
+1514736802 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\language.cpp
+	"Language.hpp"
+
+1514751166 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\map.cpp
+	"Map.hpp"
+	"Player.hpp"
+	"Enemy.hpp"
+	"Scenes.hpp"
+	"Blocks.hpp"
+	"Tutorials.hpp"
+	"Bullet.hpp"
+	"PowerUp.hpp"
+	"AssetsLoader.hpp"
+	"Camera.hpp"
+
+1514736804 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\mapedit.cpp
+	"MapEdit.hpp"
+
+1514750872 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\mechanics.cpp
+	"Mechanics.hpp"
+	"Player.hpp"
+	"PowerUp.hpp"
+	"Enemy.hpp"
+	"Blocks.hpp"
+	"Camera.hpp"
+
+1514736804 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\ntfont.cpp
+	"nTFont.hpp"
+
+1514736802 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\ntfontchar.cpp
+	"nTFontChar.hpp"
+
+1514736804 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\player.cpp
+	"Player.hpp"
+
+1514736804 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\powerup.cpp
+	"PowerUp.hpp"
+	"Scenes.hpp"
+	"Camera.hpp"
+
+1514736804 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\scenes.cpp
+	"Scenes.hpp"
+	"Bullet.hpp"
+	"PowerUp.hpp"
+	"AL.hpp"
+	"Camera.hpp"
+
+1514736802 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\tutorials.cpp
+	"Tutorials.hpp"
+	"Scenes.hpp"
+
+1514736802 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\util.cpp
+	"Util.hpp"
+	"GL.hpp"
+
+1514736806 source:z:\programming\the.com-reborn\adventure-discrete\scr\libs\soil\image_dxt.c
+	"image_DXT.h"
+	<math.h>
+	<stdlib.h>
+	<string.h>
+	<stdio.h>
+
+1514736808 z:\programming\the.com-reborn\adventure-discrete\scr\libs\soil\image_dxt.h
+
+1514736808 source:z:\programming\the.com-reborn\adventure-discrete\scr\libs\soil\image_helper.c
+	"image_helper.h"
+	<stdlib.h>
+	<math.h>
+
+1514736808 z:\programming\the.com-reborn\adventure-discrete\scr\libs\soil\image_helper.h
+
+1514736808 source:z:\programming\the.com-reborn\adventure-discrete\scr\libs\soil\soil.c
+	<windows.h>
+	<wingdi.h>
+	<GL/gl.h>
+	<OpenGL/gl.h>
+	<Carbon/Carbon.h>
+	<GL/gl.h>
+	<GL/glx.h>
+	"SOIL.h"
+	"stb_image_aug.h"
+	"image_helper.h"
+	"image_DXT.h"
+	<stdlib.h>
+	<string.h>
+
+1514736808 z:\programming\the.com-reborn\adventure-discrete\scr\libs\soil\stb_image_aug.h
+	<stdio.h>
+
+1514736806 source:z:\programming\the.com-reborn\adventure-discrete\scr\libs\soil\stb_image_aug.c
+	"stb_image_aug.h"
+	<math.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<memory.h>
+	<assert.h>
+	<stdarg.h>
+	"stbi_DDS_aug.h"
+	"stbi_DDS_aug_c.h"
+
+1514736808 z:\programming\the.com-reborn\adventure-discrete\scr\libs\soil\stbi_dds_aug.h
+
+1514736808 z:\programming\the.com-reborn\adventure-discrete\scr\libs\soil\stbi_dds_aug_c.h
+
+1514736806 source:z:\programming\the.com-reborn\adventure-discrete\scr\libs\clip\clip.cpp
+	"clip.h"
+	"clip_win.h"
+	"clip_osx.h"
+	"clip_none.h"
+	<vector>
+	<stdexcept>
+
+1514736806 source:z:\programming\the.com-reborn\adventure-discrete\scr\libs\clip\clip_win.cpp
+	"clip.h"
+	"clip_win.h"
+	<cassert>
+	<vector>
+	<windows.h>
+

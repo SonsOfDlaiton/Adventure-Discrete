@@ -298,7 +298,7 @@ void Map::refresh(){
                 bl->move(Util::direction_up,bl->moveSpeed/GL::getFPS());
             else if(Blocks::checkIfBlocksIsHalfBlockH(bl->type)&&Scenes::camera.isInTheYScreen(nTRectangle::getCollision(bl->pos,bl->size)))
                 bl->move(Util::direction_left,bl->moveSpeed/GL::getFPS());
-            else if(Blocks::checkIfBlocksIsShooter(bl->type)&&!bl->type==Blocks::BusShooterBlock&&Scenes::camera.isInTheXScreen(nTRectangle::getCollision(bl->pos,bl->size))){
+            else if(Blocks::checkIfBlocksIsShooter(bl->type)&&bl->type!=Blocks::BusShooterBlock&&Scenes::camera.isInTheXScreen(nTRectangle::getCollision(bl->pos,bl->size))){
                 if(Util::timerWithInterval(Bullet::timeToShoot/2.5)&&Player::getPlayerById(0)->life>0){
                     nTPoint tmp=bl->pos;
                     tmp.z=0.9;
@@ -308,7 +308,7 @@ void Map::refresh(){
                     new Bullet(Bullet::errorBlockBullet,-Bullet::baseSpeed,tmp,nTPoint::get(40,20,1));
                 }
             }else if(bl->type==Blocks::BusShooterBlock){
-                if(Util::timerWithInterval(Bullet::timeToShoot)&&Player::getPlayerById(0)->life>0){
+                if(Util::timerWithInterval(Bullet::timeToShoot)&&Player::getPlayerById(0)->life>0&&Scenes::camera.isInTheXScreen(nTRectangle::getCollision(bl->pos,bl->size))){
                     nTPoint tmp=bl->pos;
                     tmp.z=0.9;
                     tmp.y-=Blocks::defaultBlockSize.y/3;
