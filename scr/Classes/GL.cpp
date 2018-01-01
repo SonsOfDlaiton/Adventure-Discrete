@@ -11,7 +11,9 @@ GL::GL(string name,double FPS,GLbitfield displayMode,int windowXsize,int windowY
     glutInitWindowSize(windowXsize, windowYsize);
     defaultSize.set(windowXsize,windowYsize,0);
     currentViewPort=nTRectangle::get(0,0,defaultSize.x,defaultSize.y);
-    glutInitWindowPosition(0, 0);
+    int resolutionX=glutGet(GLUT_SCREEN_WIDTH);
+    int resolutionY=glutGet(GLUT_SCREEN_HEIGHT);
+    glutInitWindowPosition(resolutionX/2-windowXsize/2, resolutionY/2-windowYsize/2);
     glutCreateWindow(name.c_str());
     GL::clearColor.set(clearcolor.R,clearcolor.G,clearcolor.B,clearcolor.A);
     glClearColor(clearcolor.R,clearcolor.G,clearcolor.B,clearcolor.A);
