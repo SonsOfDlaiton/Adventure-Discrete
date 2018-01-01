@@ -1,6 +1,6 @@
 FORMAT=.cpp
 CC=g++
-JSC=~/.emscripten_compiler/em++
+JSC=~/.emscripten_bin/em++
 rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
 WEBFILES=$(call rwildcard, res/, *)
 SRC=$(wildcard scr/*$(FORMAT))
