@@ -9,7 +9,7 @@ FunctionAnalyser::FunctionAnalyser(const FunctionAnalyser& orig) {
 FunctionAnalyser::~FunctionAnalyser() {
 }
 
-bool FunctionAnalyser::PRINT=true;
+bool FunctionAnalyser::PRINT=false;
 bool FunctionAnalyser::ANALYSE=PRINT;
 bool FunctionAnalyser::SORTBYCONSUMPTION=true;
 

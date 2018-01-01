@@ -87,10 +87,7 @@ void Bullet::behave(){
                 bu->spriteIndex++;
                 if(bu->spriteIndex==4)
                     bu->spriteIndex=0;
-                char buffer[5];
-                snprintf(buffer,5,"%d",bu->spriteIndex);
-                string str(buffer);
-                bu->tex=GL::getTextureByName("StrongAtk"+str);
+                bu->tex=GL::getTextureByName("StrongAtk"+Util::intToStr(bu->spriteIndex));
             }
             bu->checkCollisionWithEntity(false);
         }else if(bu->type==weakXAtackBullet){//atk fraco
@@ -98,10 +95,7 @@ void Bullet::behave(){
                 bu->spriteIndex++;
                 if(bu->spriteIndex==3)
                     bu->spriteIndex=0;
-                char buffer[5];
-                snprintf(buffer,5,"%d",bu->spriteIndex);
-                string str(buffer);
-                bu->tex=GL::getTextureByName("WeakAtk"+str);
+                bu->tex=GL::getTextureByName("WeakAtk"+Util::intToStr(bu->spriteIndex));
             }
             bu->checkCollisionWithEntity(false);
         }else if(bu->type==busBullet){//intercamp

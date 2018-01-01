@@ -903,7 +903,6 @@ nTPoint GL::getModelViewPoint(nTPoint point){
 void GL::drawHUD(){
     GL::setFont("BITMAP_HELVETICA_18");
     nTPoint point;
-    char buffer[5];
     point.set(Scenes::camera.x.movedCam+42,Scenes::camera.y.movedCam+20,1);
     GL::drawRectangle(nTRectangle::get(Scenes::camera.x.movedCam,Scenes::camera.y.movedCam+8,Scenes::camera.x.movedCam+GL::defaultSize.x,Scenes::camera.y.movedCam+34,0.9),nTColor::get(0.8,0.7,0.9,0.7));
     for(int i=0;i<Player::getPlayerById(0)->life;i++){
@@ -915,14 +914,10 @@ void GL::drawHUD(){
     point.set(Scenes::camera.x.movedCam+10,Scenes::camera.y.movedCam+23,1);
     GL::drawCentered_Y_Text(point,"Vida:",nTColor::Black());
     point.set(Scenes::camera.x.movedCam+650,Scenes::camera.y.movedCam+23,1);
-    snprintf(buffer,5,"%d",(int)GL::getGameMs()/1000);
-    string strT(buffer);
-    GL::drawCentered_Y_Text(point,"Tempo(s): "+strT,nTColor::Black());
+    GL::drawCentered_Y_Text(point,"Tempo(s): "+Util::intToStr((int)GL::getGameMs()/1000),nTColor::Black());
     if(!Scenes::freeGameMode){
         point.set(Scenes::camera.x.movedCam+186,Scenes::camera.y.movedCam+23,1);
-        snprintf(buffer,5,"%d",Player::lives);
-        string strL(buffer);
-        GL::drawCentered_Y_Text(point,"Vidas: "+strL,nTColor::Black());
+        GL::drawCentered_Y_Text(point,"Vidas: "+Util::intToStr(Player::lives),nTColor::Black());
         point.set(Scenes::camera.x.movedCam+280,Scenes::camera.y.movedCam+23,1);
         string strF;
         if(Player::stage==1){
@@ -940,11 +935,7 @@ void GL::drawHUD(){
         }
         GL::drawCentered_Y_Text(point,"Fase: "+strF,nTColor::Black());
         point.set(Scenes::camera.x.movedCam+480,Scenes::camera.y.movedCam+23,1);
-        snprintf(buffer,5,"%.4f",Player::coeficiente);
-
-
-        string strC(buffer);
-        GL::drawCentered_Y_Text(point,"Coeficiente: "+strC,nTColor::Black());
+        GL::drawCentered_Y_Text(point,"Coeficiente: "+Util::floatToStr(Player::coeficiente),nTColor::Black());
     }
 }
 

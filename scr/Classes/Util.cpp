@@ -41,10 +41,7 @@ string Util::newPath(string path){
  *	@return the specific resource name
 **/
 string Util::getDinamicName(string p1,int idx){
-    char buffer[5];
-    snprintf(buffer,5,"%d",idx);
-    string str1(buffer);
-    return p1+str1;
+    return p1+Util::intToStr(idx);
 }
 
 /**
@@ -56,14 +53,7 @@ string Util::getDinamicName(string p1,int idx){
  *	@return the specific resource filepath
 **/
 string Util::getDinamicPath(string p1,int idx, string p3){
-    p1=newPath(p1);
-    char buffer[5];
-    snprintf(buffer,5,"%d",idx);
-    string out(p1);
-    string str1(buffer);
-    string str2(p3);
-    out+=str1+str2;
-    return out;
+    return newPath(p1)+Util::intToStr(idx)+p3;
 }
 
 /**
@@ -181,4 +171,22 @@ bool Util::isInsideBox(nTRectangle collider, nTPoint point){
 		Y=collider.p1.y;
 	}
 	return point.x>=x&&point.x<=X&&point.y>=y&&point.y<=Y;
+}
+
+string Util::intToStr(int i){
+	char buffer[5];
+    snprintf(buffer,5,"%d",i);
+    string str(buffer);
+    return str;
+}
+
+string Util::floatToStr(float f){
+	char buffer[5];
+    snprintf(buffer,5,"%.4f",f);
+    string str(buffer);
+    return str;
+}
+
+int Util::strToInt(string str){
+	return stoi(str);
 }

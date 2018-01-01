@@ -463,10 +463,7 @@ void Scenes::drawPreGame(){
 	GL::drawText(nTPoint::get(110,350,1),"Modo Campanha.",GL::getColorByName("violet"));
 	GL::drawText(nTPoint::get(500,350,1),"Modo livre.",GL::getColorByName("violet"));
 	GL::setFont("BITMAP_HELVETICA_18");
-	char buffer[5];
-	snprintf(buffer,5,"%.2f",Player::globalCoeficiente);
-	string strC(buffer);
-	GL::drawText(nTPoint::get(95,325,1),"Coeficiente Global: "+strC,GL::getColorByName("blue"));
+	GL::drawText(nTPoint::get(95,325,1),"Coeficiente Global: "+Util::floatToStr(Player::globalCoeficiente),GL::getColorByName("blue"));
 	if(GL::buttonBehave(nTRectangle::get(200,550,340,500),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon")))
 		current=menu;
 	if(GL::buttonBehave(nTRectangle::get(50,300,350,100),GL::getColorByName("mouseSelected"),GL::getTextureByName("campaignIcon")))
@@ -530,10 +527,7 @@ void Scenes::drawYouWin(){
 	GL::drawTexture(nTRectangle::get(0,GL::defaultSize.y,GL::defaultSize.x,0,-0.9),GL::getTextureByName("Win"));
 	GL::drawText(nTPoint::get(345,350,1),"Parabens!! Voce cumpriu sua vida",GL::getColorByName("violet"));
 	GL::drawText(nTPoint::get(345,385,1),"academica no DECOM com sucesso.",GL::getColorByName("violet"));
-	char buffer[5];
-	snprintf(buffer,5,"%.2f",Player::globalCoeficiente);
-	string strC(buffer);
-	GL::drawText(nTPoint::get(345,420,1),"Coeficiente Global: "+strC,GL::getColorByName("green"));
+	GL::drawText(nTPoint::get(345,420,1),"Coeficiente Global: "+Util::floatToStr(Player::globalCoeficiente),GL::getColorByName("green"));
 	if(GL::buttonBehave(nTRectangle::get(460,500,600,425),GL::getColorByName("mouseSelected"),GL::getTextureByName("Menu1")))
 		current=credits;
 }

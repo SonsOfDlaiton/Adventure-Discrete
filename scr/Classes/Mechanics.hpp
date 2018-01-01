@@ -30,7 +30,7 @@ public:
     static const int TOP,BOTTOM,LEFT,RIGHT,NOCOLLISION;
 private:
     static void applyGravity();
-    static bool ignoreCollisionWithPlayer(nTPoint pos,int blockType);
+    bool ignoreCollisionWithPlayer(nTPoint pos,int blockType);
 
     bool lastMapCollCalc;
     nTPoint lastMapCollPos;

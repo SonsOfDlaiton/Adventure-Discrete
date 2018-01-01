@@ -263,10 +263,7 @@ bool MapEdit::save(){
         if(index<0){
             return Map::saveMap(Util::newPath("Maps/user.map"),-1);
         }else{
-            char buffer[5];
-            snprintf(buffer,5,"%d",index);
-            string str(buffer);
-            return Map::saveMap(Util::newPath(("Maps/map"+str+".map")),index);
+            return Map::saveMap(Util::newPath(("Maps/map"+Util::intToStr(index)+".map")),index);
         }
     }
     return false;
@@ -388,10 +385,7 @@ void MapEditSetBlock(int x,int y){
  *	Draw everything on the screen
 **/
 void MapEdit::draw(){
-    char buffer[5];
-    snprintf(buffer,5,"%d",currentBackground);
-    string mapID(buffer);
-    GL::drawTexture(nTRectangle::get(Scenes::camera.x.movedCam,MapEdit::HUDarea.y+Scenes::camera.y.movedCam,MapEdit::HUDarea.x+Scenes::camera.x.movedCam,Scenes::camera.y.movedCam,-0.9),GL::getTextureByName("background"+mapID));
+    GL::drawTexture(nTRectangle::get(Scenes::camera.x.movedCam,MapEdit::HUDarea.y+Scenes::camera.y.movedCam,MapEdit::HUDarea.x+Scenes::camera.x.movedCam,Scenes::camera.y.movedCam,-0.9),GL::getTextureByName("background"+Util::intToStr(currentBackground)));
     drawPanel();
     drawLines();
     Blocks *bl;
@@ -694,10 +688,7 @@ void MapEdit::askForLoad(){
     GL::drawText(nTPoint::get(200,150,1),"Digite os valores e apos digitar pressione ok:",GL::getColorByName("red"));
     GL::setFont("BITMAP_HELVETICA_18");
     GL::drawText(nTPoint::get(200,400,1),"Seu mapa fica salvo em ./Maps/user.map",GL::getColorByName("red"));
-        char buffer[10];
-        snprintf(buffer,10,"%d",(int)(Map::maps.size()-1));
-        string maxMap(buffer);
-    GL::drawText(nTPoint::get(200,200,1),"Digite qual mapa quer carregar(0-"+maxMap+")(u):",GL::getColorByName("red"));
+    GL::drawText(nTPoint::get(200,200,1),"Digite qual mapa quer carregar(0-"+Util::intToStr((int)(Map::maps.size()-1))+")(u):",GL::getColorByName("red"));
     GL::editTextBehave(nTRectangle::get(530,175,600,200,1),"BITMAP_HELVETICA_18",GL::getColorByName("blue"),"MapEdit::askForLoad",false,true);
     string input=GL::getEditText("MapEdit::askForLoad");
     for(int i=0;i<input.size();i++)

@@ -47,7 +47,10 @@ void Mechanics::applyGravity(){
                     pl->canJump=true;
             }
         }else{
-            pl->vSpeed+=gravity/GL::getFPS()/3;
+            if(!pl->checkNormalForce())
+                pl->vSpeed+=gravity/GL::getFPS()/3;
+            else if(pl->vSpeed>0)
+                pl->vSpeed=0;
             pl->canJump=true;
         }
     }
@@ -179,7 +182,7 @@ void Mechanics::move(int dir,double steeps){
       for(int i=0; i<lastMapColl.size(); i++){
         bl=Map::getBlockById(lastMapColl[i].blockId);
         type=bl->type;
-        if((lastMapColl[i].collision.firstObj==RIGHT||lastMapColl[i].collision.firstObj==LEFT)&&Blocks::checkIfBlocksIsFilled(type)&&!ignoreCollisionWithPlayer(pos,type)){
+        if((lastMapColl[i].collision.firstObj==RIGHT||lastMapColl[i].collision.firstObj==LEFT)&&Blocks::checkIfBlocksIsFilled(type)&&!ignoreCollisionWithPlayer(pos,type)){ 
           collision=true;
           break;
         }

@@ -601,12 +601,9 @@ Blocks* Map::getBlockById(int id){
 }
 
 void Map::drawMapBackground(){
-    char buffer[5];
-    snprintf(buffer,5,"%d",1);
-    string mapID(buffer);
     for(int i=0; i<actualMap.backgrounds.size(); i++){
         if(!actualMap.backgrounds[i].getMove())
-            GL::drawTexture(nTRectangle::get(Scenes::camera.x.movedCam,GL::defaultSize.y+Scenes::camera.y.movedCam,GL::defaultSize.x+Scenes::camera.x.movedCam,Scenes::camera.y.movedCam,actualMap.backgrounds[i].getzAxis()),GL::getTextureByName(actualMap.backgrounds[i].getName()));//GL::getTextureByName(actualMap.backgrounds[i].getName()));
+            GL::drawTexture(nTRectangle::get(Scenes::camera.x.movedCam,GL::defaultSize.y+Scenes::camera.y.movedCam,GL::defaultSize.x+Scenes::camera.x.movedCam,Scenes::camera.y.movedCam,actualMap.backgrounds[i].getzAxis()),GL::getTextureByName(actualMap.backgrounds[i].getName()));
         else
             actualMap.backgrounds[i].drawParalaxBackground(size);
     }

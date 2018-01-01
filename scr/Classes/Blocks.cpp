@@ -115,10 +115,7 @@ void Blocks::draw(){
     if(checkIfBlocksIsDestrutive(type)){
         nTPoint tmp=pos;
         tmp.z=1;
-        char buffer[5];
-        snprintf(buffer,5,"%d",brokeStage);
-        string bID(buffer);
-        GL::drawTexture(nTRectangle::getCollision(tmp,newSize),GL::getTextureByName("Quebrado"+bID));
+        GL::drawTexture(nTRectangle::getCollision(tmp,newSize),GL::getTextureByName("Quebrado"+Util::intToStr(brokeStage)));
     }
     if(Mechanics::drawCollisionRec&&checkIfBlocksIsMassive(type))GL::drawCollision(nTRectangle::getCollision(pos, size));
 }

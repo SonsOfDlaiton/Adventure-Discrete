@@ -306,18 +306,15 @@ void Player::especificDraw(){
     }
     Player::refreshCoeficiente();
     if(atacking&&!lowered){
-        char buffer[5];
-        snprintf(buffer,5,"%d",sword);
-        string sID(buffer);
         swordCollision.p0.z=1;
         swordCollision.p1.z=1;
         if(atackDirection==Util::direction_up||atackDirection==Util::direction_down)
-            GL::drawTexture(swordCollision,GL::getTextureByName("Sword"+sID),Util::orientation_rotated);
+            GL::drawTexture(swordCollision,GL::getTextureByName("Sword"+Util::intToStr(sword)),Util::orientation_rotated);
         else{
             if(atackDirection==Util::direction_right)
-                GL::drawTexture(swordCollision,GL::getTextureByName("Sword"+sID));
+                GL::drawTexture(swordCollision,GL::getTextureByName("Sword"+Util::intToStr(sword)));
             else
-                GL::drawTexture(swordCollision,GL::getTextureByName("Sword"+sID),Util::orientation_left);
+                GL::drawTexture(swordCollision,GL::getTextureByName("Sword"+Util::intToStr(sword)),Util::orientation_left);
         }
     }
     FunctionAnalyser::endFunction("Player::especificDraw");
@@ -398,10 +395,7 @@ void Player::atack(int type){
             if(Mechanics::drawCollisionRec)GL::drawCollision(swordCollision);
             if(!alReadyAtacked){
                 int SS=rand()%6;
-                char buffer[5];
-                snprintf(buffer,5,"%d",SS);
-                string strS(buffer);
-                AL::singleton->playSoundByName("sword"+strS);
+                AL::singleton->playSoundByName("sword"+Util::intToStr(SS));
                 alReadyAtacked=true;
             }
 
