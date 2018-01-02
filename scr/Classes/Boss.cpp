@@ -19,19 +19,16 @@ Boss::Boss(string data,nTPoint spawn) {
     //if(sprite_str!="")
      //   this->animations=Entity::getAnimationVector(Boss::bossAnim[getSpritesId(sprite_str)],Boss::bossAnimSize[getSpritesId(sprite_str)]);
 
-    this->life=adc->getFloat("life",1);
-    this->imunityTime=adc->getInt("imunityTime",200);
+    this->life=adc->getNumber("life",1);
+    this->imunityTime=adc->getNumber("imunityTime",200);
     ADCode* adc_events=adc->getSubSection("events");
     pair<string,vector<string> > event;
     while(adc_events->next(event)){
         BossEvent be;
         be.event=event.first;
-        cout<<"Event vector:\n";
-        for(string n:event.second)
-            cout<<n<<endl;
-        //be.params=ADCode::strToStrVector(event.second[0]);
-        //be.probability=Util::strToFloat(event.second[1]);
-        //be.minimumLife=Util::strToInt(event.second[2]);
+        be.params=ADCode::strToStrVector(event.second[0]);
+        be.probability=Util::strToFloat(event.second[1]);
+        be.minimumLife=Util::strToInt(event.second[2]);
         events.push_back(be);
     }
 

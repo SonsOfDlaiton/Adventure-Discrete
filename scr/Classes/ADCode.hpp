@@ -18,6 +18,9 @@ public:
     string getData();
     float getFloat(string field);
     float getFloat(string field,float defaultval);
+    float getNumber(string field);
+    float getNumber(string field,float defaultval);
+
 
     bool nextInt(int& i);
     bool nextFloat(float& f);

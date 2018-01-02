@@ -9,7 +9,6 @@ ADCode::ADCode(string data, string name) {
     }catch(exception& e){
         cout<<"ADCode ERROR:\n------------\n"<<data<<"\n------------\n";
     }
-    printInterpretedData();
 };
 
 ADCode::ADCode(const ADCode& orig) {
@@ -180,11 +179,12 @@ void ADCode::decode(){
                         lex_stack.pop_back();
                         if(lex_stack[lex_stack.size()-1].second=="assign"){
                             strs.push_back(pair<string,string>(lex_stack[lex_stack.size()-1].first,str));
-                        }else{
-                            cout<<"ADCode ERROR: Expected Assign\n";
-                        }
+                            lex_stack.pop_back();
+                        }else if(lex_stack[lex_stack.size()-1].second=="vector"||lex_stack[lex_stack.size()-1].second=="separator")
+                            lex_stack.push_back(pair<string,string>(str,"separator"));
+                        else
+                            cout<<"ADCode ERROR: Expected Destiny to string\n";
                         last=i+1;
-                        lex_stack.pop_back();
                     }else{
                         lex_stack.push_back(pair<string,string>("","string"));
                         last=i+1;
@@ -199,7 +199,8 @@ void ADCode::decode(){
 
                 case vectorSeparator:
                     if(lex_stack.size()>0)if(lex_stack[lex_stack.size()-1].second=="string") break;
-                    lex_stack.push_back(pair<string,string>(data.substr(last,i-last),"separator"));
+                    if(data.substr(last,i-last)!="")
+                        lex_stack.push_back(pair<string,string>(data.substr(last,i-last),"separator"));
                     last=i+1;
                     break;
 
@@ -207,30 +208,28 @@ void ADCode::decode(){
                     if(lex_stack.size()>0)if(lex_stack[lex_stack.size()-1].second=="string") break;
                     lex_stack.push_back(pair<string,string>(data.substr(last,i-last),"separator"));
                     last=i+1;
-                    if(lex_stack[lex_stack.size()-1].second=="separator"){
-                        string str_vec="";
-                        while(lex_stack.size()>0&&lex_stack[lex_stack.size()-1].second=="separator"){
+                    string str_vec="";
+                    while(lex_stack.size()>0&&lex_stack[lex_stack.size()-1].second=="separator"){
+                        if(lex_stack[lex_stack.size()-1].first!="")
                             str_vec+=lex_stack[lex_stack.size()-1].first+vectorSeparator;
-                            lex_stack.pop_back();
-                        }
-                        if(lex_stack.size()>0){
-                            if(lex_stack[lex_stack.size()-1].second=="vector"){
-                                lex_stack.pop_back();
-                            }else{
-                                cout<<"ADCode ERROR: Expected Vector Begin-1\n";
-                            }
-                            if(lex_stack[lex_stack.size()-1].second=="assign")
-                                vstr.push_back(pair<string,vector<string> >(lex_stack[lex_stack.size()-1].first,strToStrVector(str_vec)));
-                            else if(lex_stack[lex_stack.size()-1].second=="vector"||lex_stack[lex_stack.size()-1].second=="separator")
-                                lex_stack.push_back(pair<string,string>(str_vec,"separator"));
-                            else{
-                                cout<<"ADCode ERROR: Expected Vector Begin-2\n";
-                            }
-                            lex_stack.pop_back();
-                        }
-                        last=i+1;
-
+                        lex_stack.pop_back();
                     }
+                    if(lex_stack.size()>0){
+                        if(lex_stack[lex_stack.size()-1].second=="vector"){
+                            lex_stack.pop_back();
+                        }else{
+                            cout<<"ADCode ERROR: Expected Vector Begin before Separators\n";
+                        }
+                        if(lex_stack[lex_stack.size()-1].second=="assign"){
+                            vstr.push_back(pair<string,vector<string> >(lex_stack[lex_stack.size()-1].first,strToStrVector(str_vec)));
+                            lex_stack.pop_back();
+                        }else if(lex_stack[lex_stack.size()-1].second=="vector"||lex_stack[lex_stack.size()-1].second=="separator")
+                            lex_stack.push_back(pair<string,string>((char)(11)+str_vec+(char)(4),"separator"));
+                        else
+                            cout<<"ADCode ERROR: Expected Assign Vector or Separator\n";
+                    }else
+                        cout<<"ADCode ERROR: Expected Vector Begin or any token before Separators\n";
+                    last=i+1;
                     break;
             }
         }else{
@@ -293,21 +292,24 @@ void ADCode::decode(){
 
 vector<string> ADCode::strToStrVector(string input){
     vector<string> value;
+    int lock=0;
     int last=0;
     for(int i=0;i<input.size();i++){
-        if(input[i]==vectorSeparator){
+        if(input[i]==(char)11){
+            lock++;
+        }
+        if(input[i]==(char)4){
+            lock--;
+        }
+        if(lock==0&&input[i]==vectorSeparator){
             string str=input.substr(last,i-last);
             last=i+1;
-            for(int j=0;j<str.size();j++)
-                if(str[j]==stringBegin){
+            for(int j=0;j<str.size();j++){
+                if(str[j]==escape)
+                    j++;
+                else if(str[j]==stringBegin||str[j]==stringEnd||str[j]==(char)4||str[j]==(char)11)
                     str.erase(str.begin()+j);
-                    for(int k=str.size()-1;k>=0;k--)
-                        if(str[k]==stringEnd){
-                            str.erase(str.begin()+k);
-                            break;
-                        }
-                    break;
-                }
+            }
             if(str!="")
                 value.push_back(str);
         }
@@ -437,6 +439,21 @@ void ADCode::removeComments(){
         data.erase(found,endOfComment-found);
         found=data.find(lineComment);
 	}
+}
+
+float ADCode::getNumber(string field){
+    return getNumber(field,0);
+}
+
+float ADCode::getNumber(string field,float defaultval){
+    for(pair<string,int> n:ints)
+        if(n.first==field)
+            return n.second;
+    for(pair<string,float> n:flts)
+        if(n.first==field)
+            return n.second;
+    if(Util::DEBUG) cout<<"ERRORRR - missing \""<<field<<"\" on "<<name<<endl;
+    return defaultval;
 }
 
 void ADCode::printInterpretedData(){

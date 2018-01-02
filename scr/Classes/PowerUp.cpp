@@ -84,7 +84,7 @@ void PowerUp::checkCollisionWithPlayer(nTPoint pos,nTPoint size){
     objCollision var;
     var=Mechanics::getCollision(nTRectangle::getCollision(this->pos,this->size),nTRectangle::getCollision(pos,size));
     if(var.firstObj!=Mechanics::NOCOLLISION){
-        AL::singleton->playSoundByName("PowerUp");
+        AL::singleton->playSoundByName("powerUp");
         if(type==swordUpgrade){
             Player::getPlayerById(0)->life++;
             Player::getPlayerById(0)->sword++;
