@@ -26,9 +26,9 @@ public:
     static nTPoint HUDarea;
     static nTPoint size;
     static int currentBlock;
-    static int currentBackground;
     static int index;
-    static vector<vector<pair<int,string> > > map;
+    static Background currentBackground;
+    static nTMap map;
     static short int isCreating;
     static vector<vector<vector<int> > >blockPages;
     static vector<string> pageNames;

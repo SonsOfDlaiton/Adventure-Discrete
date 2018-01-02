@@ -19,6 +19,7 @@ Boss::Boss(string data,nTPoint spawn) {
     this->animations=Entity::getAnimationVector(Boss::bossAnim[getSpritesId(sprite_str)],Boss::bossAnimSize[getSpritesId(sprite_str)]);
 
     this->life=adc->getNumber("life",1);
+    this->startLife=this->life;
     this->imunityTime=adc->getNumber("imunityTime",200);
     ADCode* adc_events=adc->getSubSection("events");
     pair<string,vector<string> > event;
@@ -48,6 +49,7 @@ Boss::Boss(string data,nTPoint spawn) {
     this->imuneToDamage=false;
     Entity::bosses.push_back(this);
     this->id=(unsigned int)Entity::bosses.size()-1;
+    this->pos.y-=this->size.y/2;
     delete adc;
 };
 
@@ -55,6 +57,12 @@ Boss::Boss(const Boss& orig) {
 }
 
 Boss::~Boss() {
+    Boss* bo;
+    for(int i=id+1;i<Entity::bosses.size();i++){
+        bo=(Boss*)Entity::bosses[i];
+        bo->id--;
+    }
+    Entity::bosses.erase(Entity::bosses.begin()+this->id);
 }
 
 vector<string> Boss::bossName;
@@ -102,14 +110,31 @@ int Boss::getSpritesId(string name){
 }
 
 void Boss::draw(Boss* bo){
-    GL::setFont("BITMAP_HELVETICA_10");
+    GL::setFont("BITMAP_TIMES_ROMAN_24");
+    nTRectangle lifebar=nTRectangle::getCollision(nTPoint::get(bo->pos.x,bo->pos.y-bo->size.y+30,0.68),nTPoint::get(bo->size.x*2.1,30));
+    GL::drawRectangle(lifebar,nTColor::get(1,0,0));
+    lifebar.p0.z=0.69;
+    lifebar.p0.y-=1;
+    lifebar.p1.y+=1;
+    lifebar.p0.x+=1;
+    lifebar.p1.x=lifebar.p0.x-2+bo->size.x*2.1*bo->life/bo->startLife;
+    GL::drawRectangle(lifebar,nTColor::get(0,1,0));
     GL::drawCentered_X_Text(nTPoint::get(bo->pos.x,bo->pos.y-bo->size.y/2.0,0.7),bo->nickname,nTColor::Black());
     Entity* ent=(Entity*)bo;
     ent->draw(nTColor::White());
 }
 
 void Boss::stateControl(){
-
+    FunctionAnalyser::startFunction("Boss::stateControl");
+    if(!Scenes::camera.isInTheXScreen(nTRectangle::getCollision(this->pos,this->size))){
+        FunctionAnalyser::endFunction("Boss::stateControl");
+        return;
+    }
+    Entity::stateControl();
+    execAnimation();
+    if(GL::framesInGame>=timeToVunerability)
+        damageState=false;
+    FunctionAnalyser::endFunction("Boss::stateControl");
 }
 
 /**
@@ -125,6 +150,8 @@ void Boss::makeInvencible(){
         ggPos.x+=orientation*Blocks::defaultBlockSize.x;
         Blocks* bl=new Blocks(Blocks::EndLevelBlock,ggPos,Blocks::defaultBlockSize);
         Map::dynamicBlocks.push_back(bl);
+        this->isVisible=false;
+        delete this;
     }
 }
 

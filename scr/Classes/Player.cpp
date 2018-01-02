@@ -113,17 +113,6 @@ nTPoint Player::getGroundPos(){
     return nTPoint::get(pos.x, pos.y+1, pos.z);
 }
 
-void Player::behave(){
-    FunctionAnalyser::startFunction("Player::behave");
-    Player* pl;
-    for(int i=0;i<players.size();i++){
-        pl=(Player*)players[i];
-        if(pl->god) pl->draw(nTColor::get(0.41,0.41,1,0.85));
-        else pl->draw();
-    }
-    FunctionAnalyser::endFunction("Player::behave");
-}
-
 /**
  *	Override Entity::stateControl to add the states of player attacks, detect liquid collisionions and teleport blocks collision
 **/
@@ -172,66 +161,6 @@ void Player::stateControl(){
         }
     }
     if(atacking&&!lowered) atack(atacking);
-    Blocks *bl;
-    bool collisionWater=false;
-    bool collisionIce=false;
-    collideWithMap(getGroundPos());
-    for(int i=0; i<lastMapColl.size(); i++){
-        bl=Map::getBlockById(lastMapColl[i].blockId);
-        if(lastMapColl[i].collision.firstObj!=Mechanics::NOCOLLISION){
-            if(bl->type==Blocks::AnimatedLava1||bl->type==Blocks::AnimatedLava2||bl->type==Blocks::StaticLava){
-                if(!god) life=0;
-                collisionWater=false;
-            }else if(Blocks::checkIfBlocksIsLiquid(bl->type)){
-                collisionWater=true;
-            }else if(bl->type==Blocks::IceHHalfBlock||bl->type==Blocks::IceVHalfBlock||bl->type==Blocks::IceBlock){
-                if(lastMapColl[i].collision.firstObj==Mechanics::BOTTOM)
-                    collisionIce=true;
-            }
-            if((Blocks::checkIfBlocksIsTeleportPipe(bl->type)||Blocks::checkIfBlocksIsTeleportDoor(bl->type))&&canTp){
-                Blocks* tp;
-                for(int j=0;j<Map::dynamicBlocks.size();j++){
-                   tp=(Blocks*)Map::dynamicBlocks[j];
-                   if(tp->type==bl->type&&bl!=tp){
-                     canTp=false;
-                       pos=tp->pos;
-                       AL::singleton->playSoundByName("TP");
-                       if(Blocks::checkIfBlocksIsTeleportPipe(tp->type))
-                            pos.y-=Blocks::defaultBlockSize.y*1.5;
-                       else
-                           pos.y-=Blocks::defaultBlockSize.y/2;
-                       pos.z=0.9;
-                       Scenes::camera.lookAt(pos);
-                     }
-                }
-            }
-        }
-    }
-    itsInTheWater=collisionWater;
-    if(itsInTheWater) AL::singleton->playSoundByName("agua");
-    if(IOHandler::SpecReleaseKey!=0){
-        if(collisionIce){
-            AL::singleton->playSoundByName("ice");
-            reducing=true;
-        }else{
-            hSpeed=0;
-        }
-        IOHandler::SpecReleaseKey=0;
-    }else
-    if(hSpeed==0||!collisionIce)AL::singleton->stopSound(AL::singleton->getSoundByName("ice"));
-    if(IOHandler::ReleaseZOffSet){
-        if(!GL::isPaused){
-            atacking=Player::meleeProjectile;
-        }
-        IOHandler::ReleaseZOffSet=false;
-    }
-    if(lowered&&size.y==defaultPSize.y){
-        size.y=defaultPSize.y/2;
-        pos.y+=defaultPSize.y/4;
-    }else if(!lowered&&size.y!=defaultPSize.y){
-        size.y=defaultPSize.y;
-        pos.y-=defaultPSize.y/4;
-    }
     execAnimation();
     FunctionAnalyser::endFunction("Player::stateControl");
 }
@@ -277,7 +206,7 @@ void Player::spawn(nTPoint spawn,double life){
     this->orientation=Util::orientation_right;
     this->isVisible=true;
     this->reducing=false;
-    this->swordPos=spawn;
+    this->swordPos=nTPoint::get(-100,-100);
     this->atacking=false;
     this->haveBulletSword=0;
     this->haveBulletSpec=0;
@@ -297,28 +226,100 @@ void Player::spawn(nTPoint spawn,double life){
     animations=Entity::getAnimationVector(Player::playerAnim[anim],Player::playerAnimSize[anim]);
     Scenes::camera.lookAt(this->pos);
 }
-/**
- *	Draw the melee sword, refresh Coeficiente, update cheat state and fix jump speed
-**/
-void Player::especificDraw(){
-    FunctionAnalyser::startFunction("Player::especificDraw");
-    if(!isVisible){
-        FunctionAnalyser::endFunction("Player::especificDraw");
-        return;
-    }
-    if(god){
-        AL::singleton->playSoundByName("cafeSong");
-        life=5;
-        sword=2;
-        if(lives<3)
-            lives=3;
-        imuneToDamage=true;
-        canJump=true;
-    }
+
+
+void Player::behave(){
+    FunctionAnalyser::startFunction("Player::behave");
     Player::refreshCoeficiente();
+    Player* pl;
+    Blocks *bl;
+    for(int i=0;i<players.size();i++){
+        pl=(Player*)players[i];
+        if(pl->god){
+            AL::singleton->playSoundByName("cafeSong");
+            pl->life=5;
+            pl->sword=2;
+            if(lives<3)
+                lives=3;
+            pl->imuneToDamage=true;
+            pl->canJump=true;
+        }
+        bool collisionWater=false;
+        bool collisionIce=false;
+        pl->collideWithMap(pl->getGroundPos());
+        for(int i=0; i<pl->lastMapColl.size(); i++){
+            bl=Map::getBlockById(pl->lastMapColl[i].blockId);
+            if(pl->lastMapColl[i].collision.firstObj!=Mechanics::NOCOLLISION){
+                if(bl->type==Blocks::AnimatedLava1||bl->type==Blocks::AnimatedLava2||bl->type==Blocks::StaticLava){
+                    if(!pl->god) pl->life=0;
+                    collisionWater=false;
+                }else if(Blocks::checkIfBlocksIsLiquid(bl->type)){
+                    collisionWater=true;
+                }else if(bl->type==Blocks::IceHHalfBlock||bl->type==Blocks::IceVHalfBlock||bl->type==Blocks::IceBlock){
+                    if(pl->lastMapColl[i].collision.firstObj==Mechanics::BOTTOM)
+                        collisionIce=true;
+                }
+                if((Blocks::checkIfBlocksIsTeleportPipe(bl->type)||Blocks::checkIfBlocksIsTeleportDoor(bl->type))&&pl->canTp){
+                    Blocks* tp;
+                    for(int j=0;j<Map::dynamicBlocks.size();j++){
+                       tp=(Blocks*)Map::dynamicBlocks[j];
+                       if(tp->type==bl->type&&bl!=tp){
+                         pl->canTp=false;
+                           pl->pos=tp->pos;
+                           AL::singleton->playSoundByName("TP");
+                           if(Blocks::checkIfBlocksIsTeleportPipe(tp->type))
+                                pl->pos.y-=Blocks::defaultBlockSize.y*1.5;
+                           else
+                               pl->pos.y-=Blocks::defaultBlockSize.y/2;
+                           pl->pos.z=0.9;
+                           Scenes::camera.lookAt(pl->pos);
+                         }
+                    }
+                }
+            }
+        }
+        pl->itsInTheWater=collisionWater;
+        if(pl->itsInTheWater) AL::singleton->playSoundByName("agua");
+        if(IOHandler::SpecReleaseKey!=0){
+            if(collisionIce){
+                AL::singleton->playSoundByName("ice");
+                pl->reducing=true;
+            }else{
+                pl->hSpeed=0;
+            }
+            IOHandler::SpecReleaseKey=0;
+        }else
+        if(pl->hSpeed==0||!collisionIce)AL::singleton->stopSound(AL::singleton->getSoundByName("ice"));
+        if(IOHandler::ReleaseZOffSet){
+            if(!GL::isPaused){
+                pl->atacking=Player::meleeProjectile;
+            }
+            IOHandler::ReleaseZOffSet=false;
+        }
+        if(pl->lowered&&pl->size.y==defaultPSize.y){
+            pl->size.y=defaultPSize.y/2;
+            pl->pos.y+=defaultPSize.y/4;
+        }else if(!pl->lowered&&pl->size.y!=defaultPSize.y){
+            pl->size.y=defaultPSize.y;
+            pl->pos.y-=defaultPSize.y/4;
+        }
+
+        if(pl->god) pl->draw(nTColor::get(0.41,0.41,1,0.85));
+        else pl->draw();
+        pl->drawSword();
+    }
+    FunctionAnalyser::endFunction("Player::behave");
+}
+
+
+/**
+ *	Draw the melee sword
+**/
+void Player::drawSword(){
+    if(!isVisible)
+        return;
     if(atacking&&!lowered){
         swordCollision.p0.z=1;
-        swordCollision.p1.z=1;
         if(atackDirection==Util::direction_up||atackDirection==Util::direction_down)
             GL::drawTexture(swordCollision,GL::getTextureByName("Sword"+Util::intToStr(sword)),Util::orientation_rotated);
         else{
@@ -328,7 +329,6 @@ void Player::especificDraw(){
                 GL::drawTexture(swordCollision,GL::getTextureByName("Sword"+Util::intToStr(sword)),Util::orientation_left);
         }
     }
-    FunctionAnalyser::endFunction("Player::especificDraw");
 }
 
 /**
@@ -410,10 +410,12 @@ void Player::atack(int type){
                 alReadyAtacked=true;
             }
 
-            Enemy *en;
+            Entity *en;
+            vector<void*> nonPlayerUnities=Entity::enemys;
+            nonPlayerUnities.insert(nonPlayerUnities.end(),Entity::bosses.begin(),Entity::bosses.end());
             objCollision col;
-            for(int i=0;i<Entity::enemys.size();i++){
-                en=(Enemy*)enemys[i];
+            for(int i=0;i<nonPlayerUnities.size();i++){
+                en=(Entity*)nonPlayerUnities[i];
                 col=Mechanics::getCollision(swordCollision,nTRectangle::getCollision(en->pos,en->size));
                 if(col.firstObj!=Mechanics::NOCOLLISION){
                     en->applyDamage(swordBaseDamage*(sword+1));

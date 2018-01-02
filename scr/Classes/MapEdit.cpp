@@ -14,8 +14,7 @@ nTPoint MapEdit::scale=nTPoint::get(0.8,0.8,1);
 nTPoint MapEdit::HUDarea=nTPoint::get(650,500,1);
 nTPoint MapEdit::size=nTPoint::get(0,0,1);
 int MapEdit::currentBlock=1;
-int MapEdit::currentBackground=0;
-vector<vector<pair<int,string> > > MapEdit::map;
+nTMap MapEdit::map;
 int MapEdit::index;
 vector<vector<vector<int> > >MapEdit::blockPages;
 vector<string> MapEdit::pageNames;
@@ -210,21 +209,20 @@ void MapEdit::definePages(){
  *	@param idx index of the map
 **/
 void MapEdit::load(int idx){
-    map.clear();
+    map.map.clear();
     if(idx>=0){
         index=idx;
-        map=Map::maps[idx].map;
-        //currentBackground=Map::maps[idx].backgroundId;
+        map=Map::maps[idx];
     }else if(idx==-1){
         index=-1;
-        map=Map::usrMap.map;
+        map=Map::usrMap;
         //currentBackground=Map::usrMap.backgroundId;
     }else if(idx==MapEdit::editingMap){
         index=-1;
-        map=Map::editingMap.map;
+        map=Map::editingMap;
     }
-    size.y=map.size();
-    size.x=map[0].size();
+    size.y=map.map.size();
+    size.x=map.map[0].size();
 }
 
 /**
@@ -234,7 +232,6 @@ void MapEdit::reset(){
     size=nTPoint::get(0,0,1);
     scale=nTPoint::get(0.8,0.8,1);
     currentBlock=0;
-    currentBackground=0;
     pageIndex=0;
     isCreating=0;
     isUser=true;
@@ -246,7 +243,7 @@ void MapEdit::reset(){
 bool MapEdit::save(){
     nTMap tmp;
     //tmp.backgroundId=currentBackground;
-    tmp.map=map;
+    tmp=map;
     if(!isUser){
         if(index>=Map::maps.size()&&!(index<0))
             Map::maps.push_back(tmp);
@@ -316,16 +313,16 @@ void MapEditButton(int x,int y){
             i=0;
         if(j<0)
             j=0;
-        if(i>=MapEdit::map.size())
-            i=(int)MapEdit::map.size()-1;
-        if(j>=MapEdit::map[0].size())
-            j=(int)MapEdit::map[0].size()-1;
+        if(i>=MapEdit::map.map.size())
+            i=(int)MapEdit::map.map.size()-1;
+        if(j>=MapEdit::map.map[0].size())
+            j=(int)MapEdit::map.map[0].size()-1;
         if(MapEdit::currentBlock!=60000){
-            MapEdit::map[i][j].first=MapEdit::currentBlock;
-            MapEdit::map[i][j].second=GL::getEditText("MapEdit::blockData");
+            MapEdit::map.map[i][j].first=MapEdit::currentBlock;
+            MapEdit::map.map[i][j].second=GL::getEditText("MapEdit::blockData");
         }else{
-            MapEdit::currentBlock=MapEdit::map[i][j].first;
-            GL::setEditText("MapEdit::blockData",MapEdit::map[i][j].second);
+            MapEdit::currentBlock=MapEdit::map.map[i][j].first;
+            GL::setEditText("MapEdit::blockData",MapEdit::map.map[i][j].second);
         }
     }
 }
@@ -346,11 +343,11 @@ void mapEraseButton(int x,int y){
             i=0;
         if(j<0)
             j=0;
-        if(i>=MapEdit::map.size())
-            i=MapEdit::map.size()-1;
-        if(j>=MapEdit::map[0].size())
-            j=MapEdit::map[0].size()-1;
-        MapEdit::map[i][j].first=0;
+        if(i>=MapEdit::map.map.size())
+            i=MapEdit::map.map.size()-1;
+        if(j>=MapEdit::map.map[0].size())
+            j=MapEdit::map.map[0].size()-1;
+        MapEdit::map.map[i][j].first=0;
     }
 }
 
@@ -385,7 +382,12 @@ void MapEditSetBlock(int x,int y){
  *	Draw everything on the screen
 **/
 void MapEdit::draw(){
-    GL::drawTexture(nTRectangle::get(Scenes::camera.x.movedCam,MapEdit::HUDarea.y+Scenes::camera.y.movedCam,MapEdit::HUDarea.x+Scenes::camera.x.movedCam,Scenes::camera.y.movedCam,-0.9),GL::getTextureByName("background"+Util::intToStr(currentBackground)));
+    for(int i=0; i<map.backgrounds.size(); i++){
+        if(!map.backgrounds[i].getMove())
+            GL::drawTexture(nTRectangle::get(Scenes::camera.x.movedCam,GL::defaultSize.y+Scenes::camera.y.movedCam,GL::defaultSize.x+Scenes::camera.x.movedCam,Scenes::camera.y.movedCam,map.backgrounds[i].getzAxis()-0.9),GL::getTextureByName(map.backgrounds[i].getName()));
+        else
+            map.backgrounds[i].drawParalaxBackground(size);
+    }
     drawPanel();
     drawLines();
     Blocks *bl;
@@ -399,10 +401,10 @@ void MapEdit::draw(){
             tmp1.x*=scale.x;
             tmp1.y*=scale.y;
             GL::buttonBehave(nTRectangle::getCollision(tmp,tmp1),nTColor::get(0.38,0.38,0.38,0.8),0,true,*MapEditButton,NULL,*mapEraseButton,NULL);
-            if(map[i][j].first){
+            if(map.map[i][j].first){
                 tmp.z-=0.1;
                 tmp1.z-=0.1;
-                bl = new Blocks(map[i][j].first,tmp,tmp1);
+                bl = new Blocks(map.map[i][j].first,tmp,tmp1);
                 bl->draw();
                 delete bl;
             }
@@ -463,9 +465,7 @@ void MapEditZoomOut(int x,int y){
  *	@param y mouse y position
 **/
 void MapEditBackgroundUp(int x,int y){
-    MapEdit::currentBackground++;
-    if(MapEdit::currentBackground>=Map::nOfBackgrounds)
-        MapEdit::currentBackground=Map::nOfBackgrounds-1;
+
 }
 
 /**
@@ -475,9 +475,7 @@ void MapEditBackgroundUp(int x,int y){
  *	@param y mouse y position
 **/
 void MapEditBackgroundDown(int x,int y){
-    MapEdit::currentBackground--;
-    if(MapEdit::currentBackground<0)
-        MapEdit::currentBackground=0;
+
 }
 
 /**
@@ -534,19 +532,19 @@ void MapEditSave(int x,int y){
 void MapEditPlay(int x,int y){
     nTMap tmp;
     //tmp.backgroundId=currentBackground;
-    tmp.map=MapEdit::map;
+    tmp=MapEdit::map;
     Map::editingMap=tmp;
     bool hasSpawn=false;
-    for(int i=0;i<MapEdit::map.size();i++){
-        for(int j=0;j<MapEdit::map[i].size();j++){
-            if(Blocks::checkIfBlocksIsPlayerSpawn(MapEdit::map[i][j].first)){
+    for(int i=0;i<MapEdit::map.map.size();i++){
+        for(int j=0;j<MapEdit::map.map[i].size();j++){
+            if(Blocks::checkIfBlocksIsPlayerSpawn(MapEdit::map.map[i][j].first)){
                 hasSpawn=true;
                 break;
             }
         }
     }
     if(!hasSpawn){
-        Map::editingMap.map[MapEdit::map.size()/2][4].first=1000;
+        Map::editingMap.map[MapEdit::map.map.size()/2][4].first=1000;
     }
     Scenes::testGameMode=true;
     Scenes::current=Scenes::game;
@@ -714,7 +712,7 @@ void MapEdit::askForLoad(){
 **/
 void MapEdit::setMapSize(){
     index=(int)Map::maps.size();
-    map.clear();
+    map.map.clear();
     pair<int,string> p;
     p.first=0;
     p.second="";
@@ -722,7 +720,7 @@ void MapEdit::setMapSize(){
     for(int i=0;i<size.y;i++){
         for(int j=0;j<size.x;j++)
             tmp.push_back(p);
-        map.push_back(tmp);
+        map.map.push_back(tmp);
         tmp.clear();
     }
 }

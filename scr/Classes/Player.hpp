@@ -52,7 +52,7 @@ private:
     friend class Bullet;
 
     void stateControl();
-    void especificDraw();
+    void drawSword();
     static void refreshCoeficiente();
     static void refreshGlobalcoeficiente();
 

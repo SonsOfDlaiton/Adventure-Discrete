@@ -46,7 +46,6 @@ protected:
     virtual void execAnimation();
     virtual void reduceSpeed(int dir);
     void setAnimations(vector<vector<GLuint> > animations);
-    virtual void especificDraw();
     virtual void makeInvencible();
     virtual void makeInvencible(double time);
 

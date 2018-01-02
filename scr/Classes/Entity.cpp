@@ -210,7 +210,6 @@ void Entity::draw(nTColor color){
     if(!isVisible) return;
     GL::drawTexture(nTRectangle::getCollision(pos,size),color,currentTex,orientation);
     if(Mechanics::drawCollisionRec)GL::drawCollision(nTRectangle::getCollision(pos, size));
-    especificDraw();
 }
 
 /**
@@ -229,13 +228,6 @@ void Entity::behave(){
 **/
 void Entity::draw(){
     draw(nTColor::White());
-}
-
-/**
- *	Does nothing, this function must be override in a child
-**/
-void Entity::especificDraw(){
-
 }
 
 /**

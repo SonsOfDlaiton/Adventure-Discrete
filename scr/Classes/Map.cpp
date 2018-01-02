@@ -47,11 +47,16 @@ const int Map::lvlBadTeacher=5;
 **/
 void Map::changeCurrentMap(nTMap map){
     Enemy* en;
+    Boss* bo;
     Bullet* bu;
     PowerUp* pu;
     for(int i=0;i<Entity::enemys.size();i++){
         en=(Enemy*) Entity::enemys[i];
         delete en;
+    }
+    for(int i=0;i<Entity::bosses.size();i++){
+        bo=(Boss*) Entity::bosses[i];
+        delete bo;
     }
     for(int i=0;i<Bullet::self.size();i++){
         bu=(Bullet*) Bullet::self[i];
@@ -61,6 +66,7 @@ void Map::changeCurrentMap(nTMap map){
         pu=(PowerUp*) PowerUp::self[i];
         delete pu;
     }
+    Entity::bosses.clear();
     Entity::enemys.clear();
     Bullet::self.clear();
     PowerUp::self.clear();
@@ -90,6 +96,7 @@ void Map::changeCurrentMap(nTMap map){
 void Map::deleteAllBlocks(){
     Blocks* bl;
     Enemy* en;
+    Boss* bo;
     for(int i=0;i<dynamicBlocks.size();i++){
         bl=(Blocks*)dynamicBlocks[i];
         delete bl;
@@ -101,6 +108,10 @@ void Map::deleteAllBlocks(){
     for(int i=0;i<Entity::enemys.size();i++){
         en=(Enemy*) Entity::enemys[i];
         delete en;
+    }
+    for(int i=0;i<Entity::bosses.size();i++){
+        bo=(Boss*) Entity::bosses[i];
+        delete bo;
     }
     dynamicBlocks.clear();
     staticBlocks.clear();
@@ -504,6 +515,8 @@ bool Map::loadMap(string path){
                         if(found!=string::npos){
                             tmp4.second=tmp5.substr(found+1,tmp5.size()-found);
                             Util::replaceAllOccurrences(tmp4.second,"\"-ad-Xchar-13-\"","\n");
+                            Util::replaceAllOccurrences(tmp4.second,"\"-ad-Xchar-92-\"","\\");
+                            Util::replaceAllOccurrences(tmp4.second,"\"-ad-Xchar-39-\"","\'");
                             tmp5=tmp5.substr(0,found);
                         }else{
                             tmp4.second="";
@@ -564,8 +577,9 @@ bool Map::saveMap(string path,int idx){
         }
         for(int i=0;i<save.map.size();i++){
             for(int j=0;j<save.map[i].size();j++){
-                replace(save.map[i][j].second.begin(),save.map[i][j].second.end(), '\'', '\"');
                 Util::replaceAllOccurrences(save.map[i][j].second,"\n","\"-ad-Xchar-13-\"");
+                Util::replaceAllOccurrences(save.map[i][j].second,"\'","\"-ad-Xchar-39-\"");
+                Util::replaceAllOccurrences(save.map[i][j].second,"\\","\"-ad-Xchar-92-\"");
                 mapFILE<<save.map[i][j].first<<'\\'<<save.map[i][j].second<<'\'';
             }
             mapFILE<<endl;

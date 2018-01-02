@@ -1,5 +1,6 @@
 #include "Mechanics.hpp"
 #include "Player.hpp"
+#include "Boss.hpp"
 #include "PowerUp.hpp"
 #include "Enemy.hpp"
 #include "Blocks.hpp"
@@ -67,6 +68,19 @@ void Mechanics::applyGravity(){
             en->canJump=true;
         }
     }
+    Boss *bo;
+    for(int i=0;i<Entity::bosses.size();i++){
+        bo=(Boss*)Entity::bosses[i];
+        bo->lastMapCollCalc=false;
+        if(!bo->checkNormalForce()){
+            bo->vSpeed+=gravity/GL::getFPS();
+            bo->canJump=false;
+        }else{
+            if(bo->vSpeed>0)
+                bo->vSpeed=0;
+            bo->canJump=true;
+        }
+    }
 
     PowerUp *pu;
     for(int i=0;i<PowerUp::self.size();i++){
@@ -109,7 +123,6 @@ void Mechanics::applyForce(){
     Enemy *en;
     for(int i=0;i<Entity::enemys.size();i++){
         en=(Enemy*)Entity::enemys[i];
-
         if(en->hSpeed!=0){
             double tmp=en->hSpeed;
             en->move(Util::direction_left,en->hSpeed/GL::getFPS());
@@ -120,6 +133,22 @@ void Mechanics::applyForce(){
             en->move(Util::direction_down,en->vSpeed/GL::getFPS());
         }else if(en->vSpeed<0){
             en->move(Util::direction_up,en->vSpeed/GL::getFPS());
+        }
+    }
+
+    Boss *bo;
+    for(int i=0;i<Entity::bosses.size();i++){
+        bo=(Boss*)Entity::bosses[i];
+        if(bo->hSpeed!=0){
+            double tmp=bo->hSpeed;
+            bo->move(Util::direction_left,bo->hSpeed/GL::getFPS());
+            if(bo->hSpeed==0)
+                bo->hSpeed=-tmp;
+        }
+        if(bo->vSpeed>0){
+            bo->move(Util::direction_down,bo->vSpeed/GL::getFPS());
+        }else if(bo->vSpeed<0){
+            bo->move(Util::direction_up,bo->vSpeed/GL::getFPS());
         }
     }
 
@@ -182,7 +211,7 @@ void Mechanics::move(int dir,double steeps){
       for(int i=0; i<lastMapColl.size(); i++){
         bl=Map::getBlockById(lastMapColl[i].blockId);
         type=bl->type;
-        if((lastMapColl[i].collision.firstObj==RIGHT||lastMapColl[i].collision.firstObj==LEFT)&&Blocks::checkIfBlocksIsFilled(type)&&!ignoreCollisionWithPlayer(pos,type)){ 
+        if((lastMapColl[i].collision.firstObj==RIGHT||lastMapColl[i].collision.firstObj==LEFT)&&Blocks::checkIfBlocksIsFilled(type)&&!ignoreCollisionWithPlayer(pos,type)){
           collision=true;
           break;
         }

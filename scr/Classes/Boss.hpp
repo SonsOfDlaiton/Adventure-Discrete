@@ -24,6 +24,7 @@ public:
     static void setSprites();
 
     string nickname;
+    double startLife;
     double imunityTime;
     vector<BossEvent> events;
     static vector<string>bossName;

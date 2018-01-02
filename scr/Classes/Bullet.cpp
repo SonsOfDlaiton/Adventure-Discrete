@@ -200,9 +200,11 @@ void Bullet::checkCollisionWithEntity(bool withPlayer){
             }
         }
     }else{
-        Enemy *en;
-        for(int i=0;i<Entity::enemys.size();i++){
-            en=(Enemy*)Entity::enemys[i];
+        Entity *en;
+        vector<void*> nonPlayerUnities=Entity::enemys;
+        nonPlayerUnities.insert(nonPlayerUnities.end(),Entity::bosses.begin(),Entity::bosses.end());
+        for(int i=0;i<nonPlayerUnities.size();i++){
+            en=(Entity*)nonPlayerUnities[i];
             var=Mechanics::getCollision(nTRectangle::getCollision(this->pos,this->size),nTRectangle::getCollision(en->pos,en->size));
             if(var.firstObj!=Mechanics::NOCOLLISION){
                 if(type==strongSwordBullet)
