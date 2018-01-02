@@ -53,6 +53,10 @@
 		<Unit filename="AD.main.cpp" />
 		<Unit filename="Classes/AL.cpp" />
 		<Unit filename="Classes/AL.hpp" />
+		<Unit filename="Classes/ADCode.cpp" />
+		<Unit filename="Classes/ADCode.hpp" />
+		<Unit filename="Classes/Boss.cpp" />
+		<Unit filename="Classes/Boss.hpp" />
 		<Unit filename="Classes/AssetsLoader.cpp" />
 		<Unit filename="Classes/AssetsLoader.hpp" />
 		<Unit filename="Classes/Background.cpp" />

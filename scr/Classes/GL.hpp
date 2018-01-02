@@ -98,6 +98,7 @@ public:
     static bool rightMouseClicked;
     static bool rightMouseReleased;
     static bool FPSchecker;
+    static int currentFPS;
     static nTPoint mousePos;
     static nTPoint rawMousePos;
     static nTColor clearColor;

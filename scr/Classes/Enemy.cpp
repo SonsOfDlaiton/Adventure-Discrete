@@ -1,7 +1,6 @@
 #include "Enemy.hpp"
 
-Enemy::Enemy(int enemyType,double life,nTPoint spawn,nTPoint size,vector<vector<GLuint> > animations,bool isHuman) {
-    this->life=0;
+Enemy::Enemy(int enemyType,double life,nTPoint spawn,nTPoint size,vector<vector<GLuint> > animations) {
     this->pos=spawn;
     this->size=size;
     this->animations=animations;
@@ -13,7 +12,7 @@ Enemy::Enemy(int enemyType,double life,nTPoint spawn,nTPoint size,vector<vector<
     this->nextState=Entity::state_Holding;
     this->life=life;
     this->defaultOrientation=Util::orientation_right;
-    this->isHuman=isHuman;
+    this->isHuman=false;
     this->type=enemyType;
     this->canJump=true;
     this->reducing=false;
@@ -22,6 +21,7 @@ Enemy::Enemy(int enemyType,double life,nTPoint spawn,nTPoint size,vector<vector<
     this->damageState=false;
     this->itsInTheWater=false;
     this->imuneToDamage=false;
+    this->drawLetter=true;
     if(Scenes::freeGameMode)
         this->nickname="Provas";
     else if(Player::stage>=0&&Player::stage<nicks.size())
@@ -117,15 +117,15 @@ void Enemy::draw(Enemy* en){
     GL::drawCentered_X_Text(nTPoint::get(en->pos.x,en->pos.y-en->size.y/2.0,0.7),en->nickname,nTColor::Black());
     Entity* ent=(Entity*)en;
     ent->draw(nTColor::White());
-    GL::drawCenteredTexture(nTPoint::get(en->pos.x,en->pos.y,0.8999),nTPoint::get(en->size.x/1.5,-en->size.y/2.5,0),nTColor::get(1,1,1,0.75),en->lifeLetter());
+    if(en->drawLetter)
+        GL::drawCenteredTexture(nTPoint::get(en->pos.x,en->pos.y,0.8999),nTPoint::get(en->size.x/1.5,-en->size.y/2.5,0),nTColor::get(1,1,1,0.75),en->lifeLetter());
 }
 
 /**
  *	Make the enemy immune to damage for a certain time
  *
- *	@param time time who the enemy will be immune
 **/
-void Enemy::makeInvencible(double time){
+void Enemy::makeInvencible(){
     damageState=true;
     timeToVunerability=GL::getGameMs()+imunityTime;
 }

@@ -48,6 +48,7 @@ double GL::FPS;
 nTColor GL::currentColor=nTColor::White();
 nTColor GL::clearColor;
 int GL::currentFont=0;
+int GL::currentFPS=0;
 vector<void*> GL::fonts;
 vector<GLuint> GL::textures;
 vector<string> GL::textureNames;
@@ -553,9 +554,9 @@ void GL::drawPolygon(nTPoint point,double radius,int edges){
 GLuint GL::getTextureByName(string name){
     int i=0;
     for(string n:textureNames)
-        if(n==name){
+        if(n==name)
             return textures[i];
-        }else
+        else
             i++;
     return 0;
 }
@@ -936,6 +937,10 @@ void GL::drawHUD(){
         GL::drawCentered_Y_Text(point,"Fase: "+strF,nTColor::Black());
         point.set(Scenes::camera.x.movedCam+480,Scenes::camera.y.movedCam+23,1);
         GL::drawCentered_Y_Text(point,"Coeficiente: "+Util::floatToStr(Player::coeficiente),nTColor::Black());
+    }
+    if(GL::FPSchecker){
+        point.set(Scenes::camera.x.movedCam+780,Scenes::camera.y.movedCam+23,1);
+        GL::drawText(point,Util::intToStr(GL::currentFPS),nTColor::get(0,1,0));
     }
 }
 

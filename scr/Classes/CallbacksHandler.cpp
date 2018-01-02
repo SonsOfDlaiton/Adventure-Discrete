@@ -89,14 +89,12 @@ void CallbacksHandler::reshape(int width, int height){
  *	@param n custom parameter passed
 **/
 void CallbacksHandler::framesCheck(int n){
-    if(!GL::isPaused){
-        if(GL::FPSchecker){
-            if((GL::framesInGame-previousFramesInGame)<666666)
-                cout<<"Frames Per Second: "<<(GL::framesInGame-previousFramesInGame)<<endl;
-            previousFramesInGame=GL::framesInGame;
-        }
-        FunctionAnalyser::printData();
+    if(GL::FPSchecker){
+        GL::currentFPS=(int)(GL::framesInGame-previousFramesInGame);
+        previousFramesInGame=GL::framesInGame;
     }
+    if(!GL::isPaused)
+        FunctionAnalyser::printData();
     if(FunctionAnalyser::PRINT||GL::FPSchecker)
         glutTimerFunc(1000, framesCheck, 0);
 }

@@ -24,8 +24,6 @@ public:
     int id;
     bool imuneToDamage;
     bool damageState;
-    static vector<void*>self;
-    static vector<bool>selfIsPlayer;
     int atacking;
     bool canJump;
     double life;
@@ -36,6 +34,7 @@ public:
     static const double walkSpeed;
     static const double imunityTime;
 	static vector<void*> enemys;
+	static vector<void*> bosses;
     static const int state_Idle,state_Walking,state_Running,state_Jumping,state_Atacking,state_SpecialAtacking,state_TakingDamage,state_Dying,state_Spawning,state_Lowering,state_Holding,state_MeleeAirAtackingDown,state_MeleeAirAtackingUp,state_MeleeAirAtackingHorizontal,state_MeleeGroundAtackingUp,state_MeleeGroundAtackingHorizontal,state_RangedAirAtackingDown,state_RangedAirAtackingUp,state_RangedAirAtackingHorizontal,state_RangedGroundAtackingUp,state_RangedGroundAtackingHorizontal;
 private:
     static const double SpritesPerSecond;
@@ -48,6 +47,7 @@ protected:
     virtual void reduceSpeed(int dir);
     void setAnimations(vector<vector<GLuint> > animations);
     virtual void especificDraw();
+    virtual void makeInvencible();
     virtual void makeInvencible(double time);
 
     GLuint currentTex;

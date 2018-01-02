@@ -1,5 +1,6 @@
 #include "Tutorials.hpp"
 #include "Scenes.hpp"
+#include "ADCode.hpp"
 
 Tutorials::Tutorials(){
 };
@@ -143,62 +144,31 @@ void Tutorials::add(int pos,string text,vector<char> keys_, int duration, bool p
 }
 
 void Tutorials::add(int pos,string data, bool pause_){
-	string text="";
-	string keys="";
-	string duration="";
-	vector<char> keys_vec;
-	int duration_int=0;
-	size_t found=data.find("text");
-	if(found!=string::npos){
-		found=data.find("\"",found);
-		text=data.substr(found+1);
-		text=text.substr(0,text.find("\""));
-	}
-	if(text=="" && Util::DEBUG)
-		cout<<"ERRORRR - missing \"text\" on tutorial block\n";
+    add(pos,new ADCode(data,"Tutorials"),pause_);
+}
 
-	found=data.find("keys");
-	if(found!=string::npos){
-		found=data.find("{",found);
-		keys=data.substr(found+1);
-		keys=keys.substr(0,keys.find("}"));
-		int last=0;
-		keys+=",";
-		for(int i=0;i<keys.size();i++){
-			if(keys[i]==','){
-				string str=keys.substr(last,i-last);
-				last=i;
-				if(str.size()==1){
-					keys_vec.push_back(str[0]);
-				}else{
-					if(str.find("up")!=string::npos){
-						keys_vec.push_back(1);
-					}else if(str.find("down")!=string::npos){
-						keys_vec.push_back(2);
-					}else if(str.find("left")!=string::npos){
-						keys_vec.push_back(3);
-					}else if(str.find("right")!=string::npos){
-						keys_vec.push_back(4);
-					}
-				}
-			}
-		}
-	}else if(Util::DEBUG) cout<<"ERRORRR - missing \"keys\" on tutorial block\n";
-
-
-	found=data.find("duration");
-	if(found!=string::npos){
-		bool first=false;
-		for(int i=found+1;i<data.size();i++)
-			if(isdigit(data[i])){
-				first=true;
-				duration+=data[i];
-			}else if(first)
-				break;
-		istringstream (duration)>>duration_int;
-	}else if(Util::DEBUG) cout<<"ERRORRR - missing \"duration\" on tutorial block\n";
-	if(text!=""&&(keys_vec.size()>0||duration_int>0))
-		add(pos,text,keys_vec,duration_int,pause_);
+void Tutorials::add(int pos,ADCode* adc, bool pause_){
+    string text=adc->getString("text");
+	vector<string> keys_str=adc->getStringVector("keys");
+	int duration=adc->getInt("duration");
+	vector<char> keys;
+	for(int i=0;i<keys_str.size();i++)
+        if(keys_str[i].size()>1){
+            keys.push_back(keys_str[i][0]);
+        }else{
+            if(keys_str[i].find("up")!=string::npos){
+                keys.push_back(1);
+            }else if(keys_str[i].find("down")!=string::npos){
+                keys.push_back(2);
+            }else if(keys_str[i].find("left")!=string::npos){
+                keys.push_back(3);
+            }else if(keys_str[i].find("right")!=string::npos){
+                keys.push_back(4);
+            }
+        }
+	if(text!=""&&(keys.size()>0||duration>0))
+		add(pos,text,keys,duration,pause_);
+    delete adc;
 }
 
 void Tutorials::pressKey(char key){

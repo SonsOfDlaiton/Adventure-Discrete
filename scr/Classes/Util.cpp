@@ -188,5 +188,14 @@ string Util::floatToStr(float f){
 }
 
 int Util::strToInt(string str){
-	return stoi(str);
+	int i=0;
+	istringstream (str) >> i;
+	return i;
+}
+
+
+float Util::strToFloat(string str){
+	float f=0;
+	istringstream (str) >> f;
+	return f;
 }

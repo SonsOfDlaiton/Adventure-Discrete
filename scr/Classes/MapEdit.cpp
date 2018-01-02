@@ -669,9 +669,9 @@ void MapEdit::askForSize(){
     GL::editTextBehave(nTRectangle::get(550,225,640,250,1),"BITMAP_HELVETICA_18",GL::getColorByName("blue"),"19","MapEdit::askForSizeX",true,false);
 
     if(GL::textButtonBehave(nTRectangle::get(610,275,660,300,1),GL::getColorByName("mouseSelected"),"ok",nTColor::Black(),GL::getTextureByName("btnSkin1"))){
-        double X,Y;
-        istringstream (GL::getEditText("MapEdit::askForSizeY")) >> Y;
-        istringstream (GL::getEditText("MapEdit::askForSizeX")) >> X;
+        float X,Y;
+        Y=Util::strToFloat(GL::getEditText("MapEdit::askForSizeY"));
+        X=Util::strToFloat(GL::getEditText("MapEdit::askForSizeX"));
         if(Y>=19&&Y<65000&&X>=19&&X<65000){
             MapEdit::size.y=Y;
             MapEdit::size.x=X;
@@ -701,8 +701,7 @@ void MapEdit::askForLoad(){
         if(tolower(input[0])=='u'){
             MapEdit::load(-1);
         }else{
-            double tmp;
-            istringstream (input) >> tmp;
+            int tmp=Util::strToInt(input);
             if(tmp>=0&&tmp<Map::maps.size()){
                 MapEdit::load(tmp);
             }

@@ -43,6 +43,7 @@ const int Entity::state_RangedGroundAtackingHorizontal=18;
 const int Entity::state_Holding=-1;
 vector<void*> Entity::players;
 vector<void*> Entity::enemys;
+vector<void*> Entity::bosses;
 
 /**
  *	Change the entity state machine based on enviroments and conditions of the entity
@@ -179,7 +180,7 @@ void Entity::applyDamage(double damage){
         return;
     life-=damage;
     damageState=true;
-    makeInvencible(imunityTime);
+    makeInvencible();
     if(id<0){
         AL::singleton->playSoundByName("damagePlayer");
     }else{
@@ -248,6 +249,15 @@ void Entity::especificDraw(){
 void Entity::makeInvencible(double time){
     imuneToDamage=true;
     timeToVunerability=GL::getGameMs()+time;
+}
+
+/**
+ *	Make the entity immune to damage for a certain time
+ *
+**/
+void Entity::makeInvencible(){
+    imuneToDamage=true;
+    timeToVunerability=GL::getGameMs()+imunityTime;
 }
 
 /**

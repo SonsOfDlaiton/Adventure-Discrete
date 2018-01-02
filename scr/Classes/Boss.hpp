@@ -1,7 +1,9 @@
+#include "Util.hpp"
+#include "Entity.hpp"
 #ifndef BOSSEVENT
 #define BOSSEVENT
 typedef struct bossevent{
-    string funcion;
+    string event;
     vector <string>params;
     int probability;
     float minimumLife;
@@ -10,8 +12,6 @@ typedef struct bossevent{
 
 #ifndef BOSS_H
 #define BOSS_H
-#include "Util.hpp"
-#include "Entity.hpp"
 
 class Boss:public Entity {
 public:

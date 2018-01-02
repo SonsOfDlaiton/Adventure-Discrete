@@ -163,6 +163,7 @@ public:
     static string intToStr(int i);
     static string floatToStr(float f);
     static int strToInt(string str);
+    static float strToFloat(string str);
 
     static bool DEBUG;
     static const int direction_left;

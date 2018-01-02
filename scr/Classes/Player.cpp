@@ -1,6 +1,6 @@
 #include "Player.hpp"
 
-Player::Player(double life,nTPoint spawn,nTPoint size,bool isHuman) {
+Player::Player(double life,nTPoint spawn,nTPoint size) {
     spawn.z=0.9;
     this->pos=spawn;
     this->size=size;
@@ -15,7 +15,7 @@ Player::Player(double life,nTPoint spawn,nTPoint size,bool isHuman) {
         life=1;
     this->life=life;
     this->defaultOrientation=Util::orientation_right;
-    this->isHuman=isHuman;
+    this->isHuman=true;
     this->damageState=false;
     this->sword=(int)life-1;
     this->atackDirection=Util::direction_right;
@@ -124,7 +124,7 @@ void Player::stateControl(){
         damageState=false;
         imuneToDamage=false;
     }
-    Entity::stateControl(); 
+    Entity::stateControl();
     if(nextState!=Entity::state_TakingDamage&&nextState!=Entity::state_Dying&&currentState!=Entity::state_TakingDamage&&currentState!=Entity::state_Dying&&atacking&&!lowered){
         if(atacking==Player::melee){
             if(vSpeed!=0){//air

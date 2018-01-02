@@ -33,8 +33,7 @@ int nTFont::getIntFromField(string str, int start){
         else if(str[i]==' '||str[i]=='\n'||str[i]=='\t')
             break;
     }
-    int out=0;
-    istringstream(number)>>out;
+    int out=Util::strToInt(number);
     return out;
 }
 

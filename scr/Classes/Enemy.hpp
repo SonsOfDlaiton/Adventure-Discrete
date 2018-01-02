@@ -8,7 +8,7 @@
 
 class Enemy:public Entity {
 public:
-    Enemy(int enemyType,double life,nTPoint spawn,nTPoint size,vector<vector<GLuint> > animations,bool isHuman);
+    Enemy(int enemyType,double life,nTPoint spawn,nTPoint size,vector<vector<GLuint> > animations);
     Enemy(const Enemy& orig);
     virtual ~Enemy();
 
@@ -17,6 +17,7 @@ public:
     static void registerNicks();
 
     int type;
+
     static const int defaultLife;
     static const nTPoint defaultSize;
     static const double imunityTime;
@@ -25,8 +26,8 @@ public:
 private:
     static void draw(Enemy* en);
     void stateControl();
-    void makeInvencible(double time);
-
+    void makeInvencible();
+    bool drawLetter;
     string nickname;
     static vector<vector<string> >nicks;
 };

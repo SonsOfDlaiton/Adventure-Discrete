@@ -1,88 +1,35 @@
 #include "Boss.hpp"
 #include "Blocks.hpp"
+#include "ADCode.hpp"
 
 
 Boss::Boss(string data,nTPoint spawn) {
-    size_t found=data.find("tutorial");
-	if(found!=string::npos){
-		found=data.find("[",found);
-		string tutorial=data.substr(found+1);
-		tutorial=tutorial.substr(0,tutorial.find("]"));
-		Tutorials::add(floor(spawn.x/Blocks::defaultBlockSize.x)-floor(GL::defaultSize.x/Blocks::defaultBlockSize.x/2)+ceil((float)Player::defaultPSize.x/(float)Blocks::defaultBlockSize.x)*3,tutorial,true);
-	}else if(Util::DEBUG) cout<<"ERRORRR - missing \"tutorial\" on boss\n";
+    ADCode* adc=new ADCode(data,"Boss");
+    Tutorials::add(floor(spawn.x/Blocks::defaultBlockSize.x)-floor(GL::defaultSize.x/Blocks::defaultBlockSize.x/2)+ceil((float)Player::defaultPSize.x/(float)Blocks::defaultBlockSize.x)*3,adc->getSubSection("Tutorials"),true);
+    this->nickname=adc->getString("name","");
+    vector<int> size_vec=adc->getIntVector("size");
+    if(size_vec.size()>=2){
+        this->size.x=size_vec[0];
+        this->size.y=size_vec[1];
+    }else{
+        this->size.x=64;
+        this->size.y=96;
+    }
+    string sprite_str=adc->getString("sprite");
+    if(sprite_str!="")
+        this->animations=Entity::getAnimationVector(Boss::bossAnim[getSpritesId(sprite_str)],Boss::bossAnimSize[getSpritesId(sprite_str)]);
 
-    this->nickname="";
-	found=data.find("name");
-	if(found!=string::npos){
-		found=data.find("\"",found);
-		this->nickname=data.substr(found+1);
-		this->nickname=this->nickname.substr(0,this->nickname.find("\""));
-	}if(this->nickname=="" && Util::DEBUG)
-		cout<<"ERRORRR - missing \"name\" on boss\n";
-
-    found=data.find("size");
-	if(found!=string::npos){
-		found=data.find("{",found);
-		string str_size=data.substr(found+1);
-		str_size=str_size.substr(0,str_size.find("}"));
-		bool sx=true;
-		int last=0;
-		str_size+=",";
-		for(int i=0;i<str_size.size();i++){
-			if(str_size[i]==','){
-				string str=str_size.substr(last,i-last);
-                if(sx)
-                    this->size.x=Util::strToInt(str);
-                else
-                    this->size.y=Util::strToInt(str);
-                sx=!sx;
-				last=i;
-			}
-		}
-	}else if(Util::DEBUG) cout<<"ERRORRR - missing \"size\" on boss\n";
-
-    string sprite_str="";
-    found=data.find("sprite");
-	if(found!=string::npos){
-		found=data.find("\"",found);
-		sprite_str=data.substr(found+1);
-		sprite_str=sprite_str.substr(0,sprite_str.find("\""));
-	} if(sprite_str==""&&Util::DEBUG)
-		cout<<"ERRORRR - missing \"sprite\" on boss\n";
-    this->animations=Entity::getAnimationVector(Boss::bossAnim[getSpritesId(sprite_str)],Boss::bossAnimSize[getSpritesId(sprite_str)]);
-
-    this->life=1;
-    found=data.find("life");
-	if(found!=string::npos){
-        string life_str="";
-		bool first=false;
-		for(int i=found+1;i<data.size();i++)
-			if(isdigit(data[i])){
-				first=true;
-				life_str+=data[i];
-			}else if(first)
-				break;
-        this->life=Util::strToInt(life_str);
-	}else if(Util::DEBUG) cout<<"ERRORRR - missing \"life\" on boss\n";
-
-    this->imunityTime=200;
-    found=data.find("imunityTime");
-	if(found!=string::npos){
-        string imu_str="";
-		bool first=false;
-		for(int i=found+1;i<data.size();i++)
-			if(isdigit(data[i])){
-				first=true;
-				imu_str+=data[i];
-			}else if(first)
-				break;
-        this->imunityTime=Util::strToInt(imu_str);
-	}else if(Util::DEBUG) cout<<"ERRORRR - missing \"imunityTime\" on boss\n";
-
-	found=data.find("events");
-    if(found!=string::npos){
-
-    }else if(Util::DEBUG) cout<<"ERRORRR - missing \"events\" on boss\n";
+    this->life=adc->getInt("life",1);
+    this->imunityTime=adc->getInt("imunityTime",200);
+    ADCode* adc_events=adc->getSubSection("events");
+    while(adc_events->hasNext()){
+        BossEvent be;
+        if( adc_events->next(be.event)&&
+            adc_events->next(be.params)&&
+            adc_events->next(be.probability)&&
+            adc_events->next(be.minimumLife))
+                events.push_back(be);
+    }
 
     this->pos=spawn;
     this->vSpeed=0;
@@ -102,6 +49,7 @@ Boss::Boss(string data,nTPoint spawn) {
     this->imuneToDamage=false;
     Entity::bosses.push_back(this);
     this->id=(unsigned int)Entity::bosses.size()-1;
+    delete adc;
 };
 
 Boss::Boss(const Boss& orig) {

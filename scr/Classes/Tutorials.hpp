@@ -4,6 +4,8 @@
 #include "Util.hpp"
 #include "GL.hpp"
 
+class ADCode;
+
 class Tutorials {
 public:
     Tutorials();
@@ -17,6 +19,7 @@ public:
     static void behave();
     static void catchPause();
     static void add(int pos,string data, bool pause_);
+    static void add(int pos,ADCode* adc, bool pause_);
     static string getSinucaTut();
     static void registerSinucaTuts();
 

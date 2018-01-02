@@ -1,6 +1,7 @@
 #include "Map.hpp"
 #include "Player.hpp"
 #include "Enemy.hpp"
+#include "Boss.hpp"
 #include "Scenes.hpp"
 #include "Blocks.hpp"
 #include "Tutorials.hpp"
@@ -139,13 +140,13 @@ void Map::setBlockPos(){
                     pos.z=0.89;
                     pos.y-=Blocks::defaultBlockSize.y;
                     nOfEnemys++;
-                    new Enemy(actualMap.map[i][j].first-2000,Enemy::defaultLife,pos,Enemy::defaultSize,Entity::getAnimationVector(Enemy::enemyAnim[rand()%Enemy::enemyAnim.size()],Enemy::enemyAnimSize[rand()%Enemy::enemyAnimSize.size()]),0);
+                    int random=rand()%Enemy::enemyAnim.size();
+                    new Enemy(actualMap.map[i][j].first-2000,Enemy::defaultLife,pos,Enemy::defaultSize,Entity::getAnimationVector(Enemy::enemyAnim[random],Enemy::enemyAnimSize[random]));
                 }else if(Blocks::checkIfBlocksIsBossSpawn(actualMap.map[i][j].first)){
                     nTPoint pos=bl->pos;
                     pos.z=0.89;
                     pos.y-=Blocks::defaultBlockSize.y;
-                    Tutorials::add(j-floor(GL::defaultSize.x/Blocks::defaultBlockSize.x/2)+ceil((float)Player::defaultPSize.x/(float)Blocks::defaultBlockSize.x)*3,bl->data,true);
-                    //new Boss((actualMap.map[i][j].first-5000)+1000,Enemy::bossLife,pos,Enemy::bossSize,Entity::getAnimationVector(Enemy::enemyAnim[0],Enemy::enemyAnimSize[0]),0);
+                    new Boss(bl->data,bl->pos);
                 }else if(Blocks::checkIfBlocksIsTutorial(actualMap.map[i][j].first)){
                     Tutorials::add(j,bl->data,false);
                 }else if(Blocks::checkIfBlocksIsTutorialPause(actualMap.map[i][j].first)){
@@ -466,18 +467,17 @@ bool Map::loadMap(string path){
         vector<pair<int,string> > tmp3;
         getline(mapFILE,tmp2);//read version
         getline(mapFILE,tmp2);
-        int loop;
+        int loop=Util::strToInt(tmp2);
         vector<int> b;
         int c;
         string a;
-        istringstream (tmp2) >> loop;
         for(int i=0; i<loop; i++){
             getline(mapFILE,tmp2);
             for(int j=0;j<tmp2.size();j++){
                 if(tmp2[j]!='\''){
                     a+=tmp2[j];
                 }else{
-                    istringstream (a) >> c;
+                    c=Util::strToInt(a);
                     b.push_back(c);
                     a.clear();
                 }
@@ -492,7 +492,6 @@ bool Map::loadMap(string path){
             tmp.backgrounds.push_back(back);
             b.clear();
         }
-        //istringstream (tmp2) >> tmp.backgroundId;
         while(mapFILE.good()){//!mapFILE.eof()
             while(getline(mapFILE,tmp2)){
                 pair<int,string> tmp4;
@@ -509,7 +508,7 @@ bool Map::loadMap(string path){
                         }else{
                             tmp4.second="";
                         }
-                        istringstream (tmp5) >> tmp4.first;
+                        tmp4.first=Util::strToInt(tmp5);
                         tmp3.push_back(tmp4);
                         tmp5.clear();
                     }
