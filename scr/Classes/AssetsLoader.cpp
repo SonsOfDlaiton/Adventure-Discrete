@@ -38,7 +38,7 @@ bool AssetsLoader::loadFonts(){
 bool AssetsLoader::loadTextures(){
     bool out = true;
     GL::loadTexture("paraboloide hiperbolico<3","Textures/paraboloideHiperbolico.png");//n precisa de if
-   
+
     //tutorial
     if(!GL::loadTexture("TutTextHolder","Textures/HUD/Tutorials/textHolder.png")) out=false;
     if(!GL::loadTexture("Whisp","Textures/HUD/Tutorials/zero.png")) out=false;
@@ -222,6 +222,14 @@ bool AssetsLoader::loadTextures(){
     if(!GL::loadTexture("Cefet","Textures/backgrounds/fecet.png")) out=false;
     if(!GL::loadTexture("Win","Textures/backgrounds/win.png")) out=false;
 
+    //Boss
+        //Enem1
+        if((GL::loadTextures("enem1Idle",5,"Textures/bosses/enem/idle/day1/")).size()!=5)out=false;
+
+        //Enem2
+        if((GL::loadTextures("enem2Idle",5,"Textures/bosses/enem/idle/day2/")).size()!=5)out=false;
+
+
     //Enemy
     if((GL::loadTextures("paperWalk",2,"Textures/enemys/prova/blank/walk/")).size()!=2)out=false;
     if((GL::loadTextures("bookIdle",1,"Textures/enemys/livro/idle/")).size()!=1)out=false;
@@ -250,6 +258,7 @@ bool AssetsLoader::loadTextures(){
         if((GL::loadTextures("technicalMoveWalk",4,"Textures/characters/technical/move/walk/")).size()!=4)out=false;
         if((GL::loadTextures("technicalSpawn",7,"Textures/characters/technical/spawn/")).size()!=7)out=false;
         if((GL::loadTextures("technicalLowered",3,"Textures/characters/technical/lowered/")).size()!=3)out=false;
+
         //graduation
         if((GL::loadTextures("graduationAtkMeleeAirDown",1,"Textures/characters/graduation/atack/melee/air/down/")).size()!=1)out=false;
         if((GL::loadTextures("graduationAtkMeleeAirFront",1,"Textures/characters/graduation/atack/melee/air/front/")).size()!=1)out=false;
@@ -270,6 +279,7 @@ bool AssetsLoader::loadTextures(){
         if((GL::loadTextures("graduationMoveWalk",4,"Textures/characters/graduation/move/walk/")).size()!=4)out=false;
         if((GL::loadTextures("graduationSpawn",7,"Textures/characters/graduation/spawn/")).size()!=7)out=false;
         if((GL::loadTextures("graduationLowered",3,"Textures/characters/graduation/lowered/")).size()!=3)out=false;
+
         //masters
         if((GL::loadTextures("mastersAtkMeleeAirDown",1,"Textures/characters/masters/atack/melee/air/down/")).size()!=1)out=false;
         if((GL::loadTextures("mastersAtkMeleeAirFront",1,"Textures/characters/masters/atack/melee/air/front/")).size()!=1)out=false;
@@ -290,6 +300,7 @@ bool AssetsLoader::loadTextures(){
         if((GL::loadTextures("mastersMoveWalk",4,"Textures/characters/masters/move/walk/")).size()!=4)out=false;
         if((GL::loadTextures("mastersSpawn",7,"Textures/characters/masters/spawn/")).size()!=7)out=false;
         if((GL::loadTextures("mastersLowered",3,"Textures/characters/masters/lowered/")).size()!=3)out=false;
+
         //work
         if((GL::loadTextures("workAtkMeleeAirDown",1,"Textures/characters/work/atack/melee/air/down/")).size()!=1)out=false;
         if((GL::loadTextures("workAtkMeleeAirFront",1,"Textures/characters/work/atack/melee/air/front/")).size()!=1)out=false;
@@ -310,6 +321,7 @@ bool AssetsLoader::loadTextures(){
         if((GL::loadTextures("workMoveWalk",4,"Textures/characters/work/move/walk/")).size()!=4)out=false;
         if((GL::loadTextures("workSpawn",7,"Textures/characters/work/spawn/")).size()!=7)out=false;
         if((GL::loadTextures("workLowered",3,"Textures/characters/work/lowered/")).size()!=3)out=false;
+
         //gteacher
         if((GL::loadTextures("gteacherAtkMeleeAirDown",1,"Textures/characters/gteacher/atack/melee/air/down/")).size()!=1)out=false;
         if((GL::loadTextures("gteacherAtkMeleeAirFront",1,"Textures/characters/gteacher/atack/melee/air/front/")).size()!=1)out=false;
@@ -330,6 +342,7 @@ bool AssetsLoader::loadTextures(){
         if((GL::loadTextures("gteacherMoveWalk",4,"Textures/characters/gteacher/move/walk/")).size()!=4)out=false;
         if((GL::loadTextures("gteacherSpawn",7,"Textures/characters/gteacher/spawn/")).size()!=7)out=false;
         if((GL::loadTextures("gteacherLowered",3,"Textures/characters/gteacher/lowered/")).size()!=3)out=false;
+
         //bteacher
         if((GL::loadTextures("bteacherAtkMeleeAirDown",1,"Textures/characters/bteacher/atack/melee/air/down/")).size()!=1)out=false;
         if((GL::loadTextures("bteacherAtkMeleeAirFront",1,"Textures/characters/bteacher/atack/melee/air/front/")).size()!=1)out=false;

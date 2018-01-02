@@ -21,6 +21,7 @@ public:
 
     static void behave();
     static int getSpritesId(string name);
+    static void setSprites();
 
     string nickname;
     double imunityTime;
@@ -30,7 +31,7 @@ public:
     static vector<vector<int> >bossAnimSize;
 
 private:
-    void draw();
+    static void draw(Boss* bo);
     void stateControl();
     void makeInvencible();
 };

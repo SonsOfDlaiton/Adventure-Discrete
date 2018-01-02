@@ -113,6 +113,17 @@ nTPoint Player::getGroundPos(){
     return nTPoint::get(pos.x, pos.y+1, pos.z);
 }
 
+void Player::behave(){
+    FunctionAnalyser::startFunction("Player::behave");
+    Player* pl;
+    for(int i=0;i<players.size();i++){
+        pl=(Player*)players[i];
+        if(pl->god) pl->draw(nTColor::get(0.41,0.41,1,0.85));
+        else pl->draw();
+    }
+    FunctionAnalyser::endFunction("Player::behave");
+}
+
 /**
  *	Override Entity::stateControl to add the states of player attacks, detect liquid collisionions and teleport blocks collision
 **/
@@ -469,4 +480,167 @@ Player* Player::getPlayerById(int id){
         return nullptr;
     else
         return (Player*)Entity::players[idx];
+}
+
+void Player::setSprites(){
+    vector<string> tmp;
+    vector<int> tmp2;
+    Player::playerAnim.clear();
+    Player::playerAnimSize.clear();
+
+    //technical
+    tmp.push_back("technicalIdle");                 tmp2.push_back(5);//0 -Idle
+    tmp.push_back("technicalMoveWalk");             tmp2.push_back(4); //1 -Walking
+    tmp.push_back("technicalMoveRun");              tmp2.push_back(4);//2 -Running
+    tmp.push_back("technicalJump");                 tmp2.push_back(1);//3 -Jumping
+        tmp.push_back("");                  tmp2.push_back(1);//4 -Atacking -none
+        tmp.push_back("");                  tmp2.push_back(1);//5 -SpecialAtacking -none
+    tmp.push_back("technicalDmgGround");            tmp2.push_back(1);//6 -Damage
+    tmp.push_back("technicalDie");                  tmp2.push_back(4);//7 -Death
+    tmp.push_back("technicalSpawn");                tmp2.push_back(7);//8 -Spawn
+    tmp.push_back("technicalLowered");              tmp2.push_back(3);//9
+    tmp.push_back("technicalAtkMeleeAirDown");      tmp2.push_back(1);//10
+    tmp.push_back("technicalAtkMeleeAirFront");     tmp2.push_back(1);//11
+    tmp.push_back("technicalAtkMeleeAirUp");        tmp2.push_back(1);//12
+    tmp.push_back("technicalAtkMeleeGroundFront");  tmp2.push_back(1);//13
+    tmp.push_back("technicalAtkMeleeGroundUp");     tmp2.push_back(1);//14
+    tmp.push_back("technicalAtkRangedAirDown");     tmp2.push_back(1);//15
+    tmp.push_back("technicalAtkRangedAirFront");    tmp2.push_back(1);//16
+    tmp.push_back("technicalAtkRangedAirUp");       tmp2.push_back(1);//17
+    tmp.push_back("technicalAtkRangedGroundFront"); tmp2.push_back(1);//18
+    tmp.push_back("technicalAtkRangedGroundUp");    tmp2.push_back(1);//19
+    Player::playerAnim.push_back(tmp);
+    Player::playerAnimSize.push_back(tmp2);
+    tmp.clear();
+    tmp2.clear();
+
+    //graduation
+    tmp.push_back("graduationIdle");                 tmp2.push_back(5);//0 -Idle
+    tmp.push_back("graduationMoveWalk");             tmp2.push_back(4); //1 -Walking
+    tmp.push_back("graduationMoveRun");              tmp2.push_back(4);//2 -Running
+    tmp.push_back("graduationJump");                 tmp2.push_back(1);//3 -Jumping
+        tmp.push_back("");                  tmp2.push_back(1);//4 -Atacking -none
+        tmp.push_back("");                  tmp2.push_back(1);//5 -SpecialAtacking -none
+    tmp.push_back("graduationDmgGround");            tmp2.push_back(1);//6 -Damage
+    tmp.push_back("graduationDie");                  tmp2.push_back(4);//7 -Death
+    tmp.push_back("graduationSpawn");                tmp2.push_back(7);//8 -Spawn
+    tmp.push_back("graduationLowered");              tmp2.push_back(3);//9
+    tmp.push_back("graduationAtkMeleeAirDown");      tmp2.push_back(1);//10
+    tmp.push_back("graduationAtkMeleeAirFront");     tmp2.push_back(1);//11
+    tmp.push_back("graduationAtkMeleeAirUp");        tmp2.push_back(1);//12
+    tmp.push_back("graduationAtkMeleeGroundFront");  tmp2.push_back(1);//13
+    tmp.push_back("graduationAtkMeleeGroundUp");     tmp2.push_back(1);//14
+    tmp.push_back("graduationAtkRangedAirDown");     tmp2.push_back(1);//15
+    tmp.push_back("graduationAtkRangedAirFront");    tmp2.push_back(1);//16
+    tmp.push_back("graduationAtkRangedAirUp");       tmp2.push_back(1);//17
+    tmp.push_back("graduationAtkRangedGroundFront"); tmp2.push_back(1);//18
+    tmp.push_back("graduationAtkRangedGroundUp");    tmp2.push_back(1);//19
+    Player::playerAnim.push_back(tmp);
+    Player::playerAnimSize.push_back(tmp2);
+    tmp.clear();
+    tmp2.clear();
+
+    //masters
+    tmp.push_back("mastersIdle");                 tmp2.push_back(5);//0 -Idle
+    tmp.push_back("mastersMoveWalk");             tmp2.push_back(4); //1 -Walking
+    tmp.push_back("mastersMoveRun");              tmp2.push_back(4);//2 -Running
+    tmp.push_back("mastersJump");                 tmp2.push_back(1);//3 -Jumping
+        tmp.push_back("");                  tmp2.push_back(1);//4 -Atacking -none
+        tmp.push_back("");                  tmp2.push_back(1);//5 -SpecialAtacking -none
+    tmp.push_back("mastersDmgGround");            tmp2.push_back(1);//6 -Damage
+    tmp.push_back("mastersDie");                  tmp2.push_back(4);//7 -Death
+    tmp.push_back("mastersSpawn");                tmp2.push_back(7);//8 -Spawn
+    tmp.push_back("mastersLowered");              tmp2.push_back(3);//9
+    tmp.push_back("mastersAtkMeleeAirDown");      tmp2.push_back(1);//10
+    tmp.push_back("mastersAtkMeleeAirFront");     tmp2.push_back(1);//11
+    tmp.push_back("mastersAtkMeleeAirUp");        tmp2.push_back(1);//12
+    tmp.push_back("mastersAtkMeleeGroundFront");  tmp2.push_back(1);//13
+    tmp.push_back("mastersAtkMeleeGroundUp");     tmp2.push_back(1);//14
+    tmp.push_back("mastersAtkRangedAirDown");     tmp2.push_back(1);//15
+    tmp.push_back("mastersAtkRangedAirFront");    tmp2.push_back(1);//16
+    tmp.push_back("mastersAtkRangedAirUp");       tmp2.push_back(1);//17
+    tmp.push_back("mastersAtkRangedGroundFront"); tmp2.push_back(1);//18
+    tmp.push_back("mastersAtkRangedGroundUp");    tmp2.push_back(1);//19
+    Player::playerAnim.push_back(tmp);
+    Player::playerAnimSize.push_back(tmp2);
+    tmp.clear();
+    tmp2.clear();
+
+    //work
+    tmp.push_back("workIdle");                 tmp2.push_back(5);//0 -Idle
+    tmp.push_back("workMoveWalk");             tmp2.push_back(4); //1 -Walking
+    tmp.push_back("workMoveRun");              tmp2.push_back(4);//2 -Running
+    tmp.push_back("workJump");                 tmp2.push_back(1);//3 -Jumping
+        tmp.push_back("");                  tmp2.push_back(1);//4 -Atacking -none
+        tmp.push_back("");                  tmp2.push_back(1);//5 -SpecialAtacking -none
+    tmp.push_back("workDmgGround");            tmp2.push_back(1);//6 -Damage
+    tmp.push_back("workDie");                  tmp2.push_back(4);//7 -Death
+    tmp.push_back("workSpawn");                tmp2.push_back(7);//8 -Spawn
+    tmp.push_back("workLowered");              tmp2.push_back(3);//9
+    tmp.push_back("workAtkMeleeAirDown");      tmp2.push_back(1);//10
+    tmp.push_back("workAtkMeleeAirFront");     tmp2.push_back(1);//11
+    tmp.push_back("workAtkMeleeAirUp");        tmp2.push_back(1);//12
+    tmp.push_back("workAtkMeleeGroundFront");  tmp2.push_back(1);//13
+    tmp.push_back("workAtkMeleeGroundUp");     tmp2.push_back(1);//14
+    tmp.push_back("workAtkRangedAirDown");     tmp2.push_back(1);//15
+    tmp.push_back("workAtkRangedAirFront");    tmp2.push_back(1);//16
+    tmp.push_back("workAtkRangedAirUp");       tmp2.push_back(1);//17
+    tmp.push_back("workAtkRangedGroundFront"); tmp2.push_back(1);//18
+    tmp.push_back("workAtkRangedGroundUp");    tmp2.push_back(1);//19
+    Player::playerAnim.push_back(tmp);
+    Player::playerAnimSize.push_back(tmp2);
+    tmp.clear();
+    tmp2.clear();
+
+    //gteacher
+    tmp.push_back("gteacherIdle");                 tmp2.push_back(5);//0 -Idle
+    tmp.push_back("gteacherMoveWalk");             tmp2.push_back(4); //1 -Walking
+    tmp.push_back("gteacherMoveRun");              tmp2.push_back(4);//2 -Running
+    tmp.push_back("gteacherJump");                 tmp2.push_back(1);//3 -Jumping
+        tmp.push_back("");                  tmp2.push_back(1);//4 -Atacking -none
+        tmp.push_back("");                  tmp2.push_back(1);//5 -SpecialAtacking -none
+    tmp.push_back("gteacherDmgGround");            tmp2.push_back(1);//6 -Damage
+    tmp.push_back("gteacherDie");                  tmp2.push_back(4);//7 -Death
+    tmp.push_back("gteacherSpawn");                tmp2.push_back(7);//8 -Spawn
+    tmp.push_back("gteacherLowered");              tmp2.push_back(3);//9
+    tmp.push_back("gteacherAtkMeleeAirDown");      tmp2.push_back(1);//10
+    tmp.push_back("gteacherAtkMeleeAirFront");     tmp2.push_back(1);//11
+    tmp.push_back("gteacherAtkMeleeAirUp");        tmp2.push_back(1);//12
+    tmp.push_back("gteacherAtkMeleeGroundFront");  tmp2.push_back(1);//13
+    tmp.push_back("gteacherAtkMeleeGroundUp");     tmp2.push_back(1);//14
+    tmp.push_back("gteacherAtkRangedAirDown");     tmp2.push_back(1);//15
+    tmp.push_back("gteacherAtkRangedAirFront");    tmp2.push_back(1);//16
+    tmp.push_back("gteacherAtkRangedAirUp");       tmp2.push_back(1);//17
+    tmp.push_back("gteacherAtkRangedGroundFront"); tmp2.push_back(1);//18
+    tmp.push_back("gteacherAtkRangedGroundUp");    tmp2.push_back(1);//19
+    Player::playerAnim.push_back(tmp);
+    Player::playerAnimSize.push_back(tmp2);
+    tmp.clear();
+    tmp2.clear();
+
+    //bteacher
+    tmp.push_back("bteacherIdle");                 tmp2.push_back(5);//0 -Idle
+    tmp.push_back("bteacherMoveWalk");             tmp2.push_back(4); //1 -Walking
+    tmp.push_back("bteacherMoveRun");              tmp2.push_back(4);//2 -Running
+    tmp.push_back("bteacherJump");                 tmp2.push_back(1);//3 -Jumping
+        tmp.push_back("");                  tmp2.push_back(1);//4 -Atacking -none
+        tmp.push_back("");                  tmp2.push_back(1);//5 -SpecialAtacking -none
+    tmp.push_back("bteacherDmgGround");            tmp2.push_back(1);//6 -Damage
+    tmp.push_back("bteacherDie");                  tmp2.push_back(4);//7 -Death
+    tmp.push_back("bteacherSpawn");                tmp2.push_back(7);//8 -Spawn
+    tmp.push_back("bteacherLowered");              tmp2.push_back(3);//9
+    tmp.push_back("bteacherAtkMeleeAirDown");      tmp2.push_back(1);//10
+    tmp.push_back("bteacherAtkMeleeAirFront");     tmp2.push_back(1);//11
+    tmp.push_back("bteacherAtkMeleeAirUp");        tmp2.push_back(1);//12
+    tmp.push_back("bteacherAtkMeleeGroundFront");  tmp2.push_back(1);//13
+    tmp.push_back("bteacherAtkMeleeGroundUp");     tmp2.push_back(1);//14
+    tmp.push_back("bteacherAtkRangedAirDown");     tmp2.push_back(1);//15
+    tmp.push_back("bteacherAtkRangedAirFront");    tmp2.push_back(1);//16
+    tmp.push_back("bteacherAtkRangedAirUp");       tmp2.push_back(1);//17
+    tmp.push_back("bteacherAtkRangedGroundFront"); tmp2.push_back(1);//18
+    tmp.push_back("bteacherAtkRangedGroundUp");    tmp2.push_back(1);//19
+    Player::playerAnim.push_back(tmp);
+    Player::playerAnimSize.push_back(tmp2);
+    tmp.clear();
+    tmp2.clear();
 }

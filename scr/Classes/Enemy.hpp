@@ -15,12 +15,15 @@ public:
     static void behave();
     GLuint lifeLetter();
     static void registerNicks();
+    static void setSprites();
 
     int type;
 
     static const int defaultLife;
     static const nTPoint defaultSize;
     static const double imunityTime;
+    static int getSpritesId(string name);
+    static vector<string>enemyName;
     static vector<vector<string> >enemyAnim;
     static vector<vector<int> >enemyAnimSize;
 private:

@@ -7,7 +7,7 @@ Enemy::Enemy(int enemyType,double life,nTPoint spawn,nTPoint size,vector<vector<
     this->vSpeed=0;
     this->atacking=false;
     this->hSpeed=Entity::walkSpeed;
-    this->currentState=Entity::state_Idle;
+    this->currentState=Entity::state_Spawning;
     this->currentIndex=0;
     this->nextState=Entity::state_Holding;
     this->life=life;
@@ -50,6 +50,7 @@ const int Enemy::defaultLife=3;
 vector<vector<string> >Enemy::nicks;
 vector<vector<string> >Enemy::enemyAnim;
 vector<vector<int> >Enemy::enemyAnimSize;
+vector<string> Enemy::enemyName;
 
 /**
  *	Override Entity::stateControl to add the function of check collions with lava blocks
@@ -219,4 +220,70 @@ GLuint Enemy::lifeLetter(){
   if(Life>=1)
     return GL::getTextureByName("F");
   return GL::getTextureByName("F");
+}
+
+int Enemy::getSpritesId(string name){
+    int i=0;
+    for(string n:enemyName)
+        if(n==name)
+            return i;
+        else
+            i++;
+    return 0;
+}
+
+void Enemy::setSprites(){
+    vector<string> tmp;
+    vector<int> tmp2;
+    Enemy::enemyAnim.clear();
+    Enemy::enemyAnimSize.clear();
+    Enemy::enemyName.clear();
+
+    //Prova
+    Enemy::enemyName.push_back("paper");//sprite name
+    tmp.push_back("paperIdle"); tmp2.push_back(1);//0 -Idle
+    tmp.push_back("paperWalk"); tmp2.push_back(2);//1 -Walking
+    tmp.push_back("paperWalk"); tmp2.push_back(2);//2 -Running
+    tmp.push_back("paperIdle"); tmp2.push_back(1);//3 -Jumping
+        tmp.push_back("");  tmp2.push_back(1);//4 -Atacking -none
+        tmp.push_back("");  tmp2.push_back(1);//5 -SpecialAtacking -none
+    tmp.push_back("paperIdle"); tmp2.push_back(1);//6 -Damage
+    tmp.push_back("paperIdle"); tmp2.push_back(1);//7 -Death
+    tmp.push_back("paperIdle"); tmp2.push_back(1);//8 -Spawn
+    Enemy::enemyAnim.push_back(tmp);
+    Enemy::enemyAnimSize.push_back(tmp2);
+    tmp.clear();
+    tmp2.clear();
+
+    //Livro
+    Enemy::enemyName.push_back("book");//sprite name
+    tmp.push_back("bookIdle"); tmp2.push_back(1);//0 -Idle
+    tmp.push_back("bookWalk"); tmp2.push_back(5);//1 -Walking
+    tmp.push_back("bookWalk"); tmp2.push_back(5);//2 -Running
+    tmp.push_back("bookIdle"); tmp2.push_back(1);//3 -Jumping
+        tmp.push_back(""); tmp2.push_back(1);//4 -Atacking -none
+        tmp.push_back(""); tmp2.push_back(1);//5 -SpecialAtacking -nome
+    tmp.push_back("bookIdle"); tmp2.push_back(1);//6 -Damage
+    tmp.push_back("bookIdle"); tmp2.push_back(1);//7 -Death
+    tmp.push_back("bookIdle"); tmp2.push_back(1);//8 -Spawn
+    Enemy::enemyAnim.push_back(tmp);
+    Enemy::enemyAnimSize.push_back(tmp2);
+    tmp.clear();
+    tmp2.clear();
+
+    //Calculadora
+    Enemy::enemyName.push_back("calc");//sprite name
+    tmp.push_back("calcIdle"); tmp2.push_back(1);//0 -Idle
+    tmp.push_back("calcWalk"); tmp2.push_back(4);//1 -Walking
+    tmp.push_back("calcWalk"); tmp2.push_back(4);//2 -Running
+    tmp.push_back("calcIdle"); tmp2.push_back(1);//3 -Jumping
+        tmp.push_back(""); tmp2.push_back(1);//4 -Atacking -none
+        tmp.push_back(""); tmp2.push_back(1);//5 -SpecialAtacking -none
+    tmp.push_back("calcIdle"); tmp2.push_back(1);//6 -Damage
+    tmp.push_back("calcIdle"); tmp2.push_back(1);//7 -Death
+    tmp.push_back("calcIdle"); tmp2.push_back(1);//8 -Spawn
+    Enemy::enemyAnim.push_back(tmp);
+    Enemy::enemyAnimSize.push_back(tmp2);
+    tmp.clear();
+    tmp2.clear();
 }

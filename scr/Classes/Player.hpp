@@ -17,6 +17,8 @@ public:
     Player(const Player& orig);
     virtual ~Player();
 
+    static void setSprites();
+    static void behave();
     void makeInvencible(double time);
     void atack(int type);
     void spawn(nTPoint spawn,double life);
