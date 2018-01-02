@@ -18,17 +18,35 @@ public:
     string getData();
     float getFloat(string field);
     float getFloat(string field,float defaultval);
-    bool hasNext();
+
+    bool nextInt(int& i);
+    bool nextFloat(float& f);
     bool next(int& i);
     bool next(float& f);
     bool next(string& s);
     bool next(vector<string>& vs);
+    bool next(pair<string,int>& i);
+    bool next(pair<string,float>& f);
+    bool next(pair<string,string>& s);
+    bool next(pair<string,vector<string> >& vs);
+    void resetPointers();
+    static vector<string> strToStrVector(string input);
 
-    int pointer;
 private:
-    void lexicalAnalysis();
+    void removeComments();
+    void decode();
+    void includeFiles();
+    void printInterpretedData();
     string data, name;
-    static const char vectorSeparator,vectorBegin,vectorEnd,stringBegin,stringEnd,sectionBegin,sectionEnd;
+    int vstr_pointer,strs_pointer,numbers_pointer,ints_pointer,flts_pointer,sections_pointer;
+    vector<pair<string,vector<string> > > vstr;
+    vector<pair<string,string> > strs;
+    vector<pair<string,int> > numbers;
+    vector<pair<string,int> > ints;
+    vector<pair<string,float> > flts;
+    vector<pair<string,string> > sections;
+    static const char vectorSeparator,vectorBegin,vectorEnd,stringBegin,stringEnd,sectionBegin,sectionEnd,assignment,escape;
+    static const string includeFile,lineComment,sectionCommentBegin,sectionCommentEnd;
 };
 
 #endif /* ADC_H */

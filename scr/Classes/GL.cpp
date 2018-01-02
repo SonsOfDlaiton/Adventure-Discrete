@@ -940,7 +940,7 @@ void GL::drawHUD(){
     }
     if(GL::FPSchecker){
         point.set(Scenes::camera.x.movedCam+780,Scenes::camera.y.movedCam+23,1);
-        GL::drawText(point,Util::intToStr(GL::currentFPS),nTColor::get(0,1,0));
+        GL::drawText(point,Util::intToStr(ABS(GL::currentFPS)),nTColor::get(0,1,0));
     }
 }
 

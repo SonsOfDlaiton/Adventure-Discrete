@@ -442,7 +442,7 @@ void Scenes::drawPreFreeMode(){
   	Scenes::current=game;
   	if(GL::buttonBehave(nTRectangle::get(340,550,480,500),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon")))
     	current=preGame;
-  //TODO implementar modo de escolher mapa
+  //TODO implementar modo de escolher entre varios mapas do usuario
 }
 
 /**

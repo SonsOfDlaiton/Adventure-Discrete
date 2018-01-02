@@ -153,7 +153,7 @@ void Tutorials::add(int pos,ADCode* adc, bool pause_){
 	int duration=adc->getInt("duration");
 	vector<char> keys;
 	for(int i=0;i<keys_str.size();i++)
-        if(keys_str[i].size()>1){
+        if(keys_str[i].size()==1){
             keys.push_back(keys_str[i][0]);
         }else{
             if(keys_str[i].find("up")!=string::npos){

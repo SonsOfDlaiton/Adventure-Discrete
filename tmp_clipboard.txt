@@ -1,3 +1,3 @@
-text:"bem vindo"
-keys:{a,arrow_up}
-duration2000
+text="bem vindo"
+keys={a,arrow_up}
+duration=2000
