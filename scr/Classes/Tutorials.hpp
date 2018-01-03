@@ -3,6 +3,7 @@
 
 #include "Util.hpp"
 #include "GL.hpp"
+#include "Texture.hpp"
 
 class ADCode;
 
@@ -39,6 +40,8 @@ private:
     static vector<bool> called;
     static double startTutMs;
     static int activeTut;
+    static Texture* friendTex;
+    static int lastFriendTex;
     static bool showTutorials;
 };
 

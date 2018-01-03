@@ -72,7 +72,7 @@ public:
 private:
     friend class Map;
 
-    GLuint getTextureByIndex();
+    vector<GLuint> getTextureByIndex();
     void applyDamage(double damage);
     void move(int dir,double steeps);
 
@@ -80,7 +80,7 @@ private:
     unsigned long int timeToVunerability;
     bool damageState;
     static double imunityTime;
-    GLuint tex;
+    Texture* tex;
     nTColor color;
 };
 

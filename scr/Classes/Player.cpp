@@ -6,8 +6,7 @@ Player::Player(double life,nTPoint spawn,nTPoint size) {
     this->size=size;
     this->vSpeed=0;
     this->hSpeed=0;
-    this->currentState=Entity::state_Idle;
-    this->currentIndex=0;
+    this->changeState(Entity::state_Idle);
     this->nextState=Entity::state_Holding;
     if(life>defaultLife)
         life=defaultLife;
@@ -32,7 +31,6 @@ Player::Player(double life,nTPoint spawn,nTPoint size) {
     this->imuneToDamage=false;
     this->god=false;
     this->lowered=false;
-
     Entity::players.push_back(this);
     this->id=-((unsigned int)Entity::players.size());
 };
@@ -55,7 +53,6 @@ bool Player::beatGame=false;
 const int Player::ranged=64651;
 const int Player::meleeProjectile=16165;
 const int Player::melee=165165;
-const double Player::imunityTime=900;
 const double Player::swordBaseDamage=2;
 int Player::checkpoint=0;
 int Player::stage=0;
@@ -85,26 +82,6 @@ ostream& operator<<(ostream &strm, const Player &player){
 }
 
 /**
- *	Change the damageState of a player
- *
- *	@param id the id of the player
-**/
-void playerChangeDamageState(int id){
-    Player *pl;
-    int idx;
-    if(id<0)
-        idx=-id-1;
-    else
-        idx=id;
-    try{
-        pl=(Player*)Entity::players[idx];
-        pl->damageState=false;
-    }catch(const exception& e){
-        cout<<"pCDS-catch error: "<<e.what()<<endl;
-    }
-}
-
-/**
  *	Gets the position of the player fixed to detect bottom collsions
  *
  *	@return the ground position of the player
@@ -118,51 +95,49 @@ nTPoint Player::getGroundPos(){
 **/
 void Player::stateControl(){
     FunctionAnalyser::startFunction("Player::stateControl");
-    if(GL::getGameMs()>=timeToVunerability){
-        if((imuneToDamage&&!damageState)&&!god)
-            AL::singleton->stopSound(AL::getSoundByName("cafeSong"));
-        damageState=false;
-        imuneToDamage=false;
-    }
     Entity::stateControl();
+    if((imuneToDamage&&!damageState)&&!god)
+        AL::singleton->stopSound(AL::getSoundByName("cafeSong"));
+    if(god) imuneToDamage=true;
     if(nextState!=Entity::state_TakingDamage&&nextState!=Entity::state_Dying&&currentState!=Entity::state_TakingDamage&&currentState!=Entity::state_Dying&&atacking&&!lowered){
         if(atacking==Player::melee){
             if(vSpeed!=0){//air
                 if(atackDirection==Util::direction_down)
-                    currentState=Entity::state_MeleeAirAtackingDown;
+                    changeState(Entity::state_MeleeAirAtackingDown);
                 else if(atackDirection==Util::direction_up)
-                    currentState=Entity::state_MeleeAirAtackingUp;
+                    changeState(Entity::state_MeleeAirAtackingUp);
                 else
-                    currentState=state_MeleeAirAtackingHorizontal;
+                    changeState(state_MeleeAirAtackingHorizontal);
             }else{//ground
                 if(atackDirection==Util::direction_up)
-                    currentState=Entity::state_MeleeGroundAtackingUp;
+                    changeState(Entity::state_MeleeGroundAtackingUp);
                 else
-                    currentState=Entity::state_MeleeGroundAtackingHorizontal;
+                    changeState(Entity::state_MeleeGroundAtackingHorizontal);
             }
             nextState=Entity::state_Holding;
-            currentIndex=0;
         }else{
             if(vSpeed!=0){//air
                 if(atackDirection==Util::direction_down)
-                    currentState=Entity::state_RangedAirAtackingDown;
+                    changeState(Entity::state_RangedAirAtackingDown);
                 else if(atackDirection==Util::direction_up)
-                    currentState=Entity::state_RangedAirAtackingUp;
+                    changeState(Entity::state_RangedAirAtackingUp);
                 else
-                    currentState=Entity::state_RangedAirAtackingHorizontal;
+                    changeState(Entity::state_RangedAirAtackingHorizontal);
             }else{//ground
                 if(atackDirection==Util::direction_up)
-                    currentState=Entity::state_RangedGroundAtackingUp;
+                    changeState(Entity::state_RangedGroundAtackingUp);
                 else
-                    currentState=Entity::state_RangedGroundAtackingHorizontal;
+                   changeState(Entity::state_RangedGroundAtackingHorizontal);
             }
             nextState=Entity::state_Holding;
-            currentIndex=0;
         }
     }
     if(atacking&&!lowered) atack(atacking);
-    execAnimation();
     FunctionAnalyser::endFunction("Player::stateControl");
+}
+
+void Player::makeInvencible(){
+    makeInvencible(imunityTime);
 }
 
 /**
@@ -171,13 +146,12 @@ void Player::stateControl(){
  *	@param time time who the player will be immune
 **/
 void Player::makeInvencible(double time){
+    Entity::makeInvencible();
     sword=life-1;
     if(sword>2)
         sword=2;
     else if(sword<0)
         sword=0;
-    imuneToDamage=true;
-    timeToVunerability=GL::getGameMs()+time;
 }
 
 /**
@@ -195,8 +169,6 @@ void Player::spawn(nTPoint spawn,double life){
     this->pos=spawn;
     this->vSpeed=0;
     this->hSpeed=0;
-    this->currentState=Entity::state_Spawning;
-    this->nextState=Entity::state_Idle;
     this->life=life;
     this->sword=(int)life-1;
     this->defaultOrientation=Util::orientation_right;
@@ -224,6 +196,8 @@ void Player::spawn(nTPoint spawn,double life){
     else
         anim=Player::stage;
     animations=Entity::getAnimationVector(Player::playerAnim[anim],Player::playerAnimSize[anim]);
+    this->changeState(Entity::state_Spawning);
+    this->nextState=Entity::state_Idle;
     Scenes::camera.lookAt(this->pos);
 }
 

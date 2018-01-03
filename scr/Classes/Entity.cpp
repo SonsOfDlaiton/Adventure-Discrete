@@ -5,22 +5,24 @@
 #include "Blocks.hpp"
 
 Entity::Entity() {
+    currentTex=new Texture();
+    imunityTime=defaultImunityTime;
 };
 
 Entity::Entity(const Entity& orig) {
 }
 
 Entity::~Entity() {
+    delete currentTex;
 }
 
-const double Entity::SpritesPerSecond=4;
 const double Entity::jumpSpeed=312;
 const double Entity::horizontalRecoil=280;
 const double Entity::verticalRecoil=330;
 const double Entity::walkSpeed=166;
 const double Entity::runAceleration=70;
 const double Entity::maxRunSpeed=280;
-const double Entity::imunityTime=300;
+const double Entity::defaultImunityTime=400;
 const int Entity::state_Idle=0;
 const int Entity::state_Walking=1;
 const int Entity::state_Running=2;
@@ -51,131 +53,91 @@ vector<void*> Entity::bosses;
 **/
 void Entity::stateControl(){
     FunctionAnalyser::startFunction("Entity::stateControl");
-    if(currentState==state_Spawning){
-        FunctionAnalyser::endFunction("Entity::stateControl");
-        return;
+    if(currentState!=state_Spawning){
+        if(pos.x<0||pos.y<0||pos.x>=Map::size.x+Blocks::defaultBlockSize.x*1.5||pos.y>=Map::size.y+Blocks::defaultBlockSize.y*1.5)
+            if(!Player::getPlayerById(0)->god) life=0;
+        if(life<=0){
+            changeState(state_Dying);
+            nextState=state_Holding;
+        }else{
+            nextState=state_Idle;
+            if(hSpeed!=0&&!reducing)
+                nextState=state_Walking;
+            if(ABS(hSpeed)>walkSpeed&&!reducing)
+                nextState=state_Running;
+            if(vSpeed!=0)
+                nextState=state_Jumping;
+            if(lowered)
+                nextState=state_Lowering;
+            if(damageState)
+                nextState=state_TakingDamage;
+        }
+        if(reducing||atacking){
+            if(hSpeed>0)
+                reduceSpeed(Util::direction_right);
+            else if(hSpeed<0)
+                reduceSpeed(Util::direction_left);
+            if(hSpeed==0)
+                reducing=false;
+        }
     }
-    if(pos.x<0||pos.y<0||pos.x>=Map::size.x+Blocks::defaultBlockSize.x*1.5||pos.y>=Map::size.y+Blocks::defaultBlockSize.y*1.5)
-        if(!Player::getPlayerById(0)->god) life=0;
-    if(life<=0){
-        if(currentState!=state_Dying) currentIndex=0;
-        currentState=state_Dying;
-        nextState=state_Holding;
-    }else{
-        nextState=state_Idle;
-        if(hSpeed!=0&&!reducing)
-            nextState=state_Walking;
-        if(ABS(hSpeed)>walkSpeed&&!reducing)
-            nextState=state_Running;
-        if(vSpeed!=0)
-            nextState=state_Jumping;
-        if(lowered)
-            nextState=state_Lowering;
-        if(damageState)
-            nextState=state_TakingDamage;
-    }
-    if(reducing||atacking){
-        if(hSpeed>0)
-            reduceSpeed(Util::direction_right);
-        else if(hSpeed<0)
-            reduceSpeed(Util::direction_left);
-        if(hSpeed==0)
-            reducing=false;
+    if(GL::getGameMs()>=timeToVunerability)
+        imuneToDamage=false;
+    if(currentTex->finishedAnimation()){
+        Player* pl;
+        Enemy* en;
+        switch(currentState){
+            case state_TakingDamage: damageState=false; break;
+            case state_Dying:
+                if(id<0){
+                    AL::singleton->playSoundByName("diePlayer");
+                    pl=(Player*) Entity::players[-id-1];
+                    pl->changeState(state_Dying);
+                    if(!pl->god){
+                        if(!Scenes::freeGameMode){
+                            pl->isVisible=false;
+                            Player::lives--;
+                            if(Player::lives)
+                                Map::next();
+                            else
+                                Map::GG(false);
+                        }else{
+                            pl->isVisible=false;
+                            Map::next();
+                        }
+                    }
+                }else if(id<60000){
+                    Player::enemysKilled++;
+                    en=(Enemy*)Entity::enemys[id];
+                    en->isVisible=false;
+                    delete en;
+                    FunctionAnalyser::endFunction("Entity::stateControl");
+                    return;
+                }else{
+                    changeState(state_Spawning);
+                    nextState=state_Holding;
+                }
+            break;
+            case state_Spawning: nextState=state_Jumping;break;
+        }
+        if(nextState>=state_Idle){
+            changeState(nextState);
+            nextState=state_Holding;
+        }
     }
     FunctionAnalyser::endFunction("Entity::stateControl");
 }
 
-/**
- *	Gets the default sprite animate interval
- *
- *	@return ammount of sprites per second
-**/
-double Entity::getSpriteMs(){
-    return SpritesPerSecond;
+void Entity::changeState(int newState){
+    if(currentState==newState) return;
+    currentState=newState;
+    if(currentState>=animations.size()||currentState<=state_Holding){
+        currentState=state_Idle;
+    }
+    if(animations.size())
+        currentTex->setTextures(animations[currentState]);
 }
 
-
-/**
- *	Exec animations changing the textures based on the current state and next state. Also spawn end level blocks and behave death of the player
-**/
-void Entity::execAnimation(){
-    FunctionAnalyser::startFunction("Entity::execAnimation");
-    if(GL::isPaused){
-        FunctionAnalyser::endFunction("Entity::execAnimation");
-        return;
-    }
-    if(Util::timerWithInterval(Entity::getSpriteMs())){
-        Player* pl;
-        Enemy* en;
-        if(currentIndex>=animations[currentState].size()){
-            currentIndex=0;
-            switch(currentState){
-                case state_TakingDamage: damageState=false; break;
-                case state_Dying:
-                    if(id<0){
-                        AL::singleton->playSoundByName("diePlayer");
-                        pl=(Player*) Entity::players[-id-1];
-                        pl->currentState=state_Dying;
-                        pl->currentIndex=state_Idle;
-                        if(!pl->god){
-                            if(!Scenes::freeGameMode){
-                                pl->isVisible=false;
-                                Player::lives--;
-                                if(Player::lives)
-                                    Map::next();
-                                else
-                                    Map::GG(false);
-                            }else{
-                                pl->isVisible=false;
-                                Map::next();
-                            }
-                        }
-                    }else if(id<60000){
-                        Player::enemysKilled++;
-                        en=(Enemy*)Entity::enemys[id];
-                        en->isVisible=false;
-                        delete en;
-                        FunctionAnalyser::endFunction("Entity::execAnimation");
-                        return;
-                    }else{
-                        currentState=state_Spawning;
-                        currentIndex=0;
-                    }
-                break;
-                case state_Spawning: nextState=state_Jumping;break;
-            }
-            if(nextState>=state_Idle){
-                currentState=nextState;
-                currentIndex=0;
-                nextState=state_Holding;
-            }
-        }
-        if(currentState>=animations.size()||currentState==state_Holding){
-            currentState=state_Idle;
-            currentIndex=0;
-        }
-        if(currentIndex>=animations[currentState].size()||currentIndex<0)
-            currentIndex=0;
-        if(animations.size()==0||animations[currentState].size()==0){
-            if(Util::DEBUG){
-                string info="Error ";
-                if(this->id<0){
-                    info="Error on player";
-                }else if(id<60000){
-                    Enemy *en=(Enemy*)Entity::enemys[id];
-                    info="Error on enemy("+en->spritename+")";
-                }else{
-                    info="Error on boss";
-                }
-                cout<<info<<" animations vector null at state:"<<currentState<<" index:"<<currentIndex<<endl;
-            }
-            return;
-        }
-        currentTex=animations[currentState][currentIndex];
-        currentIndex++;
-    }
-    FunctionAnalyser::endFunction("Entity::execAnimation");
-}
 
 /**
  *	Get an vetor of vectors containing the texture id of each animation passed as parameter
@@ -222,14 +184,14 @@ void Entity::draw(nTColor color){
     if(GL::isPaused||!this->isVisible)
         return;
     if(Tutorials::isPaused){
-        GL::drawTexture(nTRectangle::getCollision(pos,size),color,currentTex,orientation);
+        GL::drawTexture(nTRectangle::getCollision(pos,size),color,currentTex->get(),orientation);
         return;
     }
     if((damageState||imuneToDamage)&&Util::timerWithInterval(200))
         return;
     stateControl();
     if(!isVisible) return;
-    GL::drawTexture(nTRectangle::getCollision(pos,size),color,currentTex,orientation);
+    GL::drawTexture(nTRectangle::getCollision(pos,size),color,currentTex->get(),orientation);
     if(Mechanics::drawCollisionRec)GL::drawCollision(nTRectangle::getCollision(pos, size));
 }
 

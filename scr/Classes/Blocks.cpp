@@ -6,10 +6,10 @@ Blocks::Blocks(int type,nTPoint pos,nTPoint size,string data){
     this->pos.z=0.5;
     this->size=size;
     this->id=-1;
-    this->tex=getTextureByIndex();
     this->brokeStage=0;
     this->damageState=false;
     this->isVisible=true;
+    this->tex=new Texture(getTextureByIndex());
     this->color=nTColor::White();
     this->data=data;
     if(checkIfBlocksIsHalfBlockV(type)){
@@ -26,10 +26,11 @@ Blocks::Blocks(int type,nTPoint pos,nTPoint size,string data){
     }
     if(checkIfBlocksIsLiquid(type)){
         pos.z=0.9999;
-        if(type==AnimatedWater1||type==AnimatedWater2||type==StaticWater)
+        if(type==AnimatedWater1||type==AnimatedWater2||type==StaticWater){
             color.A=0.6f;
-        else
+        }else{
             color.A=0.85f;
+        }
     }
 }
 
@@ -41,6 +42,7 @@ Blocks::Blocks(const Blocks& orig) {
 }
 
 Blocks::~Blocks() {
+    delete tex;
     if(checkIfBlocksIsDynamic(type)){
         Blocks* bl;
         int idx=id-Map::staticBlocks.size();
@@ -80,8 +82,15 @@ const int Blocks::TutorialPauseBlock=528;
  *
  *	@return id of the texture
 **/
-GLuint Blocks::getTextureByIndex(){
-    return GL::getTextureByName(getTexNameByIndex(this->type));
+vector<GLuint> Blocks::getTextureByIndex(){
+    vector<GLuint> out;
+    if(type==AnimatedWater1||type==AnimatedWater2){
+        out=GL::getTexturesByName("Agua",2);
+    }else if(type==AnimatedLava1||type==AnimatedLava2){
+        out=GL::getTexturesByName("Lava",2);
+    }else
+        out.push_back(GL::getTextureByName(getTexNameByIndex(this->type)));
+    return out;
 }
 
 /**
@@ -89,28 +98,7 @@ GLuint Blocks::getTextureByIndex(){
 **/
 void Blocks::draw(){
     if(!this->isVisible){ return;}
-    //block animations
-    if(type==AnimatedWater1||type==AnimatedWater2){ //agua
-        if(Util::timerWithInterval(100)){
-            if(type==AnimatedWater1){
-                type=AnimatedWater2;
-            }else{
-                type=AnimatedWater1;
-            }
-        }
-        tex=getTextureByIndex();
-    }
-    if(type==AnimatedLava1||type==AnimatedLava2){ //lava
-        if(Util::timerWithInterval(100)){
-            if(type==AnimatedLava1){
-                type=AnimatedLava2;
-            }else{
-                type=AnimatedLava1;
-            }
-        }
-        tex=getTextureByIndex();
-    }
-    GL::drawTexture(nTRectangle::getCollision(pos,size),color,tex);
+    GL::drawTexture(nTRectangle::getCollision(pos,size),color,tex->get());
     if(checkIfBlocksIsDestrutive(type)){
         nTPoint tmp=pos;
         tmp.z=1;
@@ -505,9 +493,9 @@ string Blocks::getTexNameByIndex(int BlockType){
 
     //liquids
     if(BlockType==376){
-    return string("Agua");
+    return string("Agua0");
     }else if(BlockType==377){
-    return string("Lava");
+    return string("Lava0");
     }else if(BlockType==378){
     return string("AguaF");
     }else if(BlockType==379){

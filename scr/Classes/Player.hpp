@@ -23,7 +23,7 @@ public:
     void atack(int type);
     void spawn(nTPoint spawn,double life);
     nTPoint getGroundPos();
-    static Player* getPlayerById(int id);
+    static Player* getPlayerById(int id); // TODO, avoid and remove
 
     bool god;
     int sword;
@@ -55,7 +55,7 @@ private:
     void drawSword();
     static void refreshCoeficiente();
     static void refreshGlobalcoeficiente();
-
+    void makeInvencible();
     bool haveBulletSword;
     bool haveBulletSpec;
     bool alReadyAtacked;
@@ -63,7 +63,6 @@ private:
     nTPoint swordPos;
     nTRectangle swordCollision;
     static const double swordBaseDamage;
-    static const double imunityTime;
     friend ostream& operator<<(ostream &strm, const Player &player);
 };
 

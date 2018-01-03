@@ -177,8 +177,8 @@ bool AssetsLoader::loadTextures(){
     if(!GL::loadTexture("Alavanca","Textures/blocks/96.png"))out=false;
     if(!GL::loadTexture("Ar","Textures/blocks/216.png"))out=false;
     if(!GL::loadTexture("Cano","Textures/blocks/217.png"))out=false;
-    if(!GL::loadTexture("Lava","Textures/blocks/218.png"))out=false;
-    if(!GL::loadTexture("Agua","Textures/blocks/219.png"))out=false;
+    if(!GL::loadTexture("Lava0","Textures/blocks/218.png"))out=false;
+    if(!GL::loadTexture("Agua0","Textures/blocks/219.png"))out=false;
     if(!GL::loadTexture("Lava1","Textures/blocks/218-b.png"))out=false;
     if(!GL::loadTexture("Agua1","Textures/blocks/219-b.png"))out=false;
     if(!GL::loadTexture("LavaF","Textures/blocks/lavafull.png"))out=false;

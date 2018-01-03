@@ -21,7 +21,6 @@ public:
 
     static const int defaultLife;
     static const nTPoint defaultSize;
-    static const double imunityTime;
     static int getSpritesId(string name);
     static vector<string>enemyName;
     static vector<vector<string> >enemyAnim;
@@ -29,11 +28,9 @@ public:
 
     bool drawLetter;
     string nickname;
-    string spritename;
 private:
     static void draw(Enemy* en);
     void stateControl();
-    void makeInvencible();
     static vector<vector<string> >nicks;
 };
 

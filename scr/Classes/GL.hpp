@@ -116,7 +116,6 @@ private:
     static vector<string> edits;
     static vector<bool> editsNumeric;
     static vector<string> editsText;
-    static double editMs;
     static string popupText;
     static string popupFont;
     static double popupMs;

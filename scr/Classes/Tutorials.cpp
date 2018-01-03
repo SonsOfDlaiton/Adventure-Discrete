@@ -26,6 +26,8 @@ int Tutorials::activeTut=-1;
 vector<string> Tutorials::sinucaTuts;
 int Tutorials::sinucaCurrent=-1;
 double Tutorials::sinucaMs;
+int Tutorials::lastFriendTex=-1;
+Texture* Tutorials::friendTex=new Texture();
 
 /**
  *	Draw the tutorial message text on the screen
@@ -51,26 +53,39 @@ void Tutorials::drawWhispText(string text){
 **/
 void Tutorials::draw(string text){
   if(showTutorials){
-    GLuint friendTex=GL::getTextureByName("Whisp"); //default for unkown levels
+    int currentFriendTex=0;
     if(!Scenes::freeGameMode){
  		if(Player::stage==Map::lvlTechnical)
-        	friendTex=GL::getTextureByName("technical");
+        	 currentFriendTex=1;
       	else if(Player::stage==Map::lvlGraduation)
-        	friendTex=GL::getTextureByName("graduation");
+        	 currentFriendTex=2;
 		else if(Player::stage==Map::lvlMasters)
-			friendTex=GL::getTextureByName("masters");
+			currentFriendTex=3;
 		else if(Player::stage==Map::lvlWork)
-			friendTex=GL::getTextureByName("work");
+			currentFriendTex=4;
 		else if(Player::stage==Map::lvlGoodTeacher)
-			friendTex=GL::getTextureByName("teacher");
+			currentFriendTex=5;
 		else if(Player::stage==Map::lvlBadTeacher)
-			friendTex=GL::getTextureByName("teacher");
+			currentFriendTex=6;
     }
-	if(text.find("Douglas")!=string::npos)
-		friendTex=GL::getTextureByName("Douglinhas");
-	if(GL::isPaused)
-		friendTex=GL::getTextureByName("Cica");
 
+	if(text.find("Douglas")!=string::npos)
+		currentFriendTex=7;
+	if(GL::isPaused)
+		currentFriendTex=8;
+    if(lastFriendTex<0&&lastFriendTex!=currentFriendTex){
+        switch(currentFriendTex){
+            default: friendTex->setTextures(GL::getTextureByName("Whisp")); break;
+            case 1: friendTex->setTextures(GL::getTextureByName("technical")); break;
+            case 2: friendTex->setTextures(GL::getTextureByName("graduation")); break;
+            case 3: friendTex->setTextures(GL::getTextureByName("masters")); break;
+            case 4: friendTex->setTextures(GL::getTextureByName("work")); break;
+            case 5: friendTex->setTextures(GL::getTextureByName("teacher")); break;
+            case 6: friendTex->setTextures(GL::getTextureByName("teacher")); break;
+            case 7: friendTex->setTextures(GL::getTextureByName("Douglinhas")); break;
+            case 8: friendTex->setTextures(GL::getTextureByName("Cica")); break;
+        }
+    }
     GL::drawTexture((nTRectangle::get(Scenes::camera.x.movedCam,
         300+Scenes::camera.y.movedCam,
         800+Scenes::camera.x.movedCam,
@@ -80,7 +95,7 @@ void Tutorials::draw(string text){
         300+Scenes::camera.y.movedCam,
         300+Scenes::camera.x.movedCam,
         Scenes::camera.y.movedCam,0.99998)),
-        friendTex);
+        friendTex->get());
     drawWhispText(text);
   }
 }

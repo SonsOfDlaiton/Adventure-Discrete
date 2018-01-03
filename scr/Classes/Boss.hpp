@@ -25,7 +25,6 @@ public:
     static void setSprites();
 
     double startLife;
-    double imunityTime;
 
     static vector<string>bossName;
     static vector<vector<string> >bossAnim;

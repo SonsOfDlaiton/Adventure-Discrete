@@ -5,6 +5,7 @@
 
 class Texture {
 public:
+    Texture();
     Texture(vector<GLuint> textures);
     Texture(vector<GLuint> textures,double timeToNext);
     Texture(GLuint texture);
@@ -21,6 +22,7 @@ public:
     GLuint get();
     bool finishedAnimation();
 private:
+    static double defaultTimeToNext;
     void process();
     double timeToNext;
     int currentTex;

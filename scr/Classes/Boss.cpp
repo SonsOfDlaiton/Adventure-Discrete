@@ -44,8 +44,7 @@ Boss::Boss(string data,nTPoint spawn) {
     this->vSpeed=0;
     this->atacking=false;
     this->hSpeed=0;
-    this->currentState=Entity::state_Spawning;
-    this->currentIndex=0;
+    this->changeState(Entity::state_Spawning);
     this->nextState=Entity::state_Holding;
     this->defaultOrientation=Util::orientation_right;
     this->isHuman=false;
@@ -157,9 +156,6 @@ void Boss::stateControl(){
         return;
     }
     Entity::stateControl();
-    execAnimation();
-    if(GL::framesInGame>=timeToVunerability)
-        damageState=false;
     FunctionAnalyser::endFunction("Boss::stateControl");
 }
 
@@ -168,8 +164,7 @@ void Boss::stateControl(){
  *
 **/
 void Boss::makeInvencible(){
-    damageState=true;
-    timeToVunerability=GL::getGameMs()+imunityTime;
+    Entity::makeInvencible();
     if(life<=0&&life!=-666){
         eventHandler();
         if(life<=0){
@@ -191,8 +186,7 @@ void Boss::reincarnation(vector<string> params, int& eid){
             animations=Entity::getAnimationVector(Boss::bossAnim[getSpritesId(params[1])],Boss::bossAnimSize[getSpritesId(params[1])]);
             life=Util::strToFloat(params[2]);
             startLife=life;
-            currentState=Entity::state_Dying;
-            currentIndex=0;
+            changeState(Entity::state_Dying);
             int livesRemaning=Util::strToInt(params[3])-1;
             if(livesRemaning<=0)
                 events.erase(events.begin()+(eid--));

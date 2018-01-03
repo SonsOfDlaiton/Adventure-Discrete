@@ -367,7 +367,7 @@ void Map::refresh(){
                     tmp.y-=Blocks::defaultBlockSize.y*1.5;
                     new PowerUp(Blocks::getPowerUpBlockId(bl->type),tmp,nTPoint::get(20,20));
                     bl->type=Blocks::InvalidPowerUpBlock;
-                    bl->tex=GL::getTextureByName("PowerUpOff");
+                    bl->tex->setTextures(GL::getTextureByName("PowerUpOff"));
                     Player::getPlayerById(0)->PowerUpsActiveted++;
                 }
             }else if(Blocks::checkIfBlocksIsPowerUpChest(bl->type)&&Player::getPlayerById(0)->atacking){
@@ -378,7 +378,7 @@ void Map::refresh(){
                     new PowerUp(Blocks::getPowerUpChestId(bl->type),tmp,nTPoint::get(20,20));
                     bl->type=Blocks::InvalidPowerUpChest;
                     AL::singleton->playSoundByName("chestOpen");
-                    bl->tex=GL::getTextureByName("BauOff");
+                    bl->tex->setTextures(GL::getTextureByName("BauOff"));
                     Player::getPlayerById(0)->PowerUpsActiveted++;
                 }
             }else if(Blocks::checkIfBlocksIsDestrutive(bl->type)&&Player::getPlayerById(0)->atacking){

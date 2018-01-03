@@ -25,7 +25,7 @@ private:
     void checkCollisionWithPlayer(nTPoint pos,nTPoint size);
 
     int type;
-    GLuint tex;
+    Texture* tex;
     static const double moveSpeed;
 };
 

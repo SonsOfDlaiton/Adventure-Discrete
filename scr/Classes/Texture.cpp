@@ -1,10 +1,17 @@
 #include "Texture.hpp"
 
+Texture::Texture() {
+    currentTex=0;
+    ms=GL::getGameMs();
+    finished=false;
+    timeToNext=defaultTimeToNext;
+};
+
 Texture::Texture(vector<GLuint> textures) {
     currentTex=0;
     ms=GL::getGameMs();
     finished=false;
-    timeToNext=100;
+    timeToNext=defaultTimeToNext;
     setTextures(textures);
 };
 
@@ -20,7 +27,7 @@ Texture::Texture(GLuint texture) {
     currentTex=0;
     ms=GL::getGameMs();
     finished=false;
-    timeToNext=100;
+    timeToNext=defaultTimeToNext;
     setTextures(texture);
 };
 
@@ -38,14 +45,19 @@ Texture::Texture(const Texture& orig) {
 Texture::~Texture() {
 }
 
+double Texture::defaultTimeToNext=150;
 
 void Texture::setTextures(vector<GLuint> textures){
     this->textures=textures;
+    currentTex=0;
+    finished=false;
 }
 
 void Texture::setTextures(GLuint texture){
     textures.clear();
     textures.push_back(texture);
+    currentTex=0;
+    finished=false;
 }
 
 void Texture::setTimeToNext(double timeToNext){
@@ -67,26 +79,36 @@ int Texture::getTexSize(){
 
 GLuint Texture::get(){
     process();
+    if(textures.size()==0) return GL::getTextureByName("Unknow");
     return textures[currentTex];
 }
 
 void Texture::process(){
+    if(textures.size()==1){
+        if(!finished&&(GL::getGameMs()-ms>=timeToNext||GL::getGameMs()-ms<0))
+            finished=true;
+        return;
+    }
     double elapsed=GL::getGameMs()-ms;
     if(elapsed>=timeToNext||elapsed<0){
-        finished=false;
         ms=GL::getGameMs();
         int step=1;
         if(elapsed>=0){
-            step=floor(fmod(elapsed,timeToNext));
+            step=floor(elapsed/timeToNext);
         }
         currentTex+=step;
-        if(currentTex>=textures.size()){
-            currentTex%=textures.size();
+        if(currentTex>=textures.size()&&textures.size()){
+            currentTex=currentTex%textures.size();
             finished=true;
         }
     }
 }
 
  bool Texture::finishedAnimation(){
-    return finished=false;
+    process();
+    if(finished){
+        finished=false;
+        return true;
+    }
+    return false;
  }

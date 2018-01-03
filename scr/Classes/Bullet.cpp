@@ -6,28 +6,29 @@ Bullet::Bullet(int type,double moveSpeed,nTPoint pos,nTPoint size) {
     this->hSpeed=moveSpeed;
     this->type=type;
     this->self.push_back(this);
-    this->spriteIndex=0;
     this->isVisible=true;
+    this->tex=new Texture();
     if(type==errorBlockBullet){
-        tex=GL::getTextureByName("WinBullet");
+        tex->setTextures(GL::getTextureByName("WinBullet"));
         AL::singleton->playSoundByName("blockShoot");
     }
     if(type==strongSwordBullet)
-        tex=GL::getTextureByName("SwordBullet0");
+        tex->setTextures(GL::getTexturesByName("SwordBullet",2));
     if(type==strongXAtackBullet)
-        tex=GL::getTextureByName("StrongAtk0");
+        tex->setTextures(GL::getTexturesByName("StrongAtk",4));
     if(type==weakXAtackBullet)
-        tex=GL::getTextureByName("WeakAtk0");
+        tex->setTextures(GL::getTexturesByName("WeakAtk",3));
     if(type==busBullet)
-        tex=GL::getTextureByName("Intercampi");
+        tex->setTextures(GL::getTextureByName("Intercampi"));
      if(type==hyperbolicParaboloidBullet)
-        tex=GL::getTextureByName("paraboloide hiperbolico<3");
+        tex->setTextures(GL::getTextureByName("paraboloide hiperbolico<3"));
 };
 
 Bullet::Bullet(const Bullet& orig) {
 }
 
 Bullet::~Bullet() {
+    delete tex;
     for(int i=0;i<self.size();i++){
         if(self[i]==this){
             self.erase(self.begin()+i);
@@ -75,28 +76,10 @@ void Bullet::behave(){
         if(bu->type==errorBlockBullet||bu->type==hyperbolicParaboloidBullet){//tiro de bloco
             bu->checkCollisionWithEntity(true);
         }else if(bu->type==strongSwordBullet){//espada
-            if(Util::timerWithInterval(Entity::getSpriteMs()*3)){
-                if(bu->tex==GL::getTextureByName("SwordBullet0"))
-                    bu->tex=GL::getTextureByName("SwordBullet1");
-                else
-                    bu->tex=GL::getTextureByName("SwordBullet0");
-            }
             bu->checkCollisionWithEntity(false);
         }else if(bu->type==strongXAtackBullet){//atk forte
-            if(Util::timerWithInterval(Entity::getSpriteMs())){
-                bu->spriteIndex++;
-                if(bu->spriteIndex==4)
-                    bu->spriteIndex=0;
-                bu->tex=GL::getTextureByName("StrongAtk"+Util::intToStr(bu->spriteIndex));
-            }
             bu->checkCollisionWithEntity(false);
         }else if(bu->type==weakXAtackBullet){//atk fraco
-            if(Util::timerWithInterval(Entity::getSpriteMs())){
-                bu->spriteIndex++;
-                if(bu->spriteIndex==3)
-                    bu->spriteIndex=0;
-                bu->tex=GL::getTextureByName("WeakAtk"+Util::intToStr(bu->spriteIndex));
-            }
             bu->checkCollisionWithEntity(false);
         }else if(bu->type==busBullet){//intercamp
             bu->checkCollisionWithEntity(true);
@@ -249,7 +232,7 @@ void Bullet::draw(){
     if (type==strongSwordBullet)
         pos.z=0.9;
     if(isVisible){
-        GL::drawTexture(nTRectangle::getCollision(pos,size),tex);
+        GL::drawTexture(nTRectangle::getCollision(pos,size),tex->get());
         if(Mechanics::drawCollisionRec)GL::drawCollision(nTRectangle::getCollision(pos, size));
     }
 }

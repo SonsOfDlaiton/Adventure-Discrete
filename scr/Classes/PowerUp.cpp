@@ -11,21 +11,22 @@ PowerUp::PowerUp(int type,nTPoint pos,nTPoint size) {
     this->isVisible=true;
     this->self.push_back(this);
     this->id=(unsigned int)self.size()-1;
+    this->tex=new Texture();
     if(type==swordUpgrade){
         if(Player::getPlayerById(0)->sword==0)
-            tex=GL::getTextureByName("cogumelo0");
+            tex->setTextures(GL::getTextureByName("cogumelo0"));
         if(Player::getPlayerById(0)->sword==1)
-            tex=GL::getTextureByName("cogumelo1");
+            tex->setTextures(GL::getTextureByName("cogumelo1"));
         if(Player::getPlayerById(0)->sword==2){
-            tex=GL::getTextureByName("gcc");
+            tex->setTextures(GL::getTextureByName("gcc"));
             this->type=1;
         }
     }else if(type==extraLife){
-        tex=GL::getTextureByName("gcc");
+        tex->setTextures(GL::getTextureByName("gcc"));
     }else if(type==imortality){
-        tex=GL::getTextureByName("cafe");
+        tex->setTextures(GL::getTextureByName("cafe"));
     }else if(type==minusLife){
-        tex=GL::getTextureByName("win95");
+        tex->setTextures(GL::getTextureByName("win95"));
     }
 };
 
@@ -33,6 +34,7 @@ PowerUp::PowerUp(const PowerUp& orig) {
 }
 
 PowerUp::~PowerUp() {
+    delete tex;
     PowerUp* pu;
     for(int i=id+1;i<self.size();i++){
         pu=(PowerUp*)self[i];
@@ -113,6 +115,6 @@ void PowerUp::draw(){
     if(GL::isPaused)
         return;
     pos.z=1;
-    GL::drawTexture(nTRectangle::getCollision(pos,size),tex);
+    GL::drawTexture(nTRectangle::getCollision(pos,size),tex->get());
     if(Mechanics::drawCollisionRec)GL::drawCollision(nTRectangle::getCollision(pos, size));
 }

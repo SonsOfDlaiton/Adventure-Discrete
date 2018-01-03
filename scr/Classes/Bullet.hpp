@@ -29,8 +29,7 @@ private:
     void checkCollisionWithEntity(bool withPlayer);
 
     int type;
-    int spriteIndex;
-    GLuint tex;
+    Texture* tex;
     bool isVisible;
 };
 

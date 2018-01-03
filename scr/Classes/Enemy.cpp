@@ -4,17 +4,14 @@ Enemy::Enemy(int enemyType,double life,nTPoint spawn,nTPoint size,string spr_nam
     this->pos=spawn;
     this->size=size;
     int spr_id=Enemy::getSpritesId(spr_name);
-    this->spritename=spr_name;
     if(spr_name=="%random%"||spr_id<0){
         spr_id=rand()%Enemy::enemyAnim.size();
-        this->spritename=enemyName[spr_id]+" (%random%)";
     }
     this->animations=Entity::getAnimationVector(Enemy::enemyAnim[spr_id],Enemy::enemyAnimSize[spr_id]);;
     this->vSpeed=0;
     this->atacking=false;
     this->hSpeed=Entity::walkSpeed;
-    this->currentState=Entity::state_Spawning;
-    this->currentIndex=0;
+    this->changeState(Entity::state_Spawning);
     this->nextState=Entity::state_Holding;
     this->life=life;
     this->defaultOrientation=Util::orientation_right;
@@ -50,7 +47,6 @@ Enemy::~Enemy() {
     Entity::enemys.erase(Entity::enemys.begin()+this->id);
 }
 
-const double Enemy::imunityTime=200;
 const nTPoint Enemy::defaultSize=nTPoint::get(40,48);
 const int Enemy::defaultLife=3;
 vector<vector<string> >Enemy::nicks;
@@ -67,7 +63,6 @@ void Enemy::stateControl(){
         FunctionAnalyser::endFunction("Enemy::stateControl");
         return;
     }
-    Entity::stateControl();
     Blocks *bl;
     collideWithMap();
     for(int i=0; i<lastMapColl.size(); i++){
@@ -80,9 +75,7 @@ void Enemy::stateControl(){
             }
         }
     }
-    execAnimation();
-    if(GL::framesInGame>=timeToVunerability)
-        damageState=false;
+    Entity::stateControl();
     FunctionAnalyser::endFunction("Enemy::stateControl");
 }
 
@@ -126,15 +119,6 @@ void Enemy::draw(Enemy* en){
     ent->draw(nTColor::White());
     if(en->drawLetter)
         GL::drawCenteredTexture(nTPoint::get(en->pos.x,en->pos.y,0.8999),nTPoint::get(en->size.x/1.5,-en->size.y/2.5,0),nTColor::get(1,1,1,0.75),en->lifeLetter());
-}
-
-/**
- *	Make the enemy immune to damage for a certain time
- *
-**/
-void Enemy::makeInvencible(){
-    damageState=true;
-    timeToVunerability=GL::getGameMs()+imunityTime;
 }
 
 /**
