@@ -65,6 +65,8 @@
 		<Unit filename="Classes/ADCode.hpp" />
 		<Unit filename="Classes/Boss.cpp" />
 		<Unit filename="Classes/Boss.hpp" />
+		<Unit filename="Classes/Texture.cpp" />
+		<Unit filename="Classes/Texture.hpp" />
 		<Unit filename="Classes/AssetsLoader.cpp" />
 		<Unit filename="Classes/AssetsLoader.hpp" />
 		<Unit filename="Classes/Background.cpp" />

@@ -213,11 +213,11 @@ void Boss::summon(vector<string> params, int& eid){
         summonedEnemies-=Player::getPlayerById(0)->enemysKilled-enemiesKilledByPlayer;
         amount-=summonedEnemies;
         for(int i=0;i<amount;i++){
-            Map::nOfEnemys++;
             Enemy* en=new Enemy(666,Util::strToFloat(params[3]),nTPoint::get(pos.x+(size.x/2+en_size.x+en_size.x*i)*orientation,pos.y+en_size.y/4,0.89),en_size,params[4]);
             en->nickname=params[0];
             en->drawLetter=Util::strToBool(params[5]);
             en->hSpeed*=orientation;
+            Map::nOfEnemys++;
             summonedEnemies++;
             enemiesKilledByPlayer=Player::getPlayerById(0)->enemysKilled;
         }

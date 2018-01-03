@@ -33,5 +33,6 @@
 #include "Classes/Camera.hpp"
 #include "Classes/CallbacksHandler.hpp"
 #include "Classes/ADCode.hpp"
+#include "Classes/Texture.hpp"
 
 #endif	// IMPORTLIBS_H

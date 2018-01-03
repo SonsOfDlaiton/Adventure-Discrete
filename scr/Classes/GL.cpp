@@ -68,6 +68,7 @@ int GL::editTextPosition=-1;
 vector<string> GL::edits;
 vector<bool> GL::editsNumeric;
 vector<string> GL::editsText;
+double GL::editMs=0;
 string GL::popupText="";
 string GL::popupFont="";
 double GL::popupMs;
@@ -1034,12 +1035,13 @@ void GL::editTextBehave(nTRectangle collision,string font,nTColor fontcolor,stri
     if(cursor<0) cursor=textToDraw.size();
     if(cursor>textToDraw.size()) cursor=textToDraw.size();
     if(editOnfocus==editId){ //draw text plus | (blinking pipe)
-        if(Util::timerWithInterval(500)){
+        if(GL::getGameMs()-editMs>=555||editMs>GL::getGameMs()){
             if(editCharCursor)
                 textToDraw.insert(cursor,"|");
             else
                 textToDraw.insert(cursor," ");
             editCharCursor=!editCharCursor;
+            editMs=GL::getGameMs();
         }
     }
     float lineWidth=fnt->calcBoundaries("_").x;

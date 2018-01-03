@@ -22,7 +22,7 @@ Player::Player(double life,nTPoint spawn,nTPoint size) {
     this->orientation=Util::direction_right;
     this->canJump=true;
     this->isVisible=true;
-    this->swordPos=spawn;
+    this->swordPos.set(spawn.x+20,spawn.y,1);
     this->atacking=false;
     this->haveBulletSword=0;
     this->haveBulletSpec=0;
@@ -206,7 +206,7 @@ void Player::spawn(nTPoint spawn,double life){
     this->orientation=Util::orientation_right;
     this->isVisible=true;
     this->reducing=false;
-    this->swordPos=nTPoint::get(-100,-100);
+    this->swordPos.set(spawn.x+20,spawn.y,1);
     this->atacking=false;
     this->haveBulletSword=0;
     this->haveBulletSpec=0;
