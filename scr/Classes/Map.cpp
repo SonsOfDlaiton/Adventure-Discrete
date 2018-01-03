@@ -151,8 +151,7 @@ void Map::setBlockPos(){
                     pos.z=0.89;
                     pos.y-=Blocks::defaultBlockSize.y;
                     nOfEnemys++;
-                    int random=rand()%Enemy::enemyAnim.size();
-                    new Enemy(actualMap.map[i][j].first-2000,Enemy::defaultLife,pos,Enemy::defaultSize,Entity::getAnimationVector(Enemy::enemyAnim[random],Enemy::enemyAnimSize[random]));
+                    new Enemy(actualMap.map[i][j].first-2000,Enemy::defaultLife,pos,Enemy::defaultSize,"%random%");
                 }else if(Blocks::checkIfBlocksIsBossSpawn(actualMap.map[i][j].first)){
                     nTPoint pos=bl->pos;
                     pos.z=0.89;

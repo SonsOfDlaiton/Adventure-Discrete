@@ -40,7 +40,7 @@ private:
     void makeInvencible();
 
     void reincarnation(vector<string> params, int& eid);
-    void summon(vector<string> params, int& eid);
+    void summon(vector<string> params, int& eid);       int enemiesKilledByPlayer,summonedEnemies;
     void shield(vector<string> params, int& eid);
     void questions(vector<string> params, int& eid);
     void gate(vector<string> params, int& eid);

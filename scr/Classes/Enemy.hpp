@@ -8,7 +8,7 @@
 
 class Enemy:public Entity {
 public:
-    Enemy(int enemyType,double life,nTPoint spawn,nTPoint size,vector<vector<GLuint> > animations);
+    Enemy(int enemyType,double life,nTPoint spawn,nTPoint size,string spr_name);
     Enemy(const Enemy& orig);
     virtual ~Enemy();
 
@@ -29,6 +29,7 @@ public:
 
     bool drawLetter;
     string nickname;
+    string spritename;
 private:
     static void draw(Enemy* en);
     void stateControl();

@@ -9,7 +9,7 @@ ADCode::ADCode(string data, string name) {
     }catch(exception& e){
         cout<<"ADCode ERROR:\n------------\n"<<data<<"\n------------\n";
     }
-    this->printInterpretedData();
+    //this->printInterpretedData();
 };
 
 ADCode::ADCode(const ADCode& orig) {
@@ -212,7 +212,7 @@ void ADCode::decode(){
                     string str_vec="";
                     while(lex_stack.size()>0&&lex_stack[lex_stack.size()-1].second=="separator"){
                         if(lex_stack[lex_stack.size()-1].first!="")
-                            str_vec+=lex_stack[lex_stack.size()-1].first+vectorSeparator;
+                            str_vec=lex_stack[lex_stack.size()-1].first+vectorSeparator+str_vec;
                         lex_stack.pop_back();
                     }
                     if(lex_stack.size()>0){
@@ -224,13 +224,12 @@ void ADCode::decode(){
                         if(lex_stack[lex_stack.size()-1].second=="assign"){
                             vstr.push_back(pair<string,vector<string> >(lex_stack[lex_stack.size()-1].first,strToStrVector(str_vec)));
                             lex_stack.pop_back();
-                        }else if(lex_stack[lex_stack.size()-1].second=="vector"||lex_stack[lex_stack.size()-1].second=="separator")
+                        }else if(lex_stack[lex_stack.size()-1].second=="vector"||lex_stack[lex_stack.size()-1].second=="separator"){
                             lex_stack.push_back(pair<string,string>((char)(11)+str_vec+(char)(4),"separator"));
-                        else
+                        }else
                             cout<<"ADCode ERROR: Expected Assign Vector or Separator\n";
                     }else
                         cout<<"ADCode ERROR: Expected Vector Begin or any token before Separators\n";
-                    last=i+1;
                     break;
             }
         }else{
@@ -316,14 +315,22 @@ vector<string> ADCode::strToStrVector(string input){
             for(int j=0;j<str.size();j++){
                 if(str[j]==escape)
                     j++;
-                else if(str[j]==stringBegin||str[j]==stringEnd||str[j]==(char)4||str[j]==(char)11)
+                else if(str[j]==stringBegin||str[j]==stringEnd)
                     str.erase(str.begin()+j);
+                else if(str[j]==(char)11){
+                    if(lock==0)
+                        str.erase(str.begin()+j);
+                    lock++;
+                }else if(str[j]==(char)4){
+                    lock--;
+                    if(lock==0)
+                        str.erase(str.begin()+j);
+                }
             }
             if(str!="")
                 value.push_back(str);
         }
     }
-    reverse(value.begin(),value.end());
     return value;
 }
 

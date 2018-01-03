@@ -16,8 +16,12 @@ Boss::Boss(string data,nTPoint spawn) {
         this->size.y=96;
     }
     string sprite_str=adc->getString("sprite");
-    this->animations=Entity::getAnimationVector(Boss::bossAnim[getSpritesId(sprite_str)],Boss::bossAnimSize[getSpritesId(sprite_str)]);
-
+    int spr_id=getSpritesId(sprite_str);
+    if(spr_id<0){
+        GL::popupBoxBehave("Invalid sprite name("+sprite_str+")","BITMAP_HELVETICA_12",3000);
+        spr_id=0;
+    }
+    this->animations=Entity::getAnimationVector(Boss::bossAnim[spr_id],Boss::bossAnimSize[spr_id]);
     this->life=adc->getNumber("life",1);
     this->startLife=this->life;
     this->imunityTime=adc->getNumber("imunityTime",200);
@@ -33,7 +37,7 @@ Boss::Boss(string data,nTPoint spawn) {
             be.maximumLife=Util::strToInt(event.second[3]);
             events.push_back(be);
         }else{
-            GL::popupBoxBehave("Events must have 4 arguments, {{args},probability,minLife,maxLife}","BITMAP_HELVETICA_12",2000);
+            GL::popupBoxBehave("Events must have 4 arguments, {{args},probability,minLife,maxLife}","BITMAP_HELVETICA_12",5000);
         }
     }
     this->pos=spawn;
@@ -52,6 +56,8 @@ Boss::Boss(string data,nTPoint spawn) {
     this->damageState=false;
     this->itsInTheWater=false;
     this->imuneToDamage=false;
+    this->enemiesKilledByPlayer=0;
+    this->summonedEnemies=0;
     Entity::bosses.push_back(this);
     this->id=(unsigned int)Entity::bosses.size()+60000;
     this->pos.y-=this->size.y/2;
@@ -67,7 +73,7 @@ Boss::~Boss() {
         bo=(Boss*)Entity::bosses[i];
         bo->id--;
     }
-    Entity::bosses.erase(Entity::bosses.begin()+this->id);
+    Entity::bosses.erase(Entity::bosses.begin()+this->id-60001);
 }
 
 vector<string> Boss::bossName;
@@ -109,7 +115,7 @@ void Boss::eventHandler(){
     FunctionAnalyser::startFunction("Boss::eventHandler");
     for(int e=0;e<events.size();e++){
         BossEvent be=events[e];
-        if((life>=be.minimumLife||be.minimumLife==0)&&(life<=be.maximumLife)&&rand()%be.probability==0){
+        if((life>=be.minimumLife||be.minimumLife==0)&&(life<=be.maximumLife)&&(rand()%(be.probability*(int)GL::getFPS()/10)==0||be.probability==1)){
             if(be.event=="reincarnation")
                 reincarnation(be.params,e);
             else if(be.event=="summon")
@@ -126,7 +132,7 @@ int Boss::getSpritesId(string name){
             return i;
         else
             i++;
-    return 0;
+    return -1;
 }
 
 void Boss::draw(Boss* bo){
@@ -202,14 +208,18 @@ void Boss::reincarnation(vector<string> params, int& eid){
 void Boss::summon(vector<string> params, int& eid){
     if(params.size()==7){
         int amount=(rand()%(Util::strToInt(params[2])-Util::strToInt(params[1])))+Util::strToInt(params[1]);
-        int spr_id=Enemy::getSpritesId(params[4]);
-        vector<vector<GLuint> > anim_vec=Entity::getAnimationVector(Enemy::enemyAnim[spr_id],Enemy::enemyAnimSize[spr_id]);
         vector<int> sz=ADCode::strToIntVector(params[6]);
         nTPoint en_size=nTPoint::get(sz[0],sz[1]);
+        summonedEnemies-=Player::getPlayerById(0)->enemysKilled-enemiesKilledByPlayer;
+        amount-=summonedEnemies;
         for(int i=0;i<amount;i++){
-            Enemy* en=new Enemy(666,Util::strToFloat(params[3]),nTPoint::get(pos.x+(size.x/2+en_size.x+en_size.x/2*i)*orientation,pos.y,0.89),en_size,anim_vec);
+            Map::nOfEnemys++;
+            Enemy* en=new Enemy(666,Util::strToFloat(params[3]),nTPoint::get(pos.x+(size.x/2+en_size.x+en_size.x*i)*orientation,pos.y+en_size.y/4,0.89),en_size,params[4]);
             en->nickname=params[0];
             en->drawLetter=Util::strToBool(params[5]);
+            en->hSpeed*=orientation;
+            summonedEnemies++;
+            enemiesKilledByPlayer=Player::getPlayerById(0)->enemysKilled;
         }
     }else{
         GL::popupBoxBehave("\"summon\" event must have 7 arguments("+Util::intToStr(params.size())+"), {name,min,max,life,sprite,drawLetter,{size}}","BITMAP_HELVETICA_12",5000);

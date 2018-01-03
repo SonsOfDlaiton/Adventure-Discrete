@@ -3,6 +3,7 @@
 Blocks::Blocks(int type,nTPoint pos,nTPoint size,string data){
     this->type=type;
     this->pos=pos;
+    this->pos.z=0.5;
     this->size=size;
     this->id=-1;
     this->tex=getTextureByIndex();
@@ -87,9 +88,7 @@ GLuint Blocks::getTextureByIndex(){
  *	Draw this block on the screen
 **/
 void Blocks::draw(){
-    if(!this->isVisible) return;
-    nTPoint newSize=size;
-
+    if(!this->isVisible){ return;}
     //block animations
     if(type==AnimatedWater1||type==AnimatedWater2){ //agua
         if(Util::timerWithInterval(100)){
@@ -111,11 +110,11 @@ void Blocks::draw(){
         }
         tex=getTextureByIndex();
     }
-    GL::drawTexture(nTRectangle::getCollision(pos,newSize),color,tex);
+    GL::drawTexture(nTRectangle::getCollision(pos,size),color,tex);
     if(checkIfBlocksIsDestrutive(type)){
         nTPoint tmp=pos;
         tmp.z=1;
-        GL::drawTexture(nTRectangle::getCollision(tmp,newSize),GL::getTextureByName("Quebrado"+Util::intToStr(brokeStage)));
+        GL::drawTexture(nTRectangle::getCollision(tmp,size),GL::getTextureByName("Quebrado"+Util::intToStr(brokeStage)));
     }
     if(Mechanics::drawCollisionRec&&checkIfBlocksIsMassive(type))GL::drawCollision(nTRectangle::getCollision(pos, size));
 }

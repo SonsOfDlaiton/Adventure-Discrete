@@ -1,9 +1,15 @@
 #include "Enemy.hpp"
 
-Enemy::Enemy(int enemyType,double life,nTPoint spawn,nTPoint size,vector<vector<GLuint> > animations) {
+Enemy::Enemy(int enemyType,double life,nTPoint spawn,nTPoint size,string spr_name) {
     this->pos=spawn;
     this->size=size;
-    this->animations=animations;
+    int spr_id=Enemy::getSpritesId(spr_name);
+    this->spritename=spr_name;
+    if(spr_name=="%random%"||spr_id<0){
+        spr_id=rand()%Enemy::enemyAnim.size();
+        this->spritename=enemyName[spr_id]+" (%random%)";
+    }
+    this->animations=Entity::getAnimationVector(Enemy::enemyAnim[spr_id],Enemy::enemyAnimSize[spr_id]);;
     this->vSpeed=0;
     this->atacking=false;
     this->hSpeed=Entity::walkSpeed;
@@ -229,7 +235,7 @@ int Enemy::getSpritesId(string name){
             return i;
         else
             i++;
-    return 0;
+    return -1;
 }
 
 void Enemy::setSprites(){
@@ -241,15 +247,15 @@ void Enemy::setSprites(){
 
     //Prova
     Enemy::enemyName.push_back("paper");//sprite name
-    tmp.push_back("paperIdle"); tmp2.push_back(1);//0 -Idle
+    tmp.push_back("paperWalk"); tmp2.push_back(1);//0 -Idle
     tmp.push_back("paperWalk"); tmp2.push_back(2);//1 -Walking
     tmp.push_back("paperWalk"); tmp2.push_back(2);//2 -Running
-    tmp.push_back("paperIdle"); tmp2.push_back(1);//3 -Jumping
+    tmp.push_back("paperWalk"); tmp2.push_back(1);//3 -Jumping
         tmp.push_back("");  tmp2.push_back(1);//4 -Atacking -none
         tmp.push_back("");  tmp2.push_back(1);//5 -SpecialAtacking -none
-    tmp.push_back("paperIdle"); tmp2.push_back(1);//6 -Damage
-    tmp.push_back("paperIdle"); tmp2.push_back(1);//7 -Death
-    tmp.push_back("paperIdle"); tmp2.push_back(1);//8 -Spawn
+    tmp.push_back("paperWalk"); tmp2.push_back(1);//6 -Damage
+    tmp.push_back("paperWalk"); tmp2.push_back(1);//7 -Death
+    tmp.push_back("paperWalk"); tmp2.push_back(1);//8 -Spawn
     Enemy::enemyAnim.push_back(tmp);
     Enemy::enemyAnimSize.push_back(tmp2);
     tmp.clear();

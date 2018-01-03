@@ -157,7 +157,18 @@ void Entity::execAnimation(){
         if(currentIndex>=animations[currentState].size()||currentIndex<0)
             currentIndex=0;
         if(animations.size()==0||animations[currentState].size()==0){
-            if(Util::DEBUG) cout<<"Errror animations vector null at state:"<<currentState<<" index:"<<currentIndex<<endl;
+            if(Util::DEBUG){
+                string info="Error ";
+                if(this->id<0){
+                    info="Error on player";
+                }else if(id<60000){
+                    Enemy *en=(Enemy*)Entity::enemys[id];
+                    info="Error on enemy("+en->spritename+")";
+                }else{
+                    info="Error on boss";
+                }
+                cout<<info<<" animations vector null at state:"<<currentState<<" index:"<<currentIndex<<endl;
+            }
             return;
         }
         currentTex=animations[currentState][currentIndex];

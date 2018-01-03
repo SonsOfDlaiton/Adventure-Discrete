@@ -1200,6 +1200,7 @@ void GL::drawPopupBox(){
             textButtonBehave(nTRectangle::getCollision(nTPoint::get(GL::defaultSize.x/2+Scenes::camera.x.movedCam,collision.p0.y-22+Scenes::camera.y.movedCam,0.99),nTPoint::get(40,20,0.99)),GL::getColorByName("mouseSelected"),"Ok",nTColor::get(0,0,0),GL::getTextureByName("btnSkin1"))){
             popupText="";
             isPaused=false;
+            popupPaused=false;
         }
         currentFont=fontBKP;
     }
