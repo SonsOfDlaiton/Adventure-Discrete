@@ -34,6 +34,7 @@ public:
     bool next(pair<string,vector<string> >& vs);
     void resetPointers();
     static vector<string> strToStrVector(string input);
+    static vector<int> strToIntVector(string input);
 
 private:
     void removeComments();

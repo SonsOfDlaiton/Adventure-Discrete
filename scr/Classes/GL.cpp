@@ -760,6 +760,8 @@ void modifyMusic(int a,int b){
  *	Draw the pause screen and play the pause music
 **/
 void GL::drawPause(){
+    if(popupPaused)
+        return;
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     AL::singleton->stopAllSoundsExcept(AL::singleton->getSoundByName("sinuca"));
     AL::singleton->playSoundByName("sinuca");

@@ -143,7 +143,6 @@ void Player::stateControl(){
             nextState=Entity::state_Holding;
             currentIndex=0;
         }else{
-            if(!haveBulletSpec)currentIndex=0;
             if(vSpeed!=0){//air
                 if(atackDirection==Util::direction_down)
                     currentState=Entity::state_RangedAirAtackingDown;
@@ -158,6 +157,7 @@ void Player::stateControl(){
                     currentState=Entity::state_RangedGroundAtackingHorizontal;
             }
             nextState=Entity::state_Holding;
+            currentIndex=0;
         }
     }
     if(atacking&&!lowered) atack(atacking);

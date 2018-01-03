@@ -193,6 +193,12 @@ int Util::strToInt(string str){
 	return i;
 }
 
+bool Util::strToBool(string str){
+    bool b=false;
+    istringstream(str)>>boolalpha>>b;
+    return b;
+}
+
 
 float Util::strToFloat(string str){
 	float f=0;

@@ -7,6 +7,7 @@ typedef struct bossevent{
     vector <string>params;
     int probability;
     float minimumLife;
+    float maximumLife;
 }BossEvent;
 #endif // BOSSEVENT
 
@@ -23,18 +24,26 @@ public:
     static int getSpritesId(string name);
     static void setSprites();
 
-    string nickname;
     double startLife;
     double imunityTime;
-    vector<BossEvent> events;
+
     static vector<string>bossName;
     static vector<vector<string> >bossAnim;
     static vector<vector<int> >bossAnimSize;
 
 private:
+    string nickname;
+    vector<BossEvent> events;
     static void draw(Boss* bo);
     void stateControl();
+    void eventHandler();
     void makeInvencible();
+
+    void reincarnation(vector<string> params, int& eid);
+    void summon(vector<string> params, int& eid);
+    void shield(vector<string> params, int& eid);
+    void questions(vector<string> params, int& eid);
+    void gate(vector<string> params, int& eid);
 };
 
 #endif /* BOSS_H */

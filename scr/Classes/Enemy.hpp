@@ -26,12 +26,13 @@ public:
     static vector<string>enemyName;
     static vector<vector<string> >enemyAnim;
     static vector<vector<int> >enemyAnimSize;
+
+    bool drawLetter;
+    string nickname;
 private:
     static void draw(Enemy* en);
     void stateControl();
     void makeInvencible();
-    bool drawLetter;
-    string nickname;
     static vector<vector<string> >nicks;
 };
 

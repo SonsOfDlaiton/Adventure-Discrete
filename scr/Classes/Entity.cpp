@@ -130,26 +130,36 @@ void Entity::execAnimation(){
                                 Map::next();
                             }
                         }
-                    }else{
-                      Player::enemysKilled++;
+                    }else if(id<60000){
+                        Player::enemysKilled++;
                         en=(Enemy*)Entity::enemys[id];
                         en->isVisible=false;
                         delete en;
                         FunctionAnalyser::endFunction("Entity::execAnimation");
                         return;
+                    }else{
+                        currentState=state_Spawning;
+                        currentIndex=0;
                     }
                 break;
                 case state_Spawning: nextState=state_Jumping;break;
             }
             if(nextState>=state_Idle){
                 currentState=nextState;
+                currentIndex=0;
                 nextState=state_Holding;
             }
         }
-        if(currentState>=animations.size()||currentState==state_Holding)
+        if(currentState>=animations.size()||currentState==state_Holding){
             currentState=state_Idle;
+            currentIndex=0;
+        }
         if(currentIndex>=animations[currentState].size()||currentIndex<0)
             currentIndex=0;
+        if(animations.size()==0||animations[currentState].size()==0){
+            if(Util::DEBUG) cout<<"Errror animations vector null at state:"<<currentState<<" index:"<<currentIndex<<endl;
+            return;
+        }
         currentTex=animations[currentState][currentIndex];
         currentIndex++;
     }

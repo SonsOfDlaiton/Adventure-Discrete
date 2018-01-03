@@ -9,6 +9,7 @@ ADCode::ADCode(string data, string name) {
     }catch(exception& e){
         cout<<"ADCode ERROR:\n------------\n"<<data<<"\n------------\n";
     }
+    this->printInterpretedData();
 };
 
 ADCode::ADCode(const ADCode& orig) {
@@ -290,6 +291,14 @@ void ADCode::decode(){
 	}
 }
 
+vector<int> ADCode::strToIntVector(string input){
+    vector<string> str_vec=strToStrVector(input);
+    vector<int> val;
+    for(string s:str_vec)
+        val.push_back(Util::strToInt(s));
+    return val;
+}
+
 vector<string> ADCode::strToStrVector(string input){
     vector<string> value;
     int lock=0;
@@ -474,8 +483,15 @@ void ADCode::printInterpretedData(){
     if(vstr.size())
     for(pair<string,vector<string> > p:vstr){
         cout<<p.first<<": {";
-        for(string n:p.second)
-            cout<<n<<",";
+        for(string n:p.second){
+            if(n.find((char)11)!=string::npos){
+                Util::replaceAllOccurrences(n,""+(char)11,"");
+                Util::replaceAllOccurrences(n,""+(char)4,"");
+                cout<<"{"<<n<<"},";
+            }else{
+                cout<<n<<",";
+            }
+        }
         cout<<"}\n";
     }
     cout<<"sections("<<sections.size()<<"):\n";
