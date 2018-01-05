@@ -22,6 +22,7 @@ public:
     static const int defaultLife;
     static const nTPoint defaultSize;
     static int getSpritesId(string name);
+    static int randomEnemy();
     static vector<string>enemyName;
     static vector<vector<string> >enemyAnim;
     static vector<vector<int> >enemyAnimSize;
@@ -29,6 +30,7 @@ public:
     bool drawLetter;
     string nickname;
 private:
+    static vector<vector<int> >enemyRandom;
     static void draw(Enemy* en);
     void stateControl();
     static vector<vector<string> >nicks;

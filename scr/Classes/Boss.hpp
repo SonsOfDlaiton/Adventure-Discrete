@@ -29,7 +29,7 @@ public:
     static vector<string>bossName;
     static vector<vector<string> >bossAnim;
     static vector<vector<int> >bossAnimSize;
-
+    static vector<void*> enSummoned;
 private:
     string nickname;
     vector<BossEvent> events;
@@ -39,7 +39,7 @@ private:
     void makeInvencible();
 
     void reincarnation(vector<string> params, int& eid);
-    void summon(vector<string> params, int& eid);       int enemiesKilledByPlayer,summonedEnemies;
+    void summon(vector<string> params, int& eid);
     void shield(vector<string> params, int& eid);
     void questions(vector<string> params, int& eid);
     void gate(vector<string> params, int& eid);

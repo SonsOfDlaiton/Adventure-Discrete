@@ -55,8 +55,6 @@ Boss::Boss(string data,nTPoint spawn) {
     this->damageState=false;
     this->itsInTheWater=false;
     this->imuneToDamage=false;
-    this->enemiesKilledByPlayer=0;
-    this->summonedEnemies=0;
     Entity::bosses.push_back(this);
     this->id=(unsigned int)Entity::bosses.size()+60000;
     this->pos.y-=this->size.y/2;
@@ -75,6 +73,7 @@ Boss::~Boss() {
     Entity::bosses.erase(Entity::bosses.begin()+this->id-60001);
 }
 
+vector<void*> Boss::enSummoned;
 vector<string> Boss::bossName;
 vector<vector<string> > Boss::bossAnim;
 vector<vector<int> > Boss::bossAnimSize;
@@ -203,17 +202,21 @@ void Boss::summon(vector<string> params, int& eid){
     if(params.size()==7){
         int amount=(rand()%(Util::strToInt(params[2])-Util::strToInt(params[1])))+Util::strToInt(params[1]);
         vector<int> sz=ADCode::strToIntVector(params[6]);
+        nTPoint pl_size=Player::getPlayerById(0)->size;
+        pl_size.x*=2;
+        nTRectangle pl_coll=nTRectangle::getCollision(Player::getPlayerById(0)->pos,pl_size);
         nTPoint en_size=nTPoint::get(sz[0],sz[1]);
-        summonedEnemies-=Player::getPlayerById(0)->enemysKilled-enemiesKilledByPlayer;
-        amount-=summonedEnemies;
+        amount-=enSummoned.size();
         for(int i=0;i<amount;i++){
-            Enemy* en=new Enemy(666,Util::strToFloat(params[3]),nTPoint::get(pos.x+(size.x/2+en_size.x+en_size.x*i)*orientation,pos.y+en_size.y/4,0.89),en_size,params[4]);
-            en->nickname=params[0];
-            en->drawLetter=Util::strToBool(params[5]);
-            en->hSpeed*=orientation;
-            Map::nOfEnemys++;
-            summonedEnemies++;
-            enemiesKilledByPlayer=Player::getPlayerById(0)->enemysKilled;
+            nTPoint en_pos=nTPoint::get(pos.x+(size.x/2+en_size.x+en_size.x*i*1.5)*orientation,pos.y+en_size.y/4,0.89);
+            if(Mechanics::getCollision(nTRectangle::getCollision(en_pos,en_size),pl_coll).firstObj==Mechanics::NOCOLLISION){
+                Enemy* en=new Enemy(666,Util::strToFloat(params[3]),en_pos,en_size,params[4]);
+                en->nickname=params[0];
+                en->drawLetter=Util::strToBool(params[5]);
+                en->hSpeed*=orientation;
+                Map::nOfEnemys++;
+                enSummoned.push_back(en);
+            }
         }
     }else{
         GL::popupBoxBehave("\"summon\" event must have 7 arguments("+Util::intToStr(params.size())+"), {name,min,max,life,sprite,drawLetter,{size}}","BITMAP_HELVETICA_12",5000);
@@ -247,7 +250,7 @@ void Boss::setSprites(){
     tmp.push_back("enem1Idle"); tmp2.push_back(5);//2 -Running
     tmp.push_back("enem1Idle"); tmp2.push_back(5);//3 -Jumping
         tmp.push_back("");  tmp2.push_back(1);//4 -Atacking -none
-        tmp.push_back("");  tmp2.push_back(1);//5 -SpecialAtacking -none
+    tmp.push_back("enem1Action");  tmp2.push_back(9);//5 -SpecialAtacking
     tmp.push_back("enem1Idle"); tmp2.push_back(5);//6 -Damage
     tmp.push_back("calcIdle"); tmp2.push_back(1);//7 -Death
     tmp.push_back("bookIdle"); tmp2.push_back(1);//8 -Spawn
@@ -263,7 +266,7 @@ void Boss::setSprites(){
     tmp.push_back("enem2Idle"); tmp2.push_back(5);//2 -Running
     tmp.push_back("enem2Idle"); tmp2.push_back(5);//3 -Jumping
         tmp.push_back("");  tmp2.push_back(1);//4 -Atacking -none
-        tmp.push_back("");  tmp2.push_back(1);//5 -SpecialAtacking -none
+    tmp.push_back("enem2Action");  tmp2.push_back(9);//5 -SpecialAtacking
     tmp.push_back("enem2Idle"); tmp2.push_back(5);//6 -Damage
     tmp.push_back("calcIdle"); tmp2.push_back(1);//7 -Death
     tmp.push_back("bookIdle"); tmp2.push_back(1);//8 -Spawn

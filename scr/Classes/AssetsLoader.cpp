@@ -223,11 +223,23 @@ bool AssetsLoader::loadTextures(){
     if(!GL::loadTexture("Win","Textures/backgrounds/win.png")) out=false;
 
     //Boss
+        //Enem0
+        if(!GL::loadTexture("enemA","Textures/bosses/enem/alternatives/a.png")) out=false;
+        if(!GL::loadTexture("enemB","Textures/bosses/enem/alternatives/b.png")) out=false;
+        if(!GL::loadTexture("enemC","Textures/bosses/enem/alternatives/c.png")) out=false;
+        if(!GL::loadTexture("enemD","Textures/bosses/enem/alternatives/d.png")) out=false;
+        if(!GL::loadTexture("enemE","Textures/bosses/enem/alternatives/e.png")) out=false;
+        if(!GL::loadTexture("enemGate","Textures/bosses/enem/gate/gate.png")) out=false;
+        if((GL::loadTextures("nanokidIdle",4,"Textures/bosses/enem/nanokid/")).size()!=4)out=false;
+        if((GL::loadTextures("enemShieldSummon",4,"Textures/bosses/enem/shield/casting/")).size()!=4)out=false;
+        if(!GL::loadTexture("enemShield","Textures/bosses/enem/shield/shield.png")) out=false;
         //Enem1
         if((GL::loadTextures("enem1Idle",5,"Textures/bosses/enem/idle/day1/")).size()!=5)out=false;
+        if((GL::loadTextures("enem1Action",9,"Textures/bosses/enem/action/day1/")).size()!=9)out=false;
 
         //Enem2
         if((GL::loadTextures("enem2Idle",5,"Textures/bosses/enem/idle/day2/")).size()!=5)out=false;
+        if((GL::loadTextures("enem2Action",9,"Textures/bosses/enem/action/day2/")).size()!=9)out=false;
 
 
     //Enemy

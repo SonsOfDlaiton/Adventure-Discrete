@@ -1,11 +1,12 @@
 #include "Enemy.hpp"
+#include "Boss.hpp"
 
 Enemy::Enemy(int enemyType,double life,nTPoint spawn,nTPoint size,string spr_name) {
     this->pos=spawn;
     this->size=size;
     int spr_id=Enemy::getSpritesId(spr_name);
     if(spr_name=="%random%"||spr_id<0){
-        spr_id=rand()%Enemy::enemyAnim.size();
+        spr_id=randomEnemy();
     }
     this->animations=Entity::getAnimationVector(Enemy::enemyAnim[spr_id],Enemy::enemyAnimSize[spr_id]);;
     this->vSpeed=0;
@@ -40,6 +41,12 @@ Enemy::Enemy(const Enemy& orig) {
 
 Enemy::~Enemy() {
     Enemy* en;
+    for(int i=0;i<Boss::enSummoned.size();i++){
+        if(Boss::enSummoned[i]==this){
+            Boss::enSummoned.erase(Boss::enSummoned.begin()+i);
+            break;
+        }
+    }
     for(int i=id+1;i<Entity::enemys.size();i++){
         en=(Enemy*)Entity::enemys[i];
         en->id--;
@@ -53,6 +60,7 @@ vector<vector<string> >Enemy::nicks;
 vector<vector<string> >Enemy::enemyAnim;
 vector<vector<int> >Enemy::enemyAnimSize;
 vector<string> Enemy::enemyName;
+vector<vector<int> > Enemy::enemyRandom;
 
 /**
  *	Override Entity::stateControl to add the function of check collions with lava blocks
@@ -222,6 +230,14 @@ int Enemy::getSpritesId(string name){
     return -1;
 }
 
+
+int Enemy::randomEnemy(){
+    if(Scenes::freeGameMode)
+        enemyRandom[Map::nOfMaps][rand()%enemyRandom[Map::nOfMaps].size()];
+    return enemyRandom[Player::stage][rand()%enemyRandom[Player::stage].size()];
+    return 0;
+}
+
 void Enemy::setSprites(){
     vector<string> tmp;
     vector<int> tmp2;
@@ -276,4 +292,37 @@ void Enemy::setSprites(){
     Enemy::enemyAnimSize.push_back(tmp2);
     tmp.clear();
     tmp2.clear();
+
+    //Nanokid
+    Enemy::enemyName.push_back("enem_nano_kid");//sprite name
+    tmp.push_back("nanokidIdle"); tmp2.push_back(4);//0 -Idle
+    tmp.push_back("nanokidIdle"); tmp2.push_back(4);//1 -Walking
+    tmp.push_back("nanokidIdle"); tmp2.push_back(4);//2 -Running
+    tmp.push_back("nanokidIdle"); tmp2.push_back(4);//3 -Jumping
+        tmp.push_back(""); tmp2.push_back(1);//4 -Atacking -none
+        tmp.push_back(""); tmp2.push_back(1);//5 -SpecialAtacking -none
+    tmp.push_back("nanokidIdle"); tmp2.push_back(4);//6 -Damage
+    tmp.push_back("nanokidIdle"); tmp2.push_back(1);//7 -Death
+    tmp.push_back("nanokidIdle"); tmp2.push_back(4);//8 -Spawn
+    Enemy::enemyAnim.push_back(tmp);
+    Enemy::enemyAnimSize.push_back(tmp2);
+    tmp.clear();
+    tmp2.clear();
+
+    //Random List
+    tmp2.push_back(0);
+    for(int i=0;i<=Map::nOfMaps;i++)
+        enemyRandom.push_back(tmp2);
+    tmp2.clear();
+    tmp2.push_back(0);//PAPER
+    tmp2.push_back(1);//BOOK
+    tmp2.push_back(2);//CALC
+    enemyRandom[Map::lvlTechnical]=tmp2;
+    enemyRandom[Map::lvlGraduation]=tmp2;
+    enemyRandom[Map::lvlMasters]=tmp2;
+    enemyRandom[Map::lvlWork]=tmp2;
+    enemyRandom[Map::lvlGoodTeacher]=tmp2;
+    enemyRandom[Map::lvlBadTeacher]=tmp2;
+    enemyRandom[Map::nOfMaps]=tmp2;
+
 }
