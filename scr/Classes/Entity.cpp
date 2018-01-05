@@ -187,10 +187,9 @@ void Entity::draw(nTColor color){
         GL::drawTexture(nTRectangle::getCollision(pos,size),color,currentTex->get(),orientation);
         return;
     }
+    stateControl();
     if((damageState||imuneToDamage)&&Util::timerWithInterval(200))
         return;
-    stateControl();
-    if(!isVisible) return;
     GL::drawTexture(nTRectangle::getCollision(pos,size),color,currentTex->get(),orientation);
     if(Mechanics::drawCollisionRec)GL::drawCollision(nTRectangle::getCollision(pos, size));
 }

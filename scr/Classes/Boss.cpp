@@ -58,6 +58,10 @@ Boss::Boss(string data,nTPoint spawn) {
     Entity::bosses.push_back(this);
     this->id=(unsigned int)Entity::bosses.size()+60000;
     this->pos.y-=this->size.y/2;
+    this->shieldMs=0;
+    this->shieldBlock=0;
+    this->shieldTex=new Texture();
+    shieldTex->setTimeToNext(400);
     delete adc;
 };
 
@@ -65,6 +69,7 @@ Boss::Boss(const Boss& orig) {
 }
 
 Boss::~Boss() {
+    delete shieldTex;
     Boss* bo;
     for(int i=id+1;i<Entity::bosses.size();i++){
         bo=(Boss*)Entity::bosses[i];
@@ -82,7 +87,7 @@ vector<vector<int> > Boss::bossAnimSize;
 void Boss::behave(){
     FunctionAnalyser::startFunction("Boss::behave");
     Boss *bo;
-    if(GL::isPaused||Tutorials::isPaused){
+    if(Tutorials::isPaused){
         for(int i=0;i<Entity::bosses.size();i++){
             bo=(Boss*)Entity::bosses[i];
             draw(bo);
@@ -118,6 +123,8 @@ void Boss::eventHandler(){
                 reincarnation(be.params,e);
             else if(be.event=="summon")
                 summon(be.params,e);
+            else if(be.event=="shield")
+                shield(be.params,e);
         }
     }
     FunctionAnalyser::endFunction("Boss::eventHandler");
@@ -144,11 +151,30 @@ void Boss::draw(Boss* bo){
     lifebar.p1.x=lifebar.p0.x-2+bo->size.x*2.1*bo->life/bo->startLife;
     GL::drawRectangle(lifebar,nTColor::get(0,1,0));
     GL::drawCentered_X_Text(nTPoint::get(bo->pos.x,bo->pos.y-bo->size.y/2.0,0.7),bo->nickname,nTColor::Black());
-    Entity* ent=(Entity*)bo;
-    ent->draw(nTColor::White());
+    if(GL::isPaused||!bo->isVisible)
+        return;
+    if(Tutorials::isPaused){
+        GL::drawTexture(nTRectangle::getCollision(bo->pos,bo->size),nTColor::White(),bo->currentTex->get(),bo->orientation);
+        if(bo->shieldBlock>0)
+            GL::drawTexture(nTRectangle::getCollision(bo->pos,nTPoint::get(bo->size.x*1.5,bo->size.y*1.5,bo->size.z+0.02)),nTColor::White(),bo->shieldTex->get(),bo->orientation);
+        return;
+    }
+    bo->stateControl();
+    if(bo->shieldBlock>0){
+        GL::drawTexture(nTRectangle::getCollision(bo->pos,bo->size),nTColor::White(),bo->currentTex->get(),bo->orientation);
+        if((bo->damageState||bo->imuneToDamage)&&Util::timerWithInterval(200))
+            return;
+        GL::drawTexture(nTRectangle::getCollision(bo->pos,nTPoint::get(bo->size.x*1.5,bo->size.y*1.5,bo->size.z+0.02)),nTColor::White(),bo->shieldTex->get(),bo->orientation);
+    }else{
+        if((bo->damageState||bo->imuneToDamage)&&Util::timerWithInterval(200))
+            return;
+        GL::drawTexture(nTRectangle::getCollision(bo->pos,bo->size),nTColor::White(),bo->currentTex->get(),bo->orientation);
+    }
+    if(Mechanics::drawCollisionRec)GL::drawCollision(nTRectangle::getCollision(bo->pos, bo->size));
 }
 
 void Boss::stateControl(){
+    cout<<"State: "<<currentState<<" pos(x:"<<pos.x<<", y:"<<pos.y<<", z:"<<pos.z<<") sprite"<<currentTex->get()<<endl;
     FunctionAnalyser::startFunction("Boss::stateControl");
     if(!Scenes::camera.isInTheXScreen(nTRectangle::getCollision(this->pos,this->size))){
         FunctionAnalyser::endFunction("Boss::stateControl");
@@ -178,6 +204,18 @@ void Boss::makeInvencible(){
     }
 }
 
+void Boss::applyDamage(double damage){
+    if(damageState||imuneToDamage)
+        return;
+    life-=damage*(1-shieldBlock/100);
+    damageState=true;
+    makeInvencible();
+    if(rand()%23==0)
+        AL::singleton->playSoundByName("enemyDamageSpec");
+    else
+        AL::singleton->playSoundByName("enemyDamage");
+}
+
 void Boss::reincarnation(vector<string> params, int& eid){
     if(params.size()==4){
         if(life<=0){
@@ -200,6 +238,7 @@ void Boss::reincarnation(vector<string> params, int& eid){
 
 void Boss::summon(vector<string> params, int& eid){
     if(params.size()==7){
+        changeState(state_SpecialAtacking);
         int amount=(rand()%(Util::strToInt(params[2])-Util::strToInt(params[1])))+Util::strToInt(params[1]);
         vector<int> sz=ADCode::strToIntVector(params[6]);
         nTPoint pl_size=Player::getPlayerById(0)->size;
@@ -225,7 +264,26 @@ void Boss::summon(vector<string> params, int& eid){
 }
 
 void Boss::shield(vector<string> params, int& eid){
-
+    if(params.size()==3){
+        if(shieldBlock!=Util::strToFloat(params[0])){
+            if(GL::getGameMs()-shieldMs>=Util::strToInt(params[2])||shieldMs==0){
+                changeState(state_SpecialAtacking);
+                shieldBlock=Util::strToFloat(params[0]);
+                shieldTex->setTextures(GL::getTexturesByName("enemShieldSummon",4));
+                shieldMs=GL::getGameMs();
+            }
+        }else{
+            if(Util::strToInt(params[1])!=0&&GL::getGameMs()-shieldMs>=Util::strToInt(params[1])){
+                shieldMs=GL::getGameMs();
+                shieldBlock=0;
+            }
+            if(shieldTex->finishedAnimation())
+                shieldTex->setTextures(GL::getTextureByName("enemShield"));
+        }
+    }else{
+        GL::popupBoxBehave("\"shield\" event must have 3 arguments("+Util::intToStr(params.size())+"), {damage block,duration,time to cast}","BITMAP_HELVETICA_12",5000);
+        events.erase(events.begin()+(eid--));
+    }
 }
 
 void Boss::questions(vector<string> params, int& eid){

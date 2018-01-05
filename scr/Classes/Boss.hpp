@@ -23,7 +23,7 @@ public:
     static void behave();
     static int getSpritesId(string name);
     static void setSprites();
-
+    void applyDamage(double damage);
     double startLife;
 
     static vector<string>bossName;
@@ -40,7 +40,7 @@ private:
 
     void reincarnation(vector<string> params, int& eid);
     void summon(vector<string> params, int& eid);
-    void shield(vector<string> params, int& eid);
+    void shield(vector<string> params, int& eid); Texture* shieldTex; float shieldBlock; double shieldMs;
     void questions(vector<string> params, int& eid);
     void gate(vector<string> params, int& eid);
 };

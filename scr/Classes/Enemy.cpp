@@ -123,8 +123,7 @@ void Enemy::behave(){
 void Enemy::draw(Enemy* en){
     GL::setFont("BITMAP_HELVETICA_10");
     GL::drawCentered_X_Text(nTPoint::get(en->pos.x,en->pos.y-en->size.y/2.0,0.7),en->nickname,nTColor::Black());
-    Entity* ent=(Entity*)en;
-    ent->draw(nTColor::White());
+    en->Entity::draw(nTColor::White());
     if(en->drawLetter)
         GL::drawCenteredTexture(nTPoint::get(en->pos.x,en->pos.y,0.8999),nTPoint::get(en->size.x/1.5,-en->size.y/2.5,0),nTColor::get(1,1,1,0.75),en->lifeLetter());
 }
