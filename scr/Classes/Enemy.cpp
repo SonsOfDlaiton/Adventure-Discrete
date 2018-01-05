@@ -233,9 +233,8 @@ int Enemy::getSpritesId(string name){
 
 int Enemy::randomEnemy(){
     if(Scenes::freeGameMode)
-        enemyRandom[Map::nOfMaps][rand()%enemyRandom[Map::nOfMaps].size()];
+        return enemyRandom[Map::nOfMaps][rand()%enemyRandom[Map::nOfMaps].size()];
     return enemyRandom[Player::stage][rand()%enemyRandom[Player::stage].size()];
-    return 0;
 }
 
 void Enemy::setSprites(){
