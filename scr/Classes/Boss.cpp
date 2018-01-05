@@ -11,9 +11,11 @@ Boss::Boss(string data,nTPoint spawn) {
     if(size_vec.size()>=2){
         this->size.x=size_vec[0];
         this->size.y=size_vec[1];
+        this->size.z=0.5;
     }else{
         this->size.x=64;
         this->size.y=96;
+        this->size.z=0.5;
     }
     string sprite_str=adc->getString("sprite");
     int spr_id=getSpritesId(sprite_str);
@@ -54,6 +56,7 @@ Boss::Boss(string data,nTPoint spawn) {
     this->isVisible=true;
     this->damageState=false;
     this->itsInTheWater=false;
+    this->damageGate=0;
     this->imuneToDamage=false;
     this->alreadyHaveQuestions=false;
     Entity::bosses.push_back(this);
@@ -169,7 +172,7 @@ void Boss::draw(Boss* bo){
     if(Tutorials::isPaused){
         GL::drawTexture(nTRectangle::getCollision(bo->pos,bo->size),nTColor::White(),bo->currentTex->get(),bo->orientation);
         if(bo->shieldBlock>0)
-            GL::drawTexture(nTRectangle::getCollision(bo->pos,nTPoint::get(bo->size.x*1.5,bo->size.y*1.5,bo->size.z+0.02)),nTColor::White(),bo->shieldTex->get(),bo->orientation);
+            GL::drawTexture(nTRectangle::getCollision(bo->pos,nTPoint::get(bo->size.x*1.7,bo->size.y*1.7,bo->size.z+0.02)),nTColor::White(),bo->shieldTex->get(),bo->orientation);
         return;
     }
     bo->stateControl();
@@ -177,7 +180,7 @@ void Boss::draw(Boss* bo){
         GL::drawTexture(nTRectangle::getCollision(bo->pos,bo->size),nTColor::White(),bo->currentTex->get(),bo->orientation);
         if((bo->damageState||bo->imuneToDamage)&&Util::timerWithInterval(200))
             return;
-        GL::drawTexture(nTRectangle::getCollision(bo->pos,nTPoint::get(bo->size.x*1.5,bo->size.y*1.5,bo->size.z+0.02)),nTColor::White(),bo->shieldTex->get(),bo->orientation);
+        GL::drawTexture(nTRectangle::getCollision(bo->pos,nTPoint::get(bo->size.x*1.7,bo->size.y*1.7,bo->size.z+0.02)),nTColor::White(),bo->shieldTex->get(),bo->orientation);
     }else{
         if((bo->damageState||bo->imuneToDamage)&&Util::timerWithInterval(200))
             return;
@@ -187,7 +190,6 @@ void Boss::draw(Boss* bo){
 }
 
 void Boss::stateControl(){
-    //cout<<"State: "<<currentState<<" pos(x:"<<pos.x<<", y:"<<pos.y<<", z:"<<pos.z<<") sprite"<<currentTex->get()<<endl;
     FunctionAnalyser::startFunction("Boss::stateControl");
     if(!Scenes::camera.isInTheXScreen(nTRectangle::getCollision(this->pos,this->size))){
         FunctionAnalyser::endFunction("Boss::stateControl");
@@ -322,6 +324,7 @@ void Boss::summon(vector<string> params, int& eid){
 }
 
 void Boss::shield(vector<string> params, int& eid){
+    if(canCast)
     if(params.size()==3){
         if(shieldBlock!=Util::strToFloat(params[0])){
             if(GL::getGameMs()-shieldMs>=Util::strToInt(params[2])||shieldMs==0){
@@ -371,7 +374,7 @@ void Boss::questions(vector<string> params, int& eid){
                 else
                     type=Bullet::wrongAlternativeBullet;
                 nTPoint bu_pos=nTPoint::get(pos.x+(size.x/2+indidualSize+indidualSize*(amount-1-i)*1.3)*orientation,Scenes::camera.y.movedCam,1);
-                bu=new Bullet(type,100,bu_pos,nTPoint::get(indidualSize,indidualSize,1));
+                bu=new Bullet(type,80,bu_pos,nTPoint::get(indidualSize/1.2f,indidualSize/1.2f,1));
                 bu->tex->setTextures(GL::getTextureByName(params[2]+(char)(65+i)));
                 buSummoned.push_back(bu);
             }
@@ -383,7 +386,38 @@ void Boss::questions(vector<string> params, int& eid){
 }
 
 void Boss::gate(vector<string> params, int& eid){
+    if(canCast)
+    if(params.size()==5){
+        if(damageGate==0){
+            damageGate=Util::strToFloat(params[3]);
+            float position=0;
+            if(orientation==Util::orientation_left)
+                position=pos.x-Scenes::camera.x.movedCam;
+            else
+                position=GL::defaultSize.x-(pos.x-Scenes::camera.x.movedCam);
+            position*=(rand()%ABS(Util::strToInt(params[1])-Util::strToInt(params[0])))+Util::strToInt(params[0]);
+            position/=100;
+            position=pos.x+(size.x/2+position)*orientation;
+            vector<int> sz=ADCode::strToIntVector(params[4]);
+            Bullet* bu=new Bullet(Bullet::gateBullet,150,nTPoint::get(position,Scenes::camera.y.movedCam,1),nTPoint::get(sz[0],sz[1],1));
+            bu->tex->setTextures(GL::getTextureByName(params[2]));
+        }
+    }else{
+        GL::popupBoxBehave("\"gate\" event must have 5 arguments("+Util::intToStr(params.size())+"), {min_pos,max_pos,sprite,damage_to_player,{size}}","BITMAP_HELVETICA_12",5000);
+        events.erase(events.begin()+(eid--));
+    }
+}
 
+
+void Boss::fallGate(float xpos){
+    Boss* bo;
+    for(int i=0;i<Entity::bosses.size();i++){
+        bo=(Boss*)Entity::bosses[i];
+        if(Player::getPlayerById(0)->pos.x<xpos){
+            Player::getPlayerById(0)->applyDamage(bo->damageGate);
+        }
+        bo->damageGate=0;
+    }
 }
 
 void Boss::setSprites(){

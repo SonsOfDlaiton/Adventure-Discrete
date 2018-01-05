@@ -22,10 +22,9 @@ Bullet::Bullet(int type,double moveSpeed,nTPoint pos,nTPoint size) {
         tex->setTextures(GL::getTextureByName("Intercampi"));
     if(type==hyperbolicParaboloidBullet)
         tex->setTextures(GL::getTextureByName("paraboloide hiperbolico<3"));
-    if(type==rightAlternativeBullet||type==wrongAlternativeBullet){
+    if(type==rightAlternativeBullet||type==wrongAlternativeBullet||type==gateBullet){
         this->hSpeed=0;
         this->vSpeed=moveSpeed;
-        tex->setTextures(GL::getTextureByName("enem_alternative_A"));
     }else
         this->hSpeed=moveSpeed;
 };
@@ -56,6 +55,7 @@ const int Bullet::busBullet=4;
 const int Bullet::hyperbolicParaboloidBullet=5;
 const int Bullet::rightAlternativeBullet=6;
 const int Bullet::wrongAlternativeBullet=7;
+const int Bullet::gateBullet=8;
 
 /**
  *	Run logic events of the Bullets on the map like move, change textures, check if is in the screen, check collisions
@@ -124,9 +124,16 @@ void Bullet::move(int dir,double steeps){
     }
     if(type==busBullet){
         pos.x+=steeps;
-    }else if(type==rightAlternativeBullet||type==wrongAlternativeBullet){
+    }else if(type==rightAlternativeBullet||type==wrongAlternativeBullet||type==gateBullet){
         pos.y+=steeps;
-        if(pos.y>=GL::defaultSize.y){
+        if(type==gateBullet){
+            if(pos.y>=Player::getPlayerById(0)->pos.y+Player::getPlayerById(0)->size.y/2){
+                isVisible=false;
+                Boss::fallGate(pos.x);
+                delete this;
+                return;
+            }
+        }else if(pos.y>=GL::defaultSize.y){
             isVisible=false;
             Boss::wrongAnswer();
             return;
@@ -192,9 +199,13 @@ void Bullet::checkCollisionWithEntity(bool withPlayer){
             if(type==rightAlternativeBullet||type==wrongAlternativeBullet){
                 isVisible=false;
                 Boss::wrongAnswer();
+                FunctionAnalyser::endFunction("Bullet::ckCollWithEntity");
+                return;
             }else{
                 isVisible=false;
                 delete this;
+                FunctionAnalyser::endFunction("Bullet::ckCollWithEntity");
+                return;
             }
         }else if(type!=busBullet){
             var=Mechanics::getCollision(nTRectangle::getCollision(this->pos,this->size),Player::getPlayerById(0)->swordCollision);
@@ -202,12 +213,18 @@ void Bullet::checkCollisionWithEntity(bool withPlayer){
                 if(type==rightAlternativeBullet){
                     isVisible=false;
                     Boss::rightAnswer();
+                    FunctionAnalyser::endFunction("Bullet::ckCollWithEntity");
+                    return;
                 }else if(type==wrongAlternativeBullet){
                     isVisible=false;
                     Boss::wrongAnswer();
+                    FunctionAnalyser::endFunction("Bullet::ckCollWithEntity");
+                    return;
                 }else{
                     isVisible=false;
                     delete this;
+                    FunctionAnalyser::endFunction("Bullet::ckCollWithEntity");
+                    return;
                 }
             }
         }
@@ -242,6 +259,8 @@ void Bullet::checkCollisionWithEntity(bool withPlayer){
                             Player::getPlayerById(0)->haveBulletSword=false;
                             bu->isVisible=false;
                             delete bu;
+                            FunctionAnalyser::endFunction("Bullet::ckCollWithEntity");
+                            return;
                         }
                     }
                 }

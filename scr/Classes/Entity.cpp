@@ -72,7 +72,7 @@ void Entity::stateControl(){
             if(damageState)
                 nextState=state_TakingDamage;
         }
-        if(reducing||atacking){
+        if(reducing||atacking||lowered){
             if(hSpeed>0)
                 reduceSpeed(Util::direction_right);
             else if(hSpeed<0)

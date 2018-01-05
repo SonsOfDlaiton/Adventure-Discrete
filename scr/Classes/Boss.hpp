@@ -25,6 +25,7 @@ public:
     static void setSprites();
     static void rightAnswer();
     static void wrongAnswer();
+    static void fallGate(float xpos);
     void applyDamage(double damage);
     double startLife;
 
@@ -48,7 +49,7 @@ private:
     void summon(vector<string> params, int& eid);
     void shield(vector<string> params, int& eid); Texture* shieldTex; float shieldBlock; double shieldMs;
     void questions(vector<string> params, int& eid); bool alreadyHaveQuestions; float questionsDmg; float questionsHex;
-    void gate(vector<string> params, int& eid);
+    void gate(vector<string> params, int& eid); float damageGate;
 };
 
 #endif /* BOSS_H */

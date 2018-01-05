@@ -20,6 +20,7 @@ public:
     static const int hyperbolicParaboloidBullet;
     static const int rightAlternativeBullet;
     static const int wrongAlternativeBullet;
+    static const int gateBullet;
 
     static vector<void*> self;
     static const double timeToShoot;

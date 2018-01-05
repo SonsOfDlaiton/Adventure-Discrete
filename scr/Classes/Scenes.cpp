@@ -123,10 +123,10 @@ void Scenes::drawGame(){
 
     camera.behave(Player::getPlayerById(0));
     Mechanics::applyForce();
+    Bullet::behave();
     Map::refresh();
     Entity::behave();
     PowerUp::behave();
-    Bullet::behave();
     Tutorials::behave();
     Map::transparencyLayerDraw();
     playStageSong();
