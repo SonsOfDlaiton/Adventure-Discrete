@@ -163,7 +163,7 @@ void Mechanics::applyForce(){
         }
         if(pu->vSpeed>0){
             pu->move(Util::direction_down,pu->vSpeed/GL::getFPS());
-        }else if(pu->vSpeed<0){
+        }if(pu->vSpeed<0){
             pu->move(Util::direction_up,pu->vSpeed/GL::getFPS());
         }
     }
@@ -171,6 +171,9 @@ void Mechanics::applyForce(){
     Bullet *bu;
     for(int i=0;i<Bullet::self.size();i++){
         bu=(Bullet*)Bullet::self[i];
+        if(bu->vSpeed>0){
+            bu->move(Util::direction_up,bu->vSpeed/GL::getFPS());
+        }
         if(bu->hSpeed!=0){
             bu->move(Util::direction_left,bu->hSpeed/GL::getFPS());
         }

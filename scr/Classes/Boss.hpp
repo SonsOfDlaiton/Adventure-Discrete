@@ -23,6 +23,8 @@ public:
     static void behave();
     static int getSpritesId(string name);
     static void setSprites();
+    static void rightAnswer();
+    static void wrongAnswer();
     void applyDamage(double damage);
     double startLife;
 
@@ -30,6 +32,7 @@ public:
     static vector<vector<string> >bossAnim;
     static vector<vector<int> >bossAnimSize;
     static vector<void*> enSummoned;
+    static vector<void*> buSummoned;
 private:
     string nickname;
     vector<BossEvent> events;
@@ -37,11 +40,14 @@ private:
     void stateControl();
     void eventHandler();
     void makeInvencible();
+    void disableCasts();
+    bool canCast;
+    double castMs;
 
     void reincarnation(vector<string> params, int& eid);
     void summon(vector<string> params, int& eid);
     void shield(vector<string> params, int& eid); Texture* shieldTex; float shieldBlock; double shieldMs;
-    void questions(vector<string> params, int& eid);
+    void questions(vector<string> params, int& eid); bool alreadyHaveQuestions; float questionsDmg; float questionsHex;
     void gate(vector<string> params, int& eid);
 };
 

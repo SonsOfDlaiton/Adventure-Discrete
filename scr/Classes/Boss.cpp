@@ -55,13 +55,16 @@ Boss::Boss(string data,nTPoint spawn) {
     this->damageState=false;
     this->itsInTheWater=false;
     this->imuneToDamage=false;
+    this->alreadyHaveQuestions=false;
     Entity::bosses.push_back(this);
     this->id=(unsigned int)Entity::bosses.size()+60000;
     this->pos.y-=this->size.y/2;
     this->shieldMs=0;
+    this->castMs=0;
     this->shieldBlock=0;
+    this->canCast=true;
     this->shieldTex=new Texture();
-    shieldTex->setTimeToNext(400);
+    shieldTex->setTimeToNext(300);
     delete adc;
 };
 
@@ -79,6 +82,7 @@ Boss::~Boss() {
 }
 
 vector<void*> Boss::enSummoned;
+vector<void*> Boss::buSummoned;
 vector<string> Boss::bossName;
 vector<vector<string> > Boss::bossAnim;
 vector<vector<int> > Boss::bossAnimSize;
@@ -116,6 +120,7 @@ void Boss::behave(){
 
 void Boss::eventHandler(){
     FunctionAnalyser::startFunction("Boss::eventHandler");
+
     for(int e=0;e<events.size();e++){
         BossEvent be=events[e];
         if((life>=be.minimumLife||be.minimumLife==0)&&(life<=be.maximumLife)&&(rand()%(be.probability*(int)GL::getFPS()/10)==0||be.probability==1)){
@@ -125,7 +130,15 @@ void Boss::eventHandler(){
                 summon(be.params,e);
             else if(be.event=="shield")
                 shield(be.params,e);
+            else if(be.event=="questions")
+                questions(be.params,e);
+            else if(be.event=="gate")
+                gate(be.params,e);
         }
+    }
+    if(!canCast){
+        if(GL::getGameMs()-castMs>=questionsHex)
+            canCast=true;
     }
     FunctionAnalyser::endFunction("Boss::eventHandler");
 }
@@ -174,7 +187,7 @@ void Boss::draw(Boss* bo){
 }
 
 void Boss::stateControl(){
-    cout<<"State: "<<currentState<<" pos(x:"<<pos.x<<", y:"<<pos.y<<", z:"<<pos.z<<") sprite"<<currentTex->get()<<endl;
+    //cout<<"State: "<<currentState<<" pos(x:"<<pos.x<<", y:"<<pos.y<<", z:"<<pos.z<<") sprite"<<currentTex->get()<<endl;
     FunctionAnalyser::startFunction("Boss::stateControl");
     if(!Scenes::camera.isInTheXScreen(nTRectangle::getCollision(this->pos,this->size))){
         FunctionAnalyser::endFunction("Boss::stateControl");
@@ -201,6 +214,49 @@ void Boss::makeInvencible(){
             this->isVisible=false;
             delete this;
         }
+    }
+}
+
+void Boss::disableCasts(){
+    shieldBlock=0;
+    shieldMs=GL::getGameMs();
+    canCast=false;
+    castMs=GL::getGameMs();
+}
+
+void Boss::rightAnswer(){
+    Bullet *bu;
+    for(int i=0;i<buSummoned.size();i++){
+        bu=(Bullet*)buSummoned[i];
+        delete bu;
+        buSummoned.erase(buSummoned.begin()+(i--));
+    }
+    Boss* bo;
+    for(int i=0;i<Entity::bosses.size();i++){
+        bo=(Boss*)Entity::bosses[i];
+        if(bo->alreadyHaveQuestions){
+            bo->alreadyHaveQuestions=false;
+            if(bo->questionsHex>0){
+                bo->disableCasts();
+            }
+            if(bo->questionsDmg>0)
+                bo->applyDamage(bo->questionsDmg);
+        }
+    }
+}
+
+void Boss::wrongAnswer(){
+    Bullet *bu;
+    for(int i=0;i<buSummoned.size();i++){
+        bu=(Bullet*)buSummoned[i];
+        delete bu;
+        buSummoned.erase(buSummoned.begin()+(i--));
+    }
+    Boss* bo;
+    for(int i=0;i<Entity::bosses.size();i++){
+        bo=(Boss*)Entity::bosses[i];
+        if(bo->alreadyHaveQuestions)
+            bo->alreadyHaveQuestions=false;
     }
 }
 
@@ -237,8 +293,8 @@ void Boss::reincarnation(vector<string> params, int& eid){
 }
 
 void Boss::summon(vector<string> params, int& eid){
+    if(canCast)
     if(params.size()==7){
-        changeState(state_SpecialAtacking);
         int amount=(rand()%(Util::strToInt(params[2])-Util::strToInt(params[1])))+Util::strToInt(params[1]);
         vector<int> sz=ADCode::strToIntVector(params[6]);
         nTPoint pl_size=Player::getPlayerById(0)->size;
@@ -246,6 +302,8 @@ void Boss::summon(vector<string> params, int& eid){
         nTRectangle pl_coll=nTRectangle::getCollision(Player::getPlayerById(0)->pos,pl_size);
         nTPoint en_size=nTPoint::get(sz[0],sz[1]);
         amount-=enSummoned.size();
+        if(amount>0)
+            changeState(state_SpecialAtacking);
         for(int i=0;i<amount;i++){
             nTPoint en_pos=nTPoint::get(pos.x+(size.x/2+en_size.x+en_size.x*i*1.5)*orientation,pos.y+en_size.y/4,0.89);
             if(Mechanics::getCollision(nTRectangle::getCollision(en_pos,en_size),pl_coll).firstObj==Mechanics::NOCOLLISION){
@@ -281,13 +339,47 @@ void Boss::shield(vector<string> params, int& eid){
                 shieldTex->setTextures(GL::getTextureByName("enemShield"));
         }
     }else{
-        GL::popupBoxBehave("\"shield\" event must have 3 arguments("+Util::intToStr(params.size())+"), {damage block,duration,time to cast}","BITMAP_HELVETICA_12",5000);
+        GL::popupBoxBehave("\"shield\" event must have 3 arguments("+Util::intToStr(params.size())+"), {damage block,duration,time_to_cast}","BITMAP_HELVETICA_12",5000);
         events.erase(events.begin()+(eid--));
     }
 }
 
 void Boss::questions(vector<string> params, int& eid){
-
+    if(canCast)
+    if(params.size()==5){
+        if(alreadyHaveQuestions==false){
+            alreadyHaveQuestions=true;
+            changeState(state_SpecialAtacking);
+            questionsDmg=Util::strToFloat(params[3]);
+            questionsHex=Util::strToFloat(params[4]);
+            float indidualSize=0;
+            int amount=Util::strToInt(params[0]);
+            int rights=Util::strToInt(params[1]);
+            if(orientation==Util::orientation_left)
+                indidualSize=(pos.x-Scenes::camera.x.movedCam)/(amount*1.5);
+            else
+                indidualSize=(GL::defaultSize.x-(pos.x-Scenes::camera.x.movedCam))/(amount*1.5);
+            vector<bool> awnsers;
+            for(int i=0;i<amount;i++)
+                awnsers.push_back(i<rights);
+            random_shuffle(awnsers.begin(),awnsers.end());
+            Bullet *bu;
+            for(int i=0;i<amount;i++){
+                int type;
+                if(awnsers[i])
+                    type=Bullet::rightAlternativeBullet;
+                else
+                    type=Bullet::wrongAlternativeBullet;
+                nTPoint bu_pos=nTPoint::get(pos.x+(size.x/2+indidualSize+indidualSize*(amount-1-i)*1.3)*orientation,Scenes::camera.y.movedCam,1);
+                bu=new Bullet(type,100,bu_pos,nTPoint::get(indidualSize,indidualSize,1));
+                bu->tex->setTextures(GL::getTextureByName(params[2]+(char)(65+i)));
+                buSummoned.push_back(bu);
+            }
+        }
+    }else{
+        GL::popupBoxBehave("\"questions\" event must have 5 arguments("+Util::intToStr(params.size())+"), {amount,amount_right,sprite,damage_to_enemy,time_without_cast}","BITMAP_HELVETICA_12",5000);
+        events.erase(events.begin()+(eid--));
+    }
 }
 
 void Boss::gate(vector<string> params, int& eid){

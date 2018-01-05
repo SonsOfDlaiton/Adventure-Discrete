@@ -51,6 +51,7 @@ void Texture::setTextures(vector<GLuint> textures){
     this->textures=textures;
     currentTex=0;
     finished=false;
+    ms=GL::getGameMs();
 }
 
 void Texture::setTextures(GLuint texture){
@@ -58,6 +59,7 @@ void Texture::setTextures(GLuint texture){
     textures.push_back(texture);
     currentTex=0;
     finished=false;
+    ms=GL::getGameMs();
 }
 
 void Texture::setTimeToNext(double timeToNext){

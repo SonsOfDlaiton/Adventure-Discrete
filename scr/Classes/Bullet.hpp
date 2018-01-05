@@ -18,18 +18,19 @@ public:
     static const int weakXAtackBullet;
     static const int busBullet;
     static const int hyperbolicParaboloidBullet;
+    static const int rightAlternativeBullet;
+    static const int wrongAlternativeBullet;
 
     static vector<void*> self;
     static const double timeToShoot;
     static const double baseDamage;
     static const double baseSpeed;
     void move(int dir,double steeps);
+    Texture* tex;
 private:
     void draw();
     void checkCollisionWithEntity(bool withPlayer);
-
     int type;
-    Texture* tex;
     bool isVisible;
 };
 

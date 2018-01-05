@@ -1,9 +1,9 @@
 #include "Bullet.hpp"
+#include "Boss.hpp"
 
 Bullet::Bullet(int type,double moveSpeed,nTPoint pos,nTPoint size) {
     this->size=size;
     this->pos=pos;
-    this->hSpeed=moveSpeed;
     this->type=type;
     this->self.push_back(this);
     this->isVisible=true;
@@ -20,8 +20,14 @@ Bullet::Bullet(int type,double moveSpeed,nTPoint pos,nTPoint size) {
         tex->setTextures(GL::getTexturesByName("WeakAtk",3));
     if(type==busBullet)
         tex->setTextures(GL::getTextureByName("Intercampi"));
-     if(type==hyperbolicParaboloidBullet)
+    if(type==hyperbolicParaboloidBullet)
         tex->setTextures(GL::getTextureByName("paraboloide hiperbolico<3"));
+    if(type==rightAlternativeBullet||type==wrongAlternativeBullet){
+        this->hSpeed=0;
+        this->vSpeed=moveSpeed;
+        tex->setTextures(GL::getTextureByName("enem_alternative_A"));
+    }else
+        this->hSpeed=moveSpeed;
 };
 
 Bullet::Bullet(const Bullet& orig) {
@@ -48,6 +54,8 @@ const int Bullet::strongXAtackBullet=2;
 const int Bullet::weakXAtackBullet=3;
 const int Bullet::busBullet=4;
 const int Bullet::hyperbolicParaboloidBullet=5;
+const int Bullet::rightAlternativeBullet=6;
+const int Bullet::wrongAlternativeBullet=7;
 
 /**
  *	Run logic events of the Bullets on the map like move, change textures, check if is in the screen, check collisions
@@ -74,6 +82,8 @@ void Bullet::behave(){
             return;
         }
         if(bu->type==errorBlockBullet||bu->type==hyperbolicParaboloidBullet){//tiro de bloco
+            bu->checkCollisionWithEntity(true);
+        }else if(bu->type==rightAlternativeBullet||bu->type==wrongAlternativeBullet){//questions
             bu->checkCollisionWithEntity(true);
         }else if(bu->type==strongSwordBullet){//espada
             bu->checkCollisionWithEntity(false);
@@ -112,7 +122,16 @@ void Bullet::move(int dir,double steeps){
         steepsAgain=signal*(ABS(steeps)-Entity::walkSpeed/GL::getFPS());
         steeps=signal*Entity::walkSpeed/GL::getFPS();
     }
-    if(type!=busBullet){
+    if(type==busBullet){
+        pos.x+=steeps;
+    }else if(type==rightAlternativeBullet||type==wrongAlternativeBullet){
+        pos.y+=steeps;
+        if(pos.y>=GL::defaultSize.y){
+            isVisible=false;
+            Boss::wrongAnswer();
+            return;
+        }
+    }else{
         bool collision=false;
         if(dir==Util::direction_left||dir==Util::direction_right){
             nTPoint tmp;
@@ -146,8 +165,6 @@ void Bullet::move(int dir,double steeps){
                 hSpeed*=-1;
             }
         }
-    }else{
-        pos.x+=steeps;
     }
     FunctionAnalyser::endFunction("Bullet::move");
     if(needToMoveAgain)
@@ -170,16 +187,28 @@ void Bullet::checkCollisionWithEntity(bool withPlayer){
             if(type==busBullet){
                 Player::getPlayerById(0)->applyDamage(2);
                 AL::singleton->stopSound(AL::getSoundByName("intercampi"));
-            }else
+            }else if(type!=rightAlternativeBullet)
                 Player::getPlayerById(0)->applyDamage(1);
-            isVisible=false;
-            delete this;
+            if(type==rightAlternativeBullet||type==wrongAlternativeBullet){
+                isVisible=false;
+                Boss::wrongAnswer();
+            }else{
+                isVisible=false;
+                delete this;
+            }
         }else if(type!=busBullet){
             var=Mechanics::getCollision(nTRectangle::getCollision(this->pos,this->size),Player::getPlayerById(0)->swordCollision);
             if(var.firstObj!=Mechanics::NOCOLLISION){
-//              Player::getPlayerById(0)->atacking=false;
-                isVisible=false;
-                delete this;
+                if(type==rightAlternativeBullet){
+                    isVisible=false;
+                    Boss::rightAnswer();
+                }else if(type==wrongAlternativeBullet){
+                    isVisible=false;
+                    Boss::wrongAnswer();
+                }else{
+                    isVisible=false;
+                    delete this;
+                }
             }
         }
     }else{
@@ -232,7 +261,12 @@ void Bullet::draw(){
     if (type==strongSwordBullet)
         pos.z=0.9;
     if(isVisible){
-        GL::drawTexture(nTRectangle::getCollision(pos,size),tex->get());
+        if(type==rightAlternativeBullet)
+            GL::drawTexture(nTRectangle::getCollision(pos,size),nTColor::get(0,1,0),tex->get());
+        else if(type==wrongAlternativeBullet)
+            GL::drawTexture(nTRectangle::getCollision(pos,size),nTColor::get(1,0,0),tex->get());
+        else
+            GL::drawTexture(nTRectangle::getCollision(pos,size),tex->get());
         if(Mechanics::drawCollisionRec)GL::drawCollision(nTRectangle::getCollision(pos, size));
     }
 }

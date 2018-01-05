@@ -887,7 +887,7 @@
 	"Util.hpp"
 	"GL.hpp"
 
-1515005295 /run/media/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Bullet.hpp
+1515173089 /run/media/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Bullet.hpp
 	"Util.hpp"
 	"Scenes.hpp"
 	"Camera.hpp"
@@ -907,7 +907,7 @@
 1514733204 source:/run/media/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/AL.cpp
 	"AL.hpp"
 
-1515159862 source:/run/media/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/AssetsLoader.cpp
+1515170589 source:/run/media/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/AssetsLoader.cpp
 	"AssetsLoader.hpp"
 
 1514733202 source:/run/media/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Background.cpp
@@ -915,11 +915,12 @@
 	"GL.hpp"
 	"Scenes.hpp"
 
-1515008371 source:/run/media/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Blocks.cpp
+1515177025 source:/run/media/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Blocks.cpp
 	"Blocks.hpp"
 
-1515005312 source:/run/media/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Bullet.cpp
+1515171856 source:/run/media/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Bullet.cpp
 	"Bullet.hpp"
+	"Boss.hpp"
 
 1514849305 source:/run/media/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/CallbacksHandler.cpp
 	"CallbacksHandler.hpp"
@@ -974,7 +975,7 @@
 1514927921 source:/run/media/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/MapEdit.cpp
 	"MapEdit.hpp"
 
-1514926598 source:/run/media/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Mechanics.cpp
+1515176259 source:/run/media/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Mechanics.cpp
 	"Mechanics.hpp"
 	"Player.hpp"
 	"Boss.hpp"
@@ -1074,11 +1075,11 @@
 1514848702 source:/run/media/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/FunctionAnalyser.cpp
 	"FunctionAnalyser.hpp"
 
-1515164112 /run/media/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Boss.hpp
+1515177315 /run/media/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Boss.hpp
 	"Util.hpp"
 	"Entity.hpp"
 
-1515165073 source:/run/media/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Boss.cpp
+1515176895 source:/run/media/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Boss.cpp
 	"Boss.hpp"
 	"Blocks.hpp"
 	"ADCode.hpp"
@@ -1093,6 +1094,6 @@
 	"Util.hpp"
 	"GL.hpp"
 
-1515014010 source:/run/media/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Texture.cpp
+1515171751 source:/run/media/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Classes/Texture.cpp
 	"Texture.hpp"
 
