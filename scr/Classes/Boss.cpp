@@ -440,8 +440,8 @@ void Boss::setSprites(){
         tmp.push_back("");  tmp2.push_back(1);//4 -Atacking -none
     tmp.push_back("enem1Action");  tmp2.push_back(9);//5 -SpecialAtacking
     tmp.push_back("enem1Idle"); tmp2.push_back(5);//6 -Damage
-    tmp.push_back("calcIdle"); tmp2.push_back(1);//7 -Death
-    tmp.push_back("bookIdle"); tmp2.push_back(1);//8 -Spawn
+    tmp.push_back("enemDeath"); tmp2.push_back(7);//7 -Death
+    tmp.push_back("enemSpawn"); tmp2.push_back(7);//8 -Spawn
     Boss::bossAnim.push_back(tmp);
     Boss::bossAnimSize.push_back(tmp2);
     tmp.clear();
@@ -456,8 +456,8 @@ void Boss::setSprites(){
         tmp.push_back("");  tmp2.push_back(1);//4 -Atacking -none
     tmp.push_back("enem2Action");  tmp2.push_back(9);//5 -SpecialAtacking
     tmp.push_back("enem2Idle"); tmp2.push_back(5);//6 -Damage
-    tmp.push_back("calcIdle"); tmp2.push_back(1);//7 -Death
-    tmp.push_back("bookIdle"); tmp2.push_back(1);//8 -Spawn
+    tmp.push_back("enemDeath"); tmp2.push_back(7);//7 -Death
+    tmp.push_back("enemSpawn"); tmp2.push_back(7);//8 -Spawn
     Boss::bossAnim.push_back(tmp);
     Boss::bossAnimSize.push_back(tmp2);
     tmp.clear();
