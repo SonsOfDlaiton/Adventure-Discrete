@@ -26,9 +26,11 @@ private:
 	double zAxis, hSpeed, vSpeed, initialPos, pos;
 	nTRectangle local;
 };
+
 typedef struct map{
-  vector<Background> backgrounds; //int backgroundId;
-  vector<vector<pair<int,string> > > map;
+  vector<Background> backgrounds;
+  vector<vector<vector<pair<int,string> > > > map;
+  static const short layers=2;
 }nTMap;
 
 #endif /*BACKGROUND_H*/

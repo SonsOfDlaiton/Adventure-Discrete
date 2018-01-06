@@ -34,6 +34,8 @@ public:
     static vector<string> pageNames;
     static int pageIndex;
     static const int editingMap;
+    static int editingLayer;
+    static bool layersToDraw[nTMap::layers];
 private:
     static void drawPanel();
     static void drawLines();

@@ -56,7 +56,7 @@ Blocks::~Blocks() {
     }
 }
 
-nTPoint Blocks::defaultBlockSize=nTPoint::get(32,32);
+nTPoint Blocks::defaultBlockSize=nTPoint::get(32,32,0.7);
 double Blocks::imunityTime=150;
 
 const int Blocks::AnimatedWater1=376;

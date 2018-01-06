@@ -22,6 +22,8 @@ int MapEdit::pageIndex=0;
 short int MapEdit::isCreating=0;
 bool MapEdit::isUser=true;
 const int MapEdit::editingMap=-6000;
+bool MapEdit::layersToDraw[nTMap::layers];
+int MapEdit::editingLayer=0;
 
 /**
  *	Set the page names and contents of the available blocks on the map editor
@@ -209,20 +211,20 @@ void MapEdit::definePages(){
  *	@param idx index of the map
 **/
 void MapEdit::load(int idx){
-    map.map.clear();
+    for(int k=0;k<map.map.size();k++)
+        map.map[k].clear();
     if(idx>=0){
         index=idx;
         map=Map::maps[idx];
     }else if(idx==-1){
         index=-1;
         map=Map::usrMap;
-        //currentBackground=Map::usrMap.backgroundId;
     }else if(idx==MapEdit::editingMap){
         index=-1;
         map=Map::editingMap;
     }
-    size.y=map.map.size();
-    size.x=map.map[0].size();
+    size.y=map.map[0].size();
+    size.x=map.map[0][0].size();
 }
 
 /**
@@ -235,6 +237,9 @@ void MapEdit::reset(){
     pageIndex=0;
     isCreating=0;
     isUser=true;
+    editingLayer=0;
+    for(int k=0;k<nTMap::layers;k++)
+        layersToDraw[k]=true;
 }
 
 /**
@@ -242,7 +247,6 @@ void MapEdit::reset(){
 **/
 bool MapEdit::save(){
     nTMap tmp;
-    //tmp.backgroundId=currentBackground;
     tmp=map;
     if(!isUser){
         if(index>=Map::maps.size()&&!(index<0))
@@ -313,16 +317,16 @@ void MapEditButton(int x,int y){
             i=0;
         if(j<0)
             j=0;
-        if(i>=MapEdit::map.map.size())
-            i=(int)MapEdit::map.map.size()-1;
-        if(j>=MapEdit::map.map[0].size())
-            j=(int)MapEdit::map.map[0].size()-1;
+        if(i>=MapEdit::map.map[0].size())
+            i=(int)MapEdit::map.map[0].size()-1;
+        if(j>=MapEdit::map.map[0][0].size())
+            j=(int)MapEdit::map.map[0][0].size()-1;
         if(MapEdit::currentBlock!=60000){
-            MapEdit::map.map[i][j].first=MapEdit::currentBlock;
-            MapEdit::map.map[i][j].second=GL::getEditText("MapEdit::blockData");
+            MapEdit::map.map[MapEdit::editingLayer][i][j].first=MapEdit::currentBlock;
+            MapEdit::map.map[MapEdit::editingLayer][i][j].second=GL::getEditText("MapEdit::blockData");
         }else{
-            MapEdit::currentBlock=MapEdit::map.map[i][j].first;
-            GL::setEditText("MapEdit::blockData",MapEdit::map.map[i][j].second);
+            MapEdit::currentBlock=MapEdit::map.map[MapEdit::editingLayer][i][j].first;
+            GL::setEditText("MapEdit::blockData",MapEdit::map.map[MapEdit::editingLayer][i][j].second);
         }
     }
 }
@@ -343,11 +347,11 @@ void mapEraseButton(int x,int y){
             i=0;
         if(j<0)
             j=0;
-        if(i>=MapEdit::map.map.size())
-            i=MapEdit::map.map.size()-1;
-        if(j>=MapEdit::map.map[0].size())
-            j=MapEdit::map.map[0].size()-1;
-        MapEdit::map.map[i][j].first=0;
+        if(i>=MapEdit::map.map[0].size())
+            i=MapEdit::map.map[0].size()-1;
+        if(j>=MapEdit::map.map[0][0].size())
+            j=MapEdit::map.map[0][0].size()-1;
+        MapEdit::map.map[MapEdit::editingLayer][i][j].first=0;
     }
 }
 
@@ -392,21 +396,28 @@ void MapEdit::draw(){
     drawLines();
     Blocks *bl;
     nTPoint tmp,tmp1;
-    for(int i=0;i<size.y;i++){
-        for(int j=0;j<size.x;j++){
-            tmp=nTPoint::get(Blocks::defaultBlockSize.x*(j+(1/2))+Blocks::defaultBlockSize.x/2,Blocks::defaultBlockSize.y*(i+(1/2))+Blocks::defaultBlockSize.y/2,Blocks::defaultBlockSize.z);
-            tmp1=Blocks::defaultBlockSize;
-            tmp.x*=scale.x;
-            tmp.y*=scale.y;
-            tmp1.x*=scale.x;
-            tmp1.y*=scale.y;
-            GL::buttonBehave(nTRectangle::getCollision(tmp,tmp1),nTColor::get(0.38,0.38,0.38,0.8),0,true,*MapEditButton,NULL,*mapEraseButton,NULL);
-            if(map.map[i][j].first){
-                tmp.z-=0.1;
-                tmp1.z-=0.1;
-                bl = new Blocks(map.map[i][j].first,tmp,tmp1);
-                bl->draw();
-                delete bl;
+    for(int k=0;k<map.map.size();k++){
+        if(layersToDraw[k]){
+            for(int i=0;i<map.map[k].size();i++){
+                for(int j=0;j<map.map[k][i].size();j++){
+                    tmp=nTPoint::get(Blocks::defaultBlockSize.x*(j+(1/2))+Blocks::defaultBlockSize.x/2,Blocks::defaultBlockSize.y*(i+(1/2))+Blocks::defaultBlockSize.y/2,Blocks::defaultBlockSize.z);
+                    tmp1=Blocks::defaultBlockSize;
+                    tmp.x*=scale.x;
+                    tmp.y*=scale.y;
+                    tmp1.x*=scale.x;
+                    tmp1.y*=scale.y;
+                    tmp.z+=k*0.0001;
+                    tmp1.z+=k*0.0001;
+                    if(map.map[k][i][j].first){
+                        tmp.z-=0.1;
+                        tmp1.z-=0.1;
+                        bl = new Blocks(map.map[k][i][j].first,tmp,tmp1);
+                        bl->draw();
+                        delete bl;
+                    }
+                    if(editingLayer==k)
+                        GL::buttonBehave(nTRectangle::getCollision(tmp,tmp1),nTColor::get(0.38,0.38,0.38,0.8),0,true,*MapEditButton,NULL,*mapEraseButton,NULL);
+                }
             }
         }
     }
@@ -535,16 +546,17 @@ void MapEditPlay(int x,int y){
     tmp=MapEdit::map;
     Map::editingMap=tmp;
     bool hasSpawn=false;
-    for(int i=0;i<MapEdit::map.map.size();i++){
-        for(int j=0;j<MapEdit::map.map[i].size();j++){
-            if(Blocks::checkIfBlocksIsPlayerSpawn(MapEdit::map.map[i][j].first)){
+    for(int k=0;k<MapEdit::map.map.size();k++)
+    for(int i=0;i<MapEdit::map.map[k].size();i++){
+        for(int j=0;j<MapEdit::map.map[k][i].size();j++){
+            if(Blocks::checkIfBlocksIsPlayerSpawn(MapEdit::map.map[k][i][j].first)){
                 hasSpawn=true;
                 break;
             }
         }
     }
     if(!hasSpawn){
-        Map::editingMap.map[MapEdit::map.map.size()/2][4].first=1000;
+        Map::editingMap.map[0][MapEdit::map.map[0].size()/2][4].first=1000;
     }
     Scenes::testGameMode=true;
     Scenes::current=Scenes::game;
@@ -576,9 +588,36 @@ void MapEdit::drawPanel(){
     GL::buttonBehave(nTRectangle::get(290+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,320+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("Get Block"),false,*MapEditGetBlock,NULL,NULL,NULL);
     GL::buttonBehave(nTRectangle::get(330+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,360+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("Save"),false,*MapEditSave,NULL,NULL,NULL);
     GL::buttonBehave(nTRectangle::get(370+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,400+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("PlayCircle"),false,*MapEditPlay,NULL,NULL,NULL);
-    GL::buttonBehave(nTRectangle::get(485+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,515+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("Back"),false,*MapEditLeave,NULL,NULL,NULL);
+    GL::buttonBehave(nTRectangle::get(590+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,620+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("Back"),false,*MapEditLeave,NULL,NULL,NULL);
     GL::buttonBehave(nTRectangle::get(770+Scenes::camera.x.movedCam,60+Scenes::camera.y.movedCam,790+Scenes::camera.x.movedCam,40+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("-"),false,NULL,*MapEditPageDown,NULL,NULL);
     GL::buttonBehave(nTRectangle::get(660+Scenes::camera.x.movedCam,60+Scenes::camera.y.movedCam,680+Scenes::camera.x.movedCam,40+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("+"),false,NULL,*MapEditPageUp,NULL,NULL);
+
+    // todos os botes deveriam ser assim V
+    if(GL::buttonBehave(nTRectangle::get(410+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,440+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("1stLayerIcon"))){
+        layersToDraw[0]=true;
+        layersToDraw[1]=false;
+        editingLayer=0;
+    }
+    if(GL::buttonBehave(nTRectangle::get(450+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,480+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("2ndLayerIcon"))){
+        layersToDraw[0]=false;
+        layersToDraw[1]=true;
+        editingLayer=1;
+    }
+    if(GL::buttonBehave(nTRectangle::get(490+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,520+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("AllLayersIcon"))){
+        layersToDraw[0]=true;
+        layersToDraw[1]=true;
+    }
+    GL::drawCentered_X_Y_Text(nTPoint::get(445+Scenes::camera.x.movedCam,511+Scenes::camera.y.movedCam,1),"Camadas:",nTColor::Black());
+    GL::drawCentered_X_Y_Text(nTPoint::get(445+Scenes::camera.x.movedCam,520+Scenes::camera.y.movedCam,1),"Editando vermelho, Desenhando preto",nTColor::Black());
+    if(layersToDraw[0])
+        GL::drawRectangle(nTRectangle::get(405+Scenes::camera.x.movedCam,575+Scenes::camera.y.movedCam,445+Scenes::camera.x.movedCam,528+Scenes::camera.y.movedCam,0.99),nTColor::Black());
+    if(layersToDraw[1])
+        GL::drawRectangle(nTRectangle::get(445+Scenes::camera.x.movedCam,575+Scenes::camera.y.movedCam,485+Scenes::camera.x.movedCam,528+Scenes::camera.y.movedCam,0.99),nTColor::Black());
+    if(editingLayer==0)
+        GL::drawCollision(nTRectangle::get(405+Scenes::camera.x.movedCam,575+Scenes::camera.y.movedCam,445+Scenes::camera.x.movedCam,528+Scenes::camera.y.movedCam,0.999),2,nTColor::get(1,0,0));
+    if(editingLayer==1)
+        GL::drawCollision(nTRectangle::get(445+Scenes::camera.x.movedCam,575+Scenes::camera.y.movedCam,485+Scenes::camera.x.movedCam,528+Scenes::camera.y.movedCam,0.999),2,nTColor::get(1,0,0));
+    //
     GL::setFont("BITMAP_HELVETICA_12");
     GL::drawText(nTPoint::get(550+Scenes::camera.x.movedCam,536+Scenes::camera.y.movedCam,1),"Bloco Atual",nTColor::Black());
     GL::drawText(nTPoint::get(550+Scenes::camera.x.movedCam,588+Scenes::camera.y.movedCam,1),Blocks::getTexNameByIndex(currentBlock)+getMoreInfoAboutBlocks(currentBlock),nTColor::Black());
@@ -714,14 +753,19 @@ void MapEdit::setMapSize(){
     index=(int)Map::maps.size();
     map.map.clear();
     pair<int,string> p;
+    vector<pair<int,string> > tmp;
+    vector<vector<pair<int,string> > > m;
     p.first=0;
     p.second="";
-    vector<pair<int,string> > tmp;
-    for(int i=0;i<size.y;i++){
-        for(int j=0;j<size.x;j++)
-            tmp.push_back(p);
-        map.map.push_back(tmp);
-        tmp.clear();
+    for(int k=0;k<nTMap::layers;k++){
+        for(int i=0;i<size.y;i++){
+            for(int j=0;j<size.x;j++)
+                tmp.push_back(p);
+            m.push_back(tmp);
+            tmp.clear();
+        }
+        map.map.push_back(m);
+        m.clear();
     }
 }
 

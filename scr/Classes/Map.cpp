@@ -72,20 +72,22 @@ void Map::changeCurrentMap(nTMap map){
     PowerUp::self.clear();
     actualMap.map.clear();
     actualMap.backgrounds.clear();
-    size.set((map.map[0].size()-1)*Blocks::defaultBlockSize.x,(map.map.size()-1)*Blocks::defaultBlockSize.y,0);
+    size.set((map.map[0][0].size()-1)*Blocks::defaultBlockSize.x,(map.map[0].size()-1)*Blocks::defaultBlockSize.y,0);
     sort(map.backgrounds.begin(), map.backgrounds.end()); // coloca em ordem decrescente os backgrounds a serem desenhados
     actualMap=map;
     bool hasSpawn=false;
-    for(int i=0;i<actualMap.map.size();i++){
-        for(int j=0;j<actualMap.map[i].size();j++){
-            if(Blocks::checkIfBlocksIsPlayerSpawn(actualMap.map[i][j].first)){
-                hasSpawn=true;
-                break;
+    for(int k=0;k<actualMap.map.size();k++){
+        for(int i=0;i<actualMap.map[k].size();i++){
+            for(int j=0;j<actualMap.map[k][i].size();j++){
+                if(Blocks::checkIfBlocksIsPlayerSpawn(actualMap.map[k][i][j].first)){
+                    hasSpawn=true;
+                    break;
+                }
             }
         }
     }
     if(!hasSpawn){
-        actualMap.map[actualMap.map.size()/2][4].first=1000;
+        actualMap.map[0][actualMap.map[0].size()/2][4].first=1000;
     }
     setBlockPos();
 }
@@ -129,57 +131,62 @@ void Map::setBlockPos(){
     deleteAllBlocks();
     Tutorials::clear();
     Blocks *bl;
-    for(int i=0;i<actualMap.map.size();i++){
+    for(int i=0;i<actualMap.map[0].size();i++){
         vector<int> v;
         staticBlocksArr.push_back(v);
-        for(int j=0;j<actualMap.map[0].size();j++){
+        for(int j=0;j<actualMap.map[0][0].size();j++)
             staticBlocksArr[i].push_back(-1);
-            bl=new Blocks(actualMap.map[i][j].first,nTPoint::get(Blocks::defaultBlockSize.x*(j+(1/2))+Blocks::defaultBlockSize.x/2,Blocks::defaultBlockSize.y*(i+(1/2))+Blocks::defaultBlockSize.y/2,Blocks::defaultBlockSize.z),Blocks::defaultBlockSize,actualMap.map[i][j].second);
-            if(Blocks::checkIfBlocksIsDynamic(actualMap.map[i][j].first)){
-                if(Blocks::checkIfBlocksIsPlayerSpawn(actualMap.map[i][j].first)&&(Player::checkpoint==0||Scenes::freeGameMode)){
-                    nTPoint pos=bl->pos;
-                    pos.z=0.9;
-                    pos.y-=Blocks::defaultBlockSize.y;
-                    if(Scenes::freeGameMode)
-                        Player::getPlayerById(0)->spawn(pos,Player::defaultLife);
-                    else
-                        Player::getPlayerById(0)->spawn(pos,Player::getPlayerById(0)->life);
-                }else if(Blocks::checkIfBlocksIsPlayerSpawn(actualMap.map[i][j].first));
+    }
+    for(int k=0;k<actualMap.map.size();k++){
+        for(int i=0;i<actualMap.map[k].size();i++){
+            for(int j=0;j<actualMap.map[k][0].size();j++){
+                bl=new Blocks(actualMap.map[k][i][j].first,nTPoint::get(Blocks::defaultBlockSize.x*(j+(1/2))+Blocks::defaultBlockSize.x/2,Blocks::defaultBlockSize.y*(i+(1/2))+Blocks::defaultBlockSize.y/2,Blocks::defaultBlockSize.z+k*0.0001),Blocks::defaultBlockSize,actualMap.map[k][i][j].second);
+                if(Blocks::checkIfBlocksIsDynamic(actualMap.map[k][i][j].first)){
+                    if(Blocks::checkIfBlocksIsPlayerSpawn(actualMap.map[k][i][j].first)&&(Player::checkpoint==0||Scenes::freeGameMode)){
+                        nTPoint pos=bl->pos;
+                        pos.z=0.9;
+                        pos.y-=Blocks::defaultBlockSize.y;
+                        if(Scenes::freeGameMode)
+                            Player::getPlayerById(0)->spawn(pos,Player::defaultLife);
+                        else
+                            Player::getPlayerById(0)->spawn(pos,Player::getPlayerById(0)->life);
+                    }else if(Blocks::checkIfBlocksIsPlayerSpawn(actualMap.map[k][i][j].first));
 
-                else if(Blocks::checkIfBlocksIsEnemySpawn(actualMap.map[i][j].first)){
-                    nTPoint pos=bl->pos;
-                    pos.z=0.89;
-                    pos.y-=Blocks::defaultBlockSize.y;
-                    nOfEnemys++;
-                    new Enemy(actualMap.map[i][j].first-2000,Enemy::defaultLife,pos,Enemy::defaultSize,"%random%");
-                }else if(Blocks::checkIfBlocksIsBossSpawn(actualMap.map[i][j].first)){
-                    nTPoint pos=bl->pos;
-                    pos.z=0.89;
-                    pos.y-=Blocks::defaultBlockSize.y;
-                    new Boss(bl->data,bl->pos);
-                }else if(Blocks::checkIfBlocksIsTutorial(actualMap.map[i][j].first)){
-                    Tutorials::add(j,bl->data,false);
-                }else if(Blocks::checkIfBlocksIsTutorialPause(actualMap.map[i][j].first)){
-                    Tutorials::add(j,bl->data,true);
-                }else{
-                    bl->id=dynamicBlocks.size();
-                    dynamicBlocks.push_back(bl);
+                    else if(Blocks::checkIfBlocksIsEnemySpawn(actualMap.map[k][i][j].first)){
+                        nTPoint pos=bl->pos;
+                        pos.z=0.89;
+                        pos.y-=Blocks::defaultBlockSize.y;
+                        nOfEnemys++;
+                        new Enemy(actualMap.map[k][i][j].first-2000,Enemy::defaultLife,pos,Enemy::defaultSize,"%random%");
+                    }else if(Blocks::checkIfBlocksIsBossSpawn(actualMap.map[k][i][j].first)){
+                        nTPoint pos=bl->pos;
+                        pos.z=0.89;
+                        pos.y-=Blocks::defaultBlockSize.y;
+                        new Boss(bl->data,bl->pos);
+                    }else if(Blocks::checkIfBlocksIsTutorial(actualMap.map[k][i][j].first)){
+                        Tutorials::add(j,bl->data,false);
+                    }else if(Blocks::checkIfBlocksIsTutorialPause(actualMap.map[k][i][j].first)){
+                        Tutorials::add(j,bl->data,true);
+                    }else{
+                        bl->id=dynamicBlocks.size();
+                        dynamicBlocks.push_back(bl);
+                    }
+                    if(Blocks::checkIfBlocksIsPowerUpChest(actualMap.map[k][i][j].first)||Blocks::checkIfBlocksIsPowerUpBlock(actualMap.map[k][i][j].first)){
+                        totalPowerUps++;
+                    }
+                }else if(!Blocks::checkIfBlocksIsAir(actualMap.map[k][i][j].first)){
+                    bl->id=staticBlocks.size();
+                    staticBlocksArr[i][j]=bl->id;
+                    staticBlocks.push_back(bl);
                 }
-                if(Blocks::checkIfBlocksIsPowerUpChest(actualMap.map[i][j].first)||Blocks::checkIfBlocksIsPowerUpBlock(actualMap.map[i][j].first)){
-                    totalPowerUps++;
-                }
-            }else if(!Blocks::checkIfBlocksIsAir(actualMap.map[i][j].first)){
-                bl->id=staticBlocks.size();
-                staticBlocksArr[i][j]=bl->id;
-                staticBlocks.push_back(bl);
-            }
-            if(Blocks::checkIfBlocksIsCheckpoint(actualMap.map[i][j].first)){
-                if(Blocks::getCheckPointId(actualMap.map[i][j].first)==Player::checkpoint&&!Scenes::freeGameMode){
-                    nTPoint pos=bl->pos;
-                    pos.z=0.9;
-                    pos.y-=Blocks::defaultBlockSize.y;
-                    Player::getPlayerById(0)->spawn(pos,Player::getPlayerById(0)->life);
-                    Tutorials::checkpoints.push_back(j);
+                if(Blocks::checkIfBlocksIsCheckpoint(actualMap.map[k][i][j].first)){
+                    if(Blocks::getCheckPointId(actualMap.map[k][i][j].first)==Player::checkpoint&&!Scenes::freeGameMode){
+                        nTPoint pos=bl->pos;
+                        pos.z=0.9;
+                        pos.y-=Blocks::defaultBlockSize.y;
+                        Player::getPlayerById(0)->spawn(pos,Player::getPlayerById(0)->life);
+                        Tutorials::checkpoints.push_back(j);
+                    }
                 }
             }
         }
@@ -189,7 +196,7 @@ void Map::setBlockPos(){
         bl->id+=staticBlocks.size();
     }
     Tutorials::processCheckpoints();
-    expetedTime=(int)actualMap.map.size();
+    expetedTime=(int)actualMap.map[0].size();
 }
 
 /**
@@ -253,7 +260,7 @@ vector <mapCollision> Map::checkCollision(nTPoint pos,nTPoint size){
     pointPrincipal.set(i_inf*y32+y16,j_inf*x32+x16,0);
     for(i=i_inf;i<=i_sup;i++){
         for(j=j_inf;j<=j_sup;j++){
-            if(j>=0 && j<=actualMap.map.size() && i>=0 && i<=actualMap.map[0].size()){
+            if(j>=0 && j<=actualMap.map[0].size() && i>=0 && i<=actualMap.map[0][0].size()){
                 blockCenter.set(i*y32+y16,j*x32-x16,0);
                 Blocks* bl=getBlockById(getIdByPosition(blockCenter));
                 if(bl!=nullptr){
@@ -502,31 +509,39 @@ bool Map::loadMap(string path){
             tmp.backgrounds.push_back(back);
             b.clear();
         }
+        int k=0;
+        vector<vector<pair<int,string> > > m;
+        tmp.map.push_back(m);
         while(mapFILE.good()){//!mapFILE.eof()
             while(getline(mapFILE,tmp2)){
-                pair<int,string> tmp4;
-                string tmp5;
-                for(int i=0;i<tmp2.size();i++){
-                    if(tmp2[i]!='\''){
-                        tmp5+=tmp2[i];
-                    }else{
-                        size_t found = tmp5.find_first_of("\\");
-                        if(found!=string::npos){
-                            tmp4.second=tmp5.substr(found+1,tmp5.size()-found);
-                            Util::replaceAllOccurrences(tmp4.second,"\"-ad-Xchar-13-\"","\n");
-                            Util::replaceAllOccurrences(tmp4.second,"\"-ad-Xchar-92-\"","\\");
-                            Util::replaceAllOccurrences(tmp4.second,"\"-ad-Xchar-39-\"","\'");
-                            tmp5=tmp5.substr(0,found);
+                if(tmp2=="nTMap---newLayer---nTMap"){
+                    k++;
+                    tmp.map.push_back(m);
+                }else{
+                    pair<int,string> tmp4;
+                    string tmp5;
+                    for(int i=0;i<tmp2.size();i++){
+                        if(tmp2[i]!='\''){
+                            tmp5+=tmp2[i];
                         }else{
-                            tmp4.second="";
+                            size_t found = tmp5.find_first_of("\\");
+                            if(found!=string::npos){
+                                tmp4.second=tmp5.substr(found+1,tmp5.size()-found);
+                                Util::replaceAllOccurrences(tmp4.second,"\"-ad-Xchar-13-\"","\n");
+                                Util::replaceAllOccurrences(tmp4.second,"\"-ad-Xchar-92-\"","\\");
+                                Util::replaceAllOccurrences(tmp4.second,"\"-ad-Xchar-39-\"","\'");
+                                tmp5=tmp5.substr(0,found);
+                            }else{
+                                tmp4.second="";
+                            }
+                            tmp4.first=Util::strToInt(tmp5);
+                            tmp3.push_back(tmp4);
+                            tmp5.clear();
                         }
-                        tmp4.first=Util::strToInt(tmp5);
-                        tmp3.push_back(tmp4);
-                        tmp5.clear();
                     }
+                    tmp.map[k].push_back(tmp3);
+                    tmp3.clear();
                 }
-                tmp.map.push_back(tmp3);
-                tmp3.clear();
             }
         }
         string strT(path);
@@ -574,14 +589,17 @@ bool Map::saveMap(string path,int idx){
             mapFILE<<save.backgrounds[i].getName()<<endl;
             mapFILE<<save.backgrounds[i].getPath()<<endl;
         }
-        for(int i=0;i<save.map.size();i++){
-            for(int j=0;j<save.map[i].size();j++){
-                Util::replaceAllOccurrences(save.map[i][j].second,"\n","\"-ad-Xchar-13-\"");
-                Util::replaceAllOccurrences(save.map[i][j].second,"\'","\"-ad-Xchar-39-\"");
-                Util::replaceAllOccurrences(save.map[i][j].second,"\\","\"-ad-Xchar-92-\"");
-                mapFILE<<save.map[i][j].first<<'\\'<<save.map[i][j].second<<'\'';
+        for(int k=save.map.size()-1;k>=0;k--){
+            for(int i=0;i<save.map[k].size();i++){
+                for(int j=0;j<save.map[k][i].size();j++){
+                    Util::replaceAllOccurrences(save.map[k][i][j].second,"\n","\"-ad-Xchar-13-\"");
+                    Util::replaceAllOccurrences(save.map[k][i][j].second,"\'","\"-ad-Xchar-39-\"");
+                    Util::replaceAllOccurrences(save.map[k][i][j].second,"\\","\"-ad-Xchar-92-\"");
+                    mapFILE<<save.map[k][i][j].first<<'\\'<<save.map[k][i][j].second<<'\'';
+                }
+                mapFILE<<endl;
             }
-            mapFILE<<endl;
+            mapFILE<<"nTMap---newLayer---nTMap"<<endl;
         }
         mapFILE.close();
         return true;

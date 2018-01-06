@@ -7,14 +7,14 @@
 			<Cursor1 position="7054" topLine="283" />
 		</Cursor>
 	</File>
-	<File name="Classes\Map.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Classes\Util.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="13291" topLine="295" />
+			<Cursor1 position="3964" topLine="125" />
 		</Cursor>
 	</File>
-	<File name="Classes\Mechanics.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Classes\Boss.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="970" topLine="64" />
+			<Cursor1 position="11969" topLine="408" />
 		</Cursor>
 	</File>
 	<File name="Classes\FunctionAnalyser.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -22,9 +22,39 @@
 			<Cursor1 position="2677" topLine="69" />
 		</Cursor>
 	</File>
+	<File name="Classes\Background.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="863" topLine="15" />
+		</Cursor>
+	</File>
+	<File name="Classes\Mechanics.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="970" topLine="64" />
+		</Cursor>
+	</File>
+	<File name="Classes\Map.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="510" topLine="36" />
+		</Cursor>
+	</File>
+	<File name="Classes\MapEdit.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="15571" topLine="545" />
+		</Cursor>
+	</File>
+	<File name="Classes\MapEdit.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="955" topLine="24" />
+		</Cursor>
+	</File>
 	<File name="Classes\FunctionAnalyser.hpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="1555" topLine="27" />
+		</Cursor>
+	</File>
+	<File name="Classes\Map.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="21543" topLine="501" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

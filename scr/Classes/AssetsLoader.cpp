@@ -92,7 +92,9 @@ bool AssetsLoader::loadTextures(){
     if(!GL::loadTexture("freeModeIcon","Textures/HUD/Buttons/freeMode.png")) out=false;
     if(!GL::loadTexture("campaignIcon","Textures/HUD/Buttons/campain.png")) out=false;
     if(!GL::loadTexture("editMapIcon","Textures/HUD/Buttons/editMapIcon.png")) out=false;
-    if((GL::loadTextures("paper",2,"Textures/enemys/prova/blank/walk/")).size()!=2)out=false;
+    if(!GL::loadTexture("1stLayerIcon","Textures/HUD/Buttons/1stlayer.png")) out=false;
+    if(!GL::loadTexture("2ndLayerIcon","Textures/HUD/Buttons/2ndlayer.png")) out=false;
+    if(!GL::loadTexture("AllLayersIcon","Textures/HUD/Buttons/bothlayers.png")) out=false;
     // if((GL::loadTextures("letter",6,"Textures/enemys/letters/")).size()!=6)out=false;
     if(!GL::loadTexture("A","Textures/enemys/letters/A.png")) out=false;
     if(!GL::loadTexture("B","Textures/enemys/letters/B.png")) out=false;
