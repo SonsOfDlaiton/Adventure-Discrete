@@ -11,7 +11,7 @@ int main(int argc, char** argv) {
     Tutorials::registerSinucaTuts();
     MapEdit::definePages();
     if(!AssetsLoader::loadSettings()) if(Util::DEBUG) cout<<"erro ao carregar configs"<<endl;
-    if(!AssetsLoader::loadMaps(Map::nOfMaps)) if(Util::DEBUG) cout<<"erro ao carregar mapas"<<endl;
+    if(!AssetsLoader::loadMaps()) if(Util::DEBUG) cout<<"erro ao carregar mapas"<<endl;
     new AL();
     if(!AssetsLoader::loadSounds()) if(Util::DEBUG) cout<<"erro ao carregar sons"<<endl;
     if(!AssetsLoader::loadTextures()) if(Util::DEBUG) cout<<"erro ao carregar texturas"<<endl;

@@ -23,6 +23,7 @@ public:
     static void transparencyLayerDraw();
 
     static int nOfMaps;
+    static int nOfUMaps;
     static nTPoint size;
     static int nOfEnemys;
     static int nOfBackgrounds;
@@ -33,7 +34,8 @@ public:
     static vector<vector<int> > staticBlocksArr;
     static vector<void*> dynamicBlocks;
     static vector<nTMap> maps;
-    static nTMap usrMap;
+    static vector<nTMap> usrMap;
+    static int currentUsrMap;
     static nTMap editingMap;
 
     static const int lvlTechnical;

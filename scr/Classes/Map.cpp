@@ -25,13 +25,15 @@ vector<void*> Map::dynamicBlocks;
 nTMap Map::actualMap;
 nTPoint Map::size;
 int Map::nOfMaps=6;
+int Map::nOfUMaps=6;
 int Map::nOfBackgrounds=3;
 int Map::nOfEnemys=0;
 int Map::expetedTime=0;
 int Map::totalPowerUps=0;
 int Map::totalCoins=0;
+int Map::currentUsrMap=0;
 vector<nTMap> Map::maps;
-nTMap Map::usrMap;
+vector<nTMap> Map::usrMap;
 nTMap Map::editingMap;
 
 const int Map::lvlTechnical=0;
@@ -553,10 +555,10 @@ bool Map::loadMap(string path){
             }
         }
         string strT(path);
-        if(strT!=Util::newPath("Maps/user.map"))
+        if(strT.find("Maps/user")==string::npos)
             maps.push_back(tmp);
         else
-            usrMap=tmp;
+            usrMap.push_back(tmp);
         mapFILE.close();
         return true;
     }else{
@@ -581,7 +583,7 @@ bool Map::saveMap(string path,int idx){
     }else if(idx>=0){
         save=maps[idx];
     }else{
-        save=usrMap;
+        save=usrMap[currentUsrMap];
     }
     ofstream mapFILE(path);
     if(mapFILE.is_open()){

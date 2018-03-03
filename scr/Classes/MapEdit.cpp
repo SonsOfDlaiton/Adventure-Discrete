@@ -221,7 +221,7 @@ void MapEdit::load(int idx){
         map=Map::maps[idx];
     }else if(idx==-1){
         index=-1;
-        map=Map::usrMap;
+        map=Map::usrMap[Map::currentUsrMap];
     }else if(idx==MapEdit::editingMap){
         index=-1;
         map=Map::editingMap;
@@ -251,21 +251,22 @@ void MapEdit::reset(){
 bool MapEdit::save(){
     nTMap tmp;
     tmp=map;
+    Map::currentUsrMap=Util::strToInt(GL::getEditText("MapEdit::askForUser"));
     if(!isUser){
         if(index>=Map::maps.size()&&!(index<0))
             Map::maps.push_back(tmp);
         else if(index>=0)
             Map::maps[index]=tmp;
         else
-            Map::usrMap=tmp;
+            Map::usrMap[Map::currentUsrMap]=tmp;
     }else
-        Map::usrMap=tmp;
+        Map::usrMap[Map::currentUsrMap]=tmp;
     Map::editingMap=tmp;
     if(isUser){
-        return Map::saveMap(Util::newPath("Maps/user.map"),-1);
+        return Map::saveMap(Util::newPath("Maps/user"+Util::intToStr(Map::currentUsrMap)+".map"),-1);
     }else{
         if(index<0){
-            return Map::saveMap(Util::newPath("Maps/user.map"),-1);
+            return Map::saveMap(Util::newPath("Maps/user"+Util::intToStr(Map::currentUsrMap)+".map"),-1);
         }else{
             return Map::saveMap(Util::newPath(("Maps/map"+Util::intToStr(index)+".map")),index);
         }
@@ -399,7 +400,6 @@ void MapEdit::draw(){
     drawLines();
     Blocks *bl;
     nTPoint tmp,tmp1;
-    cout<<"layers to draw:"<<layersToDraw[0]<<" "<<layersToDraw[1]<<endl;
     for(int k=0;k<map.map.size();k++){
         if(layersToDraw[k]){
             for(int i=0;i<map.map[k].size();i++){
@@ -693,6 +693,9 @@ void MapEdit::drawPanel(){
         GL::setEditText("MapEdit::blockData","");
         GL::setfocus("MapEdit::blockData");
     }
+    GL::setFont("BITMAP_HELVETICA_12");
+    GL::drawText(nTPoint::get(658+Scenes::camera.x.movedCam,525+Scenes::camera.y.movedCam,1),"Salvando em:",GL::getColorByName("black"));
+    GL::editTextBehave(nTRectangle::get(738+Scenes::camera.x.movedCam,506+Scenes::camera.y.movedCam,790+Scenes::camera.x.movedCam,527+Scenes::camera.y.movedCam,1),"BITMAP_HELVETICA_12",GL::getColorByName("blue"),Util::intToStr(Map::currentUsrMap),"MapEdit::askForUser",true,false);
 }
 
 /**
@@ -728,8 +731,8 @@ void MapEdit::askForLoad(){
     GL::drawText(nTPoint::get(200,150,1),"Digite os valores e apos digitar pressione ok:",GL::getColorByName("red"));
     GL::setFont("BITMAP_HELVETICA_18");
     GL::drawText(nTPoint::get(200,400,1),"Seu mapa fica salvo em ./Maps/user.map",GL::getColorByName("red"));
-    GL::drawText(nTPoint::get(200,200,1),"Digite qual mapa quer carregar(0-"+Util::intToStr((int)(Map::maps.size()-1))+")(u):",GL::getColorByName("red"));
-    GL::editTextBehave(nTRectangle::get(530,175,600,200,1),"BITMAP_HELVETICA_18",GL::getColorByName("blue"),"MapEdit::askForLoad",false,true);
+    GL::drawText(nTPoint::get(200,200,1),"Digite qual mapa quer carregar(0-"+Util::intToStr((int)(Map::maps.size()-1))+")(u0-"+Util::intToStr(Map::nOfUMaps-1)+"):",GL::getColorByName("red"));
+    GL::editTextBehave(nTRectangle::get(560,175,630,200,1),"BITMAP_HELVETICA_18",GL::getColorByName("blue"),"MapEdit::askForLoad",false,true);
     string input=GL::getEditText("MapEdit::askForLoad");
     for(int i=0;i<input.size();i++)
         if(isalpha(input[i])&&tolower(input[i])!='u'){
@@ -737,8 +740,20 @@ void MapEdit::askForLoad(){
             i--;
             GL::setEditText("MapEdit::askForLoad",input);
         }
-    if(GL::textButtonBehave(nTRectangle::get(610,175,660,200,1),GL::getColorByName("mouseSelected"),"ok",nTColor::Black(),GL::getTextureByName("btnSkin1"))){
+    if(GL::textButtonBehave(nTRectangle::get(640,175,690,200,1),GL::getColorByName("mouseSelected"),"ok",nTColor::Black(),GL::getTextureByName("btnSkin1"))){
         if(tolower(input[0])=='u'){
+            if(input.size()==1){
+                Map::currentUsrMap=0;
+            }else{
+                Map::currentUsrMap=input[1]-48;
+                if(Map::currentUsrMap<0||Map::currentUsrMap>=Map::nOfUMaps)
+                    Map::currentUsrMap=0;
+            }
+            MapEdit::load(-1);
+        }else if(input.size()==2&&tolower(input[1])=='u'){
+            Map::currentUsrMap=input[0]-48;
+            if(Map::currentUsrMap<0||Map::currentUsrMap>=Map::nOfUMaps)
+                Map::currentUsrMap=0;
             MapEdit::load(-1);
         }else{
             int tmp=Util::strToInt(input);

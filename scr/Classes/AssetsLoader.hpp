@@ -16,7 +16,7 @@ public:
     static bool saveSettings();
     static bool loadSettings();
     static bool loadSounds();
-    static bool loadMaps(int nOfMaps);
+    static bool loadMaps();
     static bool loadTextures();
     static bool loadFonts();
 private:

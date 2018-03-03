@@ -450,8 +450,8 @@ void Player::refreshGlobalcoeficiente(){
     refreshCoeficiente();
 
     if(Scenes::freeGameMode){
-        if(coeficiente>recordsU[0]){ //TODO adaptar para mais mapas de usuario
-            recordsU[0]=coeficiente;
+        if(coeficiente>recordsU[Map::currentUsrMap]){
+            recordsU[Map::currentUsrMap]=coeficiente;
             AssetsLoader::saveSettings();    
         }
     }else{
@@ -461,7 +461,7 @@ void Player::refreshGlobalcoeficiente(){
         }else{
             globalCoeficiente=coeficiente;
         }
-        if(coeficiente>records[Player::stage]){ //TODO adaptar para mais mapas de usuario
+        if(coeficiente>records[Player::stage]){ 
             records[Player::stage]=coeficiente;
             AssetsLoader::saveSettings();    
         }

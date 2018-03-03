@@ -390,15 +390,15 @@ bool AssetsLoader::loadTextures(){
 /**
  *	Loads all maps
  *
- *  @param nOfMaps amount of maps to be loaded
  *  @return true if the maps was successfully loaded, otherwise false
 **/
-bool AssetsLoader::loadMaps(int nOfMaps){
+bool AssetsLoader::loadMaps(){
     bool out=true;
-    for(int i=0;i<nOfMaps;i++)
+    for(int i=0;i<Map::nOfMaps;i++)
         if(!Map::loadMap(Util::getDinamicPath("Maps/map",i,".map")))
             out=false;
-    if(!Map::loadMap(Util::newPath("Maps/user.map")))
+    for(int i=0;i<Map::nOfUMaps;i++)
+        if(!Map::loadMap(Util::getDinamicPath("Maps/user",i,".map")))
             out=false;
     return out;
 }

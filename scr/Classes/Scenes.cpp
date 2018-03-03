@@ -105,7 +105,7 @@ void Scenes::drawGame(){
             if(testGameMode)
               Map::changeCurrentMap(Map::editingMap);
             else
-              Map::changeCurrentMap(Map::usrMap);
+              Map::changeCurrentMap(Map::usrMap[Map::currentUsrMap]);
         }else{
             if(Player::lives<0){ Map::GG(false); return;}
             if(Player::stage>=0&&Player::stage<Map::maps.size())
@@ -445,7 +445,15 @@ void Scenes::drawPreFreeMode(){
 		AL::singleton->stopAllSoundsExcept(tmp);
 	}
 //if(GL::buttonBehave(nTRectangle::get(350,362+10,450,330,0.4),Util::nTColorSet(0.4,0.4,0.4,1),GL::getTextureByName("playIcon")))
+  GL::drawText(nTPoint::get(200,200,1),"Digite qual mapa quer carregar(0-"+Util::intToStr(Map::nOfUMaps-1)+"):",GL::getColorByName("red"));
+  GL::editTextBehave(nTRectangle::get(560,175,630,200,1),"BITMAP_HELVETICA_18",GL::getColorByName("blue"),"Scenes::askForUser",true,true);
+  if(GL::textButtonBehave(nTRectangle::get(640,175,690,200,1),GL::getColorByName("mouseSelected"),"ok",nTColor::Black(),GL::getTextureByName("btnSkin1"))){
+    string input=GL::getEditText("Scenes::askForUser");
+    Map::currentUsrMap=Util::strToInt(input);
+    if(Map::currentUsrMap<0||Map::currentUsrMap>=Map::nOfUMaps)
+      Map::currentUsrMap=0;
   	Scenes::current=game;
+  }
   	if(GL::buttonBehave(nTRectangle::get(340,550,480,500),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon")))
     	current=preGame;
   //TODO implementar modo de escolher entre varios mapas do usuario
