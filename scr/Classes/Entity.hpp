@@ -24,7 +24,6 @@ public:
     int id;
     bool imuneToDamage;
     bool damageState;
-    bool damageVunerability;
     int atacking;
     bool canJump;
     double life;
@@ -35,8 +34,8 @@ public:
     double imunityTime;
     static const double walkSpeed;
     static const double defaultImunityTime;
-	static vector<void*> enemys;
-	static vector<void*> bosses;
+    static vector<void*> enemys;
+    static vector<void*> bosses;
     static const int state_Idle,state_Walking,state_Running,state_Jumping,state_Atacking,state_SpecialAtacking,state_TakingDamage,state_Dying,state_Spawning,state_Lowering,state_Holding,state_MeleeAirAtackingDown,state_MeleeAirAtackingUp,state_MeleeAirAtackingHorizontal,state_MeleeGroundAtackingUp,state_MeleeGroundAtackingHorizontal,state_RangedAirAtackingDown,state_RangedAirAtackingUp,state_RangedAirAtackingHorizontal,state_RangedGroundAtackingUp,state_RangedGroundAtackingHorizontal;
 protected:
     friend class Mechanics;

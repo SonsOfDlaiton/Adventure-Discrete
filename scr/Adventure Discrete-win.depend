@@ -130,7 +130,7 @@
 	"IOHandler.hpp"
 	"Camera.hpp"
 
-1520092995 z:\programming\the.com-reborn\adventure-discrete\scr\classes\entity.hpp
+1520096341 z:\programming\the.com-reborn\adventure-discrete\scr\classes\entity.hpp
 	"Util.hpp"
 	"GL.hpp"
 	"Mechanics.hpp"
@@ -229,11 +229,11 @@
 	"Camera.hpp"
 	"Player.hpp"
 
-1520093190 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\enemy.cpp
+1520096332 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\enemy.cpp
 	"Enemy.hpp"
 	"Boss.hpp"
 
-1515183227 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\entity.cpp
+1520096336 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\entity.cpp
 	"Entity.hpp"
 	"Player.hpp"
 	"Boss.hpp"
@@ -289,7 +289,7 @@
 1514733202 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\ntfontchar.cpp
 	"nTFontChar.hpp"
 
-1520093225 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\player.cpp
+1520096347 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\player.cpp
 	"Player.hpp"
 	"AssetsLoader.hpp"
 
@@ -397,7 +397,7 @@
 1520065471 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\texture.cpp
 	"Texture.hpp"
 
-1520093518 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\boss.cpp
+1520096325 source:z:\programming\the.com-reborn\adventure-discrete\scr\classes\boss.cpp
 	"Boss.hpp"
 	"Blocks.hpp"
 	"ADCode.hpp"
