@@ -30,6 +30,7 @@ private:
 typedef struct map{
   vector<Background> backgrounds;
   vector<vector<vector<pair<int,string> > > > map;
+  string mapADC;
   static const short layers=2;
 }nTMap;
 

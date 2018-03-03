@@ -21,6 +21,7 @@ public:
     static void load(int idx);
     static void definePages();
 
+    static bool mapSelected;
     static bool isUser;
     static nTPoint scale;
     static nTPoint HUDarea;

@@ -24,6 +24,7 @@ bool MapEdit::isUser=true;
 const int MapEdit::editingMap=-6000;
 bool MapEdit::layersToDraw[nTMap::layers];
 int MapEdit::editingLayer=0;
+bool MapEdit::mapSelected=false;
 
 /**
  *	Set the page names and contents of the available blocks on the map editor
@@ -241,6 +242,7 @@ void MapEdit::reset(){
     isCreating=0;
     isUser=true;
     editingLayer=0;
+    mapSelected=false;
     for(int k=0;k<nTMap::layers;k++)
         layersToDraw[k]=true;
 }
@@ -329,7 +331,9 @@ void MapEditButton(int x,int y){
             MapEdit::map.map[MapEdit::editingLayer][i][j].first=MapEdit::currentBlock;
             MapEdit::map.map[MapEdit::editingLayer][i][j].second=GL::getEditText("MapEdit::blockData");
         }else{
+            MapEdit::mapSelected=false;
             MapEdit::currentBlock=MapEdit::map.map[MapEdit::editingLayer][i][j].first;
+            MapEdit::map.mapADC=GL::getEditText("MapEdit::blockData");
             GL::setEditText("MapEdit::blockData",MapEdit::map.map[MapEdit::editingLayer][i][j].second);
         }
     }
@@ -382,6 +386,7 @@ void MapEditSetBlock(int x,int y){
         if(MapEdit::blockPages[MapEdit::pageIndex][i][j])
         if(!(MapEdit::blockPages[MapEdit::pageIndex][i][j]>=451&&MapEdit::blockPages[MapEdit::pageIndex][i][j]<=475)){
             MapEdit::currentBlock=MapEdit::blockPages[MapEdit::pageIndex][i][j];
+            MapEdit::mapSelected=false;
             GL::setEditText("MapEdit::blockData","");
         }
     }
@@ -435,6 +440,7 @@ void MapEdit::draw(){
 **/
 void MapEditSetAir(int x,int y){
     MapEdit::currentBlock=0;
+    MapEdit::mapSelected=false;
 }
 
 /**
@@ -445,6 +451,7 @@ void MapEditSetAir(int x,int y){
 **/
 void MapEditGetBlock(int x,int y){
     MapEdit::currentBlock=60000;
+    MapEdit::mapSelected=false;
 }
 
 /**
@@ -474,23 +481,14 @@ void MapEditZoomOut(int x,int y){
 }
 
 /**
- *	Mouse event callback to BackgroundUp Button
- *
- *	@param x mouse x position
- *	@param y mouse y position
-**/
-void MapEditBackgroundUp(int x,int y){
-
-}
-
-/**
  *	Mouse event callback to BackgroundDown Button
  *
  *	@param x mouse x position
  *	@param y mouse y position
 **/
 void MapEditBackgroundDown(int x,int y){
-
+    MapEdit::mapSelected=true;
+    GL::setEditText("MapEdit::blockData",MapEdit::map.mapADC);
 }
 
 /**
@@ -587,7 +585,6 @@ void MapEdit::drawPanel(){
     GL::buttonBehave(nTRectangle::get(70+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,100+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("Zoom-"),false,*MapEditZoomOut,NULL,NULL,NULL);
     GL::buttonBehave(nTRectangle::get(110+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,140+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("Zoom+"),false,*MapEditZoomIn,NULL,NULL,NULL);
     GL::buttonBehave(nTRectangle::get(150+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,180+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("Background-"),false,NULL,*MapEditBackgroundDown,NULL,NULL);
-    GL::buttonBehave(nTRectangle::get(190+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,220+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("Background+"),false,NULL,*MapEditBackgroundUp,NULL,NULL);
     GL::buttonBehave(nTRectangle::get(230+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,280+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("CameraDefault"),false,*MapEditCamera,NULL,NULL,NULL);
     GL::buttonBehave(nTRectangle::get(290+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,320+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("Get Block"),false,*MapEditGetBlock,NULL,NULL,NULL);
     GL::buttonBehave(nTRectangle::get(330+Scenes::camera.x.movedCam,570+Scenes::camera.y.movedCam,360+Scenes::camera.x.movedCam,533+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),GL::getTextureByName("Save"),false,*MapEditSave,NULL,NULL,NULL);
@@ -670,7 +667,10 @@ void MapEdit::drawPanel(){
     }
 
     GL::setFont("BITMAP_HELVETICA_18");
-    GL::drawCentered_MultilineX_Text(nTPoint::get(725+Scenes::camera.x.movedCam,272+Scenes::camera.y.movedCam,1),"Selected block\n data:",GL::getColorByName("green"));
+    if(mapSelected)
+        GL::drawCentered_MultilineX_Text(nTPoint::get(725+Scenes::camera.x.movedCam,272+Scenes::camera.y.movedCam,1),"***MAP***\n ADCode:",GL::getColorByName("green"));
+    else
+        GL::drawCentered_MultilineX_Text(nTPoint::get(725+Scenes::camera.x.movedCam,272+Scenes::camera.y.movedCam,1),"Selected block\n ADCode:",GL::getColorByName("green"));
     GL::editTextBehave(nTRectangle::get(660+Scenes::camera.x.movedCam,290+Scenes::camera.y.movedCam,790+Scenes::camera.x.movedCam,449+Scenes::camera.y.movedCam,1),"BITMAP_TIMES_ROMAN_10","MapEdit::blockData",false,false);
     GL::setFont("BITMAP_TIMES_ROMAN_10");
     if(GL::textButtonBehave(nTRectangle::get(660+Scenes::camera.x.movedCam,452+Scenes::camera.y.movedCam,725+Scenes::camera.x.movedCam,474+Scenes::camera.y.movedCam,1),GL::getColorByName("mouseSelected"),"Paste from file",nTColor::Black(),GL::getTextureByName("btnSkin1"))){

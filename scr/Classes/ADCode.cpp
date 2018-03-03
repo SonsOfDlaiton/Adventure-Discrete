@@ -459,6 +459,14 @@ bool ADCode::next(pair<string,vector<string> >& vs){
     return true;
 }
 
+bool ADCode::nextSection(pair<string,string>& s){
+    if(sections_pointer>=sections.size())
+        return false;
+    s.first=sections[sections_pointer].first;
+    s.second=sections[sections_pointer++].second;
+    return true;
+}
+
 bool ADCode::nextInt(int& i){
     if(ints_pointer>=ints.size())
         return false;

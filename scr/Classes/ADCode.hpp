@@ -24,6 +24,7 @@ public:
 
     bool nextInt(int& i);
     bool nextFloat(float& f);
+    bool nextSection(pair<string,string>& s);
     bool next(int& i);
     bool next(float& f);
     bool next(string& s);
