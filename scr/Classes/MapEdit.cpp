@@ -496,11 +496,9 @@ void MapEditZoomOut(int x,int y){
  *	@param y mouse y position
 **/
 void MapEditBackgroundDown(int x,int y){
+    if(MapEdit::mapSelected==false)
+        GL::setEditText("MapEdit::blockData",MapEdit::map.mapADC);
     MapEdit::mapSelected=true;
-    GL::setEditText("MapEdit::blockData",MapEdit::map.mapADC);
-    ADCode* adc=new ADCode(MapEdit::map.mapADC,"Map");
-    Background::loadParalax(adc,MapEdit::map.backgrounds);
-    delete adc;
 }
 
 /**
