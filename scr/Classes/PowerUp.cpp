@@ -44,7 +44,7 @@ PowerUp::~PowerUp() {
 }
 
 vector<void*> PowerUp::self;
-const double PowerUp::moveSpeed=50;
+const double PowerUp::moveSpeed=Constants::POWERUP_MoveSpeed;
 
 const int PowerUp::swordUpgrade=0;
 const int PowerUp::extraLife=1;

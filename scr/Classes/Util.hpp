@@ -113,6 +113,7 @@ typedef struct rectangle{
 #define ABS(x) ((x)<0?-(x):(x))
 #define M_PI 3.14159265359
 #include "FunctionAnalyser.hpp"
+#include "Constants.hpp"
 #include <vector>
 #include <string>
 #include <cstdlib>

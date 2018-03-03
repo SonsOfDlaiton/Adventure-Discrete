@@ -16,13 +16,14 @@ Entity::~Entity() {
     delete currentTex;
 }
 
-const double Entity::jumpSpeed=312;
-const double Entity::horizontalRecoil=280;
-const double Entity::verticalRecoil=330;
-const double Entity::walkSpeed=166;
-const double Entity::runAceleration=70;
-const double Entity::maxRunSpeed=280;
-const double Entity::defaultImunityTime=400;
+const double Entity::jumpSpeed=Constants::ENTITY_JumpSpeed;
+const double Entity::horizontalRecoil=Constants::ENTITY_HorizontalRecoil;
+const double Entity::verticalRecoil=Constants::ENTITY_VerticalRecoil;
+const double Entity::walkSpeed=Constants::ENTITY_WalkSpeed;
+const double Entity::runAceleration=Constants::ENTITY_RunAcceleration;
+const double Entity::maxRunSpeed=Constants::ENTITY_MaxRunSpeed;
+const double Entity::defaultImunityTime=Constants::ENTITY_ImunityTime;
+
 const int Entity::state_Idle=0;
 const int Entity::state_Walking=1;
 const int Entity::state_Running=2;

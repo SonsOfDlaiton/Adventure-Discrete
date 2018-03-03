@@ -15,7 +15,8 @@ Mechanics::Mechanics(const Mechanics& orig) {
 Mechanics::~Mechanics() {
 }
 
-const double Mechanics::gravity=500.0;
+const double Mechanics::gravity=Constants::MECHANICS_Gravity;
+
 const int Mechanics::TOP=1;
 const int Mechanics::BOTTOM=2;
 const int Mechanics::RIGHT=3;

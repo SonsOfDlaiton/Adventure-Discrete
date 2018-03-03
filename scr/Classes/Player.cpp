@@ -51,16 +51,16 @@ Player::~Player() {
 }
 
 int Player::lives=3;
-bool Player::beatGame=true;
+bool Player::beatGame=false;
 const int Player::ranged=64651;
 const int Player::meleeProjectile=16165;
 const int Player::melee=165165;
-const double Player::swordBaseDamage=2;
 int Player::checkpoint=0;
 int Player::stage=0;
-const int Player::defaultLife=3;
+const double Player::swordBaseDamage=Constants::PLAYER_SwordBaseDamage;
+const int Player::defaultLife=Constants::PLAYER_BaseLife;
+const nTPoint Player::defaultPSize=Constants::PLAYER_Size;
 int Player::loadedLife=defaultLife;
-const nTPoint Player::defaultPSize=nTPoint::get(28,60);
 vector<vector<string> >Player::playerAnim;
 vector<vector<int> >Player::playerAnimSize;
 

@@ -45,7 +45,7 @@ Texture::Texture(const Texture& orig) {
 Texture::~Texture() {
 }
 
-double Texture::defaultTimeToNext=150;
+double Texture::defaultTimeToNext=Constants::TEXTURE_DefaultTimeToNext;
 
 void Texture::setTextures(vector<GLuint> textures){
     this->textures=textures;

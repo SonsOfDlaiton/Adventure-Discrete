@@ -24,9 +24,11 @@ vector<void*> Map::staticBlocks;
 vector<void*> Map::dynamicBlocks;
 nTMap Map::actualMap;
 nTPoint Map::size;
-int Map::nOfMaps=6;
-int Map::nOfUMaps=6;
-int Map::nOfBackgrounds=3;
+
+int Map::nOfMaps=Constants::MAP_AmountOfMaps;
+int Map::nOfUMaps=Constants::MAP_AmountOfUserMaps;
+int Map::nOfBackgrounds=Constants::MAP_AmountOfBackgrounds;
+
 int Map::nOfEnemys=0;
 int Map::expetedTime=0;
 int Map::totalPowerUps=0;

@@ -34,5 +34,6 @@
 #include "Classes/CallbacksHandler.hpp"
 #include "Classes/ADCode.hpp"
 #include "Classes/Texture.hpp"
+#include "Classes/Constants.hpp"
 
 #endif	// IMPORTLIBS_H

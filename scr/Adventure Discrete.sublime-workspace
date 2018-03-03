@@ -76,11 +76,11 @@
 	},
 	"expanded_folders":
 	[
-		"/home/nanotech/Data/CEFET/Iniciação Cientifica_3º Periodo/The.COM-Reborn/Adventure-Discrete/scr/Classes",
-		"/home/nanotech/Data/CEFET/Iniciação Cientifica_3º Periodo/The.COM-Reborn/Adventure-Discrete/scr/Libs"
 	],
 	"file_history":
 	[
+		"/run/media/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Adventure Discrete-linux.cbp",
+		"/run/media/nanotech/Data/Programming/The.COM-Reborn/Adventure-Discrete/scr/Adventure Discrete-win.cbp",
 		"/home/nanotech/Data/CEFET/Iniciação Cientifica_3º Periodo/The.COM-Reborn/Adventure-Discrete/scr/AD.main.cpp",
 		"/home/nanotech/.cache/.fr-FCv4S1/Movie.2017.HD-TS x264 -CPG/Password.txt",
 		"/home/nanotech/Data/CEFET/Iniciação Cientifica_3º Periodo/The.COM-Reborn/Adventure-Discrete/Makefile",
@@ -163,7 +163,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 23.0
+		"height": 22.0
 	},
 	"input":
 	{

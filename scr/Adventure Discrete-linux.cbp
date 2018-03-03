@@ -89,6 +89,8 @@
 		<Unit filename="Classes/Mechanics.hpp" />
 		<Unit filename="Classes/Player.cpp" />
 		<Unit filename="Classes/Player.hpp" />
+		<Unit filename="Classes/Constants.cpp" />
+		<Unit filename="Classes/Constants.hpp" />
 		<Unit filename="Classes/PowerUp.cpp" />
 		<Unit filename="Classes/PowerUp.hpp" />
 		<Unit filename="Classes/Scenes.cpp" />

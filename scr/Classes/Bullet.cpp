@@ -47,9 +47,9 @@ Bullet::~Bullet() {
 }
 
 vector<void*> Bullet::self;
-const double Bullet::baseDamage=1;
-const double Bullet::baseSpeed=280;
-const double Bullet::timeToShoot=5000;
+const double Bullet::baseDamage=Constants::BULLET_BaseDamage;
+const double Bullet::baseSpeed=Constants::BULLET_BaseSpeed;
+const double Bullet::timeToShoot=Constants::BULLET_BaseTimeToShoot;
 
 const int Bullet::errorBlockBullet=0;
 const int Bullet::strongSwordBullet=1;

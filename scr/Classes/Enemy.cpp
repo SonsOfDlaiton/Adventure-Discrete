@@ -54,8 +54,9 @@ Enemy::~Enemy() {
     Entity::enemys.erase(Entity::enemys.begin()+this->id);
 }
 
-const nTPoint Enemy::defaultSize=nTPoint::get(40,48);
-const int Enemy::defaultLife=3;
+const nTPoint Enemy::defaultSize=Constants::ENEMY_Size;
+const int Enemy::defaultLife=Constants::ENEMY_BaseLife;
+
 vector<vector<string> >Enemy::nicks;
 vector<vector<string> >Enemy::enemyAnim;
 vector<vector<int> >Enemy::enemyAnimSize;

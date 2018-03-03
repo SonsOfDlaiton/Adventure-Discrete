@@ -45,3 +45,6 @@ source: https://github.com/kbranigan/Simple-OpenGL-Image-Library
  * **string vector:**
  * **integer vector:**
 
+## ADCode Usage ##
+>- **Bosses:**
+>- **Map:**
