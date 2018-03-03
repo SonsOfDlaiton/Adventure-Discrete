@@ -137,10 +137,10 @@ void Map::setBlockPos(){
         for(int j=0;j<actualMap.map[0][0].size();j++)
             staticBlocksArr[i].push_back(-1);
     }
-    for(int k=0;k<actualMap.map.size();k++){
+    for(int k=actualMap.map.size()-1;k>=0;k--){
         for(int i=0;i<actualMap.map[k].size();i++){
             for(int j=0;j<actualMap.map[k][0].size();j++){
-                bl=new Blocks(actualMap.map[k][i][j].first,nTPoint::get(Blocks::defaultBlockSize.x*(j+(1/2))+Blocks::defaultBlockSize.x/2,Blocks::defaultBlockSize.y*(i+(1/2))+Blocks::defaultBlockSize.y/2,Blocks::defaultBlockSize.z+k*0.0001),Blocks::defaultBlockSize,actualMap.map[k][i][j].second);
+                bl=new Blocks(actualMap.map[k][i][j].first,nTPoint::get(Blocks::defaultBlockSize.x*(j+(1/2))+Blocks::defaultBlockSize.x/2,Blocks::defaultBlockSize.y*(i+(1/2))+Blocks::defaultBlockSize.y/2,Blocks::defaultBlockSize.z-k*0.0001f),Blocks::defaultBlockSize,actualMap.map[k][i][j].second);
                 if(Blocks::checkIfBlocksIsDynamic(actualMap.map[k][i][j].first)){
                     if(Blocks::checkIfBlocksIsPlayerSpawn(actualMap.map[k][i][j].first)&&(Player::checkpoint==0||Scenes::freeGameMode)){
                         nTPoint pos=bl->pos;
@@ -589,7 +589,7 @@ bool Map::saveMap(string path,int idx){
             mapFILE<<save.backgrounds[i].getName()<<endl;
             mapFILE<<save.backgrounds[i].getPath()<<endl;
         }
-        for(int k=save.map.size()-1;k>=0;k--){
+        for(int k=0;k<save.map.size();k++){
             for(int i=0;i<save.map[k].size();i++){
                 for(int j=0;j<save.map[k][i].size();j++){
                     Util::replaceAllOccurrences(save.map[k][i][j].second,"\n","\"-ad-Xchar-13-\"");

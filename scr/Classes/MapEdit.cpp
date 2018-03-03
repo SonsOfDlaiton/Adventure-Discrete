@@ -396,6 +396,7 @@ void MapEdit::draw(){
     drawLines();
     Blocks *bl;
     nTPoint tmp,tmp1;
+    cout<<"layers to draw:"<<layersToDraw[0]<<" "<<layersToDraw[1]<<endl;
     for(int k=0;k<map.map.size();k++){
         if(layersToDraw[k]){
             for(int i=0;i<map.map[k].size();i++){
@@ -406,8 +407,8 @@ void MapEdit::draw(){
                     tmp.y*=scale.y;
                     tmp1.x*=scale.x;
                     tmp1.y*=scale.y;
-                    tmp.z+=k*0.0001;
-                    tmp1.z+=k*0.0001;
+                    tmp.z-=k*0.0001f;
+                    tmp1.z-=k*0.0001f;
                     if(map.map[k][i][j].first){
                         tmp.z-=0.1;
                         tmp1.z-=0.1;
@@ -617,7 +618,6 @@ void MapEdit::drawPanel(){
         GL::drawCollision(nTRectangle::get(405+Scenes::camera.x.movedCam,575+Scenes::camera.y.movedCam,445+Scenes::camera.x.movedCam,528+Scenes::camera.y.movedCam,0.999),2,nTColor::get(1,0,0));
     if(editingLayer==1)
         GL::drawCollision(nTRectangle::get(445+Scenes::camera.x.movedCam,575+Scenes::camera.y.movedCam,485+Scenes::camera.x.movedCam,528+Scenes::camera.y.movedCam,0.999),2,nTColor::get(1,0,0));
-    //
     GL::setFont("BITMAP_HELVETICA_12");
     GL::drawText(nTPoint::get(550+Scenes::camera.x.movedCam,536+Scenes::camera.y.movedCam,1),"Bloco Atual",nTColor::Black());
     GL::drawText(nTPoint::get(550+Scenes::camera.x.movedCam,588+Scenes::camera.y.movedCam,1),Blocks::getTexNameByIndex(currentBlock)+getMoreInfoAboutBlocks(currentBlock),nTColor::Black());
