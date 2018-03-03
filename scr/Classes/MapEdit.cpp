@@ -231,6 +231,7 @@ void MapEdit::load(int idx){
  *	Reset the map and eviroment variables
 **/
 void MapEdit::reset(){
+    MapEdit::map.backgrounds.clear();
     size=nTPoint::get(0,0,1);
     scale=nTPoint::get(0.8,0.8,1);
     currentBlock=0;
@@ -386,12 +387,7 @@ void MapEditSetBlock(int x,int y){
  *	Draw everything on the screen
 **/
 void MapEdit::draw(){
-    for(int i=0; i<map.backgrounds.size(); i++){
-        if(!map.backgrounds[i].getMove())
-            GL::drawTexture(nTRectangle::get(Scenes::camera.x.movedCam,GL::defaultSize.y+Scenes::camera.y.movedCam,GL::defaultSize.x+Scenes::camera.x.movedCam,Scenes::camera.y.movedCam,map.backgrounds[i].getzAxis()-0.9),GL::getTextureByName(map.backgrounds[i].getName()));
-        else
-            map.backgrounds[i].drawParalaxBackground(size);
-    }
+    Background::drawBackgrounds(map.backgrounds);
     drawPanel();
     drawLines();
     Blocks *bl;

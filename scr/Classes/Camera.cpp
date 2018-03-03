@@ -70,7 +70,7 @@ void Camera::putCameraOnOrigin(){
  *	@param pos the point to be looked by the camera
 **/
 void Camera::lookAt(nTPoint pos){
-    pos.x-=GL::defaultSize.x/2+x.movedCam;
+    //pos.x-=GL::defaultSize.x/2+x.movedCam;
     pos.y-=GL::defaultSize.y/2+y.movedCam;
     gluLookAt(pos.x,pos.y,0,pos.x,pos.y,-1,0,1,0);
     x.movedCam+=pos.x;
@@ -171,6 +171,9 @@ void Camera::behave(Player* pl){
             y.movingCam=0;
     }else if(!Camera::freeCam)
             y.movingCam=0;
+
+    if (pl->pos.x+GL::defaultSize.x/2>Map::size.x+2.5*Blocks::defaultBlockSize.x)
+        x.movingCam=0;
     gluLookAt(moveSpeed*x.movingCam,moveSpeed*y.movingCam,0,moveSpeed*x.movingCam,moveSpeed*y.movingCam,-1,0,1,0);
     if(x.movingCam)
         x.movedCam+=moveSpeed*x.movingCam;
