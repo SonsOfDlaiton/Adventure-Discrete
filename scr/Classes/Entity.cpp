@@ -70,7 +70,7 @@ void Entity::stateControl(){
                 nextState=state_Jumping;
             if(lowered)
                 nextState=state_Lowering;
-            if(damageState)
+            if(damageState)//&&damageVunerability)
                 nextState=state_TakingDamage;
         }
         if(reducing||atacking||lowered){
@@ -88,7 +88,7 @@ void Entity::stateControl(){
         Player* pl;
         Enemy* en;
         switch(currentState){
-            case state_TakingDamage: damageState=false; break;
+            case state_TakingDamage: damageState=false; damageVunerability=false; break;
             case state_Dying:
                 if(id<0){
                     AL::singleton->playSoundByName("diePlayer");
@@ -162,6 +162,7 @@ void Entity::applyDamage(double damage){
         return;
     life-=damage;
     damageState=true;
+    damageVunerability=true;
     makeInvencible();
     if(id<0){
         AL::singleton->playSoundByName("damagePlayer");

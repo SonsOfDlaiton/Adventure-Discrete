@@ -17,6 +17,7 @@ Player::Player(double life,nTPoint spawn,nTPoint size) {
     this->defaultOrientation=Util::orientation_right;
     this->isHuman=true;
     this->damageState=false;
+    this->damageVunerability=false;
     this->sword=(int)life-1;
     this->atackDirection=Util::direction_right;
     this->orientation=Util::direction_right;
@@ -179,6 +180,7 @@ void Player::spawn(nTPoint spawn,double life){
     this->sword=(int)life-1;
     this->defaultOrientation=Util::orientation_right;
     this->damageState=false;
+    this->damageVunerability=false;
     this->imuneToDamage=false;
     this->atackDirection=Util::direction_right;
     this->orientation=Util::orientation_right;

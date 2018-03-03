@@ -24,6 +24,7 @@ public:
     int id;
     bool imuneToDamage;
     bool damageState;
+    bool damageVunerability;
     int atacking;
     bool canJump;
     double life;

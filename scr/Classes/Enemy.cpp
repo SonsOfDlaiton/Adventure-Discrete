@@ -23,6 +23,7 @@ Enemy::Enemy(int enemyType,double life,nTPoint spawn,nTPoint size,string spr_nam
     this->lowered=false;
     this->isVisible=true;
     this->damageState=false;
+    this->damageVunerability=false;
     this->itsInTheWater=false;
     this->imuneToDamage=false;
     this->drawLetter=true;
