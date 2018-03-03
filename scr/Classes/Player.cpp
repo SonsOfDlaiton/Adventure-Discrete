@@ -31,6 +31,7 @@ Player::Player(double life,nTPoint spawn,nTPoint size) {
     this->canTp=false;
     this->imuneToDamage=false;
     this->god=false;
+    this->maxXPos=0;
     this->lowered=false;
     Entity::players.push_back(this);
     this->id=-((unsigned int)Entity::players.size());
@@ -192,6 +193,7 @@ void Player::spawn(nTPoint spawn,double life){
     this->canTp=false;
     this->canJump=false;
     this->lowered=false;
+    this->maxXPos=0;
     alReadyAtacked=false;
     enemysKilled=0;
     coinsPicked=0;
@@ -322,13 +324,12 @@ void Player::atack(int type){
         canJump=true;
             atacking=false;
         double cof;
-        if(Player::globalCoeficiente==0)
-            cof=Player::coeficiente;
-        else
-            cof=Player::globalCoeficiente;
+        if(pos.x>maxXPos)
+            maxXPos=pos.x;
+        cof=Player::coeficiente*1/(maxXPos/Map::size.x);
         nTPoint tmp=swordSize;
         tmp.x*=orientation;
-        if(!haveBulletSpec&&(cof>=75||Scenes::freeGameMode)){
+        if(!haveBulletSpec&&(cof>=75||Scenes::freeGameMode||Player::globalCoeficiente>=75)){
             AL::singleton->playSoundByName("SpecialAtk");
             if(cof>=85||Scenes::freeGameMode){
                 new Bullet(Bullet::strongXAtackBullet,orientation*Bullet::baseSpeed,pos,tmp);

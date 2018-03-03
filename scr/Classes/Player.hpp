@@ -62,6 +62,7 @@ private:
     bool haveBulletSword;
     bool haveBulletSpec;
     bool alReadyAtacked;
+    int maxXPos;
     nTPoint swordSize;
     nTPoint swordPos;
     nTRectangle swordCollision;
