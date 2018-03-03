@@ -5,7 +5,7 @@
 
 Boss::Boss(string data,nTPoint spawn) {
     ADCode* adc=new ADCode(data,"Boss");
-    Tutorials::add(floor(spawn.x/Blocks::defaultBlockSize.x)-floor(GL::defaultSize.x/Blocks::defaultBlockSize.x/2)+ceil((float)Player::defaultPSize.x/(float)Blocks::defaultBlockSize.x)*3,adc->getSubSection("Tutorials"),true);
+    Tutorials::add(floor(spawn.x/Blocks::defaultBlockSize.x)-floor(GL::defaultSize.x/Blocks::defaultBlockSize.x/2)+ceil((float)Player::defaultPSize.x/(float)Blocks::defaultBlockSize.x)*3,adc->getSection("Tutorials"),true);
     this->nickname=adc->getString("name","");
     vector<int> size_vec=adc->getIntVector("size");
     if(size_vec.size()>=2){
@@ -27,7 +27,7 @@ Boss::Boss(string data,nTPoint spawn) {
     this->life=adc->getNumber("life",1);
     this->startLife=this->life;
     this->imunityTime=adc->getNumber("imunityTime",200);
-    ADCode* adc_events=adc->getSubSection("events");
+    ADCode* adc_events=adc->getSection("events");
     pair<string,vector<string> > event;
     while(adc_events->next(event)){
         BossEvent be;

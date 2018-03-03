@@ -14,17 +14,17 @@ public:
     string getString(string field, string defaultval);
     vector<string> getStringVector(string field);
     vector<int> getIntVector(string field);
-    ADCode* getSubSection(string section);
+    ADCode* getSection(string section);
     string getData();
     float getFloat(string field);
     float getFloat(string field,float defaultval);
     float getNumber(string field);
     float getNumber(string field,float defaultval);
 
-
+    string getName();
     bool nextInt(int& i);
     bool nextFloat(float& f);
-    bool nextSection(pair<string,string>& s);
+    bool nextSection(ADCode* a);
     bool next(int& i);
     bool next(float& f);
     bool next(string& s);

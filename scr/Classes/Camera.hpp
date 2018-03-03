@@ -36,6 +36,7 @@ public:
     scenesPoint y;
     double moveSpeed;
     static bool freeCam;
+    static float autoCamSpeed;
 };
 
 #endif /* CAMERA_H */

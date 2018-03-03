@@ -50,6 +50,7 @@ private:
     static void draw();
     static void deleteAllBlocks();
     static void setBlockPos();
+    static void processADC();
     static int getIdByPosition(nTPoint pos);
     static void drawMapBackground();
 

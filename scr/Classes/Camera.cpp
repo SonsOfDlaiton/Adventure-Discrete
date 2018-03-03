@@ -11,6 +11,7 @@ Camera::~Camera(){
 }
 
 bool Camera::freeCam=false;
+float Camera::autoCamSpeed=0;
 
 scenesPoint Camera::getScenesPointX(){
 	return x;
@@ -149,28 +150,37 @@ bool Camera::isInTheYScreen(nTRectangle collision){
 }
 
 void Camera::behave(Player* pl){
-    if(ABS(pl->hSpeed)>0)
-        moveSpeed=ABS(pl->hSpeed/GL::getFPS());
-//    else if(Player::getPlayerById(0)->OnMOveBLock)
-//        moveSpeed=ABS(150/GL::getFPS());
-    else
-        moveSpeed=ABS(Entity::walkSpeed/GL::getFPS());
-
-    if((pl->pos.x>GL::defaultSize.x/2*1.11+x.movedCam))
-        x.movingCam=1;
-    else if((pl->pos.x<GL::defaultSize.x/2*0.99+x.movedCam)&&(x.movedCam>1.11))
-        x.movingCam=-1;
-    else
-        x.movingCam=0;
-    if(pl->pos.y<Map::size.y*1.3){
-         if((pl->pos.y>GL::defaultSize.y/1.5*1.11+y.movedCam))
-            y.movingCam=1;
-         else if((pl->pos.y<GL::defaultSize.y/2*0.49+y.movedCam)&&(y.movedCam>1.11))
-            y.movingCam=-1;
+    if(autoCamSpeed==0){
+        if(ABS(pl->hSpeed)>0)
+            moveSpeed=ABS(pl->hSpeed/GL::getFPS());
+    //    else if(Player::getPlayerById(0)->OnMOveBLock)
+    //        moveSpeed=ABS(150/GL::getFPS());
         else
-            y.movingCam=0;
-    }else if(!Camera::freeCam)
-            y.movingCam=0;
+            moveSpeed=ABS(Entity::walkSpeed/GL::getFPS());
+
+        if((pl->pos.x>GL::defaultSize.x/2*1.11+x.movedCam))
+            x.movingCam=1;
+        else if((pl->pos.x<GL::defaultSize.x/2*0.99+x.movedCam)&&(x.movedCam>1.11))
+            x.movingCam=-1;
+        else
+            x.movingCam=0;
+        if(pl->pos.y<Map::size.y*1.3){
+             if((pl->pos.y>GL::defaultSize.y/1.5*1.11+y.movedCam))
+                y.movingCam=1;
+             else if((pl->pos.y<GL::defaultSize.y/2*0.49+y.movedCam)&&(y.movedCam>1.11))
+                y.movingCam=-1;
+            else
+                y.movingCam=0;
+        }else if(!Camera::freeCam)
+                y.movingCam=0;
+    }else{
+        moveSpeed=autoCamSpeed/GL::getFPS();
+        x.movingCam=moveSpeed/ABS(moveSpeed);
+        if(!isInTheScreen(nTRectangle::getCollision(pl->pos,pl->size))){
+            pl->applyDamage(pl->life);
+        }
+    }
+    
     gluLookAt(moveSpeed*x.movingCam,moveSpeed*y.movingCam,0,moveSpeed*x.movingCam,moveSpeed*y.movingCam,-1,0,1,0);
     if(x.movingCam)
         x.movedCam+=moveSpeed*x.movingCam;

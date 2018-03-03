@@ -34,6 +34,10 @@ const string ADCode::lineComment="//";
 const string ADCode::sectionCommentBegin="/*";
 const string ADCode::sectionCommentEnd="*/";
 
+string ADCode::getName(){
+    return name;
+}
+
 int ADCode::getInt(string field){
     return getInt(field,0);
 }
@@ -79,7 +83,7 @@ vector<int> ADCode::getIntVector(string field){
 	return value;
 }
 
-ADCode* ADCode::getSubSection(string section){
+ADCode* ADCode::getSection(string section){
     for(pair<string,string> n:sections)
         if(n.first==section)
             return new ADCode(n.second,name+"::"+section);
@@ -459,11 +463,11 @@ bool ADCode::next(pair<string,vector<string> >& vs){
     return true;
 }
 
-bool ADCode::nextSection(pair<string,string>& s){
+bool ADCode::nextSection(ADCode* a){
     if(sections_pointer>=sections.size())
         return false;
-    s.first=sections[sections_pointer].first;
-    s.second=sections[sections_pointer++].second;
+    delete a;
+    a=(ADCode*)new ADCode(sections[sections_pointer].second,name+"::"+sections[sections_pointer++].first);
     return true;
 }
 

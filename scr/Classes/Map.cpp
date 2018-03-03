@@ -9,6 +9,7 @@
 #include "PowerUp.hpp"
 #include "AssetsLoader.hpp"
 #include "Camera.hpp"
+#include "ADCode.hpp"
 
 Map::Map() {
 }
@@ -92,6 +93,7 @@ void Map::changeCurrentMap(nTMap map){
     if(!hasSpawn){
         actualMap.map[0][actualMap.map[0].size()/2][4].first=1000;
     }
+    processADC();
     setBlockPos();
 }
 
@@ -126,6 +128,36 @@ void Map::deleteAllBlocks(){
     expetedTime=0;
     totalPowerUps=0;
     totalCoins=0;
+}
+
+void Map::processADC(){
+    ADCode* adc=new ADCode(actualMap.mapADC,"Map");
+    ADCode* adc_cam=adc->getSection("cam");
+    Camera::autoCamSpeed=adc_cam->getInt("autospeed",0);
+    delete adc_cam;
+    actualMap.backgrounds.clear();
+    ADCode* adc_back=nullptr;
+    while(adc->nextSection(adc_back)){
+        if(adc_back->getName()=="Map::background"){
+            string name=adc_back->getString("name");
+            int sprites=adc_back->getInt("nspr");
+            bool static_back=Util::strToBool(adc_back->getString("static"));
+            if(!static_back){
+                vector<int> p0=adc_back->getIntVector("p0");
+                vector<int> p1=adc_back->getIntVector("p1");
+                int deltaX=adc_back->getInt("deltaX");
+                int Z=adc_back->getInt("depth");
+                vector<int> speed=adc_back->getIntVector("speed");
+                if(p0.size()==2&&p1.size()==2&&speed.size()==2){
+                    //Background back();
+                    //actualMap.backgrounds.push_back(back);
+                }
+            }
+        }
+    }
+    if(adc_back==nullptr)
+        delete adc_back;
+    delete adc;
 }
 
 /**
