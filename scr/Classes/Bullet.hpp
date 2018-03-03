@@ -21,6 +21,7 @@ public:
     static const int rightAlternativeBullet;
     static const int wrongAlternativeBullet;
     static const int gateBullet;
+    static const int coinBullet;
 
     static vector<void*> self;
     static const double timeToShoot;

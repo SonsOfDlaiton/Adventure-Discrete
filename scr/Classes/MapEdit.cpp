@@ -106,6 +106,9 @@ void MapEdit::definePages(){
         rowTmp.push_back(i);
     pageTmp.push_back(rowTmp);
     rowTmp.clear();
+    rowTmp.push_back(529);
+    pageTmp.push_back(rowTmp);
+    rowTmp.clear();
     blockPages.push_back(pageTmp);
     pageTmp.clear();
 

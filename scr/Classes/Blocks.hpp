@@ -68,6 +68,7 @@ public:
     static const int IceVHalfBlock;
     static const int TutorialBlock;
     static const int TutorialPauseBlock;
+    static const int CoinBlock;
     static nTPoint defaultBlockSize;
 private:
     friend class Map;

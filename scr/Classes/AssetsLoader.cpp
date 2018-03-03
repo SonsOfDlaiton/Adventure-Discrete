@@ -113,6 +113,7 @@ bool AssetsLoader::loadTextures(){
     if(!GL::loadTexture("gcc","Textures/powerups/gcc.png")) out=false;
     if(!GL::loadTexture("cafe","Textures/powerups/coffe.png")) out=false;
     if(!GL::loadTexture("win95","Textures/powerups/win95.png")) out=false;
+    if((GL::loadTextures("Coin",7,"Textures/blocks/coin")).size()!=7)out=false;
 
 
     //Espada
@@ -442,6 +443,7 @@ bool AssetsLoader::loadSounds(){
     if(!AL::singleton->loadSound("Sounds/userSong.wav","userSong",0.6,true)) out=false;
     if(!AL::singleton->loadSound("Sounds/vidroQuebrando.wav","glassBreak",1,false)) out=false;
     if(!AL::singleton->loadSound("Sounds/GG.wav","GG",1,false)) out=false;
+    if(!AL::singleton->loadSound("Sounds/pickCoin.wav","Coin",1,false)) out=false;
     return out;
 }
 

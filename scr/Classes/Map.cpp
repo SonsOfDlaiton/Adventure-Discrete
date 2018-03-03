@@ -167,6 +167,10 @@ void Map::setBlockPos(){
                         Tutorials::add(j,bl->data,false);
                     }else if(Blocks::checkIfBlocksIsTutorialPause(actualMap.map[k][i][j].first)){
                         Tutorials::add(j,bl->data,true);
+                    }else if(actualMap.map[k][i][j].first==Blocks::CoinBlock){
+                        nTPoint pos=bl->pos;
+                        pos.z=0.89;
+                        new Bullet(Bullet::coinBullet,0,pos,nTPoint::get(16,16,1));
                     }else{
                         bl->id=dynamicBlocks.size();
                         dynamicBlocks.push_back(bl);

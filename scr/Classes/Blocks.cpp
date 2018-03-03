@@ -13,7 +13,7 @@ Blocks::Blocks(int type,nTPoint pos,nTPoint size,string data){
     this->color=nTColor::White();
     this->data=data;
     if(checkIfBlocksIsHalfBlockV(type)){
-        if(type==255) // ???????????
+        if(type==255) // reduz velocidade do cacto (gambiarra)
             type=251;
         moveSpeed=150*((type-250)*0.6);
         this->size.y/=2;
@@ -76,6 +76,7 @@ const int Blocks::IceHHalfBlock=204;
 const int Blocks::IceVHalfBlock=254;
 const int Blocks::TutorialBlock=527;
 const int Blocks::TutorialPauseBlock=528;
+const int Blocks::CoinBlock=529;
 
 /**
  *	Gets the texture id of this block
@@ -248,7 +249,7 @@ bool Blocks::checkIfBlocksIsDynamic(int type){
         ||checkIfBlocksIsBossSpawn(type)||checkIfBlocksIsPlayerSpawn(type)||checkIfBlocksIsEnemySpawn(type)
         ||checkIfBlocksIsCheckpoint(type)||checkIfBlocksIsTeleportDoor(type)||checkIfBlocksIsTeleportPipe(type)
         ||checkIfBlocksIsEndLevel(type)||checkIfBlocksIsEnemyCollider(type)||checkIfBlocksIsTutorial(type)
-        ||checkIfBlocksIsTutorialPause(type);
+        ||checkIfBlocksIsTutorialPause(type)||(type==CoinBlock);
 }
 
 /**
@@ -579,6 +580,8 @@ string Blocks::getTexNameByIndex(int BlockType){
         if(Scenes::current==Scenes::MapEdit)
             return string("TutorialPauseBlock");
         return string("Invisivel");
+    }else if(BlockType==529){
+        return string("Coin0");
     }
 
     else{

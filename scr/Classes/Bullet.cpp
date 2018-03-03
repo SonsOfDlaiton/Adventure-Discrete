@@ -12,6 +12,10 @@ Bullet::Bullet(int type,double moveSpeed,nTPoint pos,nTPoint size) {
         tex->setTextures(GL::getTextureByName("WinBullet"));
         AL::singleton->playSoundByName("blockShoot");
     }
+    if(type==coinBullet){
+        tex->setTextures(GL::getTexturesByName("Coin",7));
+        tex->setTimeToNext(70);
+    }
     if(type==strongSwordBullet)
         tex->setTextures(GL::getTexturesByName("SwordBullet",2));
     if(type==strongXAtackBullet)
@@ -56,6 +60,7 @@ const int Bullet::hyperbolicParaboloidBullet=5;
 const int Bullet::rightAlternativeBullet=6;
 const int Bullet::wrongAlternativeBullet=7;
 const int Bullet::gateBullet=8;
+const int Bullet::coinBullet=9;
 
 /**
  *	Run logic events of the Bullets on the map like move, change textures, check if is in the screen, check collisions
@@ -69,7 +74,7 @@ void Bullet::behave(){
     Bullet *bu;
     for(int i=0;i<self.size();i++){
         bu=(Bullet*)self[i];
-        if(!Scenes::camera.isInTheScreen(nTRectangle::getCollision(bu->pos,bu->size))){
+        if(!Scenes::camera.isInTheScreen(nTRectangle::getCollision(bu->pos,bu->size))&&bu->type!=coinBullet){
             if(bu->type==strongSwordBullet)
                 Player::getPlayerById(0)->haveBulletSword=false;
             if(bu->type==strongXAtackBullet||bu->type==weakXAtackBullet)
@@ -91,6 +96,8 @@ void Bullet::behave(){
             bu->checkCollisionWithEntity(false);
         }else if(bu->type==weakXAtackBullet){//atk fraco
             bu->checkCollisionWithEntity(false);
+        }else if(bu->type==coinBullet){//moeda
+            bu->checkCollisionWithEntity(true);
         }else if(bu->type==busBullet){//intercamp
             bu->checkCollisionWithEntity(true);
             AL::singleton->playSoundByName("intercampi");
@@ -191,7 +198,10 @@ void Bullet::checkCollisionWithEntity(bool withPlayer){
     if(withPlayer){
         var=Mechanics::getCollision(nTRectangle::getCollision(this->pos,this->size),nTRectangle::getCollision(Player::getPlayerById(0)->pos,Player::getPlayerById(0)->size));
         if(var.firstObj!=Mechanics::NOCOLLISION){
-            if(type==busBullet){
+            if(type==coinBullet){
+                AL::singleton->playSoundByName("Coin");
+                //TODO pegar moeda  
+            }else if(type==busBullet){
                 Player::getPlayerById(0)->applyDamage(2);
                 AL::singleton->stopSound(AL::getSoundByName("intercampi"));
             }else if(type!=rightAlternativeBullet)
