@@ -3,6 +3,8 @@
 
 #include "Util.hpp"
 
+class ADCode;
+
 class Background{
 public:
 	Background(string name, string path, bool move, double zAxis, int x0, int y0, int x1, int y1, int deltaX, double hSpeed, double vSpeed);
@@ -19,6 +21,7 @@ public:
 	string getName();
 	nTRectangle getLocal();
 	string getPath();
+	static void loadParalax(ADCode* adc, vector<Background>& paralax);
 private:
 	string name, path;
 	bool move;

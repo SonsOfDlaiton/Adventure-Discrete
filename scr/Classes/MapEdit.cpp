@@ -1,5 +1,5 @@
 #include "MapEdit.hpp"
-
+#include "ADCode.hpp"
 
 MapEdit::MapEdit() {
 }
@@ -229,6 +229,9 @@ void MapEdit::load(int idx){
     }
     size.y=map.map[0].size();
     size.x=map.map[0][0].size();
+    ADCode* adc=new ADCode(MapEdit::map.mapADC,"Map");
+    Background::loadParalax(adc,MapEdit::map.backgrounds);
+    delete adc;
 }
 
 /**
@@ -332,6 +335,9 @@ void MapEditButton(int x,int y){
             MapEdit::map.map[MapEdit::editingLayer][i][j].second=GL::getEditText("MapEdit::blockData");
         }else{
             MapEdit::mapSelected=false;
+            ADCode* adc=new ADCode(MapEdit::map.mapADC,"Map");
+            Background::loadParalax(adc,MapEdit::map.backgrounds);
+            delete adc;
             MapEdit::currentBlock=MapEdit::map.map[MapEdit::editingLayer][i][j].first;
             MapEdit::map.mapADC=GL::getEditText("MapEdit::blockData");
             GL::setEditText("MapEdit::blockData",MapEdit::map.map[MapEdit::editingLayer][i][j].second);
@@ -387,6 +393,9 @@ void MapEditSetBlock(int x,int y){
         if(!(MapEdit::blockPages[MapEdit::pageIndex][i][j]>=451&&MapEdit::blockPages[MapEdit::pageIndex][i][j]<=475)){
             MapEdit::currentBlock=MapEdit::blockPages[MapEdit::pageIndex][i][j];
             MapEdit::mapSelected=false;
+            ADCode* adc=new ADCode(MapEdit::map.mapADC,"Map");
+        Background::loadParalax(adc,MapEdit::map.backgrounds);
+        delete adc;
             GL::setEditText("MapEdit::blockData","");
         }
     }
@@ -489,6 +498,9 @@ void MapEditZoomOut(int x,int y){
 void MapEditBackgroundDown(int x,int y){
     MapEdit::mapSelected=true;
     GL::setEditText("MapEdit::blockData",MapEdit::map.mapADC);
+    ADCode* adc=new ADCode(MapEdit::map.mapADC,"Map");
+    Background::loadParalax(adc,MapEdit::map.backgrounds);
+    delete adc;
 }
 
 /**
