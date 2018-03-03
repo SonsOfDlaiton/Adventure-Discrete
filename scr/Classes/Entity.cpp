@@ -97,10 +97,7 @@ void Entity::stateControl(){
                         if(!Scenes::freeGameMode){
                             pl->isVisible=false;
                             Player::lives--;
-                            if(Player::lives)
-                                Map::next();
-                            else
-                                Map::GG(false);
+                            Map::next();
                         }else{
                             pl->isVisible=false;
                             Map::next();

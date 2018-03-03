@@ -469,6 +469,8 @@ bool AssetsLoader::loadSettings(){
     Player::stage=tmp.currentStage;
     Player::globalCoeficiente=tmp.CR;
     Player::loadedLife=tmp.sword+1;
+    copy(tmp.recordsU,tmp.recordsU+10,Player::recordsU);
+    copy(tmp.records,tmp.records+10,Player::records);
     fclose(fp);
     return true;
 }
@@ -493,6 +495,8 @@ bool AssetsLoader::saveSettings(){
         tmp.currentStage=Player::stage;
         tmp.CR=Player::globalCoeficiente;
         tmp.sword=Player::loadedLife-1;
+        copy(Player::recordsU,Player::recordsU+10,tmp.recordsU);
+        copy(Player::records,Player::records+10,tmp.records);
     fwrite(&tmp,sizeof(SETTINGS),1,fp);
     fclose(fp);
     return true;

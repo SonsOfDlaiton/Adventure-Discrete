@@ -36,9 +36,12 @@ public:
     static int lives;
     static int checkpoint;
     static int enemysKilled;
+    static int coinsPicked;
     static int PowerUpsActiveted;
     static int loadedLife;
     static double coeficiente;
+    static double records[10];
+    static double recordsU[10];
     static const int defaultLife;
     static double globalCoeficiente;
     static const int ranged;

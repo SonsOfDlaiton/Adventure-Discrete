@@ -936,9 +936,10 @@ void GL::drawHUD(){
             strF="Tecnico";
         }
         GL::drawCentered_Y_Text(point,"Fase: "+strF,nTColor::Black());
-        point.set(Scenes::camera.x.movedCam+480,Scenes::camera.y.movedCam+23,1);
-        GL::drawCentered_Y_Text(point,"Coeficiente: "+Util::floatToStr(Player::coeficiente),nTColor::Black());
-    }
+        }
+    point.set(Scenes::camera.x.movedCam+480,Scenes::camera.y.movedCam+23,1);
+    GL::drawCentered_Y_Text(point,"Coeficiente: "+Util::floatToStr(Player::coeficiente),nTColor::Black());
+    
     if(GL::FPSchecker){
         point.set(Scenes::camera.x.movedCam+780,Scenes::camera.y.movedCam+23,1);
         GL::drawText(point,Util::intToStr(ABS(GL::currentFPS)),nTColor::get(0,1,0));

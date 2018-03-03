@@ -29,6 +29,7 @@ int Map::nOfBackgrounds=3;
 int Map::nOfEnemys=0;
 int Map::expetedTime=0;
 int Map::totalPowerUps=0;
+int Map::totalCoins=0;
 vector<nTMap> Map::maps;
 nTMap Map::usrMap;
 nTMap Map::editingMap;
@@ -122,6 +123,7 @@ void Map::deleteAllBlocks(){
     nOfEnemys=0;
     expetedTime=0;
     totalPowerUps=0;
+    totalCoins=0;
 }
 
 /**
@@ -171,6 +173,7 @@ void Map::setBlockPos(){
                         nTPoint pos=bl->pos;
                         pos.z=0.89;
                         new Bullet(Bullet::coinBullet,0,pos,nTPoint::get(16,16,1));
+                        totalCoins++;
                     }else{
                         bl->id=dynamicBlocks.size();
                         dynamicBlocks.push_back(bl);
@@ -200,7 +203,7 @@ void Map::setBlockPos(){
         bl->id+=staticBlocks.size();
     }
     Tutorials::processCheckpoints();
-    expetedTime=(int)actualMap.map[0].size();
+    expetedTime=(int)actualMap.map[0].size()*2.666f;
 }
 
 /**
@@ -360,7 +363,6 @@ void Map::refresh(){
                 if(var.firstObj!=Mechanics::NOCOLLISION){
                     if(!Scenes::freeGameMode){
                         Player::checkpoint=0;
-                        Player::stage++;
                         if(Player::stage==lvlGoodTeacher||Player::stage==lvlBadTeacher){
                             Player::stage=0;
                             Map::GG(true);
@@ -445,8 +447,8 @@ void Map::GG(bool isWinner){
         Scenes::current=Scenes::menu;
         return;
     }
-    Player::refreshGlobalcoeficiente();
     if(isWinner){
+        Player::refreshGlobalcoeficiente();
         Player::lives++;
         Player::beatGame=true;
         Scenes::current=Scenes::posYouWin;
@@ -464,12 +466,14 @@ void Map::GG(bool isWinner){
  *	Handle collision with end level block events
 **/
 void Map::next(){
+    Player::refreshGlobalcoeficiente();
     if(Scenes::freeGameMode){
         Scenes::current=Scenes::posGame;
     }else{
-        if(Player::lives>=0)
+        if(Player::lives>=0){
+            Player::stage++;
             Scenes::current=Scenes::posGame;
-        else
+        }else
             GG(false);
     }
 }

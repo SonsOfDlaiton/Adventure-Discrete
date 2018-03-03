@@ -1,4 +1,5 @@
 #include "Player.hpp"
+#include "AssetsLoader.hpp"
 
 Player::Player(double life,nTPoint spawn,nTPoint size) {
     spawn.z=0.9;
@@ -49,7 +50,7 @@ Player::~Player() {
 }
 
 int Player::lives=3;
-bool Player::beatGame=false;
+bool Player::beatGame=true;
 const int Player::ranged=64651;
 const int Player::meleeProjectile=16165;
 const int Player::melee=165165;
@@ -58,13 +59,17 @@ int Player::checkpoint=0;
 int Player::stage=0;
 const int Player::defaultLife=3;
 int Player::loadedLife=defaultLife;
-double Player::coeficiente=0;
-double Player::globalCoeficiente=0;
-int Player::enemysKilled=0;
-int Player::PowerUpsActiveted=0;
 const nTPoint Player::defaultPSize=nTPoint::get(28,60);
 vector<vector<string> >Player::playerAnim;
 vector<vector<int> >Player::playerAnimSize;
+
+double Player::coeficiente=0;
+double Player::globalCoeficiente=0;
+int Player::enemysKilled=0;
+int Player::coinsPicked=0;
+int Player::PowerUpsActiveted=0;
+double Player::records[10]={0};
+double Player::recordsU[10]={0};
 
 /**
  *	Modify the operator << to print this type of objects
@@ -189,6 +194,7 @@ void Player::spawn(nTPoint spawn,double life){
     this->lowered=false;
     alReadyAtacked=false;
     enemysKilled=0;
+    coinsPicked=0;
     PowerUpsActiveted=0;
     int anim=0;
     if(Scenes::freeGameMode)
@@ -411,19 +417,29 @@ void Player::atack(int type){
 **/
 void Player::refreshCoeficiente(){
     coeficiente=0;
-    if(Scenes::freeGameMode) return;
-    if(Map::nOfEnemys)
-        coeficiente+=100*Player::enemysKilled/Map::nOfEnemys         *3;
-    if(Map::totalPowerUps)
-        coeficiente+=100*Player::PowerUpsActiveted/Map::totalPowerUps*2;
+    int div=0;
+    if(Map::nOfEnemys){
+        coeficiente+=100*Player::enemysKilled/Map::nOfEnemys            *3;
+        div+=                                                            3;
+    }
+    if(Map::totalPowerUps){
+        coeficiente+=100*Player::PowerUpsActiveted/Map::totalPowerUps   *2;
+        div+=                                                            2;
+    }
+    if(Map::totalCoins){
+        coeficiente+=100*Player::coinsPicked/Map::totalCoins            *2;
+        div+=                                                            2;
+    }
     if(GL::getGameMs()){
-        double temp=100000*Map::expetedTime/GL::getGameMs()            *1;
+        double temp=100*1000*Map::expetedTime/GL::getGameMs()           *1;
+        div+=                                                            1;
         if(temp>100)
           temp=100;
         coeficiente+=temp;
       }
-    coeficiente/=6;
-
+    if(div==0)
+        div=1;
+    coeficiente/=div;
 }
 
 /**
@@ -431,11 +447,23 @@ void Player::refreshCoeficiente(){
 **/
 void Player::refreshGlobalcoeficiente(){
     refreshCoeficiente();
-    if(globalCoeficiente!=0){
-        globalCoeficiente+=coeficiente;
-        globalCoeficiente/=2;
+
+    if(Scenes::freeGameMode){
+        if(coeficiente>recordsU[0]){ //TODO adaptar para mais mapas de usuario
+            recordsU[0]=coeficiente;
+            AssetsLoader::saveSettings();    
+        }
     }else{
-        globalCoeficiente=coeficiente;
+        if(globalCoeficiente>1){
+            globalCoeficiente+=coeficiente;
+            globalCoeficiente/=2;
+        }else{
+            globalCoeficiente=coeficiente;
+        }
+        if(coeficiente>records[Player::stage]){ //TODO adaptar para mais mapas de usuario
+            records[Player::stage]=coeficiente;
+            AssetsLoader::saveSettings();    
+        }
     }
     coeficiente=0;
 }

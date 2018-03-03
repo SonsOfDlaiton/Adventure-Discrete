@@ -333,36 +333,42 @@ void Scenes::drawPreCampaign(){
 		AL::singleton->stopAllSoundsExcept(tmp);
 	}
 	if(Player::beatGame){
-			if(GL::buttonBehave(nTRectangle::get(37.5,250,262.5,100),GL::getColorByName("mouseSelected"),GL::getTextureByName("miniLvl0"))){
+    GL::drawText(nTPoint::get(37.5,280,1),"Record: "+Util::floatToStr(Player::records[0]),GL::getColorByName("blue"));
+		if(GL::buttonBehave(nTRectangle::get(37.5,250,262.5,100),GL::getColorByName("mouseSelected"),GL::getTextureByName("miniLvl0"))){
 			Player::stage=0;
 			Player::checkpoint=0;
 			Player::getPlayerById(0)->life=Player::defaultLife;
       current=game;
 		}
+    GL::drawText(nTPoint::get(287.5,280,1),"Record: "+Util::floatToStr(Player::records[1]),GL::getColorByName("blue"));
 		if(GL::buttonBehave(nTRectangle::get(287.5,250,512.5,100),GL::getColorByName("mouseSelected"),GL::getTextureByName("miniLvl1"))){
 			Player::stage=1;
 			Player::checkpoint=0;
 			Player::getPlayerById(0)->life=Player::defaultLife;
       current=game;
 		}
+    GL::drawText(nTPoint::get(537.5,280,1),"Record: "+Util::floatToStr(Player::records[2]),GL::getColorByName("blue"));
 		if(GL::buttonBehave(nTRectangle::get(537.5,250,762.5,100),GL::getColorByName("mouseSelected"),GL::getTextureByName("miniLvl2"))){
 			Player::stage=2;
 			Player::checkpoint=0;
 			Player::getPlayerById(0)->life=Player::defaultLife;
       current=game;
 		}
+    GL::drawText(nTPoint::get(37.5,480,1),"Record: "+Util::floatToStr(Player::records[3]),GL::getColorByName("blue"));
 		if(GL::buttonBehave(nTRectangle::get(37.5,450,262.5,300),GL::getColorByName("mouseSelected"),GL::getTextureByName("miniLvl3"))){
 			Player::stage=3;
 			Player::checkpoint=0;
 			Player::getPlayerById(0)->life=Player::defaultLife;
       current=game;
 		}
+    GL::drawText(nTPoint::get(287.5,480,1),"Record: "+Util::floatToStr(Player::records[4]),GL::getColorByName("blue"));
 		if(GL::buttonBehave(nTRectangle::get(287.5,450,512.5,300),GL::getColorByName("mouseSelected"),GL::getTextureByName("miniLvl4"))){
 			Player::stage=4;
 			Player::checkpoint=0;
 			Player::getPlayerById(0)->life=Player::defaultLife;
       current=game;
 		}
+    GL::drawText(nTPoint::get(537.5,480,1),"Record: "+Util::floatToStr(Player::records[5]),GL::getColorByName("blue"));
 		if(GL::buttonBehave(nTRectangle::get(537.5,450,762.5,300),GL::getColorByName("mouseSelected"),GL::getTextureByName("miniLvl5"))){
 			Player::stage=5;
 			Player::checkpoint=0;
@@ -463,7 +469,8 @@ void Scenes::drawPreGame(){
 	GL::drawText(nTPoint::get(110,350,1),"Modo Campanha.",GL::getColorByName("violet"));
 	GL::drawText(nTPoint::get(500,350,1),"Modo livre.",GL::getColorByName("violet"));
 	GL::setFont("BITMAP_HELVETICA_18");
-	GL::drawText(nTPoint::get(95,325,1),"Coeficiente Global: "+Util::floatToStr(Player::globalCoeficiente),GL::getColorByName("blue"));
+	GL::drawText(nTPoint::get(110,325,1),"Coeficiente Global: "+Util::floatToStr(Player::globalCoeficiente),GL::getColorByName("blue"));
+  GL::drawText(nTPoint::get(500,325,1),"Record: "+Util::floatToStr(Player::recordsU[0]),GL::getColorByName("blue"));
 	if(GL::buttonBehave(nTRectangle::get(200,550,340,500),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon")))
 		current=menu;
 	if(GL::buttonBehave(nTRectangle::get(50,300,350,100),GL::getColorByName("mouseSelected"),GL::getTextureByName("campaignIcon")))

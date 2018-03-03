@@ -27,6 +27,7 @@ public:
     static int nOfEnemys;
     static int nOfBackgrounds;
     static int totalPowerUps;
+    static int totalCoins;
     static int expetedTime;
     static vector<void*> staticBlocks;
     static vector<vector<int> > staticBlocksArr;

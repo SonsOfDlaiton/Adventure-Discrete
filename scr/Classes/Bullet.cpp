@@ -200,7 +200,7 @@ void Bullet::checkCollisionWithEntity(bool withPlayer){
         if(var.firstObj!=Mechanics::NOCOLLISION){
             if(type==coinBullet){
                 AL::singleton->playSoundByName("Coin");
-                //TODO pegar moeda  
+                Player::coinsPicked++;
             }else if(type==busBullet){
                 Player::getPlayerById(0)->applyDamage(2);
                 AL::singleton->stopSound(AL::getSoundByName("intercampi"));
