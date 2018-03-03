@@ -93,15 +93,17 @@ void Background::drawParalaxBackground(nTPoint size){
 //     		string name=adc_back->getString("name");
 //     		int sprites=adc_back->getInt("nspr");
 //     		bool static_back=Util::strToBool(adc_back->getString("static"));
-//     		vector<int> p0=adc_back->getIntVector("p0");
-//     		vector<int> p1=adc_back->getIntVector("p1");
-//     		int deltaX=adc_back->getInt("deltaX");
-//     		int Z=adc_back->getInt("depth");
-//     		vector<int> speed=adc_back->getIntVector("speed");
-//     		if(p0.size()==2&&p1.size()==2&&speed.size()==2){
-//     			Background back();
-//     			paralax.push_back(back);
-//     		}
+			// if(!static_back){
+//     			vector<int> p0=adc_back->getIntVector("p0");
+//     			vector<int> p1=adc_back->getIntVector("p1");
+//     			int deltaX=adc_back->getInt("deltaX");
+//     			int Z=adc_back->getInt("depth");
+//     			vector<int> speed=adc_back->getIntVector("speed");
+//     			if(p0.size()==2&&p1.size()==2&&speed.size()==2){
+//     				Background back();
+//     				paralax.push_back(back);
+//     			}
+		// }
 //     		delete adc_back;
 //     	}
 //     }

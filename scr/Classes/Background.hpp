@@ -27,7 +27,7 @@ private:
 	nTRectangle local;
 };
 
-typedef struct map{
+typedef struct mapstru{
   vector<Background> backgrounds;
   vector<vector<vector<pair<int,string> > > > map;
   string mapADC;

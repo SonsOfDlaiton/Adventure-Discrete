@@ -119,6 +119,7 @@ typedef struct rectangle{
 #include <iostream>
 #include <fstream>
 #include <math.h>
+#include <map>
 #include <stdlib.h>
 #include <stdio.h>
 #include <algorithm>

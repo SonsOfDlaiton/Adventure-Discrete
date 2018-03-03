@@ -444,19 +444,43 @@ void Scenes::drawPreFreeMode(){
 		tmp.push_back(AL::getSoundByName("mouse"));
 		AL::singleton->stopAllSoundsExcept(tmp);
 	}
-//if(GL::buttonBehave(nTRectangle::get(350,362+10,450,330,0.4),Util::nTColorSet(0.4,0.4,0.4,1),GL::getTextureByName("playIcon")))
-  GL::drawText(nTPoint::get(200,200,1),"Digite qual mapa quer carregar(0-"+Util::intToStr(Map::nOfUMaps-1)+"):",GL::getColorByName("red"));
-  GL::editTextBehave(nTRectangle::get(560,175,630,200,1),"BITMAP_HELVETICA_18",GL::getColorByName("blue"),"Scenes::askForUser",true,true);
-  if(GL::textButtonBehave(nTRectangle::get(640,175,690,200,1),GL::getColorByName("mouseSelected"),"ok",nTColor::Black(),GL::getTextureByName("btnSkin1"))){
-    string input=GL::getEditText("Scenes::askForUser");
-    Map::currentUsrMap=Util::strToInt(input);
-    if(Map::currentUsrMap<0||Map::currentUsrMap>=Map::nOfUMaps)
-      Map::currentUsrMap=0;
-  	Scenes::current=game;
+
+
+
+
+  GL::drawText(nTPoint::get(37.5,280,1),"Record: "+Util::floatToStr(Player::recordsU[0]),GL::getColorByName("blue"));
+  if(GL::buttonBehave(nTRectangle::get(37.5,250,262.5,100),GL::getColorByName("mouseSelected"),GL::getTextureByName("usrLvl0"))){
+    Map::currentUsrMap=0;
+    current=game;
   }
-  	if(GL::buttonBehave(nTRectangle::get(340,550,480,500),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon")))
-    	current=preGame;
-  //TODO implementar modo de escolher entre varios mapas do usuario
+  GL::drawText(nTPoint::get(287.5,280,1),"Record: "+Util::floatToStr(Player::recordsU[1]),GL::getColorByName("blue"));
+  if(GL::buttonBehave(nTRectangle::get(287.5,250,512.5,100),GL::getColorByName("mouseSelected"),GL::getTextureByName("usrLvl1"))){
+    Map::currentUsrMap=1;
+    current=game;
+  }
+  GL::drawText(nTPoint::get(537.5,280,1),"Record: "+Util::floatToStr(Player::recordsU[2]),GL::getColorByName("blue"));
+  if(GL::buttonBehave(nTRectangle::get(537.5,250,762.5,100),GL::getColorByName("mouseSelected"),GL::getTextureByName("usrLvl2"))){
+    Map::currentUsrMap=2;
+    current=game;
+  }
+  GL::drawText(nTPoint::get(37.5,480,1),"Record: "+Util::floatToStr(Player::recordsU[3]),GL::getColorByName("blue"));
+  if(GL::buttonBehave(nTRectangle::get(37.5,450,262.5,300),GL::getColorByName("mouseSelected"),GL::getTextureByName("usrLvl3"))){
+    Map::currentUsrMap=3;
+    current=game;
+  }
+  GL::drawText(nTPoint::get(287.5,480,1),"Record: "+Util::floatToStr(Player::recordsU[4]),GL::getColorByName("blue"));
+  if(GL::buttonBehave(nTRectangle::get(287.5,450,512.5,300),GL::getColorByName("mouseSelected"),GL::getTextureByName("usrLvl4"))){
+    Map::currentUsrMap=4;
+    current=game;
+  }
+  GL::drawText(nTPoint::get(537.5,480,1),"Record: "+Util::floatToStr(Player::recordsU[5]),GL::getColorByName("blue"));
+  if(GL::buttonBehave(nTRectangle::get(537.5,450,762.5,300),GL::getColorByName("mouseSelected"),GL::getTextureByName("usrLvl5"))){
+    Map::currentUsrMap=5;
+    current=game;
+  }
+  if(GL::buttonBehave(nTRectangle::get(340,550,480,500),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon")))
+    current=preGame;
+
 }
 
 /**
@@ -478,7 +502,6 @@ void Scenes::drawPreGame(){
 	GL::drawText(nTPoint::get(500,350,1),"Modo livre.",GL::getColorByName("violet"));
 	GL::setFont("BITMAP_HELVETICA_18");
 	GL::drawText(nTPoint::get(110,325,1),"Coeficiente Global: "+Util::floatToStr(Player::globalCoeficiente),GL::getColorByName("blue"));
-  GL::drawText(nTPoint::get(500,325,1),"Record: "+Util::floatToStr(Player::recordsU[0]),GL::getColorByName("blue"));
 	if(GL::buttonBehave(nTRectangle::get(200,550,340,500),GL::getColorByName("mouseSelected"),GL::getTextureByName("backIcon")))
 		current=menu;
 	if(GL::buttonBehave(nTRectangle::get(50,300,350,100),GL::getColorByName("mouseSelected"),GL::getTextureByName("campaignIcon")))

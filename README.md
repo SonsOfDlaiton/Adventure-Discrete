@@ -1,4 +1,4 @@
-# Adventure-Discrete
+# Adventure-Discrete #
 
 Article: https://pt.sharelatex.com/project/5904b584e0b90d35795a2ece
 
@@ -6,7 +6,7 @@ Our code contains scripts from clip and SOIL libraries:
 source: https://github.com/dacap/clip
 source: https://github.com/kbranigan/Simple-OpenGL-Image-Library
 
-##Blocks---------------Id
+## Blocks---------------Id ##
 *TP Porta			-(-400:-200]
 *TP Cano			-(-200:0)
 *Ar					-[0]
@@ -32,5 +32,16 @@ source: https://github.com/kbranigan/Simple-OpenGL-Image-Library
 *Checkpoint			-[4001:4012]
 *Spawn de Boss		-[5001:∞)
 
-##ADCode Sintax
->-
+## ADCode Sintax ##
+>- **Pre-processing:**
+ * **include:**
+ * **load:**
+ * **script:**
+>- **Dataset fields**
+ * **section:**
+ * **integer:**
+ * **string:**
+ * **float:**
+ * **string vector:**
+ * **integer vector:**
+
