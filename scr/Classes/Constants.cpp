@@ -1,5 +1,7 @@
 #include "Constants.hpp"
 
+const int Constants::GAME_FPS=60;
+
 const double Constants::BLOCKS_ImunityTime=150.0f;
 
 const double Constants::BULLET_BaseDamage=1.0f;

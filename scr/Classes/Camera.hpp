@@ -21,11 +21,11 @@ public:
     void setScenesPointX(short int movingCam, double movedCam);
     scenesPoint getScenesPointY();
     void setScenesPointY(short int movingCam, double movedCam);
-    double getMoveSpeed();
+    double getMovePerFrame();
     void setMoveSpeed(double moveSpeed);
     bool getFreeCam();
     void setFreeCam(double freeCam);
-    void setCam(double moveSpeed_);
+    void setCam(double movePerFrame_);
     void putCameraOnOrigin();
     void lookAt(nTPoint pos);
     void behave(Player* pl);
@@ -34,7 +34,7 @@ public:
     bool isInTheYScreen(nTRectangle collision);
     scenesPoint x;
     scenesPoint y;
-    double moveSpeed;
+    double movePerFrame;
     static bool freeCam;
     static float autoCamSpeed;
 };

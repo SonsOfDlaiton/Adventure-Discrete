@@ -147,7 +147,7 @@ void Scenes::drawMapEdit(){
         }else{
           testGameMode=false;
         }
-        Scenes::camera.moveSpeed=10;
+        Scenes::camera.movePerFrame=10;
         vector<int> tmp;
         tmp.push_back(AL::getSoundByName("mouse"));
         tmp.push_back(AL::getSoundByName("menuSong"));
@@ -181,11 +181,11 @@ void Scenes::drawMapEdit(){
             }
         }
     }else{
-        gluLookAt(camera.moveSpeed*camera.x.movingCam,camera.moveSpeed*camera.y.movingCam,0,camera.moveSpeed*camera.x.movingCam,camera.moveSpeed*camera.y.movingCam,-1,0,1,0);
+        gluLookAt(camera.movePerFrame*camera.x.movingCam,camera.movePerFrame*camera.y.movingCam,0,camera.movePerFrame*camera.x.movingCam,camera.movePerFrame*camera.y.movingCam,-1,0,1,0);
         if(camera.x.movingCam)
-            camera.x.movedCam+=camera.moveSpeed*camera.x.movingCam;
+            camera.x.movedCam+=camera.movePerFrame*camera.x.movingCam;
         if(camera.y.movingCam)
-            camera.y.movedCam+=camera.moveSpeed*camera.y.movingCam;
+            camera.y.movedCam+=camera.movePerFrame*camera.y.movingCam;
         MapEdit::draw();
     }
 }

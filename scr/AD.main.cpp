@@ -5,7 +5,7 @@ int main(int argc, char** argv) {
     enables.push_back(GL_DEPTH_TEST);
     enables.push_back(GL_BLEND);
     enables.push_back(GL_ALPHA_TEST);
-    GL *gl=new GL("Adventure Discrete",60,GLUT_DOUBLE|GLUT_RGBA|GLUT_DEPTH|GLUT_STENCIL|GLUT_ALPHA,
+    GL *gl=new GL("Adventure Discrete",Constants::GAME_FPS,GLUT_DOUBLE|GLUT_RGBA|GLUT_DEPTH|GLUT_STENCIL|GLUT_ALPHA,
                   800,600,nTColor::Black(),true,enables,argc,argv);
     Enemy::registerNicks();
     Tutorials::registerSinucaTuts();

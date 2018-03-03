@@ -21,8 +21,8 @@ scenesPoint Camera::getScenesPointY(){
 	return y;
 }
 
-double Camera::getMoveSpeed(){
-	return moveSpeed;
+double Camera::getMovePerFrame(){
+	return movePerFrame;
 }
 
 bool Camera::getFreeCam(){
@@ -47,12 +47,12 @@ void Camera::setFreeCam(double freeCam){
 	Camera::freeCam = freeCam;
 }
 
-void Camera::setCam(double moveSpeed_){
+void Camera::setCam(double movePerFrame_){
     x.movedCam=0;
     x.movingCam=0;
     y.movedCam=0;
     y.movingCam=0;
-    moveSpeed=moveSpeed_;
+    movePerFrame=movePerFrame_;
 }
 
 /**
@@ -152,11 +152,9 @@ bool Camera::isInTheYScreen(nTRectangle collision){
 void Camera::behave(Player* pl){
     if(autoCamSpeed==0){
         if(ABS(pl->hSpeed)>0)
-            moveSpeed=ABS(pl->hSpeed/GL::getFPS());
-    //    else if(Player::getPlayerById(0)->OnMOveBLock)
-    //        moveSpeed=ABS(150/GL::getFPS());
+            movePerFrame=ABS(pl->hSpeed/GL::getFPS());
         else
-            moveSpeed=ABS(Entity::walkSpeed/GL::getFPS());
+            movePerFrame=ABS(Entity::walkSpeed/GL::getFPS());
 
         if((pl->pos.x>GL::defaultSize.x/2*1.11+x.movedCam))
             x.movingCam=1;
@@ -174,16 +172,16 @@ void Camera::behave(Player* pl){
         }else if(!Camera::freeCam)
                 y.movingCam=0;
     }else{
-        moveSpeed=autoCamSpeed/GL::getFPS();
-        x.movingCam=moveSpeed/ABS(moveSpeed);
+        movePerFrame=autoCamSpeed/GL::getFPS();
+        x.movingCam=movePerFrame/ABS(movePerFrame);
         if(!isInTheScreen(nTRectangle::getCollision(pl->pos,pl->size))){
             pl->applyDamage(pl->life);
         }
     }
-    
-    gluLookAt(moveSpeed*x.movingCam,moveSpeed*y.movingCam,0,moveSpeed*x.movingCam,moveSpeed*y.movingCam,-1,0,1,0);
+
+    gluLookAt(movePerFrame*x.movingCam,movePerFrame*y.movingCam,0,movePerFrame*x.movingCam,movePerFrame*y.movingCam,-1,0,1,0);
     if(x.movingCam)
-        x.movedCam+=moveSpeed*x.movingCam;
+        x.movedCam+=movePerFrame*x.movingCam;
     if(y.movingCam)
-        y.movedCam+=moveSpeed*y.movingCam;
+        y.movedCam+=movePerFrame*y.movingCam;
 }

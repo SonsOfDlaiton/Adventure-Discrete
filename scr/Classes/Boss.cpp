@@ -230,7 +230,10 @@ void Boss::rightAnswer(){
     Bullet *bu;
     for(int i=0;i<buSummoned.size();i++){
         bu=(Bullet*)buSummoned[i];
-        delete bu;
+        if(bu!=nullptr){
+            delete bu;
+            bu=nullptr;
+        }
         buSummoned.erase(buSummoned.begin()+(i--));
     }
     Boss* bo;
@@ -251,7 +254,10 @@ void Boss::wrongAnswer(){
     Bullet *bu;
     for(int i=0;i<buSummoned.size();i++){
         bu=(Bullet*)buSummoned[i];
-        delete bu;
+        if(bu!=nullptr){
+            delete bu;
+            bu=nullptr;
+        }
         buSummoned.erase(buSummoned.begin()+(i--));
     }
     Boss* bo;
