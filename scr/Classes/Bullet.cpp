@@ -63,7 +63,7 @@ const int Bullet::gateBullet=8;
 const int Bullet::coinBullet=9;
 
 /**
- *	Run logic events of the Bullets on the map like move, change textures, check if is in the screen, check collisions
+ *  Run logic events of the Bullets on the map like move, change textures, check if is in the screen, check collisions
 **/
 void Bullet::behave(){
     FunctionAnalyser::startFunction("Bullet::behave");
@@ -112,10 +112,10 @@ void Bullet::behave(){
 }
 
 /**
- *	Override Mechanics::move to move bullets across the map
+ *  Override Mechanics::move to move bullets across the map
  *
- *	@param dir direction to where the bullet will move, could be Util::direction_left, Util::direction_right, Util::direction_up, Util::direction_down
- *	@param steeps amount of steps to move the bullet
+ *  @param dir direction to where the bullet will move, could be Util::direction_left, Util::direction_right, Util::direction_up, Util::direction_down
+ *  @param steeps amount of steps to move the bullet
 **/
 void Bullet::move(int dir,double steeps){
     FunctionAnalyser::startFunction("Bullet::move");
@@ -186,11 +186,11 @@ void Bullet::move(int dir,double steeps){
 }
 
 /**
- *	Check collisions with entities and make actions case it so
+ *  Check collisions with entities and make actions case it so
  *
- *	@param pos position of the entity
- *	@param size size of the entity
- *	@param withPlayer must be true case the entity in question is the player
+ *  @param pos position of the entity
+ *  @param size size of the entity
+ *  @param withPlayer must be true case the entity in question is the player
 **/
 void Bullet::checkCollisionWithEntity(bool withPlayer){
     FunctionAnalyser::startFunction("Bullet::ckCollWithEntity");
@@ -281,7 +281,7 @@ void Bullet::checkCollisionWithEntity(bool withPlayer){
 }
 
 /**
- *	Draw this bullet on the screen
+ *  Draw this bullet on the screen
 **/
 void Bullet::draw(){
     if(GL::isPaused||!Scenes::camera.isInTheScreen(nTRectangle::getCollision(pos,size)))

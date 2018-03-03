@@ -56,7 +56,7 @@ Blocks::~Blocks() {
     }
 }
 
-nTPoint Blocks::defaultBlockSize=Constants::BLOCKS_Size;
+nTPoint Blocks::defaultBlockSize=nTPoint::get(32,32,0.7);
 double Blocks::imunityTime=Constants::BLOCKS_ImunityTime;
 
 const int Blocks::AnimatedWater1=376;
@@ -79,9 +79,9 @@ const int Blocks::TutorialPauseBlock=528;
 const int Blocks::CoinBlock=529;
 
 /**
- *	Gets the texture id of this block
+ *  Gets the texture id of this block
  *
- *	@return id of the texture
+ *  @return id of the texture
 **/
 vector<GLuint> Blocks::getTextureByIndex(){
     vector<GLuint> out;
@@ -95,7 +95,7 @@ vector<GLuint> Blocks::getTextureByIndex(){
 }
 
 /**
- *	Draw this block on the screen
+ *  Draw this block on the screen
 **/
 void Blocks::draw(){
     if(!this->isVisible){ return;}
@@ -109,10 +109,10 @@ void Blocks::draw(){
 }
 
 /**
- *	Override Mechanics::move to move blocks across the map
+ *  Override Mechanics::move to move blocks across the map
  *
- *	@param dir direction to where the block will move, could be Util::direction_left, Util::direction_right, Util::direction_up, Util::direction_down
- *	@param steeps amount of steps to move the block
+ *  @param dir direction to where the block will move, could be Util::direction_left, Util::direction_right, Util::direction_up, Util::direction_down
+ *  @param steeps amount of steps to move the block
 **/
 void Blocks::move(int dir,double steeps){
     FunctionAnalyser::startFunction("Blocks::move");
@@ -237,10 +237,10 @@ void Blocks::applyDamage(double damage){
 }
 
 /**
- *	Check if the block is dynamic or static(regular blocks without events or actions)
+ *  Check if the block is dynamic or static(regular blocks without events or actions)
  *
- *	@param type type of the block
- *	@return true if the block is dynamic, false if the block is static
+ *  @param type type of the block
+ *  @return true if the block is dynamic, false if the block is static
 **/
 bool Blocks::checkIfBlocksIsDynamic(int type){
     return checkIfBlocksIsShooter(type)||checkIfBlocksIsHalfBlockH(type)||checkIfBlocksIsHalfBlockV(type)
@@ -253,10 +253,10 @@ bool Blocks::checkIfBlocksIsDynamic(int type){
 }
 
 /**
- *	Check if the block is massive(has collision) or not
+ *  Check if the block is massive(has collision) or not
  *
- *	@param type type of the block
- *	@return true if the block is massive, false if the block isnt massive
+ *  @param type type of the block
+ *  @return true if the block is massive, false if the block isnt massive
 **/
 bool Blocks::checkIfBlocksIsMassive(int type){
     return !(checkIfBlocksIsBossSpawn(type)||checkIfBlocksIsPlayerSpawn(type)||checkIfBlocksIsEnemySpawn(type)
@@ -265,10 +265,10 @@ bool Blocks::checkIfBlocksIsMassive(int type){
 
 
 /**
- *	Check if the block is filled(the player cant crosses it) or not
+ *  Check if the block is filled(the player cant crosses it) or not
  *
- *	@param type type of the block
- *	@return true if the block is filled, false if the block isnt filled
+ *  @param type type of the block
+ *  @return true if the block is filled, false if the block isnt filled
 **/
 bool Blocks::checkIfBlocksIsFilled(int type){
     return !(checkIfBlocksIsCheckpoint(type)||checkIfBlocksIsEndLevel(type)||checkIfBlocksIsTeleportDoor(type)

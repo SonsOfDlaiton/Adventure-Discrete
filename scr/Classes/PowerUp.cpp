@@ -52,7 +52,7 @@ const int PowerUp::imortality=2;
 const int PowerUp::minusLife=3;
 
 /**
- *	Run logic events of the PowerUps on the map like move, change textures, check if is in the screen, check collisions
+ *  Run logic events of the PowerUps on the map like move, change textures, check if is in the screen, check collisions
 **/
 void PowerUp::behave(){
     FunctionAnalyser::startFunction("PowerUp::behave");
@@ -75,10 +75,10 @@ void PowerUp::behave(){
 
 
 /**
- *	Check collisions with the player and make actions case it so
+ *  Check collisions with the player and make actions case it so
  *
- *	@param pos position of the player
- *	@param size size of the player
+ *  @param pos position of the player
+ *  @param size size of the player
 **/
 void PowerUp::checkCollisionWithPlayer(nTPoint pos,nTPoint size){
     if(!isVisible) return;
@@ -109,7 +109,7 @@ void PowerUp::checkCollisionWithPlayer(nTPoint pos,nTPoint size){
 }
 
 /**
- *	Draw this PowerUp on the screen
+ *  Draw this PowerUp on the screen
 **/
 void PowerUp::draw(){
     if(GL::isPaused)

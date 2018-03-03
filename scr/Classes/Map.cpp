@@ -24,11 +24,9 @@ vector<void*> Map::staticBlocks;
 vector<void*> Map::dynamicBlocks;
 nTMap Map::actualMap;
 nTPoint Map::size;
-
 int Map::nOfMaps=Constants::MAP_AmountOfMaps;
 int Map::nOfUMaps=Constants::MAP_AmountOfUserMaps;
 int Map::nOfBackgrounds=Constants::MAP_AmountOfBackgrounds;
-
 int Map::nOfEnemys=0;
 int Map::expetedTime=0;
 int Map::totalPowerUps=0;
@@ -46,9 +44,9 @@ const int Map::lvlGoodTeacher=4;
 const int Map::lvlBadTeacher=5;
 
 /**
- *	Change the current map
+ *  Change the current map
  *
- *	@param map the new map
+ *  @param map the new map
 **/
 void Map::changeCurrentMap(nTMap map){
     Enemy* en;
@@ -98,7 +96,7 @@ void Map::changeCurrentMap(nTMap map){
 }
 
 /**
- *	Delete all blocks and enemys objects and reset map statistics
+ *  Delete all blocks and enemys objects and reset map statistics
 **/
 void Map::deleteAllBlocks(){
     Blocks* bl;
@@ -131,7 +129,7 @@ void Map::deleteAllBlocks(){
 }
 
 /**
- *	Instantiate and config all blocks after deleting the older ones according to the current map
+ *  Instantiate and config all blocks after deleting the older ones according to the current map
 **/
 void Map::setBlockPos(){
     deleteAllBlocks();
@@ -211,7 +209,7 @@ void Map::setBlockPos(){
 }
 
 /**
- *	Draw the current map on the screen
+ *  Draw the current map on the screen
 **/
 void Map::draw(){
     FunctionAnalyser::startFunction("Map::draw");
@@ -230,7 +228,7 @@ void Map::draw(){
 }
 
 /**
- *	Draw the current map transparencies on the screen
+ *  Draw the current map transparencies on the screen
 **/
 void Map::transparencyLayerDraw(){
     FunctionAnalyser::startFunction("Map::transparencyLDraw");
@@ -247,11 +245,11 @@ void Map::transparencyLayerDraw(){
 }
 
 /**
- *	Check collision of an retangle with the map
+ *  Check collision of an retangle with the map
  *
- *	@param pos position of the retangle
- *	@param size size of the retangle
- *	@return a vector containg all existing collisions and information about then
+ *  @param pos position of the retangle
+ *  @param size size of the retangle
+ *  @return a vector containg all existing collisions and information about then
 **/
 vector <mapCollision> Map::checkCollision(nTPoint pos,nTPoint size){
     FunctionAnalyser::startFunction("Map::checkCollision");
@@ -310,7 +308,7 @@ vector <mapCollision> Map::checkCollision(nTPoint pos,nTPoint size){
 }
 
 /**
- *	Run logic events of the Map and it blocks like move, change directions and textures, spawn bullets, handle block events and draw
+ *  Run logic events of the Map and it blocks like move, change directions and textures, spawn bullets, handle block events and draw
 **/
 void Map::refresh(){
     FunctionAnalyser::startFunction("Map::refresh");
@@ -412,10 +410,10 @@ void Map::refresh(){
 
 
 /**
- *	Gets the id of the block based on its position
+ *  Gets the id of the block based on its position
  *
- *	@param pos position of the block
- *	@return id of the block on the vectors
+ *  @param pos position of the block
+ *  @return id of the block on the vectors
 **/
 int Map::getIdByPosition(nTPoint pos){
     FunctionAnalyser::startFunction("Map::getIdByPosition");
@@ -442,9 +440,9 @@ int Map::getIdByPosition(nTPoint pos){
 }
 
 /**
- *	Handle gameover events
+ *  Handle gameover events
  *
- *	@param isWinner false if the player lose the game
+ *  @param isWinner false if the player lose the game
 **/
 void Map::GG(bool isWinner){
     if(Scenes::freeGameMode){
@@ -467,7 +465,7 @@ void Map::GG(bool isWinner){
 }
 
 /**
- *	Handle collision with end level block events
+ *  Handle collision with end level block events
 **/
 void Map::next(){
     Player::refreshGlobalcoeficiente();
@@ -483,7 +481,7 @@ void Map::next(){
 }
 
 /**
- *	Loads a map
+ *  Loads a map
  *
  *  @param path filepath to the map
  *  @return true if the map was successfully loaded, otherwise false
@@ -571,7 +569,7 @@ bool Map::loadMap(string path){
 }
 
 /**
- *	Saves a map
+ *  Saves a map
  *
  *  @param path filepath to save the map
  *  @param idx index of to map to be saved
@@ -623,9 +621,9 @@ bool Map::saveMap(string path,int idx){
 }
 
 /**
- *	Gets the block object from its id
+ *  Gets the block object from its id
  *
- *	@param id the id of the block
+ *  @param id the id of the block
  *  @return the address of the block object
 **/
 Blocks* Map::getBlockById(int id){

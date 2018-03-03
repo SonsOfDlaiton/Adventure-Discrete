@@ -51,16 +51,16 @@ Player::~Player() {
 }
 
 int Player::lives=3;
-bool Player::beatGame=false;
+bool Player::beatGame=true;
 const int Player::ranged=64651;
 const int Player::meleeProjectile=16165;
 const int Player::melee=165165;
+const double Player::swordBaseDamage=Constants::PLAYER_SwordBaseDamage;
 int Player::checkpoint=0;
 int Player::stage=0;
-const double Player::swordBaseDamage=Constants::PLAYER_SwordBaseDamage;
 const int Player::defaultLife=Constants::PLAYER_BaseLife;
-const nTPoint Player::defaultPSize=Constants::PLAYER_Size;
 int Player::loadedLife=defaultLife;
+const nTPoint Player::defaultPSize=Constants::PLAYER_Size;
 vector<vector<string> >Player::playerAnim;
 vector<vector<int> >Player::playerAnimSize;
 
@@ -73,12 +73,12 @@ double Player::records[10]={0};
 double Player::recordsU[10]={0};
 
 /**
- *	Modify the operator << to print this type of objects
- *	The parameters are passed automatically
+ *  Modify the operator << to print this type of objects
+ *  The parameters are passed automatically
  *
- *	@param strm current string stream
- *	@param player object address
- *	@return the old stream plus the object toString
+ *  @param strm current string stream
+ *  @param player object address
+ *  @return the old stream plus the object toString
 **/
 ostream& operator<<(ostream &strm, const Player &player){
     Player *pl=(Player*)&player;
@@ -88,16 +88,16 @@ ostream& operator<<(ostream &strm, const Player &player){
 }
 
 /**
- *	Gets the position of the player fixed to detect bottom collsions
+ *  Gets the position of the player fixed to detect bottom collsions
  *
- *	@return the ground position of the player
+ *  @return the ground position of the player
 **/
 nTPoint Player::getGroundPos(){
     return nTPoint::get(pos.x, pos.y+1, pos.z);
 }
 
 /**
- *	Override Entity::stateControl to add the states of player attacks, detect liquid collisionions and teleport blocks collision
+ *  Override Entity::stateControl to add the states of player attacks, detect liquid collisionions and teleport blocks collision
 **/
 void Player::stateControl(){
     FunctionAnalyser::startFunction("Player::stateControl");
@@ -147,9 +147,9 @@ void Player::makeInvencible(){
 }
 
 /**
- *	Make the player immune to damage for a certain time and update the current sword
+ *  Make the player immune to damage for a certain time and update the current sword
  *
- *	@param time time who the player will be immune
+ *  @param time time who the player will be immune
 **/
 void Player::makeInvencible(double time){
     Entity::makeInvencible();
@@ -161,10 +161,10 @@ void Player::makeInvencible(double time){
 }
 
 /**
- *	Reset the variables to properly spawn the player
+ *  Reset the variables to properly spawn the player
  *
- *	@param spawn coordinates to spawn
- *	@param life the spawn start life
+ *  @param spawn coordinates to spawn
+ *  @param life the spawn start life
 **/
 void Player::spawn(nTPoint spawn,double life){
     if(life>defaultLife)
@@ -295,7 +295,7 @@ void Player::behave(){
 
 
 /**
- *	Draw the melee sword
+ *  Draw the melee sword
 **/
 void Player::drawSword(){
     if(!isVisible)
@@ -314,9 +314,9 @@ void Player::drawSword(){
 }
 
 /**
- *	Handle player attack logic and update sword collision rectangle
+ *  Handle player attack logic and update sword collision rectangle
  *
- *	@param type the type of attack witch can be Player::ranged, Player::meleeProjectile or Player::melee
+ *  @param type the type of attack witch can be Player::ranged, Player::meleeProjectile or Player::melee
 **/
 void Player::atack(int type){
     FunctionAnalyser::startFunction("Player::atack");
@@ -414,7 +414,7 @@ void Player::atack(int type){
     FunctionAnalyser::endFunction("Player::atack");
 }
 /**
- *	Calculates and update the local coeficiente
+ *  Calculates and update the local coeficiente
 **/
 void Player::refreshCoeficiente(){
     coeficiente=0;
@@ -444,7 +444,7 @@ void Player::refreshCoeficiente(){
 }
 
 /**
- *	Calculates and update the global coeficiente
+ *  Calculates and update the global coeficiente
 **/
 void Player::refreshGlobalcoeficiente(){
     refreshCoeficiente();
@@ -470,9 +470,9 @@ void Player::refreshGlobalcoeficiente(){
 }
 
 /**
- *	Gets the player object from its id
+ *  Gets the player object from its id
  *
- *	@param id the id of the player
+ *  @param id the id of the player
  *  @return the address of the player object
 **/
 Player* Player::getPlayerById(int id){

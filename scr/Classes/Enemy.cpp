@@ -56,7 +56,6 @@ Enemy::~Enemy() {
 
 const nTPoint Enemy::defaultSize=Constants::ENEMY_Size;
 const int Enemy::defaultLife=Constants::ENEMY_BaseLife;
-
 vector<vector<string> >Enemy::nicks;
 vector<vector<string> >Enemy::enemyAnim;
 vector<vector<int> >Enemy::enemyAnimSize;
@@ -64,7 +63,7 @@ vector<string> Enemy::enemyName;
 vector<vector<int> > Enemy::enemyRandom;
 
 /**
- *	Override Entity::stateControl to add the function of check collions with lava blocks
+ *  Override Entity::stateControl to add the function of check collions with lava blocks
 **/
 void Enemy::stateControl(){
     FunctionAnalyser::startFunction("Enemy::stateControl");
@@ -78,7 +77,7 @@ void Enemy::stateControl(){
         if(lastMapColl[i].blockId>=Map::staticBlocks.size()&&lastMapColl[i].blockId>0){
             bl=(Blocks*) Map::dynamicBlocks[lastMapColl[i].blockId-Map::staticBlocks.size()];
             if(lastMapColl[i].collision.firstObj!=Mechanics::NOCOLLISION){
-				bool isLava=bl->type==Blocks::AnimatedLava1||bl->type==Blocks::AnimatedLava2||bl->type==Blocks::StaticLava;
+                bool isLava=bl->type==Blocks::AnimatedLava1||bl->type==Blocks::AnimatedLava2||bl->type==Blocks::StaticLava;
                 if(isLava)
                     life=0;
             }
@@ -89,7 +88,7 @@ void Enemy::stateControl(){
 }
 
 /**
- *	Run logic events of the Enemy on the map like move, change directions and textures, spawn bullets, apply damage and draw nicknames
+ *  Run logic events of the Enemy on the map like move, change directions and textures, spawn bullets, apply damage and draw nicknames
 **/
 void Enemy::behave(){
     FunctionAnalyser::startFunction("Enemy::behave");
@@ -130,7 +129,7 @@ void Enemy::draw(Enemy* en){
 }
 
 /**
- *	Push on nicks vector a vector of nick for each enemy, each vector represents a level
+ *  Push on nicks vector a vector of nick for each enemy, each vector represents a level
 **/
 void Enemy::registerNicks(){
     vector<string> tmp;
@@ -197,9 +196,9 @@ void Enemy::registerNicks(){
 
 
 /**
- *	Gets the texture id of enemys life based on his current life
+ *  Gets the texture id of enemys life based on his current life
  *
- *	@return the texture id
+ *  @return the texture id
 **/
 GLuint Enemy::lifeLetter(){
   double Life=this->life/Enemy::defaultLife;

@@ -6,7 +6,6 @@
 class Constants {
 public:
     static const double BLOCKS_ImunityTime;
-    static const nTPoint BLOCKS_Size;
 
     static const double BULLET_BaseDamage;
     static const double BULLET_BaseSpeed;

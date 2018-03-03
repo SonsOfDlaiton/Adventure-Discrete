@@ -16,7 +16,6 @@ Mechanics::~Mechanics() {
 }
 
 const double Mechanics::gravity=Constants::MECHANICS_Gravity;
-
 const int Mechanics::TOP=1;
 const int Mechanics::BOTTOM=2;
 const int Mechanics::RIGHT=3;
@@ -25,7 +24,7 @@ const int Mechanics::NOCOLLISION=0;
 bool Mechanics::drawCollisionRec=false;
 
 /**
- *	Apply gravity to the instantiated entitities on the world
+ *  Apply gravity to the instantiated entitities on the world
 **/
 void Mechanics::applyGravity(){
     FunctionAnalyser::startFunction("Mechanics::applyGravity");
@@ -184,10 +183,10 @@ void Mechanics::applyForce(){
 }
 
 /**
- *	Move entitities arround the world
+ *  Move entitities arround the world
  *
- *	@param dir direction to where the bullet will move, could be Util::direction_left, Util::direction_right, Util::direction_up, Util::direction_down
- *	@param steeps amount of steps to move the block
+ *  @param dir direction to where the bullet will move, could be Util::direction_left, Util::direction_right, Util::direction_up, Util::direction_down
+ *  @param steeps amount of steps to move the block
 **/
 void Mechanics::move(int dir,double steeps){
     FunctionAnalyser::startFunction("Mechanics::move");
@@ -253,11 +252,11 @@ bool Mechanics::checkNormalForce(){
 }
 
 /**
- *	Check if a body is touching the ground
+ *  Check if a body is touching the ground
  *
- *	@param pos_ position of the body
- *	@param size_ size of the body
- *	@return true if is touching the ground, otherwise false
+ *  @param pos_ position of the body
+ *  @param size_ size of the body
+ *  @return true if is touching the ground, otherwise false
 **/
 bool Mechanics::checkNormalForce(nTPoint pos_){
     FunctionAnalyser::startFunction("Mechanics::checkNormalForce");
@@ -277,11 +276,11 @@ bool Mechanics::checkNormalForce(nTPoint pos_){
 }
 
 /**
- *	Check a block collision with the player must be ignored
+ *  Check a block collision with the player must be ignored
  *
- *	@param pos position of the body
- *	@param blockType the type of the block
- *	@return true if is must be ignored, otherwise false
+ *  @param pos position of the body
+ *  @param blockType the type of the block
+ *  @return true if is must be ignored, otherwise false
 **/
 bool Mechanics::ignoreCollisionWithPlayer(nTPoint pos,int blockType){
     if(!Blocks::checkIfBlocksIsEnemyCollider(blockType))
@@ -294,20 +293,20 @@ bool Mechanics::ignoreCollisionWithPlayer(nTPoint pos,int blockType){
 }
 
 /**
- *	Gets gravity
+ *  Gets gravity
  *
- *	@return the value of gravity
+ *  @return the value of gravity
 **/
 double Mechanics::getGravity(){
     return gravity;
 }
 
 /**
- *	Verify collision between two bodies
+ *  Verify collision between two bodies
  *
- *	@param r1 coordinates of the collision rectangle of the first body
-  *	@param r2 coordinates of the collision rectangle of the second body
- *	@return the collsion result, with informations about where the bodies touch each other
+ *  @param r1 coordinates of the collision rectangle of the first body
+  * @param r2 coordinates of the collision rectangle of the second body
+ *  @return the collsion result, with informations about where the bodies touch each other
 **/
 objCollision Mechanics::getCollision(nTRectangle r1, nTRectangle r2){
     FunctionAnalyser::startFunction("Mechanics::getCollision");
