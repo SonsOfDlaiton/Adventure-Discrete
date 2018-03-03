@@ -70,6 +70,7 @@ public:
     static double getGameMs();
     static void clearUI();
     static bool hasEditOnfocus();
+    static bool hasTexture(string texname);
     static void setfocus(string editName);
     static void typeOnEdit(char c);
     static void moveEditCursor(int direction);

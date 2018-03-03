@@ -38,6 +38,7 @@ public:
 
 private:
     void removeComments();
+    void loadFiles();
     void decode();
     void includeFiles();
     void printInterpretedData();
@@ -50,7 +51,7 @@ private:
     vector<pair<string,float> > flts;
     vector<pair<string,string> > sections;
     static const char vectorSeparator,vectorBegin,vectorEnd,stringBegin,stringEnd,sectionBegin,sectionEnd,assignment,escape;
-    static const string includeFile,lineComment,sectionCommentBegin,sectionCommentEnd;
+    static const string includeFile,lineComment,sectionCommentBegin,sectionCommentEnd,loadFile;
 };
 
 #endif /* ADC_H */

@@ -544,6 +544,13 @@ void GL::drawPolygon(nTPoint point,double radius,int edges){
     glEnd();
 }
 
+bool GL::hasTexture(string texname){
+    for(string n:textureNames)
+        if(n==texname)
+            return true;
+    return false;
+}
+
 /**
  *	Find a texture by name and return its index on vector textures
  *

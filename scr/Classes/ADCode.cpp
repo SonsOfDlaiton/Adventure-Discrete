@@ -1,4 +1,5 @@
 #include "ADCode.hpp"
+#include "GL.hpp"
 
 ADCode::ADCode(string data, string name) {
     this->data=data;
@@ -28,6 +29,7 @@ const char ADCode::sectionEnd=']';
 const char ADCode::assignment='=';
 const char ADCode::escape='\\';
 const string ADCode::includeFile="#include";
+const string ADCode::loadFile="#load";
 const string ADCode::lineComment="//";
 const string ADCode::sectionCommentBegin="/*";
 const string ADCode::sectionCommentEnd="*/";
@@ -89,6 +91,43 @@ string ADCode::getData(){
     return data;
 }
 
+void ADCode::loadFiles(){
+    size_t found=data.find(loadFile);
+    while(found!=string::npos){
+        size_t start=found;
+        found=data.find(vectorBegin,found);
+        if(found!=string::npos){
+            string load=data.substr(found+1);
+            found=load.find(vectorEnd);
+            if(found!=string::npos){
+                load=load.substr(0,found);
+                data=data.substr(0,start)+"\n"+Util::getFromFile(Util::newPath(load))+"\n"+data.substr(data.find(vectorEnd,data.find(vectorBegin,start)+1)+1);
+                vector<string> toLoad=strToStrVector(load);
+                if(toLoad.size()==4){
+                    if(toLoad[0]=="Texture"){
+                        if(!GL::hasTexture(toLoad[1])){
+                            if(Util::strToInt(toLoad[3])==1){
+                                if(!GL::loadTexture(toLoad[1],toLoad[2]))
+                                    cout<<"ADCode Load Error: not found tex"<<toLoad[2]<<endl;
+                            }else{
+                                if((GL::loadTextures(toLoad[1],Util::strToInt(toLoad[3]),toLoad[2])).size()!=Util::strToInt(toLoad[3]))
+                                    cout<<"ADCode Load Error: not found texs"<<toLoad[2]<<endl;
+                            }
+                        }
+                    }
+                }else{
+                    cout<<"ADCode ERROR: #load must have 4 arguments, {file_type,name,path,amount}"<<endl;
+                }
+            }else{
+                cout<<"ADCode ERROR: Expected File Specs to load\n";
+            }
+        }else{
+            cout<<"ADCode ERROR: Expected File Specs to load\n";
+        }
+        found=data.find(loadFile);
+    }
+}
+
 void ADCode::includeFiles(){
     size_t found=data.find(includeFile);
 	while(found!=string::npos){
@@ -112,6 +151,7 @@ void ADCode::includeFiles(){
 
 void ADCode::decode(){
     includeFiles();
+    loadFiles();
     removeComments();
     int last=0;
     int currentSection=0;
