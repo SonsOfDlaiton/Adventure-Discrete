@@ -582,6 +582,7 @@ vector<GLuint> GL::getTexturesByName(string name,int nOfTex){
         if(tmp)
             out.push_back(tmp);
     }
+
     return out;
 }
 

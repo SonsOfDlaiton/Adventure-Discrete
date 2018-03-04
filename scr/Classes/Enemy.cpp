@@ -23,6 +23,7 @@ Enemy::Enemy(int enemyType,double life,nTPoint spawn,nTPoint size,string spr_nam
     this->lowered=false;
     this->isVisible=true;
     this->damageState=false;
+    this->damageVunerability=false;
     this->itsInTheWater=false;
     this->imuneToDamage=false;
     this->drawLetter=true;
@@ -54,7 +55,7 @@ Enemy::~Enemy() {
     Entity::enemys.erase(Entity::enemys.begin()+this->id);
 }
 
-const nTPoint Enemy::defaultSize=Constants::ENEMY_Size;
+const nTPoint Enemy::defaultSize=nTPoint::get(Constants::ENEMY_SizeX,Constants::ENEMY_SizeY);
 const int Enemy::defaultLife=Constants::ENEMY_BaseLife;
 vector<vector<string> >Enemy::nicks;
 vector<vector<string> >Enemy::enemyAnim;
@@ -111,7 +112,7 @@ void Enemy::behave(){
                     en->orientation=Util::orientation_left;
                 objCollision var=Mechanics::getCollision(nTRectangle::getCollision(en->pos,en->size),nTRectangle::getCollision(Player::getPlayerById(0)->pos,Player::getPlayerById(0)->size));
                 if(var.firstObj==Mechanics::LEFT||var.firstObj==Mechanics::RIGHT||var.firstObj==Mechanics::BOTTOM||(!Player::getPlayerById(0)->atacking&&Player::getPlayerById(0)->atackDirection!=Util::direction_down&&var.firstObj==Mechanics::TOP))
-                    Player::getPlayerById(0)->applyDamage(1);
+                    Player::getPlayerById(0)->applyDamage(Constants::ENEMY_BaseDamage);
                 draw(en);
             }
         }

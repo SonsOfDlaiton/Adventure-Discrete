@@ -238,6 +238,7 @@ void MapEdit::load(int idx){
  *	Reset the map and eviroment variables
 **/
 void MapEdit::reset(){
+    MapEdit::map.backgrounds.clear();
     size=nTPoint::get(0,0,1);
     scale=nTPoint::get(0.8,0.8,1);
     currentBlock=0;

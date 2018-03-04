@@ -56,7 +56,7 @@ Blocks::~Blocks() {
     }
 }
 
-nTPoint Blocks::defaultBlockSize=nTPoint::get(32,32,0.7);
+nTPoint Blocks::defaultBlockSize=nTPoint::get(Constants::BLOCKS_SizeX,Constants::BLOCKS_SizeY,Constants::BLOCKS_Depth);
 double Blocks::imunityTime=Constants::BLOCKS_ImunityTime;
 
 const int Blocks::AnimatedWater1=376;
@@ -145,7 +145,7 @@ void Blocks::move(int dir,double steeps){
             playerCol=Mechanics::getCollision(nTRectangle::getCollision(pos,size),pRec);
             if(type==HalfBlockVCactus){ //cacto
                 if(playerCol.firstObj!=Mechanics::NOCOLLISION)
-                    Player::getPlayerById(0)->applyDamage(1);
+                    Player::getPlayerById(0)->applyDamage(Constants::BLOCKS_BaseDamage);
             }else if(playerCol.firstObj==Mechanics::TOP || playerCol.secondObj==Mechanics::BOTTOM){
                 Player::getPlayerById(0)->move(dir,steeps);
             }else if(playerCol.firstObj==Mechanics::LEFT || playerCol.firstObj==Mechanics::RIGHT){
@@ -181,7 +181,7 @@ void Blocks::move(int dir,double steeps){
         }
         if(playerCol.firstObj!=Mechanics::NOCOLLISION){
             if(type==HalfBlockVCactus) //cacto
-                Player::getPlayerById(0)->applyDamage(1);
+                Player::getPlayerById(0)->applyDamage(Constants::BLOCKS_BaseDamage);
             else if(playerCol.secondObj==Mechanics::TOP||playerCol.secondObj==Mechanics::BOTTOM){
                 Player* pl=Player::getPlayerById(0);
                 pl->collideWithMap(pl->getGroundPos());

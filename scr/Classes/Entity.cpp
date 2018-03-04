@@ -50,7 +50,7 @@ vector<void*> Entity::enemys;
 vector<void*> Entity::bosses;
 
 /**
- *  Change the entity state machine based on enviroments and conditions of the entity
+ *	Change the entity state machine based on enviroments and conditions of the entity
 **/
 void Entity::stateControl(){
     FunctionAnalyser::startFunction("Entity::stateControl");
@@ -88,7 +88,7 @@ void Entity::stateControl(){
         Player* pl;
         Enemy* en;
         switch(currentState){
-            case state_TakingDamage: damageState=false; break;
+            case state_TakingDamage: if(GL::getGameMs()>=timeToVunerability) damageState=false; damageVunerability=false; break;
             case state_Dying:
                 if(id<0){
                     AL::singleton->playSoundByName("diePlayer");
@@ -132,17 +132,17 @@ void Entity::changeState(int newState){
     if(currentState>=animations.size()||currentState<=state_Holding){
         currentState=state_Idle;
     }
-    if(animations.size())
+    if(animations.size()&&(currentState!=state_TakingDamage||damageVunerability))
         currentTex->setTextures(animations[currentState]);
 }
 
 
 /**
- *  Get an vetor of vectors containing the texture id of each animation passed as parameter
+ *	Get an vetor of vectors containing the texture id of each animation passed as parameter
  *
- *  @param animations vector contaning the animation base name
- *  @param size vector contaning the size of each animation
- *  @return the vector of texture ids for each animation
+ *	@param animations vector contaning the animation base name
+ *	@param size vector contaning the size of each animation
+ *	@return the vector of texture ids for each animation
 **/
 vector<vector<GLuint> >  Entity::getAnimationVector(vector<string> animations, vector<int>size){
     vector<vector<GLuint> > anim;
@@ -153,15 +153,16 @@ vector<vector<GLuint> >  Entity::getAnimationVector(vector<string> animations, v
 }
 
 /**
- *  Apply damage to entities
+ *	Apply damage to entities
  *
- *  @param damage quantity of damage to be applied
+ *	@param damage quantity of damage to be applied
 **/
 void Entity::applyDamage(double damage){
     if(damageState||imuneToDamage)
         return;
     life-=damage;
     damageState=true;
+    damageVunerability=true;
     makeInvencible();
     if(id<0){
         AL::singleton->playSoundByName("damagePlayer");
@@ -174,9 +175,9 @@ void Entity::applyDamage(double damage){
 }
 
 /**
- *  Draw this entity on the screen
+ *	Draw this entity on the screen
  *
- *  @param color base color for drawing, the default is white(1,1,1,1)
+ *	@param color base color for drawing, the default is white(1,1,1,1)
 **/
 void Entity::draw(nTColor color){
     if(GL::isPaused||!this->isVisible)
@@ -193,7 +194,7 @@ void Entity::draw(nTColor color){
 }
 
 /**
- *  Run logic events of the Enemy on the map like move, change directions and textures, spawn bullets, apply damage and draw nicknames and draw players
+ *	Run logic events of the Enemy on the map like move, change directions and textures, spawn bullets, apply damage and draw nicknames and draw players
 **/
 void Entity::behave(){
     FunctionAnalyser::startFunction("Entity::behave");
@@ -204,16 +205,16 @@ void Entity::behave(){
 }
 
 /**
- *  Draw this entity on the screen
+ *	Draw this entity on the screen
 **/
 void Entity::draw(){
     draw(nTColor::White());
 }
 
 /**
- *  Make the entity immune to damage for a certain time
+ *	Make the entity immune to damage for a certain time
  *
- *  @param time time who the enity will be immune
+ *	@param time time who the enity will be immune
 **/
 void Entity::makeInvencible(double time){
     imuneToDamage=true;
@@ -221,7 +222,7 @@ void Entity::makeInvencible(double time){
 }
 
 /**
- *  Make the entity immune to damage for a certain time
+ *	Make the entity immune to damage for a certain time
  *
 **/
 void Entity::makeInvencible(){
@@ -230,7 +231,7 @@ void Entity::makeInvencible(){
 }
 
 /**
- *  Make the entity jump
+ *	Make the entity jump
 **/
 void Entity::jump(){
     if(life<=0||lowered)
@@ -247,9 +248,9 @@ void Entity::jump(){
 }
 
 /**
- *  Make the entity walk
+ *	Make the entity walk
  *
- *  @param dir walk direction, can be Util::direction_left or Util::direction_right
+ *	@param dir walk direction, can be Util::direction_left or Util::direction_right
 **/
 void Entity::walk(int dir){
     if(life<=0||lowered)
@@ -269,9 +270,9 @@ void Entity::walk(int dir){
 }
 
 /**
- *  Make the entity run
+ *	Make the entity run
  *
- *  @param dir run direction, can be Util::direction_left or Util::direction_right
+ *	@param dir run direction, can be Util::direction_left or Util::direction_right
 **/
 void Entity::run(int dir){
     if(life<=0||lowered)
@@ -293,9 +294,9 @@ void Entity::run(int dir){
 }
 
 /**
- *  Reduce speed slowly causing a low friction effect
+ *	Reduce speed slowly causing a low friction effect
  *
- *  @param dir reduce direction, can be Util::direction_left or Util::direction_right
+ *	@param dir reduce direction, can be Util::direction_left or Util::direction_right
 **/
 void Entity::reduceSpeed(int dir){
     if(dir==Util::direction_left){
@@ -306,16 +307,16 @@ void Entity::reduceSpeed(int dir){
 }
 
 /**
- *  Sets the vector of texture ids for each animation
+ *	Sets the vector of texture ids for each animation
  *
- *  @param animations vector of texture ids for each animation
+ *	@param animations vector of texture ids for each animation
 **/
 void Entity::setAnimations(vector<vector<GLuint> > animations){
     this->animations=animations;
 }
 
 /**
- *  Set sprites and animations of entities using vectors to store texture names and size of animations
+ *	Set sprites and animations of entities using vectors to store texture names and size of animations
 **/
 void Entity::setSprites(){
     Player::setSprites();

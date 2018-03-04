@@ -236,16 +236,14 @@ bool AssetsLoader::loadTextures(){
         if((GL::loadTextures("enemSpawn",7,"Textures/bosses/enem/spawn/")).size()!=7)out=false;
         if((GL::loadTextures("enemDeath",7,"Textures/bosses/enem/death/")).size()!=7)out=false;
         //Enem1
-        if(!GL::loadTexture("enem1Damage","Textures/bosses/enem/damage/day1/0.png")) out=false;
+        if((GL::loadTextures("enem1Damage",1,"Textures/bosses/enem/damage/day1/")).size()!=1)out=false;
         if((GL::loadTextures("enem1Idle",5,"Textures/bosses/enem/idle/day1/")).size()!=5)out=false;
         if((GL::loadTextures("enem1Action",9,"Textures/bosses/enem/action/day1/")).size()!=9)out=false;
-        if((GL::loadTextures("enem1Vunerable",2,"Textures/bosses/enem/vunerable/day1/")).size()!=2)out=false;
 
         //Enem2
-        if(!GL::loadTexture("enem2Damage","Textures/bosses/enem/damage/day2/0.png")) out=false;
+        if((GL::loadTextures("enem2Damage",1,"Textures/bosses/enem/damage/day2/")).size()!=1)out=false;
         if((GL::loadTextures("enem2Idle",5,"Textures/bosses/enem/idle/day2/")).size()!=5)out=false;
         if((GL::loadTextures("enem2Action",9,"Textures/bosses/enem/action/day2/")).size()!=9)out=false;
-        if((GL::loadTextures("enem2Vunerable",2,"Textures/bosses/enem/vunerable/day2/")).size()!=2)out=false;
 
 
     //Enemy

@@ -6,15 +6,24 @@
 class Constants {
 public:
     static const double BLOCKS_ImunityTime;
+    static const double BLOCKS_BaseDamage;
+    static const double BLOCKS_SizeX;
+    static const double BLOCKS_SizeY;
+    static const double BLOCKS_Depth;
 
     static const int GAME_FPS;
 
+    static const double BOSS_BaseDamage;
+
     static const double BULLET_BaseDamage;
+    static const double BULLET_BaseBusDamage;
     static const double BULLET_BaseSpeed;
     static const double BULLET_BaseTimeToShoot;
 
-    static const nTPoint ENEMY_Size;
+    static const double ENEMY_SizeX;
+    static const double ENEMY_SizeY;
     static const int ENEMY_BaseLife;
+    static const double ENEMY_BaseDamage;
 
     static const double ENTITY_JumpSpeed;
     static const double ENTITY_HorizontalRecoil;
@@ -32,7 +41,8 @@ public:
 
     static const double PLAYER_SwordBaseDamage;
     static const int PLAYER_BaseLife;
-    static const nTPoint PLAYER_Size;
+    static const double PLAYER_SizeX;
+    static const double PLAYER_SizeY;
 
     static const double POWERUP_MoveSpeed;
 

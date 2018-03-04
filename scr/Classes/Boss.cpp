@@ -55,6 +55,7 @@ Boss::Boss(string data,nTPoint spawn) {
     this->lowered=false;
     this->isVisible=true;
     this->damageState=false;
+    this->damageVunerability=false;
     this->itsInTheWater=false;
     this->damageGate=0;
     this->imuneToDamage=false;
@@ -113,7 +114,7 @@ void Boss::behave(){
                 bo->eventHandler();
                 objCollision var=Mechanics::getCollision(nTRectangle::getCollision(bo->pos,bo->size),nTRectangle::getCollision(Player::getPlayerById(0)->pos,Player::getPlayerById(0)->size));
                 if(var.firstObj==Mechanics::LEFT||var.firstObj==Mechanics::RIGHT||var.firstObj==Mechanics::BOTTOM||(!Player::getPlayerById(0)->atacking&&Player::getPlayerById(0)->atackDirection!=Util::direction_down&&var.firstObj==Mechanics::TOP))
-                    Player::getPlayerById(0)->applyDamage(1);
+                    Player::getPlayerById(0)->applyDamage(Constants::BOSS_BaseDamage);
                 draw(bo);
             }
         }
@@ -123,25 +124,26 @@ void Boss::behave(){
 
 void Boss::eventHandler(){
     FunctionAnalyser::startFunction("Boss::eventHandler");
-
-    for(int e=0;e<events.size();e++){
-        BossEvent be=events[e];
-        if((life>=be.minimumLife||be.minimumLife==0)&&(life<=be.maximumLife)&&(rand()%(be.probability*(int)GL::getFPS()/10)==0||be.probability==1)){
-            if(be.event=="reincarnation")
-                reincarnation(be.params,e);
-            else if(be.event=="summon")
-                summon(be.params,e);
-            else if(be.event=="shield")
-                shield(be.params,e);
-            else if(be.event=="questions")
-                questions(be.params,e);
-            else if(be.event=="gate")
-                gate(be.params,e);
+    if(currentState!=Entity::state_Spawning){
+        for(int e=0;e<events.size();e++){
+            BossEvent be=events[e];
+            if((life>=be.minimumLife||be.minimumLife==0)&&(life<=be.maximumLife)&&(rand()%(be.probability*(int)GL::getFPS()/10)==0||be.probability==1)){
+                if(be.event=="reincarnation")
+                    reincarnation(be.params,e);
+                else if(be.event=="summon")
+                    summon(be.params,e);
+                else if(be.event=="shield")
+                    shield(be.params,e);
+                else if(be.event=="questions")
+                    questions(be.params,e);
+                else if(be.event=="gate")
+                    gate(be.params,e);
+            }
         }
-    }
-    if(!canCast){
-        if(GL::getGameMs()-castMs>=questionsHex)
-            canCast=true;
+        if(!canCast){
+            if(GL::getGameMs()-castMs>=questionsHex)
+                canCast=true;
+        }
     }
     FunctionAnalyser::endFunction("Boss::eventHandler");
 }
@@ -196,6 +198,10 @@ void Boss::stateControl(){
         return;
     }
     Entity::stateControl();
+    if(!canCast&&shieldBlock==0){
+        damageVunerability=true;
+        changeState(state_TakingDamage);
+    }
     FunctionAnalyser::endFunction("Boss::stateControl");
 }
 
@@ -272,6 +278,8 @@ void Boss::applyDamage(double damage){
     if(damageState||imuneToDamage)
         return;
     life-=damage*(1-shieldBlock/100);
+    if(shieldBlock==0)
+        damageVunerability=true;
     damageState=true;
     makeInvencible();
     if(rand()%23==0)
@@ -445,7 +453,7 @@ void Boss::setSprites(){
     tmp.push_back("enem1Idle"); tmp2.push_back(5);//3 -Jumping
         tmp.push_back("");  tmp2.push_back(1);//4 -Atacking -none
     tmp.push_back("enem1Action");  tmp2.push_back(9);//5 -SpecialAtacking
-    tmp.push_back("enem1Idle"); tmp2.push_back(5);//6 -Damage
+    tmp.push_back("enem1Damage"); tmp2.push_back(1);//6 -Damage
     tmp.push_back("enemDeath"); tmp2.push_back(7);//7 -Death
     tmp.push_back("enemSpawn"); tmp2.push_back(7);//8 -Spawn
     Boss::bossAnim.push_back(tmp);
@@ -461,7 +469,7 @@ void Boss::setSprites(){
     tmp.push_back("enem2Idle"); tmp2.push_back(5);//3 -Jumping
         tmp.push_back("");  tmp2.push_back(1);//4 -Atacking -none
     tmp.push_back("enem2Action");  tmp2.push_back(9);//5 -SpecialAtacking
-    tmp.push_back("enem2Idle"); tmp2.push_back(5);//6 -Damage
+    tmp.push_back("enem2Damage"); tmp2.push_back(1);//6 -Damage
     tmp.push_back("enemDeath"); tmp2.push_back(7);//7 -Death
     tmp.push_back("enemSpawn"); tmp2.push_back(7);//8 -Spawn
     Boss::bossAnim.push_back(tmp);

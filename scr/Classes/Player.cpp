@@ -17,6 +17,7 @@ Player::Player(double life,nTPoint spawn,nTPoint size) {
     this->defaultOrientation=Util::orientation_right;
     this->isHuman=true;
     this->damageState=false;
+    this->damageVunerability=false;
     this->sword=(int)life-1;
     this->atackDirection=Util::direction_right;
     this->orientation=Util::direction_right;
@@ -60,7 +61,7 @@ int Player::checkpoint=0;
 int Player::stage=0;
 const int Player::defaultLife=Constants::PLAYER_BaseLife;
 int Player::loadedLife=defaultLife;
-const nTPoint Player::defaultPSize=Constants::PLAYER_Size;
+const nTPoint Player::defaultPSize=nTPoint::get(Constants::PLAYER_SizeX,Constants::PLAYER_SizeY);
 vector<vector<string> >Player::playerAnim;
 vector<vector<int> >Player::playerAnimSize;
 
@@ -179,6 +180,7 @@ void Player::spawn(nTPoint spawn,double life){
     this->sword=(int)life-1;
     this->defaultOrientation=Util::orientation_right;
     this->damageState=false;
+    this->damageVunerability=false;
     this->imuneToDamage=false;
     this->atackDirection=Util::direction_right;
     this->orientation=Util::orientation_right;
@@ -452,7 +454,7 @@ void Player::refreshGlobalcoeficiente(){
     if(Scenes::freeGameMode){
         if(coeficiente>recordsU[Map::currentUsrMap]){
             recordsU[Map::currentUsrMap]=coeficiente;
-            AssetsLoader::saveSettings();    
+            AssetsLoader::saveSettings();
         }
     }else{
         if(globalCoeficiente>1){
@@ -461,9 +463,9 @@ void Player::refreshGlobalcoeficiente(){
         }else{
             globalCoeficiente=coeficiente;
         }
-        if(coeficiente>records[Player::stage]){ 
+        if(coeficiente>records[Player::stage]){
             records[Player::stage]=coeficiente;
-            AssetsLoader::saveSettings();    
+            AssetsLoader::saveSettings();
         }
     }
     coeficiente=0;

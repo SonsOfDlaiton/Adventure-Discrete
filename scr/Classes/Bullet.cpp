@@ -74,6 +74,10 @@ void Bullet::behave(){
     Bullet *bu;
     for(int i=0;i<self.size();i++){
         bu=(Bullet*)self[i];
+        if(!bu->isVisible){
+            FunctionAnalyser::endFunction("Bullet::behave");
+            return;
+        }
         if(!Scenes::camera.isInTheScreen(nTRectangle::getCollision(bu->pos,bu->size))&&bu->type!=coinBullet){
             if(bu->type==strongSwordBullet)
                 Player::getPlayerById(0)->haveBulletSword=false;
@@ -202,12 +206,13 @@ void Bullet::checkCollisionWithEntity(bool withPlayer){
                 AL::singleton->playSoundByName("Coin");
                 Player::coinsPicked++;
             }else if(type==busBullet){
-                Player::getPlayerById(0)->applyDamage(2);
+                Player::getPlayerById(0)->applyDamage(Constants::BULLET_BaseBusDamage);
                 AL::singleton->stopSound(AL::getSoundByName("intercampi"));
             }else if(type!=rightAlternativeBullet)
-                Player::getPlayerById(0)->applyDamage(1);
+                Player::getPlayerById(0)->applyDamage(baseDamage);
             if(type==rightAlternativeBullet||type==wrongAlternativeBullet){
                 isVisible=false;
+                cout<<"tocou player\n";
                 Boss::wrongAnswer();
                 FunctionAnalyser::endFunction("Bullet::ckCollWithEntity");
                 return;
@@ -222,11 +227,13 @@ void Bullet::checkCollisionWithEntity(bool withPlayer){
             if(var.firstObj!=Mechanics::NOCOLLISION){
                 if(type==rightAlternativeBullet){
                     isVisible=false;
+                    cout<<"espada no certo\n";
                     Boss::rightAnswer();
                     FunctionAnalyser::endFunction("Bullet::ckCollWithEntity");
                     return;
                 }else if(type==wrongAlternativeBullet){
                     isVisible=false;
+                     cout<<"espada no errado\n";
                     Boss::wrongAnswer();
                     FunctionAnalyser::endFunction("Bullet::ckCollWithEntity");
                     return;
