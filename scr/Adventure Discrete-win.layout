@@ -2,29 +2,14 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-	<File name="Classes\Bullet.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Classes\Player.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="5065" topLine="131" />
+			<Cursor1 position="1841" topLine="54" />
 		</Cursor>
 	</File>
-	<File name="Libs\clip\clip_win.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Classes\ADCode.hpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="7054" topLine="283" />
-		</Cursor>
-	</File>
-	<File name="Classes\Enemy.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="4348" topLine="105" />
-		</Cursor>
-	</File>
-	<File name="Classes\Util.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3964" topLine="125" />
-		</Cursor>
-	</File>
-	<File name="Classes\Map.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="510" topLine="36" />
+			<Cursor1 position="768" topLine="17" />
 		</Cursor>
 	</File>
 	<File name="Classes\Boss.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -32,19 +17,9 @@
 			<Cursor1 position="15547" topLine="404" />
 		</Cursor>
 	</File>
-	<File name="Classes\Mechanics.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Classes\Util.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="970" topLine="64" />
-		</Cursor>
-	</File>
-	<File name="Classes\FunctionAnalyser.hpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1555" topLine="27" />
-		</Cursor>
-	</File>
-	<File name="Classes\Player.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1841" topLine="54" />
+			<Cursor1 position="3964" topLine="125" />
 		</Cursor>
 	</File>
 	<File name="Classes\Texture.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -52,14 +27,29 @@
 			<Cursor1 position="724" topLine="15" />
 		</Cursor>
 	</File>
-	<File name="Classes\MapEdit.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Classes\Map.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="15571" topLine="545" />
+			<Cursor1 position="510" topLine="36" />
 		</Cursor>
 	</File>
-	<File name="Classes\Background.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Classes\MapEdit.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="863" topLine="15" />
+			<Cursor1 position="955" topLine="24" />
+		</Cursor>
+	</File>
+	<File name="Classes\FunctionAnalyser.hpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1555" topLine="27" />
+		</Cursor>
+	</File>
+	<File name="Classes\ADCode.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="17437" topLine="452" />
+		</Cursor>
+	</File>
+	<File name="Libs\clip\clip_win.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="7054" topLine="283" />
 		</Cursor>
 	</File>
 	<File name="Classes\Constants.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -67,9 +57,14 @@
 			<Cursor1 position="672" topLine="2" />
 		</Cursor>
 	</File>
-	<File name="Classes\FunctionAnalyser.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Classes\Background.cpp" open="1" top="1" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2677" topLine="69" />
+			<Cursor1 position="5473" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="Classes\Background.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="863" topLine="15" />
 		</Cursor>
 	</File>
 	<File name="Classes\Blocks.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -77,14 +72,34 @@
 			<Cursor1 position="4871" topLine="138" />
 		</Cursor>
 	</File>
+	<File name="Classes\MapEdit.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="15571" topLine="545" />
+		</Cursor>
+	</File>
+	<File name="Classes\Bullet.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="5065" topLine="131" />
+		</Cursor>
+	</File>
+	<File name="Classes\Enemy.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4348" topLine="105" />
+		</Cursor>
+	</File>
 	<File name="Classes\Map.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="21543" topLine="501" />
 		</Cursor>
 	</File>
-	<File name="Classes\MapEdit.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Classes\FunctionAnalyser.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="955" topLine="24" />
+			<Cursor1 position="2677" topLine="69" />
+		</Cursor>
+	</File>
+	<File name="Classes\Mechanics.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="970" topLine="64" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

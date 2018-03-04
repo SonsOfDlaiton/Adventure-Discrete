@@ -464,11 +464,12 @@ bool ADCode::next(pair<string,vector<string> >& vs){
     return true;
 }
 
-bool ADCode::nextSection(ADCode* a){
+bool ADCode::nextSection(ADCode*& a){
     if(sections_pointer>=sections.size())
         return false;
-    delete a;
-    a=(ADCode*)new ADCode(sections[sections_pointer].second,name+"::"+sections[sections_pointer++].first);
+    if(a!=nullptr)
+        delete a;
+    a=new ADCode(sections[sections_pointer].second,name+"::"+sections[sections_pointer++].first);
     return true;
 }
 

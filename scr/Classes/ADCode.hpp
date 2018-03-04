@@ -24,7 +24,7 @@ public:
     string getName();
     bool nextInt(int& i);
     bool nextFloat(float& f);
-    bool nextSection(ADCode* a);
+    bool nextSection(ADCode*& a);
     bool next(int& i);
     bool next(float& f);
     bool next(string& s);
