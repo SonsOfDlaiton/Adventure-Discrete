@@ -71,7 +71,9 @@ void Camera::putCameraOnOrigin(){
  *	@param pos the point to be looked by the camera
 **/
 void Camera::lookAt(nTPoint pos){
-    //pos.x-=GL::defaultSize.x/2+x.movedCam;
+    if(pos.x<460)
+        pos.x=460;
+    pos.x-=GL::defaultSize.x/2+x.movedCam;
     pos.y-=GL::defaultSize.y/2+y.movedCam;
     gluLookAt(pos.x,pos.y,0,pos.x,pos.y,-1,0,1,0);
     x.movedCam+=pos.x;

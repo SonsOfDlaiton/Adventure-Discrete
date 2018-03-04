@@ -14,29 +14,26 @@ public:
 	void drawParalaxBackground(nTPoint size);
 	void setMove(bool move);
 	void setzAxis(double zAxis);
-	void setName(string name);
 	void setLocal(nTRectangle local);
 	void setPos(double pos);
 	bool getMove();
 	void setRandomPositions(nTPoint size);
 	double getzAxis();
 	Texture *tex;
-	string getName();
 	nTRectangle getLocal();
-	static void loadParalax(ADCode* adc, vector<Background>& paralax);
-	static void drawBackgrounds(vector<Background> &backgrounds);
+	static void loadParalax(ADCode* adc, vector<Background*>& paralax);
+	static void drawBackgrounds(vector<Background*> &backgrounds);
 	static const int verticalSensibility; // TODO -> Move to Constants
 private:
-	string name;
 	bool move;
 	int deltaX, deltaY;
 	double zAxis, hSpeed, vSpeed, initialPos, pos;
-	vector<pair<int, int>> randomPositions;
+	vector<pair<int, int> > randomPositions;
 	nTRectangle local;
 };
 
 typedef struct mapstru{
-  vector<Background> backgrounds;
+  vector<Background*> backgrounds;
   vector<vector<vector<pair<int,string> > > > map;
   string mapADC;
   static const short layers=2;

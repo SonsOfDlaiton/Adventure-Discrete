@@ -40,6 +40,7 @@ public:
 private:
     void removeComments();
     void loadFiles();
+    void runScripts();
     void decode();
     void includeFiles();
     void printInterpretedData();

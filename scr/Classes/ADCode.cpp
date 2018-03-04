@@ -153,9 +153,15 @@ void ADCode::includeFiles(){
 	}
 }
 
+void ADCode::runScripts(){
+
+
+
+}
+
 void ADCode::decode(){
-    includeFiles();
     removeComments();
+    includeFiles();
     loadFiles();
     int last=0;
     int currentSection=0;
@@ -332,6 +338,7 @@ void ADCode::decode(){
             }
         }
 	}
+    runScripts();
 }
 
 vector<int> ADCode::strToIntVector(string input){

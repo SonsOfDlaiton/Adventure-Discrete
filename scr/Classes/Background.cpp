@@ -5,16 +5,15 @@
 #include "Texture.hpp"
 
 Background::Background(string name, bool move, double zAxis, int x0, int y0, int x1, int y1, int deltaX, int deltaY, double hSpeed, double vSpeed, int nTex){
-	move = move;
-	zAxis = (double) zAxis/10;
-	local = nTRectangle::get(x0, y0, x1, y1, zAxis);
-	name = name;
-	deltaX = deltaX;
-	deltaY = deltaY;
-	hSpeed = hSpeed;
-	vSpeed = vSpeed;
-	initialPos = -500;
-	pos = initialPos;
+	this->move = move;
+	this->zAxis = (double) zAxis/10;
+	this->local = nTRectangle::get(x0, y0, x1, y1, this->zAxis);
+	this->deltaX = deltaX;
+	this->deltaY = deltaY;
+	this->hSpeed = hSpeed;
+	this->vSpeed = vSpeed;
+	this->initialPos = -500;
+	this->pos = this->initialPos;
 
 	tex = new Texture();
 	if(nTex>1)
@@ -25,65 +24,61 @@ Background::Background(string name, bool move, double zAxis, int x0, int y0, int
 }
 
 Background::~Background(){
-	//delete tex;
+	delete tex;
 }
 
 const int Background::verticalSensibility = 5000; // TODO -> Move to Constants
 
 bool Background::getMove(){
-	return move;
+	return this->move;
 }
 double Background::getzAxis(){
-	return zAxis;
+	return this->zAxis;
 }
-string Background::getName(){
-	return name;
-}
+
 nTRectangle Background::getLocal(){
-	return local;
+	return this->local;
 }
 void Background::setMove(bool move){
-	move = move;
+	this->move = move;
 }
 void Background::setzAxis(double zAxis){
-	zAxis = zAxis;
+	this->zAxis = zAxis;
 }
-void Background::setName(string name){
-	name=name;
-}
+
 void Background::setLocal(nTRectangle local){
-	local = local;
+	this->local = local;
 }
 void Background::setPos(double pos){
-	pos = pos;
+	this->pos = pos;
 }
 
 void Background::setRandomPositions(nTPoint size){
 	if (deltaY<0 || deltaX<0){
-		int x=0, y=0, maxDistance=ABS(deltaX);
-		for (int pos=initialPos; pos<size.x; pos+=rand()%(2*maxDistance)/1.3+(local.p1.x - local.p0.x)/131*GL::defaultSize.x){
+		int x=0, y=0, maxDistance=ABS(this->deltaX);
+		for (int pos=this->initialPos; pos<size.x; pos+=rand()%(2*maxDistance)/1.3+(this->local.p1.x - this->local.p0.x)/131*GL::defaultSize.x){
 			x=pos;
-			if (deltaY!=0)
-				y=ABS(rand()%(2*deltaY))-deltaY;
+			if (this->deltaY!=0)
+				y=ABS(rand()%(2*this->deltaY))-this->deltaY;
 			pair<int, int> tmp(x, y);
-			if(deltaX>=0)
+			if(this->deltaX>=0)
 				tmp.first=0;
-			if(deltaY>=0)
+			if(this->deltaY>=0)
 				tmp.second=0;
 
-			randomPositions.push_back(tmp);
+			this->randomPositions.push_back(tmp);
 		}
 	}
 }
 
-void Background::drawBackgrounds(vector<Background> &backgrounds){
+void Background::drawBackgrounds(vector<Background*> &backgrounds){
 	for(int i=0; i<backgrounds.size(); i++){
-        if(!backgrounds[i].getMove())
-            GL::drawTexture(nTRectangle::get(Scenes::camera.x.movedCam,GL::defaultSize.y+Scenes::camera.y.movedCam,GL::defaultSize.x+Scenes::camera.x.movedCam,Scenes::camera.y.movedCam,backgrounds[i].getzAxis()-0.9),backgrounds[i].tex->get());
+        if(!backgrounds[i]->getMove())
+            GL::drawTexture(nTRectangle::get(Scenes::camera.x.movedCam,GL::defaultSize.y+Scenes::camera.y.movedCam,GL::defaultSize.x+Scenes::camera.x.movedCam,Scenes::camera.y.movedCam,backgrounds[i]->getzAxis()-0.9),backgrounds[i]->tex->get());
         else{
-        	if(backgrounds[i].randomPositions.size()==0)
-        		backgrounds[i].setRandomPositions(Map::size);
-            backgrounds[i].drawParalaxBackground(Map::size);
+        	if(backgrounds[i]->randomPositions.size()==0)
+        		backgrounds[i]->setRandomPositions(Map::size);
+            backgrounds[i]->drawParalaxBackground(Map::size);
         }
     }
 }
@@ -107,22 +102,22 @@ void Background::drawParalaxBackground(nTPoint size){
 
 	int randomIterator=0;
 	int randOnY=0;
-	for (int x=pos; x< pl->pos.x + GL::defaultSize.x*1.5; ){
+	for (int x=pos; x < pl->pos.x + GL::defaultSize.x*1.5; ){
 		GL::drawTexture(nTRectangle::get(
 			x + local.p0.x/100.*GL::defaultSize.x,
 			(100-local.p0.y)/100.*Map::size.y + (vSpeed*percentYOfPlayer*verticalSensibility)/GL::getFPS() - offSetMoveScreenY + randOnY*10,
 			x + local.p1.x/100.*GL::defaultSize.x,
 			(100-local.p1.y)/100.*Map::size.y + (vSpeed*percentYOfPlayer*verticalSensibility)/GL::getFPS() - offSetMoveScreenY + randOnY*10,
 			zAxis),
-			GL::getTextureByName(name));
+			tex->get());
 		if (deltaX==0){
 			GL::drawTexture(nTRectangle::get(
-				x + backgroundWidth + local.p1.x/100.*GL::defaultSize.x,
+				x + backgroundWidth +local.p1.x/100.*GL::defaultSize.x,
 				(100-local.p0.y)/100.*Map::size.y + (vSpeed*percentYOfPlayer*verticalSensibility)/GL::getFPS() - offSetMoveScreenY,
 				x + local.p1.x/100.*GL::defaultSize.x,
 				(100-local.p1.y)/100.*Map::size.y + (vSpeed*percentYOfPlayer*verticalSensibility)/GL::getFPS() - offSetMoveScreenY,
 				zAxis),
-				GL::getTextureByName(name));
+				tex->get());
 			x+=backgroundWidth;
 		}
 		if (deltaY<0)
@@ -130,16 +125,16 @@ void Background::drawParalaxBackground(nTPoint size){
 		if (deltaX>=0)
 			x+=backgroundWidth+deltaX;
 		else{
-			x-=(randomPositions.at(randomIterator).first - randomPositions.at(++randomIterator).first);
+			x-=(randomPositions.at(randomIterator).first -randomPositions.at(++randomIterator).first);
 			if (randomIterator==randomPositions.size())
 				break;
 		}
-
 	}
 }
 
-void Background::loadParalax(ADCode* adc, vector<Background>& paralax){
+void Background::loadParalax(ADCode* adc, vector<Background*> &paralax){
 	paralax.clear();
+	Background *back=nullptr;
 	ADCode* adc_back=nullptr;
     while(adc->nextSection(adc_back)){
         if(adc_back->getName()=="Map::background"){
@@ -154,11 +149,11 @@ void Background::loadParalax(ADCode* adc, vector<Background>& paralax){
                 int Z=adc_back->getInt("depth");
                 vector<int> speed=adc_back->getIntVector("speed");
                 if(p0.size()==2&&p1.size()==2&&speed.size()==2){
-                    Background back(name, !static_back, Z, p0[0], p0[1], p1[0], p0[1], DeltaX, DeltaY, speed[0], speed[1], sprites);
-                    paralax.push_back(back);
+                	back=new Background(name, !static_back, Z, p0[0]/100.0f, p0[1]/100.0f, p1[0]/100.0f, p1[1]/100.0f, DeltaX, DeltaY, speed[0], speed[1], sprites);
+            		paralax.push_back(back);
                 }
-            } else{
-            	Background back(name, !static_back, 0, 0, 0, 0, 0, 0, 0, 0, 0, sprites);
+            }else{
+            	back=new Background(name, !static_back, 0, 0, 0, 0, 0, 0, 0, 0, 0, sprites);
             	paralax.push_back(back);
             }
         }

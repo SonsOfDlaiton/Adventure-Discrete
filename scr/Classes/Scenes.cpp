@@ -120,7 +120,6 @@ void Scenes::drawGame(){
         AL::singleton->stopAllSoundsExcept(tmp);
         camera.lookAt(Player::getPlayerById(0)->pos);
     }
-
     camera.behave(Player::getPlayerById(0));
     Mechanics::applyForce();
     Bullet::behave();

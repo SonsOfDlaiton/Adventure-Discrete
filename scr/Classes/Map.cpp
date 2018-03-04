@@ -506,7 +506,7 @@ bool Map::loadMap(string path){
         getline(mapFILE,lineSelected);//read version
         getline(mapFILE,lineSelected);
         structOfMap.mapADC=lineSelected;
-        
+
         vector<int> listOfReadNumbers;
         int readNumberInINT;
         string readNumberInString;
@@ -519,7 +519,7 @@ bool Map::loadMap(string path){
             while(getline(mapFILE,lineSelected)){
                 if(lineSelected=="nTMap---newLayer---nTMap"){ // quando mudar de camada adiciona o map a linha criada na ultima iteracao o loop
                     layer++;
-                    structOfMap.map.push_back(tmpMap2D); 
+                    structOfMap.map.push_back(tmpMap2D);
                 }else{
                     pair<int,string> tmp;
                     for(int i=0;i<lineSelected.size();i++){
