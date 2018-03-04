@@ -161,7 +161,6 @@ void Background::loadParalax(ADCode* adc, vector<Background>& paralax){
             	Background back(name, !static_back, 0, 0, 0, 0, 0, 0, 0, 0, 0, sprites);
             	paralax.push_back(back);
             }
-           
         }
     }
     if(adc_back==nullptr)

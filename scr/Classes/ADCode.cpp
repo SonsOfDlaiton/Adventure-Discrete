@@ -107,11 +107,6 @@ void ADCode::loadFiles(){
                 load=load.substr(0,found);
                 data=data.substr(0,start)+data.substr(data.find(vectorEnd,data.find(vectorBegin,start)+1)+1);
                 vector<string> toLoad=strToStrVector(load);
-
-                cout<<"Vector:\n";
-                for(string n:toLoad)
-                    cout<<n<<"\n";
-
                 if(toLoad.size()==4){
                     if(toLoad[0]=="Texture"){
                         if(!GL::hasTexture(toLoad[1])){

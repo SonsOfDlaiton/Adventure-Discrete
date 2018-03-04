@@ -225,7 +225,7 @@ void Map::setBlockPos(){
 void Map::draw(){
     FunctionAnalyser::startFunction("Map::draw");
     Blocks* bl;
-    drawMapBackground();
+    Background::drawBackgrounds(actualMap.backgrounds);
     for(int i=0;i<dynamicBlocks.size();i++){
         bl=(Blocks*)dynamicBlocks[i];
         if(!Blocks::checkIfBlocksIsLiquid(bl->type)||Scenes::current!=Scenes::game)
@@ -324,7 +324,7 @@ vector <mapCollision> Map::checkCollision(nTPoint pos,nTPoint size){
 void Map::refresh(){
     FunctionAnalyser::startFunction("Map::refresh");
     if(GL::isPaused){
-        drawMapBackground();
+        Background::drawBackgrounds(actualMap.backgrounds);
         FunctionAnalyser::endFunction("Map::refresh");
         return;
     }
@@ -625,8 +625,4 @@ Blocks* Map::getBlockById(int id){
         return (Blocks*)Map::staticBlocks[id];
     }
     return nullptr;
-}
-
-void Map::drawMapBackground(){
-    Background::drawBackgrounds(actualMap.backgrounds);
 }

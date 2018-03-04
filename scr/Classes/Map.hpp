@@ -52,7 +52,6 @@ private:
     static void setBlockPos();
     static void processADC();
     static int getIdByPosition(nTPoint pos);
-    static void drawMapBackground();
 
     static nTMap actualMap;//static GLuint background;
 };
