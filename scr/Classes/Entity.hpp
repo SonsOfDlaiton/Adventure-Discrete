@@ -33,6 +33,7 @@ public:
     bool reducing;
     int orientation;
     double imunityTime;
+    static double getJumpSpeed();
     static const double walkSpeed;
     static const double defaultImunityTime;
 	static vector<void*> enemys;

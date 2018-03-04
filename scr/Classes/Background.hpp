@@ -4,10 +4,11 @@
 #include "Util.hpp"
 
 class ADCode;
+class Texture;
 
 class Background{
 public:
-	Background(string name, string path, bool move, double zAxis, int x0, int y0, int x1, int y1, int deltaX, double hSpeed, double vSpeed);
+	Background(string name, bool move, double zAxis, int x0, int y0, int x1, int y1, int deltaX, int deltaY, double hSpeed, double vSpeed, int nTex);
 	~Background();
 	bool operator<(const Background &b1) const { return zAxis > b1.zAxis; }
 	void drawParalaxBackground(nTPoint size);
@@ -15,18 +16,22 @@ public:
 	void setzAxis(double zAxis);
 	void setName(string name);
 	void setLocal(nTRectangle local);
-	void setPath(string path);
+	void setPos(double pos);
 	bool getMove();
+	void setRandomPositions(nTPoint size);
 	double getzAxis();
+	Texture *tex;
 	string getName();
 	nTRectangle getLocal();
-	string getPath();
 	static void loadParalax(ADCode* adc, vector<Background>& paralax);
+	static void drawBackgrounds(vector<Background> &backgrounds);
+	static const int verticalSensibility; // TODO -> Move to Constants
 private:
-	string name, path;
+	string name;
 	bool move;
-	int deltaX;
+	int deltaX, deltaY;
 	double zAxis, hSpeed, vSpeed, initialPos, pos;
+	vector<pair<int, int>> randomPositions;
 	nTRectangle local;
 };
 

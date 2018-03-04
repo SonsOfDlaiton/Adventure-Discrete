@@ -49,6 +49,11 @@ vector<void*> Entity::players;
 vector<void*> Entity::enemys;
 vector<void*> Entity::bosses;
 
+double Entity::getJumpSpeed(){
+    return jumpSpeed;
+}
+
+
 /**
  *	Change the entity state machine based on enviroments and conditions of the entity
 **/

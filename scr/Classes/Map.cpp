@@ -484,7 +484,8 @@ void Map::next(){
         Scenes::current=Scenes::posGame;
     }else{
         if(Player::lives>=0){
-            Player::stage++;
+            if(Player::getPlayerById(0)->life>0)
+                Player::stage++;
             Scenes::current=Scenes::posGame;
         }else
             GG(false);
@@ -498,78 +499,58 @@ void Map::next(){
  *  @return true if the map was successfully loaded, otherwise false
 **/
 bool Map::loadMap(string path){
-    nTMap tmp;
+    nTMap structOfMap;
     ifstream mapFILE(path);
     if(mapFILE.is_open()){
-        string tmp2;
-        vector<pair<int,string> > tmp3;
-        getline(mapFILE,tmp2);//read version
-        getline(mapFILE,tmp2);
-        int loop=Util::strToInt(tmp2);
-        vector<int> b;
-        int c;
-        string a;
-        for(int i=0; i<loop; i++){
-            getline(mapFILE,tmp2);
-            for(int j=0;j<tmp2.size();j++){
-                if(tmp2[j]!='\''){
-                    a+=tmp2[j];
-                }else{
-                    c=Util::strToInt(a);
-                    b.push_back(c);
-                    a.clear();
-                }
-            }
-            string name, path;
-            getline(mapFILE, name);
-            getline(mapFILE, path);
-            name.erase(remove(name.begin(),name.end(),13),name.end());
-            path.erase(remove(path.begin(),path.end(),13),path.end());
-            Background back(name, path, b[0]==1, b[1]/100.0, b[2], b[3], b[4], b[5], b[6], b[7]/100.0, b[8]/100);
-            GL::loadTexture(back.getName(),back.getPath());
-            tmp.backgrounds.push_back(back);
-            b.clear();
-        }
-        int k=0;
-        vector<vector<pair<int,string> > > m;
-        tmp.map.push_back(m);
+        string lineSelected;
+        getline(mapFILE,lineSelected);//read version
+        getline(mapFILE,lineSelected);
+        structOfMap.mapADC=lineSelected;
+        
+        vector<int> listOfReadNumbers;
+        int readNumberInINT;
+        string readNumberInString;
+
+        int layer=0;
+        vector<vector<pair<int,string> > > tmpMap2D;
+        vector<pair<int,string> > tmpMap1D;
+        structOfMap.map.push_back(tmpMap2D); // aciona ao map uma linha nula (que logo será preenchida)
         while(mapFILE.good()){//!mapFILE.eof()
-            while(getline(mapFILE,tmp2)){
-                if(tmp2=="nTMap---newLayer---nTMap"){
-                    k++;
-                    tmp.map.push_back(m);
+            while(getline(mapFILE,lineSelected)){
+                if(lineSelected=="nTMap---newLayer---nTMap"){ // quando mudar de camada adiciona o map a linha criada na ultima iteracao o loop
+                    layer++;
+                    structOfMap.map.push_back(tmpMap2D); 
                 }else{
-                    pair<int,string> tmp4;
-                    string tmp5;
-                    for(int i=0;i<tmp2.size();i++){
-                        if(tmp2[i]!='\''){
-                            tmp5+=tmp2[i];
+                    pair<int,string> tmp;
+                    for(int i=0;i<lineSelected.size();i++){
+                        if(lineSelected[i]!='\''){
+                            readNumberInString+=lineSelected[i];
                         }else{
-                            size_t found = tmp5.find_first_of("\\");
-                            if(found!=string::npos){
-                                tmp4.second=tmp5.substr(found+1,tmp5.size()-found);
-                                Util::replaceAllOccurrences(tmp4.second,"\"-ad-Xchar-13-\"","\n");
-                                Util::replaceAllOccurrences(tmp4.second,"\"-ad-Xchar-92-\"","\\");
-                                Util::replaceAllOccurrences(tmp4.second,"\"-ad-Xchar-39-\"","\'");
-                                tmp5=tmp5.substr(0,found);
-                            }else{
-                                tmp4.second="";
+                            size_t found = readNumberInString.find_first_of("\\");
+                            if(found!=string::npos){ // achou '\'
+                                tmp.second=readNumberInString.substr(found+1,readNumberInString.size()-found); // guarda adCode
+                                Util::replaceAllOccurrences(tmp.second,"\"-ad-Xchar-13-\"","\n");
+                                Util::replaceAllOccurrences(tmp.second,"\"-ad-Xchar-92-\"","\\");
+                                Util::replaceAllOccurrences(tmp.second,"\"-ad-Xchar-39-\"","\'");
+                                readNumberInString=readNumberInString.substr(0,found);
+                            }else{ // nao achou (nao tem adCode)
+                                tmp.second="";
                             }
-                            tmp4.first=Util::strToInt(tmp5);
-                            tmp3.push_back(tmp4);
-                            tmp5.clear();
+                            tmp.first=Util::strToInt(readNumberInString); // pega Id do bloco
+                            tmpMap1D.push_back(tmp);
+                            readNumberInString.clear();
                         }
                     }
-                    tmp.map[k].push_back(tmp3);
-                    tmp3.clear();
+                    structOfMap.map[layer].push_back(tmpMap1D);
+                    tmpMap1D.clear();
                 }
             }
         }
         string strT(path);
         if(strT.find("Maps/user")==string::npos)
-            maps.push_back(tmp);
+            maps.push_back(structOfMap);
         else
-            usrMap.push_back(tmp);
+            usrMap.push_back(structOfMap);
         mapFILE.close();
         return true;
     }else{
@@ -600,16 +581,11 @@ bool Map::saveMap(string path,int idx){
     if(mapFILE.is_open()){
         SETTINGS s;
         mapFILE<<s.version<<endl;
-        mapFILE<<save.backgrounds.size()<<endl;
-        for(int i=0; i<save.backgrounds.size(); i++){
-            if(save.backgrounds[i].getMove())
-                mapFILE<<1<<'\'';
-            else
-                mapFILE<<0<<'\'';
-            mapFILE<<save.backgrounds[i].getzAxis()<<"\'"<<save.backgrounds[i].getLocal().p0.x<<"\'"<<save.backgrounds[i].getLocal().p0.y<<"\'"<<save.backgrounds[i].getLocal().p1.x<<"\'"<<save.backgrounds[i].getLocal().p1.y<<endl;
-            mapFILE<<save.backgrounds[i].getName()<<endl;
-            mapFILE<<save.backgrounds[i].getPath()<<endl;
-        }
+        string back=save.mapADC;
+        Util::replaceAllOccurrences(back,"\n","\"-ad-Xchar-13-\"");
+        Util::replaceAllOccurrences(back,"\'","\"-ad-Xchar-39-\"");
+        Util::replaceAllOccurrences(back,"\\","\"-ad-Xchar-92-\"");
+        mapFILE<<back<<endl;
         for(int k=0;k<save.map.size();k++){
             for(int i=0;i<save.map[k].size();i++){
                 for(int j=0;j<save.map[k][i].size();j++){
@@ -652,10 +628,5 @@ Blocks* Map::getBlockById(int id){
 }
 
 void Map::drawMapBackground(){
-    for(int i=0; i<actualMap.backgrounds.size(); i++){
-        if(!actualMap.backgrounds[i].getMove())
-            GL::drawTexture(nTRectangle::get(Scenes::camera.x.movedCam,GL::defaultSize.y+Scenes::camera.y.movedCam,GL::defaultSize.x+Scenes::camera.x.movedCam,Scenes::camera.y.movedCam,actualMap.backgrounds[i].getzAxis()),GL::getTextureByName(actualMap.backgrounds[i].getName()));
-        else
-            actualMap.backgrounds[i].drawParalaxBackground(size);
-    }
+    Background::drawBackgrounds(actualMap.backgrounds);
 }

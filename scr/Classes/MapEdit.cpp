@@ -256,6 +256,8 @@ void MapEdit::reset(){
 **/
 bool MapEdit::save(){
     nTMap tmp;
+    if(MapEdit::mapSelected)
+        MapEdit::map.mapADC=GL::getEditText("MapEdit::blockData");
     tmp=map;
     Map::currentUsrMap=Util::strToInt(GL::getEditText("MapEdit::askForUser"));
     if(!isUser){
@@ -335,12 +337,13 @@ void MapEditButton(int x,int y){
             MapEdit::map.map[MapEdit::editingLayer][i][j].first=MapEdit::currentBlock;
             MapEdit::map.map[MapEdit::editingLayer][i][j].second=GL::getEditText("MapEdit::blockData");
         }else{
+            if(MapEdit::mapSelected)
+                MapEdit::map.mapADC=GL::getEditText("MapEdit::blockData");
             MapEdit::mapSelected=false;
             ADCode* adc=new ADCode(MapEdit::map.mapADC,"Map");
             Background::loadParalax(adc,MapEdit::map.backgrounds);
             delete adc;
             MapEdit::currentBlock=MapEdit::map.map[MapEdit::editingLayer][i][j].first;
-            MapEdit::map.mapADC=GL::getEditText("MapEdit::blockData");
             GL::setEditText("MapEdit::blockData",MapEdit::map.map[MapEdit::editingLayer][i][j].second);
         }
     }
@@ -405,12 +408,7 @@ void MapEditSetBlock(int x,int y){
  *	Draw everything on the screen
 **/
 void MapEdit::draw(){
-    for(int i=0; i<map.backgrounds.size(); i++){
-        if(!map.backgrounds[i].getMove())
-            GL::drawTexture(nTRectangle::get(Scenes::camera.x.movedCam,GL::defaultSize.y+Scenes::camera.y.movedCam,GL::defaultSize.x+Scenes::camera.x.movedCam,Scenes::camera.y.movedCam,map.backgrounds[i].getzAxis()-0.9),GL::getTextureByName(map.backgrounds[i].getName()));
-        else
-            map.backgrounds[i].drawParalaxBackground(size);
-    }
+    Background::drawBackgrounds(map.backgrounds);
     drawPanel();
     drawLines();
     Blocks *bl;

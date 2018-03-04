@@ -22,7 +22,7 @@ public:
     scenesPoint getScenesPointY();
     void setScenesPointY(short int movingCam, double movedCam);
     double getMovePerFrame();
-    void setMoveSpeed(double moveSpeed);
+    void setMovePerFrame(double movePerFrame);
     bool getFreeCam();
     void setFreeCam(double freeCam);
     void setCam(double movePerFrame_);

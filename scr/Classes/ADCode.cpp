@@ -105,8 +105,13 @@ void ADCode::loadFiles(){
             found=load.find(vectorEnd);
             if(found!=string::npos){
                 load=load.substr(0,found);
-                data=data.substr(0,start)+"\n"+Util::getFromFile(Util::newPath(load))+"\n"+data.substr(data.find(vectorEnd,data.find(vectorBegin,start)+1)+1);
+                data=data.substr(0,start)+data.substr(data.find(vectorEnd,data.find(vectorBegin,start)+1)+1);
                 vector<string> toLoad=strToStrVector(load);
+
+                cout<<"Vector:\n";
+                for(string n:toLoad)
+                    cout<<n<<"\n";
+
                 if(toLoad.size()==4){
                     if(toLoad[0]=="Texture"){
                         if(!GL::hasTexture(toLoad[1])){
@@ -155,8 +160,8 @@ void ADCode::includeFiles(){
 
 void ADCode::decode(){
     includeFiles();
-    loadFiles();
     removeComments();
+    loadFiles();
     int last=0;
     int currentSection=0;
     vector<pair<string,string> > lex_stack;
@@ -343,6 +348,7 @@ vector<int> ADCode::strToIntVector(string input){
 }
 
 vector<string> ADCode::strToStrVector(string input){
+    input+=',';
     vector<string> value;
     int lock=0;
     int last=0;
