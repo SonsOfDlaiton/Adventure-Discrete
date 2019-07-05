@@ -6,6 +6,12 @@ Our code contains scripts from clip and SOIL libraries:
 source: https://github.com/dacap/clip
 source: https://github.com/kbranigan/Simple-OpenGL-Image-Library
 
+You need to install FreeGlut and OpenAL to compile our code
+For mac:
+```
+brew install openal-soft freeglut
+```
+
 ## Blocks---------------Id ##
 *TP Porta			-(-400:-200]
 *TP Cano			-(-200:0)

@@ -73,6 +73,7 @@ void Texture::resetAnimation(){
 
 int Texture::getCurrentIndex(){
     process();
+    return currentTex;
 }
 
 int Texture::getTexSize(){
